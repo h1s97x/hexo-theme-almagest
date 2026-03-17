@@ -1,0 +1,68 @@
+<%
+// 404 错误页面布局
+const config = theme;
+%>
+
+<!-- 404 Container -->
+<div class="error-container">
+  <!-- Error Code -->
+  <div class="error-code">
+    <h1 class="error-number">404</h1>
+  </div>
+  
+  <!-- Error Message -->
+  <div class="error-message">
+    <h2 class="error-title"><%= __('page_not_found') %></h2>
+    <p class="error-description">
+      <%= __('page_not_found_description') %>
+    </p>
+  </div>
+  
+  <!-- Error Illustration -->
+  <div class="error-illustration">
+    <svg viewBox="0 0 200 200" width="200" height="200">
+      <!-- Simple illustration of a lost astronaut or similar -->
+      <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+      <circle cx="100" cy="60" r="20" fill="currentColor" opacity="0.3"/>
+      <rect x="85" y="85" width="30" height="40" fill="currentColor" opacity="0.3"/>
+      <rect x="75" y="95" width="15" height="30" fill="currentColor" opacity="0.3"/>
+      <rect x="110" y="95" width="15" height="30" fill="currentColor" opacity="0.3"/>
+      <rect x="80" y="130" width="12" height="25" fill="currentColor" opacity="0.3"/>
+      <rect x="108" y="130" width="12" height="25" fill="currentColor" opacity="0.3"/>
+    </svg>
+  </div>
+  
+  <!-- Action Buttons -->
+  <div class="error-actions">
+    <a href="<%= url_for('/') %>" class="btn btn-primary">
+      <%= __('back_to_home') %>
+    </a>
+    
+    <% if (config.features?.search) { %>
+      <button class="btn btn-secondary" id="search-btn-404">
+        <%= __('search') %>
+      </button>
+    <% } %>
+  </div>
+  
+  <!-- Suggestions -->
+  <div class="error-suggestions">
+    <h3><%= __('suggestions') %></h3>
+    <ul>
+      <li><%= __('check_url') %></li>
+      <li><%= __('try_search') %></li>
+      <li><a href="<%= url_for('/') %>"><%= __('visit_homepage') %></a></li>
+      <% if (config.menu) { %>
+        <li>
+          <%= __('browse_menu') %>:
+          <% for (const [name, path] of Object.entries(config.menu)) { %>
+            <a href="<%= url_for(path) %>"><%= name %></a><% if (Object.entries(config.menu).indexOf([name, path]) < Object.entries(config.menu).length - 1) { %>, <% } %>
+          <% } %>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+</div>
+
+</content>
+</invoke>

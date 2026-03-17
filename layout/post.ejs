@@ -1,0 +1,77 @@
+<%
+// 文章页面布局
+const config = theme;
+%>
+
+<!-- Article Header -->
+<div class="article-header">
+  <h1 class="article-title"><%= page.title %></h1>
+  
+  <div class="article-meta">
+    <span class="meta-item">
+      <svg class="icon" viewBox="0 0 24 24" width="16" height="16">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.3-1.54c-.3-.36-.77-.36-1.07 0-.3.36-.3.95 0 1.31l1.83 2.17c.3.36.77.36 1.07 0l3.29-4.04c.3-.36.3-.95 0-1.31-.3-.36-.77-.36-1.07 0z" fill="currentColor"/>
+      </svg>
+      <time datetime="<%= date_xml(page.date) %>">
+        <%= date(page.date, config.date_format || 'YYYY-MM-DD') %>
+      </time>
+    </span>
+    
+    <% if (page.categories && page.categories.length > 0) { %>
+      <span class="meta-item">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
+        </svg>
+        <% page.categories.forEach((cat, idx) => { %>
+          <a href="<%= url_for(cat.path) %>"><%= cat.name %></a><% if (idx < page.categories.length - 1) { %>, <% } %>
+        <% }); %>
+      </span>
+    <% } %>
+    
+    <% if (config.features?.reading_time) { %>
+      <span class="meta-item">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" fill="currentColor"/>
+        </svg>
+        <span id="reading-time">--</span> min read
+      </span>
+    <% } %>
+  </div>
+  
+  <% if (page.tags && page.tags.length > 0) { %>
+    <div class="article-tags">
+      <% page.tags.forEach(tag => { %>
+        <a href="<%= url_for(tag.path) %>" class="tag"><%= tag.name %></a>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+
+<!-- Table of Contents -->
+<% if (config.features?.toc && page.toc) { %>
+  <div class="toc-wrapper">
+    <div class="toc-title"><%= __('toc') %></div>
+    <div class="toc-content">
+      <%- toc(page.content, { list_number: false }) %>
+    </div>
+  </div>
+<% } %>
+
+<!-- Article Content -->
+<div class="article-content">
+  <%- page.content %>
+</div>
+
+<!-- Article Footer -->
+<div class="article-footer">
+  <% if (page.updated && config.article?.show_updated) { %>
+    <div class="updated-info">
+      <%= __('updated') %>: <time datetime="<%= date_xml(page.updated) %>"><%= date(page.updated, config.date_format || 'YYYY-MM-DD') %></time>
+    </div>
+  <% } %>
+</div>
+
+<!-- Comments -->
+<% if (config.features?.comments) { %>
+  <%- partial('_partial/comments') %>
+<% } %>

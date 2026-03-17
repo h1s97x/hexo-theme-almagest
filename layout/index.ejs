@@ -1,0 +1,29 @@
+<%
+// 首页布局
+const config = theme;
+const per_page = config.pagination?.per_page || 10;
+%>
+
+<!-- Page Title -->
+<div class="page-header">
+  <h1 class="page-title"><%= config.title %></h1>
+  <p class="page-subtitle"><%= config.subtitle %></p>
+</div>
+
+<!-- Posts List -->
+<div class="posts-container">
+  <% if (page.posts && page.posts.length > 0) { %>
+    <% page.posts.each(function(post) { %>
+      <%- partial('_partial/post-card', { post: post }) %>
+    <% }); %>
+  <% } else { %>
+    <div class="no-posts">
+      <p><%= __('no_posts') %></p>
+    </div>
+  <% } %>
+</div>
+
+<!-- Pagination -->
+<% if (page.total > 1) { %>
+  <%- partial('_partial/pagination') %>
+<% } %>
