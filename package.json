@@ -1,0 +1,72 @@
+{
+  "name": "hexo-theme-almagest",
+  "version": "1.0.0",
+  "description": "一个简洁而强大的 Hexo 主题，参考 Stellar 主题但更易于定制。A minimal yet powerful Hexo theme inspired by Stellar with enhanced customization.",
+  "main": "package.json",
+  "scripts": {
+    "lint": "eslint source/js/**/*.js",
+    "lint:fix": "eslint source/js/**/*.js --fix",
+    "style:lint": "stylelint source/css/**/*.styl",
+    "style:lint:fix": "stylelint source/css/**/*.styl --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/hexo-theme-almagest.git"
+  },
+  "keywords": [
+    "hexo",
+    "theme",
+    "almagest",
+    "minimal",
+    "elegant",
+    "customizable",
+    "responsive",
+    "dark-mode",
+    "astronomy"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/username/hexo-theme-almagest/issues"
+  },
+  "homepage": "https://github.com/username/hexo-theme-almagest",
+  "engines": {
+    "node": ">=14.0.0",
+    "hexo": ">=6.0.0"
+  },
+  "dependencies": {
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-stylus": "^3.0.1"
+  },
+  "optionalDependencies": {
+    "cheerio": "^1.1.0",
+    "probe-image-size": "^7.2.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.3",
+    "stylelint": "^14.16.0",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-standard": "^29.0.0"
+  },
+  "lint-staged": {
+    "source/js/**/*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "source/css/**/*.styl": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  }
+}
