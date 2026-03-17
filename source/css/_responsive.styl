@@ -1,0 +1,684 @@
+// ============================================================
+// Responsive Styles - Mobile First Approach
+// ============================================================
+// 
+// Breakpoint Strategy:
+// - Mobile Layout (< 768px): Single column, no sidebar
+// - Tablet Layout (768px - 1024px): Adjusted layout with sidebar
+// - Desktop Layout (> 1024px): Full multi-column layout with sidebar
+// ============================================================
+
+// ============================================================
+// Mobile Layout (< 768px)
+// ============================================================
+// Optimized for mobile readability and touch interaction
+// Font sizes: Increased for better readability
+// Spacing: Optimized for mobile screens
+// Touch targets: Minimum 44x44px for all interactive elements
+// ============================================================
+
+// Typography - Mobile Optimized
+body
+  font-size $font-size-base
+  line-height $line-height-relaxed
+
+h1
+  font-size $font-size-3xl
+  margin-bottom $space-md
+
+h2
+  font-size $font-size-2xl
+  margin-bottom $space-md
+
+h3
+  font-size $font-size-xl
+  margin-bottom $space-sm
+
+h4, h5, h6
+  font-size $font-size-lg
+  margin-bottom $space-sm
+
+p
+  font-size $font-size-base
+  line-height $line-height-relaxed
+  margin-bottom $space-md
+
+small
+  font-size $font-size-sm
+
+// Header & Navigation
+.site-header
+  padding $space-md 0
+  
+  .header-container
+    padding 0 $space-md
+    gap $space-md
+  
+  .logo-text
+    font-size $font-size-xl
+  
+  .site-nav
+    display none
+    margin 0
+  
+  .header-actions
+    gap $space-sm
+
+.action-btn
+  width 44px
+  height 44px
+  min-width 44px
+  min-height 44px
+  
+  svg
+    width 20px
+    height 20px
+
+.mobile-menu-btn
+  display flex
+  width 44px
+  height 44px
+  min-width 44px
+  min-height 44px
+
+.mobile-menu
+  max-height 0
+  overflow hidden
+  transition max-height $transition-base
+  
+  &.active
+    max-height 500px
+
+.mobile-nav
+  padding $space-md 0
+  gap 0
+
+.mobile-nav-link
+  padding $space-md $space-md
+  font-size $font-size-base
+  min-height 48px
+  display flex
+  align-items center
+  touch-action manipulation
+
+// Content Layout - Single Column
+.content-wrapper
+  grid-template-columns 1fr
+  gap $space-lg
+  padding 0 $space-md
+
+.container
+  padding 0 $space-md
+  max-width 100%
+
+// Page Header
+.page-header
+  margin-bottom $space-xl
+  padding $space-lg $space-md
+  
+  .page-title
+    font-size $font-size-2xl
+    margin-bottom $space-md
+  
+  .page-subtitle
+    font-size $font-size-base
+
+// Post Card
+.post-card
+  padding $space-md
+  margin-bottom $space-lg
+  
+  &:hover
+    transform none
+
+.post-title
+  font-size $font-size-lg
+  margin-bottom $space-sm
+  line-height $line-height-tight
+
+.post-meta
+  font-size $font-size-sm
+  gap $space-sm
+  flex-wrap wrap
+
+.meta-item
+  min-height 44px
+  display flex
+  align-items center
+  gap $space-xs
+
+.post-excerpt
+  font-size $font-size-base
+  line-height $line-height-relaxed
+  margin $space-md 0
+
+// Links and Interactive Elements
+a
+  min-height 44px
+  display inline-flex
+  align-items center
+  touch-action manipulation
+
+button, input[type="button"], input[type="submit"]
+  min-height 44px
+  min-width 44px
+  padding $space-md $space-lg
+  font-size $font-size-base
+  touch-action manipulation
+
+// Form Elements
+input, textarea, select
+  font-size 16px
+  padding $space-md
+  min-height 44px
+  touch-action manipulation
+
+// Pagination
+.pagination
+  flex-direction column
+  gap $space-md
+  padding $space-md
+  margin-top $space-2xl
+
+.pagination-link
+  width 100%
+  min-height 48px
+  justify-content center
+  padding $space-md
+  font-size $font-size-base
+
+.pagination-info
+  order -1
+  width 100%
+  justify-content center
+  font-size $font-size-sm
+
+// Sidebar - Hidden on Mobile
+.sidebar
+  display none
+
+// Back to Top Button
+.back-to-top
+  width 48px
+  height 48px
+  min-width 48px
+  min-height 48px
+  bottom $space-md
+  right $space-md
+  
+  svg
+    width 20px
+    height 20px
+
+// Footer
+footer
+  padding $space-lg $space-md
+
+.footer-content
+  gap $space-md
+
+.footer-links
+  gap $space-md
+  font-size $font-size-sm
+
+// Lists
+ul, ol
+  padding-left $space-lg
+  margin-bottom $space-md
+
+li
+  margin-bottom $space-sm
+  line-height $line-height-relaxed
+
+// Code Blocks
+pre
+  padding $space-md
+  overflow-x auto
+  font-size $font-size-xs
+  line-height $line-height-normal
+
+code
+  font-size $font-size-xs
+
+// Blockquotes
+blockquote
+  padding $space-md $space-md $space-md $space-lg
+  margin $space-md 0
+  font-size $font-size-base
+  line-height $line-height-relaxed
+
+// Tables
+table
+  font-size $font-size-sm
+  overflow-x auto
+
+// Images
+img
+  max-width 100%
+  height auto
+  display block
+
+// ============================================================
+// Tablet Layout (768px - 1024px)
+// ============================================================
+// Balanced font sizes and spacing for tablet screens
+// Touch targets: Minimum 40x40px for interactive elements
+// ============================================================
+
+@media (min-width: $breakpoint-md)
+  // Typography - Tablet Optimized
+  body
+    font-size $font-size-base
+    line-height $line-height-relaxed
+  
+  h1
+    font-size $font-size-3xl
+    margin-bottom $space-md
+  
+  h2
+    font-size $font-size-2xl
+    margin-bottom $space-md
+  
+  h3
+    font-size $font-size-xl
+    margin-bottom $space-sm
+  
+  p
+    font-size $font-size-base
+    line-height $line-height-relaxed
+    margin-bottom $space-lg
+  
+  // Header & Navigation
+  .site-header
+    padding $space-md 0
+  
+  .header-container
+    padding 0 $space-lg
+    gap $space-lg
+  
+  .logo-text
+    font-size $font-size-2xl
+  
+  .site-nav
+    display flex
+    flex 1
+    margin 0 $space-lg
+    gap $space-lg
+  
+  .nav-link
+    font-size $font-size-base
+    padding $space-sm 0
+  
+  .mobile-menu-btn
+    display none
+  
+  .mobile-menu
+    display none
+  
+  .action-btn
+    width 40px
+    height 40px
+    min-width 40px
+    min-height 40px
+    
+    svg
+      width 18px
+      height 18px
+  
+  // Content Layout - Two Column with Sidebar
+  .content-wrapper
+    grid-template-columns 1fr 280px
+    gap $space-xl
+    padding 0 $space-lg
+  
+  .container
+    padding 0 $space-lg
+    max-width 100%
+  
+  // Page Header
+  .page-header
+    margin-bottom $space-2xl
+    padding $space-2xl $space-lg
+    
+    .page-title
+      font-size $font-size-3xl
+      margin-bottom $space-md
+    
+    .page-subtitle
+      font-size $font-size-base
+  
+  // Post Card
+  .post-card
+    padding $space-md
+    margin-bottom $space-lg
+  
+  .post-title
+    font-size $font-size-xl
+    line-height $line-height-tight
+  
+  .post-meta
+    font-size $font-size-sm
+    gap $space-sm
+  
+  .meta-item
+    min-height 40px
+    gap $space-sm
+  
+  .post-excerpt
+    font-size $font-size-base
+    line-height $line-height-relaxed
+  
+  // Links and Interactive Elements
+  a
+    min-height 40px
+  
+  button, input[type="button"], input[type="submit"]
+    min-height 40px
+    min-width 40px
+    padding $space-sm $space-md
+    font-size $font-size-base
+  
+  // Form Elements
+  input, textarea, select
+    font-size 16px
+    padding $space-sm $space-md
+    min-height 40px
+  
+  // Pagination
+  .pagination
+    flex-direction row
+    gap $space-md
+    padding $space-lg
+  
+  .pagination-link
+    width auto
+    min-height 40px
+    padding $space-sm $space-md
+    font-size $font-size-base
+  
+  .pagination-info
+    order 0
+    width auto
+    font-size $font-size-sm
+  
+  // Sidebar - Visible on Tablet
+  .sidebar
+    display flex
+  
+  .sidebar-widget
+    padding $space-md
+  
+  // Back to Top Button
+  .back-to-top
+    width 44px
+    height 44px
+    min-width 44px
+    min-height 44px
+  
+  // Footer
+  footer
+    padding $space-2xl $space-lg
+  
+  .footer-links
+    gap $space-lg
+    font-size $font-size-sm
+  
+  // Lists
+  ul, ol
+    margin-bottom $space-lg
+  
+  li
+    margin-bottom $space-sm
+  
+  // Code Blocks
+  pre
+    padding $space-lg
+    font-size $font-size-sm
+  
+  code
+    font-size $font-size-sm
+  
+  // Blockquotes
+  blockquote
+    padding $space-lg $space-lg $space-lg $space-xl
+    margin $space-lg 0
+    font-size $font-size-base
+
+// ============================================================
+// Desktop Layout (> 1024px)
+// ============================================================
+// Full-featured layout with optimal spacing and typography
+// Touch targets: Standard 36x36px for interactive elements
+// ============================================================
+
+@media (min-width: $breakpoint-lg)
+  // Typography - Desktop Optimized
+  body
+    font-size $font-size-base
+    line-height $line-height-normal
+  
+  h1
+    font-size $font-size-4xl
+    margin-bottom $space-lg
+  
+  h2
+    font-size $font-size-3xl
+    margin-bottom $space-lg
+  
+  h3
+    font-size $font-size-2xl
+    margin-bottom $space-md
+  
+  p
+    font-size $font-size-base
+    line-height $line-height-relaxed
+    margin-bottom $space-lg
+  
+  // Header & Navigation
+  .site-header
+    padding $space-md 0
+  
+  .header-container
+    padding 0 $space-2xl
+    gap $space-2xl
+  
+  .logo-text
+    font-size $font-size-2xl
+  
+  .site-nav
+    gap $space-2xl
+  
+  .nav-link
+    font-size $font-size-base
+    padding $space-sm 0
+  
+  .action-btn
+    width 40px
+    height 40px
+    min-width 40px
+    min-height 40px
+    
+    svg
+      width 20px
+      height 20px
+  
+  // Content Layout - Full Multi-Column with Sidebar
+  .content-wrapper
+    grid-template-columns 1fr 300px
+    gap $space-2xl
+    padding 0 $space-2xl
+  
+  .container
+    padding 0 $space-2xl
+    max-width $container-width-lg
+  
+  // Page Header
+  .page-header
+    margin-bottom $space-3xl
+    padding $space-3xl $space-2xl
+    
+    .page-title
+      font-size $font-size-4xl
+      margin-bottom $space-lg
+    
+    .page-subtitle
+      font-size $font-size-lg
+  
+  // Post Card
+  .post-card
+    padding $space-lg
+    margin-bottom $space-lg
+    
+    &:hover
+      transform translateY(-2px)
+  
+  .post-title
+    font-size $font-size-2xl
+    line-height $line-height-tight
+  
+  .post-meta
+    font-size $font-size-base
+    gap $space-md
+  
+  .meta-item
+    min-height 40px
+    gap $space-sm
+  
+  .post-excerpt
+    font-size $font-size-base
+    line-height $line-height-relaxed
+  
+  // Links and Interactive Elements
+  a
+    min-height 36px
+  
+  button, input[type="button"], input[type="submit"]
+    min-height 36px
+    min-width 36px
+    padding $space-sm $space-md
+    font-size $font-size-base
+  
+  // Form Elements
+  input, textarea, select
+    padding $space-sm $space-md
+    min-height 36px
+  
+  // Pagination
+  .pagination
+    gap $space-lg
+    padding $space-lg
+  
+  .pagination-link
+    min-height 36px
+    padding $space-sm $space-md
+    font-size $font-size-base
+  
+  // Sidebar
+  .sidebar-widget
+    padding $space-lg
+  
+  // Back to Top Button
+  .back-to-top
+    width 44px
+    height 44px
+    min-width 44px
+    min-height 44px
+  
+  // Footer
+  footer
+    padding $space-3xl $space-2xl
+  
+  .footer-links
+    gap $space-2xl
+    font-size $font-size-base
+  
+  // Lists
+  ul, ol
+    margin-bottom $space-lg
+  
+  li
+    margin-bottom $space-md
+  
+  // Code Blocks
+  pre
+    padding $space-lg
+    font-size $font-size-sm
+  
+  code
+    font-size $font-size-sm
+  
+  // Blockquotes
+  blockquote
+    padding $space-lg $space-lg $space-lg $space-xl
+    margin $space-lg 0
+    font-size $font-size-base
+
+// ============================================================
+// Large Desktop (>= 1200px)
+// ============================================================
+
+@media (min-width: $breakpoint-xl)
+  .container
+    max-width $container-width-xl
+  
+  .content-wrapper
+    padding 0 $space-3xl
+  
+  .page-header
+    padding $space-4xl $space-3xl
+
+// ============================================================
+// Extra Large Desktop (>= 1400px)
+// ============================================================
+
+@media (min-width: $breakpoint-2xl)
+  .container
+    max-width $container-width-2xl
+  
+  .content-wrapper
+    padding 0 $space-4xl
+  
+  .page-header
+    padding $space-4xl
+
+// ============================================================
+// Print Styles
+// ============================================================
+
+@media print
+  .site-header
+    display none
+  
+  .footer
+    display none
+  
+  .sidebar
+    display none
+  
+  .back-to-top
+    display none
+  
+  .pagination
+    display none
+  
+  .mobile-menu
+    display none
+  
+  .content-wrapper
+    grid-template-columns 1fr
+  
+  body
+    background-color white
+    color black
+  
+  a
+    color inherit
+    text-decoration underline
+  
+  .post-card
+    page-break-inside avoid
+    box-shadow none
+    border 1px solid #ccc
+
+</content>
+</invoke>
