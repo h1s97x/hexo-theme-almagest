@@ -1,0 +1,66 @@
+<%
+// 获取主题配置
+const config = theme;
+
+// 确定页面类型
+let page_type = 'index';
+if (['post', 'page'].includes(page.layout)) {
+  page_type = 'content';
+}
+
+// 获取主题偏好
+const prefers_theme = config.style?.prefers_theme || 'auto';
+const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}"`;
+%>
+<!DOCTYPE html>
+<html lang="<%= page.lang || config.language || 'en' %>" <%= theme_attr %>>
+<head>
+  <%- partial('_partial/head') %>
+</head>
+<body>
+  <div id="app" class="app-container">
+    <!-- Header -->
+    <%- partial('_partial/header') %>
+    
+    <!-- Main Content -->
+    <main class="main-content" role="main">
+      <div class="container">
+        <!-- Breadcrumb -->
+        <%- partial('_partial/breadcrumb') %>
+        
+        <div class="content-wrapper <%= page_type %>">
+          <!-- Sidebar (Left) -->
+          <% if (config.sidebar?.enable && config.sidebar?.position === 'left') { %>
+            <%- partial('_partial/sidebar') %>
+          <% } %>
+          
+          <!-- Main Article -->
+          <article class="article-container">
+            <%- body %>
+          </article>
+          
+          <!-- Sidebar (Right) -->
+          <% if (config.sidebar?.enable && config.sidebar?.position === 'right') { %>
+            <%- partial('_partial/sidebar') %>
+          <% } %>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Footer -->
+    <%- partial('_partial/footer') %>
+    
+    <!-- Back to Top Button -->
+    <% if (config.features?.back_to_top) { %>
+      <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M7 14l5-5 5 5z" fill="currentColor"/>
+        </svg>
+      </button>
+    <% } %>
+  </div>
+  
+  <!-- Scripts -->
+  <%- partial('_partial/scripts') %>
+</body>
+</html>

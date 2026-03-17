@@ -1,0 +1,81 @@
+<%
+// 归档页面布局
+const config = theme;
+%>
+
+<!-- Page Header -->
+<div class="page-header">
+  <h1 class="page-title"><%= __('archive') %></h1>
+  <p class="page-subtitle"><%= __('archive_description') %></p>
+</div>
+
+<!-- Archive Container -->
+<div class="archive-container">
+  <% 
+    // 按年份分组文章
+    const posts_by_year = {};
+    
+    if (page.posts && page.posts.length > 0) {
+      page.posts.each(function(post) {
+        const year = post.date.year();
+        if (!posts_by_year[year]) {
+          posts_by_year[year] = [];
+        }
+        posts_by_year[year].push(post);
+      });
+    }
+  %>
+  
+  <% if (Object.keys(posts_by_year).length > 0) { %>
+    <!-- Archive by Year -->
+    <% 
+      // 按年份倒序排列
+      const years = Object.keys(posts_by_year).sort((a, b) => b - a);
+    %>
+    
+    <% years.forEach(year => { %>
+      <div class="archive-year">
+        <h2 class="year-title">
+          <span class="year-number"><%= year %></span>
+          <span class="year-count">(<%= posts_by_year[year].length %>)</span>
+        </h2>
+        
+        <div class="archive-posts">
+          <% posts_by_year[year].forEach(post => { %>
+            <div class="archive-item">
+              <div class="archive-date">
+                <time datetime="<%= date_xml(post.date) %>">
+                  <%= date(post.date, 'MM-DD') %>
+                </time>
+              </div>
+              
+              <div class="archive-content">
+                <a href="<%= url_for(post.path) %>" class="archive-title">
+                  <%= post.title %>
+                </a>
+                
+                <% if (post.categories && post.categories.length > 0) { %>
+                  <div class="archive-categories">
+                    <% post.categories.forEach((cat, idx) => { %>
+                      <a href="<%= url_for(cat.path) %>" class="category-tag">
+                        <%= cat.name %>
+                      </a>
+                    <% }); %>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <!-- No Posts -->
+    <div class="no-posts">
+      <p><%= __('no_posts') %></p>
+    </div>
+  <% } %>
+</div>
+
+</content>
+</invoke>

@@ -1,0 +1,95 @@
+<%
+const config = theme;
+const site_config = config;
+%>
+
+<!-- Meta Tags -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<!-- Title -->
+<title>
+  <% if (page.title) { %>
+    <%= page.title %> - <%= config.title %>
+  <% } else { %>
+    <%= config.title %>
+  <% } %>
+</title>
+
+<!-- Description -->
+<meta name="description" content="<%= page.description || config.description || '' %>">
+
+<!-- Keywords -->
+<% if (page.tags && page.tags.length > 0) { %>
+  <meta name="keywords" content="<% page.tags.forEach((tag, idx) => { %><%= tag.name %><% if (idx < page.tags.length - 1) { %>, <% } %><% }); %>">
+<% } %>
+
+<!-- Author -->
+<meta name="author" content="<%= config.author %>">
+
+<!-- Theme Color -->
+<meta name="theme-color" content="<%= config.style?.primary_color || '#0066cc' %>">
+
+<!-- Favicon -->
+<link rel="icon" href="<%= url_for('/favicon.ico') %>">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="<%= url_for('/css/main.css') %>">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Code Highlight -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/atom-one-light.min.css">
+
+<!-- Theme Initialization Script (prevents FOUC) -->
+<script>
+  (function() {
+    const STORAGE_KEY = 'theme-preference';
+    const THEME_ATTRIBUTE = 'data-theme';
+    
+    function getSystemPreference() {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        return 'light';
+      }
+      return null;
+    }
+    
+    function initTheme() {
+      const html = document.documentElement;
+      
+      // Add no-transition class to prevent FOUC
+      html.classList.add('no-transition');
+      
+      const savedTheme = localStorage.getItem(STORAGE_KEY);
+      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+        html.setAttribute(THEME_ATTRIBUTE, savedTheme);
+      } else {
+        const systemPreference = getSystemPreference();
+        if (systemPreference) {
+          html.setAttribute(THEME_ATTRIBUTE, systemPreference);
+        } else {
+          html.setAttribute(THEME_ATTRIBUTE, 'light');
+        }
+      }
+      
+      // Remove no-transition class after a brief delay
+      setTimeout(function() {
+        html.classList.remove('no-transition');
+      }, 10);
+    }
+    
+    initTheme();
+  })();
+</script>
+
+<!-- Custom Inject -->
+<% if (config.inject?.head) { %>
+  <%- config.inject.head %>
+<% } %>
