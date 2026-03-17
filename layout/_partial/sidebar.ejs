@@ -1,0 +1,56 @@
+<%
+const config = theme;
+%>
+
+<aside class="sidebar">
+  <!-- Widget: About -->
+  <div class="widget widget-about">
+    <h3 class="widget-title"><%= __('about') %></h3>
+    <div class="widget-content">
+      <p><%= config.description %></p>
+    </div>
+  </div>
+  
+  <!-- Widget: Recent Posts -->
+  <div class="widget widget-recent-posts">
+    <h3 class="widget-title"><%= __('recent_posts') %></h3>
+    <ul class="widget-list">
+      <% site.posts.limit(5).each(function(post) { %>
+        <li>
+          <a href="<%= url_for(post.path) %>"><%= post.title %></a>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+  
+  <!-- Widget: Categories -->
+  <% if (site.categories.length > 0) { %>
+    <div class="widget widget-categories">
+      <h3 class="widget-title"><%= __('categories') %></h3>
+      <ul class="widget-list">
+        <% site.categories.forEach(cat => { %>
+          <li>
+            <a href="<%= url_for(cat.path) %>">
+              <%= cat.name %>
+              <span class="count">(<%= cat.length %>)</span>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  
+  <!-- Widget: Tags -->
+  <% if (site.tags.length > 0) { %>
+    <div class="widget widget-tags">
+      <h3 class="widget-title"><%= __('tags') %></h3>
+      <div class="widget-tags-cloud">
+        <% site.tags.forEach(tag => { %>
+          <a href="<%= url_for(tag.path) %>" class="tag-cloud-item" style="font-size: <%= 12 + (tag.length / site.tags.reduce((max, t) => Math.max(max, t.length), 0)) * 8 %>px">
+            <%= tag.name %>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+</aside>

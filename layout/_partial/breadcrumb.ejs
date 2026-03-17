@@ -1,0 +1,83 @@
+<%
+const config = theme;
+
+// Generate breadcrumb items
+const breadcrumbs = [];
+
+// Home
+breadcrumbs.push({
+  name: __('home'),
+  path: '/'
+});
+
+// Current page
+if (page.type === 'post') {
+  // For posts: Home > Category > Post Title
+  if (page.categories && page.categories.length > 0) {
+    const category = page.categories.data[0];
+    breadcrumbs.push({
+      name: category.name,
+      path: url_for(category.path)
+    });
+  }
+  breadcrumbs.push({
+    name: page.title,
+    path: null
+  });
+} else if (page.type === 'page') {
+  // For pages: Home > Page Title
+  breadcrumbs.push({
+    name: page.title,
+    path: null
+  });
+} else if (page.type === 'archive') {
+  // For archives: Home > Archives
+  breadcrumbs.push({
+    name: __('archives'),
+    path: null
+  });
+} else if (page.type === 'category') {
+  // For categories: Home > Categories > Category Name
+  breadcrumbs.push({
+    name: __('categories'),
+    path: url_for('/categories/')
+  });
+  breadcrumbs.push({
+    name: page.category,
+    path: null
+  });
+} else if (page.type === 'tag') {
+  // For tags: Home > Tags > Tag Name
+  breadcrumbs.push({
+    name: __('tags'),
+    path: url_for('/tags/')
+  });
+  breadcrumbs.push({
+    name: page.tag,
+    path: null
+  });
+}
+%>
+
+<% if (breadcrumbs.length > 1) { %>
+  <nav class="breadcrumb" aria-label="<%= __('breadcrumb') %>">
+    <ol class="breadcrumb-list">
+      <% breadcrumbs.forEach((item, index) => { %>
+        <li class="breadcrumb-item">
+          <% if (item.path) { %>
+            <a href="<%= item.path %>" class="breadcrumb-link">
+              <%= item.name %>
+            </a>
+          <% } else { %>
+            <span class="breadcrumb-current">
+              <%= item.name %>
+            </span>
+          <% } %>
+          <% if (index < breadcrumbs.length - 1) { %>
+            <span class="breadcrumb-separator">/</span>
+          <% } %>
+        </li>
+      <% }); %>
+    </ol>
+  </nav>
+<% } %>
