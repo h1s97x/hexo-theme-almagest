@@ -1,0 +1,477 @@
+// Hexo Theme Almagest - Base Styles
+// =================================
+
+// ============================================
+// CSS Reset and Normalization
+// ============================================
+
+*
+*::before
+*::after
+  box-sizing: border-box
+
+html
+  font-size: $font-size-base
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+body
+  margin: 0
+  padding: 0
+  font-family: $font-family-base
+  font-size: $font-size-base
+  font-weight: $font-weight-normal
+  line-height: $line-height-normal
+  color: $light-text-primary
+  background-color: $light-bg-primary
+  transition: background-color $transition-base, color $transition-base
+
+// Dark theme support
+body.dark-theme
+  color: $dark-text-primary
+  background-color: $dark-bg-primary
+
+// ============================================
+// Typography - Headings
+// ============================================
+
+h1
+h2
+h3
+h4
+h5
+h6
+  margin: $margin-lg 0 $margin-md 0
+  font-family: $font-family-heading
+  font-weight: $font-weight-bold
+  line-height: $line-height-tight
+  color: $light-text-primary
+
+body.dark-theme
+  h1
+  h2
+  h3
+  h4
+  h5
+  h6
+    color: $dark-text-primary
+
+h1
+  font-size: $font-size-4xl
+  margin-top: $margin-2xl
+
+h2
+  font-size: $font-size-3xl
+  margin-top: $margin-xl
+
+h3
+  font-size: $font-size-2xl
+  margin-top: $margin-lg
+
+h4
+  font-size: $font-size-xl
+  margin-top: $margin-lg
+
+h5
+  font-size: $font-size-lg
+  margin-top: $margin-md
+
+h6
+  font-size: $font-size-base
+  margin-top: $margin-md
+
+// ============================================
+// Typography - Paragraphs and Text
+// ============================================
+
+p
+  margin: $margin-md 0
+  line-height: $line-height-relaxed
+
+small
+  font-size: $font-size-sm
+  color: $light-text-secondary
+
+body.dark-theme
+  small
+    color: $dark-text-secondary
+
+strong
+b
+  font-weight: $font-weight-bold
+
+em
+i
+  font-style: italic
+
+// ============================================
+// Typography - Links
+// ============================================
+
+a
+  color: $primary-color
+  text-decoration: none
+  transition: color $transition-base
+
+a:hover
+  color: $primary-light
+  text-decoration: underline
+
+a:active
+  color: $primary-dark
+
+body.dark-theme
+  a
+    color: $primary-light
+
+  a:hover
+    color: $primary-color
+
+// ============================================
+// Typography - Lists
+// ============================================
+
+ul
+ol
+  margin: $margin-md 0
+  padding-left: $padding-lg
+  line-height: $line-height-relaxed
+
+li
+  margin: $margin-sm 0
+
+ul ul
+ul ol
+ol ul
+ol ol
+  margin: $margin-sm 0
+
+dl
+  margin: $margin-md 0
+
+dt
+  font-weight: $font-weight-bold
+  margin-top: $margin-md
+
+dd
+  margin-left: $margin-lg
+  margin-bottom: $margin-sm
+
+// ============================================
+// Typography - Code
+// ============================================
+
+code
+  font-family: $font-family-code
+  font-size: 0.9em
+  color: $code-text
+  background-color: $code-bg
+  padding: 2px 6px
+  border-radius: $border-radius-sm
+
+body.dark-theme
+  code
+    background-color: $dark-bg-secondary
+    color: $dark-text-primary
+
+pre
+  margin: $margin-md 0
+  padding: $padding-lg
+  background-color: $code-bg
+  border-radius: $border-radius-md
+  overflow-x: auto
+  line-height: $line-height-normal
+
+body.dark-theme
+  pre
+    background-color: $dark-bg-secondary
+
+pre code
+  padding: 0
+  background-color: transparent
+  color: inherit
+
+// ============================================
+// Typography - Blockquotes
+// ============================================
+
+blockquote
+  margin: $margin-lg 0
+  padding: $padding-md $padding-lg
+  border-left: 4px solid $primary-color
+  background-color: $light-bg-secondary
+  color: $light-text-secondary
+
+body.dark-theme
+  blockquote
+    background-color: $dark-bg-secondary
+    color: $dark-text-secondary
+    border-left-color: $primary-light
+
+blockquote p
+  margin: 0
+
+blockquote p + p
+  margin-top: $margin-md
+
+// ============================================
+// Typography - Horizontal Rule
+// ============================================
+
+hr
+  margin: $margin-xl 0
+  border: none
+  border-top: 1px solid $light-border
+  height: 0
+
+body.dark-theme
+  hr
+    border-top-color: $dark-border
+
+// ============================================
+// Typography - Abbreviation
+// ============================================
+
+abbr[title]
+  border-bottom: 1px dotted $light-border
+  cursor: help
+  text-decoration: none
+
+body.dark-theme
+  abbr[title]
+    border-bottom-color: $dark-border
+
+// ============================================
+// Typography - Mark
+// ============================================
+
+mark
+  background-color: #fff3cd
+  padding: 2px 4px
+  border-radius: $border-radius-sm
+
+// ============================================
+// Typography - Subscript and Superscript
+// ============================================
+
+sub
+sup
+  font-size: 0.75em
+  line-height: 0
+  position: relative
+  vertical-align: baseline
+
+sup
+  top: -0.5em
+
+sub
+  bottom: -0.25em
+
+// ============================================
+// Global Elements
+// ============================================
+
+img
+  max-width: 100%
+  height: auto
+  display: block
+
+figure
+  margin: $margin-lg 0
+
+figcaption
+  font-size: $font-size-sm
+  color: $light-text-secondary
+  margin-top: $margin-sm
+
+body.dark-theme
+  figcaption
+    color: $dark-text-secondary
+
+// ============================================
+// Form Elements
+// ============================================
+
+button
+input
+select
+textarea
+  font-family: inherit
+  font-size: inherit
+  line-height: inherit
+
+button
+  cursor: pointer
+  border: none
+  background: none
+  padding: 0
+
+input
+select
+textarea
+  border: 1px solid $light-border
+  border-radius: $border-radius-md
+  padding: $padding-sm $padding-md
+  font-size: $font-size-base
+  color: $light-text-primary
+  background-color: $light-bg-primary
+  transition: border-color $transition-base, background-color $transition-base
+
+body.dark-theme
+  input
+  select
+  textarea
+    border-color: $dark-border
+    background-color: $dark-bg-secondary
+    color: $dark-text-primary
+
+input:focus
+select:focus
+textarea:focus
+  outline: none
+  border-color: $primary-color
+  box-shadow: 0 0 0 3px rgba($primary-color, 0.1)
+
+textarea
+  resize: vertical
+  min-height: 100px
+
+// ============================================
+// Table Elements
+// ============================================
+
+table
+  width: 100%
+  border-collapse: collapse
+  margin: $margin-lg 0
+
+thead
+  background-color: $light-bg-secondary
+
+body.dark-theme
+  thead
+    background-color: $dark-bg-secondary
+
+th
+td
+  padding: $padding-md
+  text-align: left
+  border-bottom: 1px solid $light-border
+
+body.dark-theme
+  th
+  td
+    border-bottom-color: $dark-border
+
+th
+  font-weight: $font-weight-bold
+  color: $light-text-primary
+
+body.dark-theme
+  th
+    color: $dark-text-primary
+
+tbody tr:hover
+  background-color: $light-bg-secondary
+
+body.dark-theme
+  tbody tr:hover
+    background-color: $dark-bg-secondary
+
+// ============================================
+// Utility Classes
+// ============================================
+
+// Disable transitions during theme initialization
+.no-transition
+  *
+  *::before
+  *::after
+    transition: none !important
+
+.text-center
+  text-align: center
+
+.text-left
+  text-align: left
+
+.text-right
+  text-align: right
+
+.text-justify
+  text-align: justify
+
+.text-muted
+  color: $light-text-secondary
+
+body.dark-theme
+  .text-muted
+    color: $dark-text-secondary
+
+.text-primary
+  color: $primary-color
+
+.text-success
+  color: $success-color
+
+.text-warning
+  color: $warning-color
+
+.text-danger
+  color: $danger-color
+
+.text-info
+  color: $info-color
+
+.font-weight-light
+  font-weight: $font-weight-light
+
+.font-weight-normal
+  font-weight: $font-weight-normal
+
+.font-weight-medium
+  font-weight: $font-weight-medium
+
+.font-weight-semibold
+  font-weight: $font-weight-semibold
+
+.font-weight-bold
+  font-weight: $font-weight-bold
+
+.font-weight-extrabold
+  font-weight: $font-weight-extrabold
+
+.line-height-tight
+  line-height: $line-height-tight
+
+.line-height-normal
+  line-height: $line-height-normal
+
+.line-height-relaxed
+  line-height: $line-height-relaxed
+
+.line-height-loose
+  line-height: $line-height-loose
+
+.no-margin
+  margin: 0
+
+.no-padding
+  padding: 0
+
+.clearfix
+  &::after
+    content: ''
+    display: table
+    clear: both
+
+.sr-only
+  position: absolute
+  width: 1px
+  height: 1px
+  padding: 0
+  margin: -1px
+  overflow: hidden
+  clip: rect(0, 0, 0, 0)
+  white-space: nowrap
+  border-width: 0

@@ -1,0 +1,221 @@
+// ============================================================
+// Light Theme
+// ============================================================
+
+:root,
+[data-theme="light"]
+  // Background Colors
+  --color-bg: #ffffff
+  --color-bg-secondary: #f8f9fa
+  --color-hover-bg: #f0f0f0
+  
+  // Text Colors
+  --color-text: #1a1a1a
+  --color-text-secondary: #666666
+  --color-text-tertiary: #999999
+  
+  // Border Colors
+  --color-border: #e0e0e0
+  --color-border-light: #f0f0f0
+  
+  // Code Colors
+  --color-code-bg: #f5f5f5
+  --color-code-text: #333333
+  --color-code-keyword: #0066cc
+  --color-code-string: #28a745
+  --color-code-comment: #999999
+  --color-code-number: #ff6600
+  
+  // Table Colors
+  --color-table-header-bg: #f8f9fa
+  --color-table-row-hover: #f5f5f5
+  --color-table-border: #e0e0e0
+  
+  // Input Colors
+  --color-input-bg: #ffffff
+  --color-input-border: #e0e0e0
+  --color-input-focus: #0066cc
+  
+  // Tag Colors
+  --color-tag-bg: #e8f0ff
+  --color-tag-text: #0066cc
+  
+  // Link Colors
+  --color-link: #0066cc
+  --color-link-hover: #3385dd
+  --color-link-active: #004499
+  
+  // Button Colors
+  --color-button-primary-bg: #0066cc
+  --color-button-primary-text: #ffffff
+  --color-button-primary-hover: #3385dd
+  
+  // Alert Colors
+  --color-alert-success-bg: #d4edda
+  --color-alert-success-text: #155724
+  --color-alert-warning-bg: #fff3cd
+  --color-alert-warning-text: #856404
+  --color-alert-danger-bg: #f8d7da
+  --color-alert-danger-text: #721c24
+  --color-alert-info-bg: #d1ecf1
+  --color-alert-info-text: #0c5460
+  
+  // Shadow Colors
+  --color-shadow: rgba(0, 0, 0, 0.1)
+  --color-shadow-dark: rgba(0, 0, 0, 0.15)
+
+// ============================================================
+// Light Theme Specific Styles
+// ============================================================
+
+@media (prefers-color-scheme: light)
+  :root:not([data-theme])
+    // Background Colors
+    --color-bg: #ffffff
+    --color-bg-secondary: #f8f9fa
+    --color-hover-bg: #f0f0f0
+    
+    // Text Colors
+    --color-text: #1a1a1a
+    --color-text-secondary: #666666
+    --color-text-tertiary: #999999
+    
+    // Border Colors
+    --color-border: #e0e0e0
+    --color-border-light: #f0f0f0
+    
+    // Code Colors
+    --color-code-bg: #f5f5f5
+    --color-code-text: #333333
+    --color-code-keyword: #0066cc
+    --color-code-string: #28a745
+    --color-code-comment: #999999
+    --color-code-number: #ff6600
+    
+    // Table Colors
+    --color-table-header-bg: #f8f9fa
+    --color-table-row-hover: #f5f5f5
+    --color-table-border: #e0e0e0
+    
+    // Input Colors
+    --color-input-bg: #ffffff
+    --color-input-border: #e0e0e0
+    --color-input-focus: #0066cc
+    
+    // Tag Colors
+    --color-tag-bg: #e8f0ff
+    --color-tag-text: #0066cc
+    
+    // Link Colors
+    --color-link: #0066cc
+    --color-link-hover: #3385dd
+    --color-link-active: #004499
+    
+    // Button Colors
+    --color-button-primary-bg: #0066cc
+    --color-button-primary-text: #ffffff
+    --color-button-primary-hover: #3385dd
+    
+    // Alert Colors
+    --color-alert-success-bg: #d4edda
+    --color-alert-success-text: #155724
+    --color-alert-warning-bg: #fff3cd
+    --color-alert-warning-text: #856404
+    --color-alert-danger-bg: #f8d7da
+    --color-alert-danger-text: #721c24
+    --color-alert-info-bg: #d1ecf1
+    --color-alert-info-text: #0c5460
+    
+    // Shadow Colors
+    --color-shadow: rgba(0, 0, 0, 0.1)
+    --color-shadow-dark: rgba(0, 0, 0, 0.15)
+
+// ============================================================
+// Light Theme Component Styles
+// ============================================================
+
+[data-theme="light"]
+  // Links
+  a
+    color: var(--color-link)
+    
+    &:hover
+      color: var(--color-link-hover)
+    
+    &:active
+      color: var(--color-link-active)
+  
+  // Buttons
+  button
+  .button
+    background-color: var(--color-button-primary-bg)
+    color: var(--color-button-primary-text)
+    
+    &:hover
+      background-color: var(--color-button-primary-hover)
+  
+  // Code blocks
+  code
+  pre
+    background-color: var(--color-code-bg)
+    color: var(--color-code-text)
+  
+  // Tables
+  table
+    border-color: var(--color-table-border)
+    
+    thead
+      background-color: var(--color-table-header-bg)
+    
+    tbody tr:hover
+      background-color: var(--color-table-row-hover)
+  
+  // Inputs
+  input
+  select
+  textarea
+    background-color: var(--color-input-bg)
+    border-color: var(--color-input-border)
+    color: var(--color-text)
+    
+    &:focus
+      border-color: var(--color-input-focus)
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1)
+  
+  // Tags
+  .tag
+    background-color: var(--color-tag-bg)
+    color: var(--color-tag-text)
+  
+  // Alerts
+  .alert
+    &.alert-success
+      background-color: var(--color-alert-success-bg)
+      color: var(--color-alert-success-text)
+    
+    &.alert-warning
+      background-color: var(--color-alert-warning-bg)
+      color: var(--color-alert-warning-text)
+    
+    &.alert-danger
+      background-color: var(--color-alert-danger-bg)
+      color: var(--color-alert-danger-text)
+    
+    &.alert-info
+      background-color: var(--color-alert-info-bg)
+      color: var(--color-alert-info-text)
+  
+  // Blockquotes
+  blockquote
+    background-color: var(--color-bg-secondary)
+    border-left-color: var(--color-link)
+    color: var(--color-text-secondary)
+  
+  // Cards
+  .card
+    background-color: var(--color-bg)
+    border-color: var(--color-border)
+    box-shadow: 0 1px 3px var(--color-shadow)
+
+</content>
+</invoke>

@@ -1,0 +1,346 @@
+// ============================================================
+// Layout Styles
+// ============================================================
+
+// ============================================================
+// App Container
+// ============================================================
+
+.app-container
+  display flex
+  flex-direction column
+  min-height 100vh
+  background-color var(--color-bg)
+  color var(--color-text)
+  transition background-color $transition-base, color $transition-base
+
+// ============================================================
+// Header
+// ============================================================
+
+header
+  background-color var(--color-bg)
+  border-bottom 1px solid var(--color-border)
+  position sticky
+  top 0
+  z-index $z-index-sticky
+  transition background-color $transition-base, border-color $transition-base
+
+// ============================================================
+// Main Content
+// ============================================================
+
+.main-content
+  flex 1
+  padding $space-2xl 0
+  background-color var(--color-bg)
+  transition background-color $transition-base
+
+// ============================================================
+// Container
+// ============================================================
+
+.container
+  width 100%
+  max-width $container-width-2xl
+  margin 0 auto
+  padding 0 $space-lg
+
+// ============================================================
+// Content Wrapper
+// ============================================================
+// Breakpoint Strategy:
+// - Mobile (< 768px): Single column, no sidebar
+// - Tablet (768px - 1024px): Two column with sidebar (280px)
+// - Desktop (> 1024px): Two column with sidebar (300px)
+// ============================================================
+
+.content-wrapper
+  display grid
+  grid-template-columns 1fr
+  gap $space-2xl
+  
+  // Mobile layout - single column
+  @media (max-width: ($breakpoint-md - 1px))
+    grid-template-columns 1fr
+  
+  // Tablet and desktop layout - with sidebar
+  @media (min-width: $breakpoint-md)
+    grid-template-columns 1fr 280px
+    
+    @media (min-width: $breakpoint-lg)
+      grid-template-columns 1fr 300px
+  
+  &.with-sidebar
+    @media (max-width: ($breakpoint-md - 1px))
+      grid-template-columns 1fr
+    
+    @media (min-width: $breakpoint-md)
+      grid-template-columns 1fr 280px
+      
+      @media (min-width: $breakpoint-lg)
+        grid-template-columns 1fr 300px
+    
+    &.no-sidebar
+      grid-template-columns 1fr
+
+// ============================================================
+// Article Container
+// ============================================================
+
+.article-container
+  min-width 0
+  background-color var(--color-bg)
+
+// ============================================================
+// Sidebar
+// ============================================================
+// Visibility Strategy:
+// - Mobile (< 768px): Hidden
+// - Tablet (768px - 1024px): Visible
+// - Desktop (> 1024px): Visible
+// ============================================================
+
+.sidebar
+  background-color var(--color-bg)
+  
+  // Hidden on mobile
+  @media (max-width: ($breakpoint-md - 1px))
+    display none
+  
+  // Visible on tablet and desktop
+  @media (min-width: $breakpoint-md)
+    display flex
+
+// ============================================================
+// Page Header
+// ============================================================
+
+.page-header
+  margin-bottom $space-3xl
+  text-align center
+  padding $space-2xl 0
+  
+  .page-title
+    margin 0 0 $space-sm 0
+    font-size $font-size-4xl
+    font-weight $font-weight-bold
+    color var(--color-text)
+    transition color $transition-base
+  
+  .page-subtitle
+    margin 0
+    font-size $font-size-lg
+    color var(--color-text-secondary)
+    transition color $transition-base
+
+// ============================================================
+// Posts Container
+// ============================================================
+
+.posts-container
+  display flex
+  flex-direction column
+  gap $space-2xl
+
+// ============================================================
+// Post Card
+// ============================================================
+
+.post-card
+  background-color var(--color-bg-secondary)
+  border 1px solid var(--color-border)
+  border-radius $border-radius-lg
+  padding $space-lg
+  transition background-color $transition-base, border-color $transition-base, box-shadow $transition-base
+  
+  &:hover
+    background-color var(--color-hover-bg)
+    box-shadow $shadow-md
+
+// ============================================================
+// No Posts Message
+// ============================================================
+
+.no-posts
+  text-align center
+  padding $space-3xl $space-md
+  background-color var(--color-bg-secondary)
+  border-radius $border-radius-lg
+  border 1px solid var(--color-border)
+  transition background-color $transition-base, border-color $transition-base
+  
+  p
+    margin 0
+    color var(--color-text-secondary)
+    font-size $font-size-lg
+    transition color $transition-base
+
+// ============================================================
+// Footer
+// ============================================================
+
+footer
+  background-color var(--color-bg-secondary)
+  border-top 1px solid var(--color-border)
+  padding $space-2xl 0
+  margin-top $space-3xl
+  transition background-color $transition-base, border-color $transition-base
+
+// ============================================================
+// Back to Top Button
+// ============================================================
+
+.back-to-top
+  position fixed
+  bottom $space-lg
+  right $space-lg
+  width 48px
+  height 48px
+  border-radius 50%
+  background-color $primary-color
+  color white
+  border none
+  cursor pointer
+  display none
+  align-items center
+  justify-content center
+  box-shadow $shadow-lg
+  smooth-transition()
+  z-index $z-index-fixed
+  
+  &.show
+    display flex
+  
+  &:hover
+    background-color $primary-dark
+    box-shadow $shadow-xl
+    transform translateY(-2px)
+  
+  &:active
+    transform translateY(0)
+  
+  svg
+    width 24px
+    height 24px
+
+// ============================================================
+// Grid Layout
+// ============================================================
+
+.grid
+  display grid
+  gap $space-lg
+  
+  &.grid-2
+    grid-template-columns repeat(2, 1fr)
+    
+    @media (max-width: $breakpoint-md)
+      grid-template-columns 1fr
+  
+  &.grid-3
+    grid-template-columns repeat(3, 1fr)
+    
+    @media (max-width: $breakpoint-lg)
+      grid-template-columns repeat(2, 1fr)
+    
+    @media (max-width: $breakpoint-md)
+      grid-template-columns 1fr
+  
+  &.grid-4
+    grid-template-columns repeat(4, 1fr)
+    
+    @media (max-width: $breakpoint-xl)
+      grid-template-columns repeat(3, 1fr)
+    
+    @media (max-width: $breakpoint-lg)
+      grid-template-columns repeat(2, 1fr)
+    
+    @media (max-width: $breakpoint-md)
+      grid-template-columns 1fr
+
+// ============================================================
+// Flex Layout
+// ============================================================
+
+.flex
+  display flex
+  
+  &.flex-center
+    align-items center
+    justify-content center
+  
+  &.flex-between
+    align-items center
+    justify-content space-between
+  
+  &.flex-column
+    flex-direction column
+  
+  &.flex-wrap
+    flex-wrap wrap
+  
+  &.gap-sm
+    gap $space-sm
+  
+  &.gap-md
+    gap $space-md
+  
+  &.gap-lg
+    gap $space-lg
+
+// ============================================================
+// Spacing Utilities
+// ============================================================
+
+.p-xs
+  padding $space-xs
+
+.p-sm
+  padding $space-sm
+
+.p-md
+  padding $space-md
+
+.p-lg
+  padding $space-lg
+
+.p-xl
+  padding $space-xl
+
+.m-xs
+  margin $space-xs
+
+.m-sm
+  margin $space-sm
+
+.m-md
+  margin $space-md
+
+.m-lg
+  margin $space-lg
+
+.m-xl
+  margin $space-xl
+
+// ============================================================
+// Display Utilities
+// ============================================================
+
+.hidden
+  display none
+
+.visible
+  display block
+
+.inline
+  display inline
+
+.inline-block
+  display inline-block
+
+.block
+  display block
+
+</content>
+</invoke>
