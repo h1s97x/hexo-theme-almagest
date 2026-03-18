@@ -1,0 +1,17 @@
+<% if (site.categories.length > 0) { %>
+  <div class="widget categories-widget">
+    <h3 class="widget-title"><%= __('categories') %></h3>
+    <div class="widget-content">
+      <ul class="categories-list">
+        <% site.categories.forEach(function(category) { %>
+          <li class="category-item">
+            <a href="<%- config.root %>categories/<%= category.name %>/" class="category-link">
+              <span class="category-name"><%= category.name %></span>
+              <span class="category-count">(<%= category.posts.length %>)</span>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+<% } %>

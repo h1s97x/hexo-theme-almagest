@@ -1,0 +1,49 @@
+<%- include('_partial/head') %>
+<body>
+  <%- include('_partial/header') %>
+  
+  <main class="main-content">
+    <div class="container">
+      <div class="page-header">
+        <h1><%= __('categories') %></h1>
+        <p class="page-subtitle"><%= __('categories_desc') %></p>
+      </div>
+
+      <div class="categories-container">
+        <% if (site.categories.length > 0) { %>
+          <div class="categories-list">
+            <% site.categories.forEach(function(category) { %>
+              <div class="category-item">
+                <h3 class="category-title">
+                  <a href="<%- config.root %>categories/<%= category.name %>/">
+                    <%= category.name %>
+                  </a>
+                </h3>
+                <span class="category-count"><%= category.posts.length %></span>
+                <div class="category-posts">
+                  <% category.posts.forEach(function(post) { %>
+                    <div class="post-item">
+                      <a href="<%- post.path %>" class="post-link">
+                        <%= post.title %>
+                      </a>
+                      <span class="post-date"><%= date(post.date, 'YYYY-MM-DD') %></span>
+                    </div>
+                  <% }); %>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="no-categories">
+            <p><%= __('no_categories') %></p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </main>
+
+  <%- include('_partial/sidebar') %>
+  <%- include('_partial/footer') %>
+  <%- include('_partial/scripts') %>
+</body>
+</html>
