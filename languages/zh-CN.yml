@@ -1,0 +1,125 @@
+# 简体中文语言包
+
+# 导航
+home: 首页
+archives: 归档
+categories: 分类
+tags: 标签
+about: 关于
+
+# 分页
+prev: 上一页
+next: 下一页
+
+# 文章
+read_more: 阅读更多
+updated: 更新于
+posted_on: 发布于
+in: 在
+with_tags: 标签为
+
+# 侧边栏
+recent_posts: 最近文章
+no_posts: 暂无文章
+
+# 评论
+comments: 评论
+
+# 目录
+toc: 目录
+
+# 社交
+social: 社交链接
+
+# 页脚
+powered_by: 由以下技术驱动
+theme: 主题
+
+# 搜索
+search: 搜索
+search_results: 搜索结果
+search_no_results: 未找到结果
+search_placeholder: 搜索文章...
+search_desc: 搜索网站内容
+
+# 分类
+categories_desc: 按分类浏览文章
+no_categories: 暂无分类
+
+# 标签
+tags_desc: 按标签浏览文章
+all_tags: 所有标签
+no_tags: 暂无标签
+
+# 归档页面
+archive: 归档
+archive_description: 浏览所有文章
+
+# 404 错误页面
+page_not_found: 页面未找到
+page_not_found_description: 抱歉，您访问的页面不存在或已被删除。
+back_to_home: 返回首页
+suggestions: 建议
+check_url: 检查 URL 是否正确
+try_search: 尝试使用搜索功能
+visit_homepage: 访问首页
+browse_menu: 浏览菜单
+
+# 图片
+image_loading: 加载中...
+image_error: 图片加载失败
+
+# 代码
+copy_code: 复制代码
+code_copied: 已复制
+
+# Wiki 系统
+wiki:
+  documentation: 文档
+  no_projects: 暂无项目
+  edit_on_github: 在 GitHub 上编辑
+  related_pages: 相关页面
+  back_to_parent: 返回上级
+
+# Topic 系统
+topic:
+  series: 系列文章
+  no_topics: 暂无专栏
+  view_all: 查看全部
+  articles_in_series: 系列文章
+  related_topics: 相关专栏
+
+# Notebooks 系统
+notebooks:
+  my_notebooks: 我的笔记本
+  no_notebooks: 暂无笔记本
+  create_first: 创建第一个笔记本
+  recent_notes: 最近笔记
+  notes: 篇笔记
+  view_all: 查看全部
+  new_notebook: 新建笔记本
+
+# 天文功能
+astronomy:
+  symbol: 符号
+  dates: 日期
+  event_type: 事件类型
+  date: 日期
+  visibility: 可见性
+  category: 分类
+  distance: 距离
+  magnitude: 星等
+  learn_more: 了解更多
+  related_articles: 相关文章
+  aries: 白羊座
+  taurus: 金牛座
+  gemini: 双子座
+  cancer: 巨蟹座
+  leo: 狮子座
+  virgo: 处女座
+  libra: 天秤座
+  scorpio: 天蝎座
+  sagittarius: 射手座
+  capricorn: 摩羯座
+  aquarius: 水瓶座
+  pisces: 双鱼座

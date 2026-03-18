@@ -1,0 +1,125 @@
+# English Language Pack
+
+# Navigation
+home: Home
+archives: Archives
+categories: Categories
+tags: Tags
+about: About
+
+# Pagination
+prev: Previous
+next: Next
+
+# Post
+read_more: Read More
+updated: Updated
+posted_on: Posted on
+in: in
+with_tags: with tags
+
+# Sidebar
+recent_posts: Recent Posts
+no_posts: No posts found
+
+# Comments
+comments: Comments
+
+# Table of Contents
+toc: Table of Contents
+
+# Social
+social: Social Links
+
+# Footer
+powered_by: Powered by
+theme: Theme
+
+# Search
+search: Search
+search_results: Search Results
+search_no_results: No results found
+search_placeholder: Search articles...
+search_desc: Search website content
+
+# Categories
+categories_desc: Browse articles by category
+no_categories: No categories found
+
+# Tags
+tags_desc: Browse articles by tag
+all_tags: All Tags
+no_tags: No tags found
+
+# Archive Page
+archive: Archives
+archive_description: Browse all articles
+
+# 404 Error Page
+page_not_found: Page Not Found
+page_not_found_description: Sorry, the page you are looking for does not exist or has been deleted.
+back_to_home: Back to Home
+suggestions: Suggestions
+check_url: Check if the URL is correct
+try_search: Try using the search function
+visit_homepage: Visit homepage
+browse_menu: Browse menu
+
+# Image
+image_loading: Loading...
+image_error: Failed to load image
+
+# Code
+copy_code: Copy Code
+code_copied: Copied
+
+# Wiki System
+wiki:
+  documentation: Documentation
+  no_projects: No projects found
+  edit_on_github: Edit on GitHub
+  related_pages: Related Pages
+  back_to_parent: Back to Parent
+
+# Topic System
+topic:
+  series: Series
+  no_topics: No topics found
+  view_all: View All
+  articles_in_series: Articles in Series
+  related_topics: Related Topics
+
+# Notebooks System
+notebooks:
+  my_notebooks: My Notebooks
+  no_notebooks: No notebooks found
+  create_first: Create Your First Notebook
+  recent_notes: Recent Notes
+  notes: notes
+  view_all: View All
+  new_notebook: New Notebook
+
+# Astronomy Features
+astronomy:
+  symbol: Symbol
+  dates: Dates
+  event_type: Event Type
+  date: Date
+  visibility: Visibility
+  category: Category
+  distance: Distance
+  magnitude: Magnitude
+  learn_more: Learn More
+  related_articles: Related Articles
+  aries: Aries
+  taurus: Taurus
+  gemini: Gemini
+  cancer: Cancer
+  leo: Leo
+  virgo: Virgo
+  libra: Libra
+  scorpio: Scorpio
+  sagittarius: Sagittarius
+  capricorn: Capricorn
+  aquarius: Aquarius
+  pisces: Pisces
