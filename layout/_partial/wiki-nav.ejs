@@ -1,0 +1,55 @@
+<div class="wiki-nav">
+  <div class="wiki-nav-header">
+    <h3><%= __('wiki.documentation') %></h3>
+  </div>
+  
+  <% if (config.theme.wiki && config.theme.wiki.projects) { %>
+    <div class="wiki-projects">
+      <% config.theme.wiki.projects.forEach(project => { %>
+        <div class="wiki-project">
+          <div class="wiki-project-title">
+            <a href="<%= project.path %>"><%= project.name %></a>
+          </div>
+          
+          <% if (project.pages && project.pages.length > 0) { %>
+            <ul class="wiki-project-pages">
+              <% project.pages.forEach(page => { %>
+                <li class="wiki-page-item">
+                  <a href="<%= page.path %>" 
+                     class="<%= page.path === config.url + page.path ? 'active' : '' %>">
+                    <%= page.title %>
+                  </a>
+                  
+                  <% if (page.children && page.children.length > 0) { %>
+                    <ul class="wiki-page-children">
+                      <% page.children.forEach(child => { %>
+                        <li>
+                          <a href="<%= child.path %>" 
+                             class="<%= child.path === config.url + child.path ? 'active' : '' %>">
+                            <%= child.title %>
+                          </a>
+                        </li>
+                      <% }); %>
+                    </ul>
+                  <% } %>
+                </li>
+              <% }); %>
+            </ul>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="wiki-empty">
+      <p><%= __('wiki.no_projects') %></p>
+    </div>
+  <% } %>
+  
+  <div class="wiki-nav-footer">
+    <% if (config.theme.wiki && config.theme.wiki.edit_url) { %>
+      <a href="<%= config.theme.wiki.edit_url %>" class="wiki-edit-link" target="_blank">
+        <%= __('wiki.edit_on_github') %>
+      </a>
+    <% } %>
+  </div>
+</div>
