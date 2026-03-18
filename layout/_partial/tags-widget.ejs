@@ -1,0 +1,24 @@
+<% if (site.tags.length > 0) { %>
+  <div class="widget tags-widget">
+    <h3 class="widget-title"><%= __('tags') %></h3>
+    <div class="widget-content">
+      <div class="tag-cloud-widget">
+        <% 
+          var displayTags = site.tags.slice(0, 20);
+          var maxCount = Math.max.apply(Math, displayTags.map(function(t) { return t.posts.length; }));
+          var minCount = Math.min.apply(Math, displayTags.map(function(t) { return t.posts.length; }));
+        %>
+        <% displayTags.forEach(function(tag) { %>
+          <% 
+            var postCount = tag.posts.length;
+            var size = minCount === maxCount ? 1 : (postCount - minCount) / (maxCount - minCount);
+            var sizeClass = 'tag-size-' + Math.ceil(size * 3);
+          %>
+          <a href="<%- config.root %>tags/<%= tag.name %>/" class="tag-link <%= sizeClass %>" title="<%= tag.name %> (<%= postCount %> posts)">
+            <%= tag.name %>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+<% } %>

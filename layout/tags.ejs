@@ -1,0 +1,67 @@
+<%- include('_partial/head') %>
+<body>
+  <%- include('_partial/header') %>
+  
+  <main class="main-content">
+    <div class="container">
+      <div class="page-header">
+        <h1><%= __('tags') %></h1>
+        <p class="page-subtitle"><%= __('tags_desc') %></p>
+      </div>
+
+      <div class="tags-container">
+        <% if (site.tags.length > 0) { %>
+          <div class="tag-cloud">
+            <% site.tags.forEach(function(tag) { %>
+              <% 
+                var postCount = tag.posts.length;
+                var maxCount = Math.max.apply(Math, site.tags.map(function(t) { return t.posts.length; }));
+                var minCount = Math.min.apply(Math, site.tags.map(function(t) { return t.posts.length; }));
+                var size = minCount === maxCount ? 1 : (postCount - minCount) / (maxCount - minCount);
+                var sizeClass = 'tag-size-' + Math.ceil(size * 5);
+              %>
+              <a href="<%- config.root %>tags/<%= tag.name %>/" class="tag-link <%= sizeClass %>" title="<%= tag.name %> (<%= postCount %> posts)">
+                <%= tag.name %>
+              </a>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="no-tags">
+            <p><%= __('no_tags') %></p>
+          </div>
+        <% } %>
+      </div>
+
+      <% if (site.tags.length > 0) { %>
+        <div class="tags-list">
+          <h2><%= __('all_tags') %></h2>
+          <% site.tags.forEach(function(tag) { %>
+            <div class="tag-section">
+              <h3 class="tag-title">
+                <a href="<%- config.root %>tags/<%= tag.name %>/">
+                  <%= tag.name %>
+                </a>
+              </h3>
+              <span class="tag-count"><%= tag.posts.length %></span>
+              <div class="tag-posts">
+                <% tag.posts.forEach(function(post) { %>
+                  <div class="post-item">
+                    <a href="<%- post.path %>" class="post-link">
+                      <%= post.title %>
+                    </a>
+                    <span class="post-date"><%= date(post.date, 'YYYY-MM-DD') %></span>
+                  </div>
+                <% }); %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('_partial/sidebar') %>
+  <%- include('_partial/footer') %>
+  <%- include('_partial/scripts') %>
+</body>
+</html>
