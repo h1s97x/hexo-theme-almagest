@@ -1,0 +1,39 @@
+<%- include('_partial/head') %>
+<body>
+  <%- include('_partial/header') %>
+  
+  <main class="main-content">
+    <div class="container">
+      <div class="page-header">
+        <h1><%= __('search') %></h1>
+        <p class="page-subtitle"><%= __('search_desc') %></p>
+      </div>
+
+      <div class="search-container">
+        <div class="search-box-wrapper">
+          <%- include('_partial/search-box') %>
+        </div>
+
+        <div id="search-results" class="search-results">
+          <div class="no-results">
+            <p><%= __('search_no_results') %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <%- include('_partial/sidebar') %>
+  <%- include('_partial/footer') %>
+  <%- include('_partial/scripts') %>
+  
+  <script type="application/json" data-search-data>
+    <%- JSON.stringify(site.posts.map(post => ({
+      title: post.title,
+      url: post.path,
+      content: post.content || post.excerpt || '',
+      date: post.date
+    }))) %>
+  </script>
+</body>
+</html>
