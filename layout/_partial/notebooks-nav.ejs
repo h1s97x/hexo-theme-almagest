@@ -1,0 +1,56 @@
+<div class="notebooks-nav">
+  <div class="notebooks-nav-header">
+    <h3><%= __('notebooks.my_notebooks') %></h3>
+  </div>
+  
+  <% if (config.theme.notebooks && config.theme.notebooks.categories) { %>
+    <div class="notebooks-categories">
+      <% Object.entries(config.theme.notebooks.categories).forEach(([key, category]) => { %>
+        <div class="notebooks-category">
+          <div class="notebooks-category-title">
+            <a href="<%= category.path %>" 
+               class="<%= category.path === config.url + category.path ? 'active' : '' %>">
+              <span class="notebooks-category-icon">
+                <% if (category.icon) { %>
+                  <%- category.icon %>
+                <% } else { %>
+                  📓
+                <% } %>
+              </span>
+              <span class="notebooks-category-name"><%= category.name %></span>
+              <% if (category.count) { %>
+                <span class="notebooks-category-count"><%= category.count %></span>
+              <% } %>
+            </a>
+          </div>
+          
+          <% if (category.notebooks && category.notebooks.length > 0) { %>
+            <ul class="notebooks-list">
+              <% category.notebooks.forEach(notebook => { %>
+                <li class="notebooks-item">
+                  <a href="<%= notebook.path %>" 
+                     class="<%= notebook.path === config.url + notebook.path ? 'active' : '' %>">
+                    <%= notebook.title %>
+                  </a>
+                  <% if (notebook.count) { %>
+                    <span class="notebooks-item-count"><%= notebook.count %></span>
+                  <% } %>
+                </li>
+              <% }); %>
+            </ul>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="notebooks-empty">
+      <p><%= __('notebooks.no_notebooks') %></p>
+    </div>
+  <% } %>
+  
+  <div class="notebooks-nav-footer">
+    <a href="<%= config.root %>notebooks/new" class="notebooks-new-btn">
+      <%= __('notebooks.new_notebook') %>
+    </a>
+  </div>
+</div>
