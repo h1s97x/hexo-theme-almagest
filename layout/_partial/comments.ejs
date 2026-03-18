@@ -1,0 +1,25 @@
+<%
+const config = theme;
+const giscus = config.services?.giscus;
+%>
+
+<% if (giscus?.enable) { %>
+  <div class="comments-container">
+    <div id="giscus"></div>
+    <script src="https://giscus.app/client.js"
+      data-repo="<%= giscus.repo %>"
+      data-repo-id="<%= giscus.repo_id %>"
+      data-category="<%= giscus.category %>"
+      data-category-id="<%= giscus.category_id %>"
+      data-mapping="<%= giscus.mapping %>"
+      data-reactions-enabled="<%= giscus.reactions_enabled %>"
+      data-emit-metadata="<%= giscus.emit_metadata %>"
+      data-input-position="<%= giscus.input_position %>"
+      data-theme="<%= giscus.theme %>"
+      data-lang="<%= giscus.lang %>"
+      data-loading="<%= giscus.loading %>"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </div>
+<% } %>
