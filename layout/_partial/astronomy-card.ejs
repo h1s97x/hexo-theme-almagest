@@ -1,0 +1,90 @@
+<div class="astronomy-card">
+  <div class="astronomy-card-header">
+    <% if (card.icon) { %>
+      <div class="astronomy-card-icon"><%= card.icon %></div>
+    <% } %>
+    <h3 class="astronomy-card-title"><%= card.title %></h3>
+  </div>
+  
+  <div class="astronomy-card-body">
+    <% if (card.type === 'constellation') { %>
+      <div class="constellation-info">
+        <% if (card.symbol) { %>
+          <p><strong><%= __('astronomy.symbol') %>:</strong> <%= card.symbol %></p>
+        <% } %>
+        <% if (card.date_start && card.date_end) { %>
+          <p><strong><%= __('astronomy.dates') %>:</strong> <%= card.date_start %> - <%= card.date_end %></p>
+        <% } %>
+        <% if (card.description) { %>
+          <p><%= card.description %></p>
+        <% } %>
+        <% if (card.image) { %>
+          <img src="<%= card.image %>" alt="<%= card.title %>" class="constellation-image">
+        <% } %>
+      </div>
+    <% } else if (card.type === 'event') { %>
+      <div class="event-info">
+        <% if (card.event_type) { %>
+          <p><strong><%= __('astronomy.event_type') %>:</strong> <%= card.event_type %></p>
+        <% } %>
+        <% if (card.date) { %>
+          <p><strong><%= __('astronomy.date') %>:</strong> <%= card.date %></p>
+        <% } %>
+        <% if (card.visibility) { %>
+          <p><strong><%= __('astronomy.visibility') %>:</strong> <%= card.visibility %></p>
+        <% } %>
+        <% if (card.description) { %>
+          <p><%= card.description %></p>
+        <% } %>
+        <% if (card.image) { %>
+          <img src="<%= card.image %>" alt="<%= card.title %>" class="event-image">
+        <% } %>
+      </div>
+    <% } else if (card.type === 'celestial_body') { %>
+      <div class="celestial-body-info">
+        <% if (card.category) { %>
+          <p><strong><%= __('astronomy.category') %>:</strong> <%= card.category %></p>
+        <% } %>
+        <% if (card.distance) { %>
+          <p><strong><%= __('astronomy.distance') %>:</strong> <%= card.distance %></p>
+        <% } %>
+        <% if (card.magnitude) { %>
+          <p><strong><%= __('astronomy.magnitude') %>:</strong> <%= card.magnitude %></p>
+        <% } %>
+        <% if (card.description) { %>
+          <p><%= card.description %></p>
+        <% } %>
+        <% if (card.image) { %>
+          <img src="<%= card.image %>" alt="<%= card.title %>" class="celestial-body-image">
+        <% } %>
+      </div>
+    <% } else { %>
+      <% if (card.description) { %>
+        <p><%= card.description %></p>
+      <% } %>
+      <% if (card.content) { %>
+        <%- card.content %>
+      <% } %>
+    <% } %>
+  </div>
+  
+  <% if (card.link || card.articles) { %>
+    <div class="astronomy-card-footer">
+      <% if (card.link) { %>
+        <a href="<%= card.link %>" class="card-link">
+          <%= __('astronomy.learn_more') %>
+        </a>
+      <% } %>
+      <% if (card.articles && card.articles.length > 0) { %>
+        <div class="card-articles">
+          <strong><%= __('astronomy.related_articles') %>:</strong>
+          <ul>
+            <% card.articles.forEach(article => { %>
+              <li><a href="<%= article.path %>"><%= article.title %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>
