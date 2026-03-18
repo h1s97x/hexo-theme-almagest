@@ -1,0 +1,46 @@
+<div class="topic-nav">
+  <div class="topic-nav-header">
+    <h3><%= __('topic.series') %></h3>
+  </div>
+  
+  <% if (config.theme.topics && config.theme.topics.length > 0) { %>
+    <div class="topic-list">
+      <% config.theme.topics.forEach(topic => { %>
+        <div class="topic-item">
+          <a href="<%= topic.path %>" 
+             class="topic-item-link <%= topic.path === config.url + topic.path ? 'active' : '' %>">
+            <span class="topic-item-name"><%= topic.name %></span>
+            <% if (topic.count) { %>
+              <span class="topic-item-count"><%= topic.count %></span>
+            <% } %>
+          </a>
+          
+          <% if (topic.subtopics && topic.subtopics.length > 0) { %>
+            <ul class="topic-subtopics">
+              <% topic.subtopics.forEach(subtopic => { %>
+                <li>
+                  <a href="<%= subtopic.path %>" 
+                     class="<%= subtopic.path === config.url + subtopic.path ? 'active' : '' %>">
+                    <%= subtopic.name %>
+                  </a>
+                </li>
+              <% }); %>
+            </ul>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="topic-empty">
+      <p><%= __('topic.no_topics') %></p>
+    </div>
+  <% } %>
+  
+  <div class="topic-nav-footer">
+    <% if (config.theme.topics_archive_url) { %>
+      <a href="<%= config.theme.topics_archive_url %>" class="topic-archive-link">
+        <%= __('topic.view_all') %>
+      </a>
+    <% } %>
+  </div>
+</div>
