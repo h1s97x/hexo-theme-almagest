@@ -1,0 +1,200 @@
+<div class="observation-guide">
+  <div class="guide-header">
+    <h3><%= __('astronomy.observation_guide') || 'Observation Guide' %></h3>
+    <% if (page.location) { %>
+      <div class="guide-location">
+        <span class="location-icon">📍</span>
+        <span class="location-name"><%= page.location %></span>
+      </div>
+    <% } %>
+  </div>
+  
+  <% if (page.visible_constellations && page.visible_constellations.length > 0) { %>
+    <div class="guide-section">
+      <h4><%= __('astronomy.visible_constellations') || 'Visible Constellations' %></h4>
+      <div class="guide-content">
+        <ul>
+          <% page.visible_constellations.forEach(constellation => { %>
+            <li>
+              <a href="<%= constellation.path %>"><%= constellation.name %></a>
+              <% if (constellation.best_time) { %>
+                <span class="constellation-time">(<%= constellation.best_time %>)</span>
+              <% } %>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (page.best_time) { %>
+    <div class="guide-section">
+      <h4><%= __('astronomy.best_observation_time') || 'Best Observation Time' %></h4>
+      <div class="guide-content">
+        <p><strong><%= __('astronomy.start_time') || 'Start Time' %>:</strong> <%= page.best_time.start %></p>
+        <p><strong><%= __('astronomy.peak_time') || 'Peak Time' %>:</strong> <%= page.best_time.peak %></p>
+        <p><strong><%= __('astronomy.end_time') || 'End Time' %>:</strong> <%= page.best_time.end %></p>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (page.observation_tips && page.observation_tips.length > 0) { %>
+    <div class="guide-section">
+      <h4><%= __('astronomy.observation_tips') || 'Observation Tips' %></h4>
+      <div class="guide-content">
+        <ol>
+          <% page.observation_tips.forEach(tip => { %>
+            <li><%= tip %></li>
+          <% }); %>
+        </ol>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (page.recommended_equipment && page.recommended_equipment.length > 0) { %>
+    <div class="guide-section">
+      <h4><%= __('astronomy.recommended_equipment') || 'Recommended Equipment' %></h4>
+      <div class="guide-content">
+        <ul>
+          <% page.recommended_equipment.forEach(equipment => { %>
+            <li>
+              <strong><%= equipment.name %></strong>
+              <% if (equipment.description) { %>
+                : <%= equipment.description %>
+              <% } %>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (page.weather_conditions) { %>
+    <div class="guide-section">
+      <h4><%= __('astronomy.weather_conditions') || 'Weather Conditions' %></h4>
+      <div class="guide-content">
+        <p><strong><%= __('astronomy.cloud_cover') || 'Cloud Cover' %>:</strong> <%= page.weather_conditions.cloud_cover %></p>
+        <p><strong><%= __('astronomy.humidity') || 'Humidity' %>:</strong> <%= page.weather_conditions.humidity %></p>
+        <p><strong><%= __('astronomy.wind_speed') || 'Wind Speed' %>:</strong> <%= page.weather_conditions.wind_speed %></p>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (page.light_pollution_info) { %>
+    <div class="guide-tips">
+      <div class="tips-title">💡 <%= __('astronomy.light_pollution_tip') || 'Light Pollution Tip' %></div>
+      <div class="tips-content">
+        <%= page.light_pollution_info %>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (page.related_articles && page.related_articles.length > 0) { %>
+    <div class="guide-section">
+      <h4><%= __('astronomy.related_articles') || 'Related Articles' %></h4>
+      <div class="guide-content">
+        <ul>
+          <% page.related_articles.forEach(article => { %>
+            <li><a href="<%= article.path %>"><%= article.title %></a></li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<style>
+.observation-guide {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.guide-header {
+  margin-bottom: 1.5rem;
+}
+
+.guide-header h3 {
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+}
+
+.guide-location {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guide-section {
+  margin-bottom: 1.5rem;
+}
+
+.guide-section h4 {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+}
+
+.guide-content {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+.guide-content ul,
+.guide-content ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.guide-content li {
+  margin-bottom: 0.5rem;
+}
+
+.guide-content a {
+  color: rgba(100, 200, 255, 0.9);
+  text-decoration: none;
+}
+
+.guide-content a:hover {
+  color: rgba(100, 200, 255, 1);
+  text-decoration: underline;
+}
+
+.constellation-time {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.guide-tips {
+  background: rgba(255, 200, 100, 0.1);
+  border-left: 3px solid rgba(255, 200, 100, 0.5);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.tips-title {
+  font-weight: 600;
+  color: rgba(255, 200, 100, 0.9);
+  margin-bottom: 0.5rem;
+}
+
+.tips-content {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .observation-guide {
+    padding: 1rem;
+  }
+  
+  .guide-section {
+    margin-bottom: 1rem;
+  }
+}
+</style>
