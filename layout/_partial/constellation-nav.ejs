@@ -1,0 +1,25 @@
+<div class="constellation-nav">
+  <% 
+    const constellations = [
+      { name: __('astronomy.aries'), symbol: '♈', icon: '🐑', path: '/constellations/aries/' },
+      { name: __('astronomy.taurus'), symbol: '♉', icon: '🐂', path: '/constellations/taurus/' },
+      { name: __('astronomy.gemini'), symbol: '♊', icon: '👯', path: '/constellations/gemini/' },
+      { name: __('astronomy.cancer'), symbol: '♋', icon: '🦀', path: '/constellations/cancer/' },
+      { name: __('astronomy.leo'), symbol: '♌', icon: '🦁', path: '/constellations/leo/' },
+      { name: __('astronomy.virgo'), symbol: '♍', icon: '👩', path: '/constellations/virgo/' },
+      { name: __('astronomy.libra'), symbol: '♎', icon: '⚖️', path: '/constellations/libra/' },
+      { name: __('astronomy.scorpio'), symbol: '♏', icon: '🦂', path: '/constellations/scorpio/' },
+      { name: __('astronomy.sagittarius'), symbol: '♐', icon: '🏹', path: '/constellations/sagittarius/' },
+      { name: __('astronomy.capricorn'), symbol: '♑', icon: '🐐', path: '/constellations/capricorn/' },
+      { name: __('astronomy.aquarius'), symbol: '♒', icon: '🏺', path: '/constellations/aquarius/' },
+      { name: __('astronomy.pisces'), symbol: '♓', icon: '🐟', path: '/constellations/pisces/' }
+    ];
+  %>
+  
+  <% constellations.forEach(constellation => { %>
+    <a href="<%= constellation.path %>" class="constellation-item">
+      <div class="constellation-icon"><%= constellation.icon %></div>
+      <div class="constellation-name"><%= constellation.name %></div>
+    </a>
+  <% }); %>
+</div>
