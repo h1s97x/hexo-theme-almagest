@@ -1,0 +1,172 @@
+<div class="astronomy-calendar">
+  <div class="calendar-header">
+    <h3><%= __('astronomy.calendar') || 'Astronomy Calendar' %></h3>
+    <div class="calendar-nav">
+      <button class="prev-month" aria-label="Previous month">←</button>
+      <span class="current-month"></span>
+      <button class="next-month" aria-label="Next month">→</button>
+    </div>
+  </div>
+  
+  <div class="calendar-grid">
+    <div class="calendar-day-header"><%= __('astronomy.sunday') || 'Sun' %></div>
+    <div class="calendar-day-header"><%= __('astronomy.monday') || 'Mon' %></div>
+    <div class="calendar-day-header"><%= __('astronomy.tuesday') || 'Tue' %></div>
+    <div class="calendar-day-header"><%= __('astronomy.wednesday') || 'Wed' %></div>
+    <div class="calendar-day-header"><%= __('astronomy.thursday') || 'Thu' %></div>
+    <div class="calendar-day-header"><%= __('astronomy.friday') || 'Fri' %></div>
+    <div class="calendar-day-header"><%= __('astronomy.saturday') || 'Sat' %></div>
+    
+    <!-- Days will be populated by JavaScript -->
+  </div>
+  
+  <% if (config.theme.astronomy && config.theme.astronomy.events && config.theme.astronomy.events.length > 0) { %>
+    <div class="calendar-events">
+      <h4><%= __('astronomy.upcoming_events') || 'Upcoming Events' %></h4>
+      <div class="events-list">
+        <% config.theme.astronomy.events.slice(0, 5).forEach(event => { %>
+          <div class="event-item">
+            <div class="event-name"><%= event.name %></div>
+            <div class="event-time"><%= event.date %></div>
+            <% if (event.visibility) { %>
+              <div class="event-visibility"><%= event.visibility %></div>
+            <% } %>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<style>
+.astronomy-calendar {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-header h3 {
+  margin: 0;
+  color: #fff;
+}
+
+.calendar-nav {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.calendar-nav button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-nav button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.current-month {
+  color: rgba(255, 255, 255, 0.8);
+  min-width: 150px;
+  text-align: center;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+}
+
+.calendar-day:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.calendar-day.has-event {
+  background: rgba(100, 200, 255, 0.2);
+  border-color: rgba(100, 200, 255, 0.5);
+  font-weight: 600;
+}
+
+.calendar-day.today {
+  background: rgba(255, 150, 100, 0.2);
+  border-color: rgba(255, 150, 100, 0.5);
+}
+
+.calendar-events {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendar-events h4 {
+  margin: 0 0 1rem 0;
+  color: #fff;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-item {
+  padding: 0.75rem;
+  background: rgba(100, 200, 255, 0.1);
+  border-left: 3px solid rgba(100, 200, 255, 0.5);
+  border-radius: 4px;
+}
+
+.event-name {
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.event-time {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.event-visibility {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.25rem;
+}
+</style>
