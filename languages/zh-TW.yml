@@ -1,0 +1,125 @@
+# 繁體中文語言包
+
+# 導航
+home: 首頁
+archives: 歸檔
+categories: 分類
+tags: 標籤
+about: 關於
+
+# 分頁
+prev: 上一頁
+next: 下一頁
+
+# 文章
+read_more: 閱讀更多
+updated: 更新於
+posted_on: 發佈於
+in: 在
+with_tags: 標籤為
+
+# 側邊欄
+recent_posts: 最近文章
+no_posts: 暫無文章
+
+# 評論
+comments: 評論
+
+# 目錄
+toc: 目錄
+
+# 社交
+social: 社交連結
+
+# 頁腳
+powered_by: 由以下技術驅動
+theme: 主題
+
+# 搜尋
+search: 搜尋
+search_results: 搜尋結果
+search_no_results: 未找到結果
+search_placeholder: 搜尋文章...
+search_desc: 搜尋網站內容
+
+# 分類
+categories_desc: 按分類瀏覽文章
+no_categories: 暫無分類
+
+# 標籤
+tags_desc: 按標籤瀏覽文章
+all_tags: 所有標籤
+no_tags: 暫無標籤
+
+# 歸檔頁面
+archive: 歸檔
+archive_description: 瀏覽所有文章
+
+# 404 錯誤頁面
+page_not_found: 頁面未找到
+page_not_found_description: 抱歉，您訪問的頁面不存在或已被刪除。
+back_to_home: 返回首頁
+suggestions: 建議
+check_url: 檢查 URL 是否正確
+try_search: 嘗試使用搜尋功能
+visit_homepage: 訪問首頁
+browse_menu: 瀏覽菜單
+
+# 圖片
+image_loading: 加載中...
+image_error: 圖片加載失敗
+
+# 代碼
+copy_code: 複製代碼
+code_copied: 已複製
+
+# Wiki 系統
+wiki:
+  documentation: 文檔
+  no_projects: 暫無項目
+  edit_on_github: 在 GitHub 上編輯
+  related_pages: 相關頁面
+  back_to_parent: 返回上級
+
+# Topic 系統
+topic:
+  series: 系列文章
+  no_topics: 暫無專欄
+  view_all: 查看全部
+  articles_in_series: 系列文章
+  related_topics: 相關專欄
+
+# Notebooks 系統
+notebooks:
+  my_notebooks: 我的筆記本
+  no_notebooks: 暫無筆記本
+  create_first: 建立第一個筆記本
+  recent_notes: 最近筆記
+  notes: 篇筆記
+  view_all: 查看全部
+  new_notebook: 新建筆記本
+
+# 天文功能
+astronomy:
+  symbol: 符號
+  dates: 日期
+  event_type: 事件類型
+  date: 日期
+  visibility: 可見性
+  category: 分類
+  distance: 距離
+  magnitude: 星等
+  learn_more: 了解更多
+  related_articles: 相關文章
+  aries: 白羊座
+  taurus: 金牛座
+  gemini: 雙子座
+  cancer: 巨蟹座
+  leo: 獅子座
+  virgo: 處女座
+  libra: 天秤座
+  scorpio: 天蠍座
+  sagittarius: 射手座
+  capricorn: 摩羯座
+  aquarius: 水瓶座
+  pisces: 雙魚座
