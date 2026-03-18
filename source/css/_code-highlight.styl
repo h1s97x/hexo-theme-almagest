@@ -1,0 +1,174 @@
+// ============================================================
+// Code Highlight Styles
+// ============================================================
+
+// Code block styles
+pre
+  background-color var(--color-code-bg)
+  color var(--color-code-text)
+  padding $space-lg
+  border-radius $border-radius-lg
+  overflow-x auto
+  margin $space-lg 0
+  line-height $line-height-normal
+  font-family $font-family-code
+  font-size $font-size-sm
+  border 1px solid var(--color-border)
+  smooth-transition()
+
+code
+  font-family $font-family-code
+  font-size $font-size-sm
+  background-color var(--color-code-bg)
+  color var(--color-code-text)
+  padding 2px 6px
+  border-radius $border-radius-sm
+  smooth-transition()
+
+pre code
+  background-color transparent
+  color inherit
+  padding 0
+  border-radius 0
+
+// Inline code
+p code
+  background-color var(--color-code-bg)
+  padding 2px 6px
+  border-radius $border-radius-sm
+
+// Code line numbers
+.line-number
+  display inline-block
+  width 2.5em
+  text-align right
+  padding-right $space-sm
+  margin-right $space-sm
+  color var(--color-text-secondary)
+  user-select none
+  border-right 1px solid var(--color-border)
+
+// Code copy button
+.code-copy-btn
+  position absolute
+  top $space-sm
+  right $space-sm
+  padding $space-sm $space-md
+  background-color var(--color-hover-bg)
+  color var(--color-text)
+  border none
+  border-radius $border-radius-md
+  cursor pointer
+  font-size $font-size-xs
+  opacity 0
+  smooth-transition()
+  z-index 10
+
+pre:hover .code-copy-btn
+  opacity 1
+
+.code-copy-btn:hover
+  background-color $color-primary
+  color white
+
+.code-copy-btn.copied
+  background-color $color-success
+  color white
+
+// Syntax highlighting colors
+.hljs-keyword
+  color var(--color-code-keyword)
+  font-weight $font-weight-semibold
+
+.hljs-string
+  color var(--color-code-string)
+
+.hljs-number
+  color var(--color-code-number)
+
+.hljs-literal
+  color var(--color-code-number)
+
+.hljs-attr
+  color var(--color-code-keyword)
+
+.hljs-comment
+  color var(--color-code-comment)
+  font-style italic
+
+.hljs-title
+  color var(--color-code-keyword)
+  font-weight $font-weight-semibold
+
+.hljs-function
+  color var(--color-code-keyword)
+
+.hljs-params
+  color var(--color-code-text)
+
+.hljs-built_in
+  color var(--color-code-keyword)
+
+.hljs-type
+  color var(--color-code-keyword)
+
+.hljs-variable
+  color var(--color-code-text)
+
+.hljs-symbol
+  color var(--color-code-number)
+
+.hljs-bullet
+  color var(--color-code-number)
+
+.hljs-link
+  color $color-primary
+
+.hljs-meta
+  color var(--color-code-comment)
+
+.hljs-selector-id
+  color var(--color-code-keyword)
+
+.hljs-selector-class
+  color var(--color-code-keyword)
+
+.hljs-selector-attr
+  color var(--color-code-keyword)
+
+.hljs-selector-pseudo
+  color var(--color-code-keyword)
+
+.hljs-template-tag
+  color var(--color-code-keyword)
+
+.hljs-template-variable
+  color var(--color-code-text)
+
+.hljs-addition
+  background-color rgba(40, 167, 69, 0.1)
+  color $color-success
+
+.hljs-deletion
+  background-color rgba(220, 53, 69, 0.1)
+  color $color-danger
+
+// Responsive code block
+@media (max-width: $breakpoint-md)
+  pre
+    padding $space-md
+    font-size $font-size-xs
+    margin $space-md 0
+  
+  code
+    font-size $font-size-xs
+  
+  .code-copy-btn
+    opacity 1
+    top 4px
+    right 4px
+    padding 4px 8px
+    font-size 11px
+
+</content>
+</invoke>
