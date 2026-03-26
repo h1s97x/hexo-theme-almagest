@@ -1,0 +1,358 @@
+// Hexo Theme Almagest - Stylus Mixins
+// ==================================
+
+// ============================================
+// Responsive Breakpoints
+// ============================================
+
+breakpoint-up($size)
+  if $size == 'xs'
+    @media (min-width: $breakpoint-xs)
+      {block}
+  else if $size == 'sm'
+    @media (min-width: $breakpoint-sm)
+      {block}
+  else if $size == 'md'
+    @media (min-width: $breakpoint-md)
+      {block}
+  else if $size == 'lg'
+    @media (min-width: $breakpoint-lg)
+      {block}
+  else if $size == 'xl'
+    @media (min-width: $breakpoint-xl)
+      {block}
+  else if $size == '2xl'
+    @media (min-width: $breakpoint-2xl)
+      {block}
+
+breakpoint-down($size)
+  if $size == 'xs'
+    @media (max-width: $breakpoint-sm - 1)
+      {block}
+  else if $size == 'sm'
+    @media (max-width: $breakpoint-md - 1)
+      {block}
+  else if $size == 'md'
+    @media (max-width: $breakpoint-lg - 1)
+      {block}
+  else if $size == 'lg'
+    @media (max-width: $breakpoint-xl - 1)
+      {block}
+  else if $size == 'xl'
+    @media (max-width: $breakpoint-2xl - 1)
+      {block}
+
+// ============================================
+// Flexbox Utilities
+// ============================================
+
+flex-center()
+  display: flex
+  align-items: center
+  justify-content: center
+
+flex-between()
+  display: flex
+  align-items: center
+  justify-content: space-between
+
+flex-start()
+  display: flex
+  align-items: center
+  justify-content: flex-start
+
+flex-end()
+  display: flex
+  align-items: center
+  justify-content: flex-end
+
+flex-column()
+  display: flex
+  flex-direction: column
+
+// ============================================
+// Position Utilities
+// ============================================
+
+absolute-center()
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+absolute-fill()
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+
+fixed-fill()
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+
+// ============================================
+// Text Utilities
+// ============================================
+
+text-ellipsis()
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+text-clamp($lines = 2)
+  display: -webkit-box
+  -webkit-line-clamp: $lines
+  -webkit-box-orient: vertical
+  overflow: hidden
+  text-overflow: ellipsis
+
+// ============================================
+// Button Styles
+// ============================================
+
+button-base()
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  padding: $padding-sm $padding-md
+  font-size: $font-size-base
+  font-weight: $font-weight-medium
+  line-height: 1
+  text-align: center
+  text-decoration: none
+  white-space: nowrap
+  vertical-align: middle
+  cursor: pointer
+  user-select: none
+  border: 1px solid transparent
+  border-radius: $border-radius-md
+  transition: all $transition-base
+
+button-primary()
+  button-base()
+  background-color: $primary-color
+  color: white
+  border-color: $primary-color
+
+  &:hover
+    background-color: $primary-dark
+    border-color: $primary-dark
+
+  &:active
+    background-color: $primary-dark
+    transform: translateY(1px)
+
+button-secondary()
+  button-base()
+  background-color: transparent
+  color: $primary-color
+  border-color: $primary-color
+
+  &:hover
+    background-color: $primary-color
+    color: white
+
+// ============================================
+// Card Styles
+// ============================================
+
+card-base()
+  background-color: $light-bg-primary
+  border-radius: $border-radius-lg
+  box-shadow: $shadow-sm
+  transition: box-shadow $transition-base, transform $transition-base
+
+  &:hover
+    box-shadow: $shadow-md
+
+card-bordered()
+  card-base()
+  border: 1px solid $light-border
+
+// ============================================
+// Form Styles
+// ============================================
+
+input-base()
+  width: 100%
+  padding: $padding-sm $padding-md
+  font-size: $font-size-base
+  line-height: $line-height-normal
+  color: $light-text-primary
+  background-color: $light-bg-primary
+  border: 1px solid $light-border
+  border-radius: $border-radius-md
+  transition: border-color $transition-base, box-shadow $transition-base
+
+  &:focus
+    outline: none
+    border-color: $primary-color
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1)
+
+  &::placeholder
+    color: $light-text-tertiary
+
+// ============================================
+// Gradient Backgrounds
+// ============================================
+
+gradient-primary()
+  background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%)
+
+gradient-dark()
+  background: linear-gradient(135deg, $dark-bg-primary 0%, $dark-bg-secondary 100%)
+
+// 星空渐变背景
+gradient-starry-night()
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)
+
+gradient-cosmic()
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)
+
+// ============================================
+// Animation Utilities
+// ============================================
+
+fade-in($duration = $animation-duration-base)
+  animation: fadeIn $duration ease-in-out
+
+@keyframes fadeIn
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+slide-up($duration = $animation-duration-base)
+  animation: slideUp $duration ease-out
+
+@keyframes slideUp
+  from
+    opacity: 0
+    transform: translateY(20px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+slide-down($duration = $animation-duration-base)
+  animation: slideDown $duration ease-out
+
+@keyframes slideDown
+  from
+    opacity: 0
+    transform: translateY(-20px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+// 星星闪烁动画
+twinkle($duration = 2s)
+  animation: twinkle $duration ease-in-out infinite
+
+@keyframes twinkle
+  0%, 100%
+    opacity: 1
+  50%
+    opacity: 0.3
+
+// 流星动画
+shooting-star($duration = 3s)
+  animation: shootingStar $duration linear infinite
+
+@keyframes shootingStar
+  0%
+    transform: translateX(0) translateY(0)
+    opacity: 1
+  70%
+    opacity: 1
+  100%
+    transform: translateX(-300px) translateY(300px)
+    opacity: 0
+
+// ============================================
+// Scrollbar Styles
+// ============================================
+
+custom-scrollbar($width = 6px, $track-color = $light-bg-secondary, $thumb-color = $light-text-tertiary)
+  &::-webkit-scrollbar
+    width: $width
+    height: $width
+
+  &::-webkit-scrollbar-track
+    background: $track-color
+    border-radius: $width
+
+  &::-webkit-scrollbar-thumb
+    background: $thumb-color
+    border-radius: $width
+
+    &:hover
+      background: darken($thumb-color, 10%)
+
+// ============================================
+// Image Utilities
+// ============================================
+
+img-cover()
+  object-fit: cover
+  object-position: center
+
+img-contain()
+  object-fit: contain
+  object-position: center
+
+// ============================================
+// Overlay Utilities
+// ============================================
+
+overlay($color = rgba(0, 0, 0, 0.5))
+  position: relative
+
+  &::after
+    content: ''
+    absolute-fill()
+    background: $color
+    pointer-events: none
+
+// ============================================
+// Size Utilities
+// ============================================
+
+size($width, $height = $width)
+  width: $width
+  height: $height
+
+square($size)
+  size($size, $size)
+
+circle($size)
+  size($size, $size)
+  border-radius: 50%
+
+// ============================================
+// Clearfix
+// ============================================
+
+clearfix()
+  &::after
+    content: ''
+    display: table
+    clear: both
+
+// ============================================
+// Visually Hidden (Accessibility)
+// ============================================
+
+visually-hidden()
+  position: absolute
+  width: 1px
+  height: 1px
+  padding: 0
+  margin: -1px
+  overflow: hidden
+  clip: rect(0, 0, 0, 0)
+  white-space: nowrap
+  border-width: 0
