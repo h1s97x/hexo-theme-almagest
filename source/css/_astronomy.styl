@@ -1,292 +1,546 @@
-// Astronomy Theme Styles
+// Hexo Theme Almagest - Astronomy Theme Styles
+// ==============================================
 // Starry background and astronomy-themed components
 
-// Starry background
+// ============================================
+// Starry Background System
+// ============================================
+
 .starry-background
   position: fixed
   top: 0
   left: 0
   width: 100%
   height: 100%
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f1a2e 100%)
+  background: linear-gradient(135deg, $space-void 0%, $space-deep 30%, $space-dark 70%, $nebula-blue 100%)
   z-index: -1
   pointer-events: none
+  overflow: hidden
   
-  &::before
-    content: ''
+  // Multiple star layers for depth
+  .stars-layer
     position: absolute
     width: 100%
     height: 100%
-    background-image: 
-      radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 60px 70px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 50px 50px, #ddd, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 90px 10px, #eee, rgba(0,0,0,0))
     background-repeat: repeat
-    background-size: 200px 200px
-    animation: twinkle 5s infinite
+    
+  .stars-small
+    background-image: 
+      radial-gradient(1px 1px at 10px 10px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 30px 40px, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 50px 80px, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 70px 20px, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 90px 60px, rgba(255,255,255,0.8), transparent)
+    background-size: 100px 100px
+    animation: twinkle-soft 8s infinite ease-in-out
 
-@keyframes twinkle
+  .stars-medium
+    background-image: 
+      radial-gradient(2px 2px at 25px 25px, rgba(255,255,255,0.9), transparent),
+      radial-gradient(2px 2px at 75px 55px, rgba($star-blue,0.8), transparent),
+      radial-gradient(2px 2px at 125px 35px, rgba(255,255,255,0.7), transparent),
+      radial-gradient(2px 2px at 175px 85px, rgba($star-cyan,0.6), transparent)
+    background-size: 200px 200px
+    animation: twinkle-medium 6s infinite ease-in-out
+    animation-delay: -2s
+
+  .stars-large
+    background-image: 
+      radial-gradient(3px 3px at 50px 100px, rgba(255,255,255,1), transparent),
+      radial-gradient(3px 3px at 150px 50px, rgba($star-gold,0.9), transparent),
+      radial-gradient(3px 3px at 250px 150px, rgba($star-blue,0.8), transparent)
+    background-size: 300px 300px
+    animation: twinkle-bright 4s infinite ease-in-out
+    animation-delay: -1s
+
+  // Nebula effect
+  .nebula
+    position: absolute
+    border-radius: 50%
+    filter: blur(80px)
+    opacity: 0.15
+    animation: nebula-drift 60s infinite linear
+    
+    &.nebula-1
+      width: 400px
+      height: 400px
+      background: radial-gradient(ellipse, $constellation-purple, transparent)
+      top: 10%
+      left: -10%
+      
+    &.nebula-2
+      width: 300px
+      height: 300px
+      background: radial-gradient(ellipse, $constellation-blue, transparent)
+      top: 60%
+      right: -5%
+      animation-delay: -20s
+      
+    &.nebula-3
+      width: 250px
+      height: 250px
+      background: radial-gradient(ellipse, $constellation-cyan, transparent)
+      bottom: 10%
+      left: 30%
+      animation-delay: -40s
+
+// Star Twinkle Animations
+@keyframes twinkle-soft
+  0%, 100%
+    opacity: 0.3
+  50%
+    opacity: 0.7
+
+@keyframes twinkle-medium
   0%, 100%
     opacity: 0.5
   50%
     opacity: 1
 
-// Astronomy card component
+@keyframes twinkle-bright
+  0%, 100%
+    opacity: 0.6
+    transform: scale(1)
+  50%
+    opacity: 1
+    transform: scale(1.2)
+
+@keyframes nebula-drift
+  0%
+    transform: translate(0, 0) rotate(0deg)
+  50%
+    transform: translate(50px, 30px) rotate(180deg)
+  100%
+    transform: translate(0, 0) rotate(360deg)
+
+// Shooting Star Animation
+@keyframes shooting-star
+  0%
+    transform: translateX(0) translateY(0) rotate(-45deg)
+    opacity: 1
+  70%
+    opacity: 1
+  100%
+    transform: translateX(500px) translateY(500px) rotate(-45deg)
+    opacity: 0
+
+.shooting-star
+  position: absolute
+  width: 4px
+  height: 4px
+  background: linear-gradient(45deg, $star-white, transparent)
+  border-radius: 50%
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5)
+  animation: shooting-star 3s linear infinite
+  
+  &::before
+    content: ''
+    position: absolute
+    width: 100px
+    height: 2px
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent)
+    transform: translateX(-100px)
+
+// ============================================
+// Astronomy Card Component
+// ============================================
+
 .astronomy-card
-  background: rgba(255, 255, 255, 0.05)
-  border: 1px solid rgba(255, 255, 255, 0.1)
-  border-radius: 8px
-  padding: 1.5rem
-  backdrop-filter: blur(10px)
-  transition: all 0.3s ease
+  background: rgba(255, 255, 255, 0.03)
+  border: 1px solid rgba(255, 255, 255, 0.08)
+  border-radius: $border-radius-lg
+  padding: $spacing-lg
+  backdrop-filter: blur(20px)
+  transition: all $transition-base
+  position: relative
+  overflow: hidden
+  
+  // Subtle glow effect
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    height: 1px
+    background: linear-gradient(90deg, transparent, rgba($star-cyan, 0.5), transparent)
+    opacity: 0
+    transition: opacity $transition-base
   
   &:hover
-    background: rgba(255, 255, 255, 0.08)
-    border-color: rgba(255, 255, 255, 0.2)
-    transform: translateY(-2px)
+    background: rgba(255, 255, 255, 0.06)
+    border-color: rgba($star-cyan, 0.3)
+    transform: translateY(-4px)
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba($constellation-blue, 0.1)
+    
+    &::before
+      opacity: 1
   
   .astronomy-card-header
     display: flex
     align-items: center
-    margin-bottom: 1rem
+    margin-bottom: $spacing-md
     
     .astronomy-card-icon
-      font-size: 2rem
-      margin-right: 1rem
+      font-size: 2.5rem
+      margin-right: $spacing-md
+      filter: drop-shadow(0 0 10px rgba($star-cyan, 0.5))
       
     .astronomy-card-title
-      font-size: 1.25rem
-      font-weight: 600
+      font-size: $font-size-xl
+      font-weight: $font-weight-semibold
       margin: 0
-      color: #fff
+      color: $star-white
   
   .astronomy-card-body
     color: rgba(255, 255, 255, 0.8)
-    line-height: 1.6
+    line-height: $line-height-relaxed
     
     p
-      margin: 0.5rem 0
+      margin: $spacing-sm 0
   
   .astronomy-card-footer
-    margin-top: 1rem
-    padding-top: 1rem
-    border-top: 1px solid rgba(255, 255, 255, 0.1)
-    font-size: 0.875rem
-    color: rgba(255, 255, 255, 0.6)
+    margin-top: $spacing-lg
+    padding-top: $spacing-md
+    border-top: 1px solid rgba(255, 255, 255, 0.08)
+    font-size: $font-size-sm
+    color: rgba(255, 255, 255, 0.5)
 
-// Constellation navigation
+// ============================================
+// Constellation Navigation
+// ============================================
+
 .constellation-nav
   display: grid
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr))
-  gap: 1rem
-  margin: 2rem 0
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))
+  gap: $spacing-md
+  margin: $spacing-2xl 0
   
   .constellation-item
     position: relative
     aspect-ratio: 1
-    border-radius: 8px
+    border-radius: $border-radius-lg
     overflow: hidden
     cursor: pointer
-    transition: all 0.3s ease
-    background: rgba(255, 255, 255, 0.05)
-    border: 1px solid rgba(255, 255, 255, 0.1)
+    transition: all $transition-base
+    background: rgba(255, 255, 255, 0.02)
+    border: 1px solid rgba(255, 255, 255, 0.06)
     display: flex
     align-items: center
     justify-content: center
     flex-direction: column
     
+    // Star connection lines
+    &::after
+      content: ''
+      position: absolute
+      top: 50%
+      left: 50%
+      width: 60px
+      height: 60px
+      border: 1px dashed rgba($star-cyan, 0.2)
+      border-radius: 50%
+      transform: translate(-50%, -50%)
+      opacity: 0
+      transition: opacity $transition-base
+    
     &:hover
-      background: rgba(255, 255, 255, 0.1)
-      border-color: rgba(255, 255, 255, 0.3)
+      background: rgba(255, 255, 255, 0.06)
+      border-color: rgba($star-cyan, 0.3)
       transform: scale(1.05)
+      box-shadow: 0 0 30px rgba($constellation-cyan, 0.2)
+      
+      &::after
+        opacity: 1
     
     &.active
-      background: rgba(100, 200, 255, 0.2)
-      border-color: rgba(100, 200, 255, 0.5)
-    
+      background: rgba($constellation-cyan, 0.15)
+      border-color: rgba($star-cyan, 0.5)
+      
     .constellation-icon
-      font-size: 2rem
-      margin-bottom: 0.5rem
+      font-size: 2.5rem
+      margin-bottom: $spacing-sm
+      filter: drop-shadow(0 0 8px rgba($star-cyan, 0.4))
     
     .constellation-name
-      font-size: 0.875rem
-      font-weight: 500
+      font-size: $font-size-sm
+      font-weight: $font-weight-medium
       text-align: center
       color: rgba(255, 255, 255, 0.9)
 
-// Astronomy event calendar
+// ============================================
+// Astronomy Event Calendar
+// ============================================
+
 .astronomy-calendar
-  background: rgba(255, 255, 255, 0.05)
-  border: 1px solid rgba(255, 255, 255, 0.1)
-  border-radius: 8px
-  padding: 1.5rem
-  backdrop-filter: blur(10px)
+  background: rgba(255, 255, 255, 0.03)
+  border: 1px solid rgba(255, 255, 255, 0.08)
+  border-radius: $border-radius-lg
+  padding: $spacing-lg
+  backdrop-filter: blur(20px)
   
   .calendar-header
     display: flex
     justify-content: space-between
     align-items: center
-    margin-bottom: 1.5rem
+    margin-bottom: $spacing-lg
     
     h3
       margin: 0
-      color: #fff
+      color: $star-white
+      font-weight: $font-weight-semibold
     
     .calendar-nav
       display: flex
-      gap: 0.5rem
+      gap: $spacing-sm
       
       button
-        background: rgba(255, 255, 255, 0.1)
-        border: 1px solid rgba(255, 255, 255, 0.2)
-        color: #fff
-        padding: 0.5rem 1rem
-        border-radius: 4px
+        background: rgba(255, 255, 255, 0.05)
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        color: $star-white
+        padding: $spacing-sm $spacing-md
+        border-radius: $border-radius-md
         cursor: pointer
-        transition: all 0.2s ease
+        transition: all $transition-base
         
         &:hover
-          background: rgba(255, 255, 255, 0.2)
+          background: rgba($star-cyan, 0.2)
+          border-color: rgba($star-cyan, 0.4)
   
   .calendar-grid
     display: grid
     grid-template-columns: repeat(7, 1fr)
-    gap: 0.5rem
+    gap: $spacing-xs
     
     .calendar-day-header
       text-align: center
-      font-weight: 600
-      color: rgba(255, 255, 255, 0.7)
-      padding: 0.5rem
-      font-size: 0.875rem
+      font-weight: $font-weight-semibold
+      color: rgba(255, 255, 255, 0.6)
+      padding: $spacing-sm
+      font-size: $font-size-sm
     
     .calendar-day
       aspect-ratio: 1
       display: flex
       align-items: center
       justify-content: center
-      background: rgba(255, 255, 255, 0.05)
-      border: 1px solid rgba(255, 255, 255, 0.1)
-      border-radius: 4px
+      background: rgba(255, 255, 255, 0.02)
+      border: 1px solid rgba(255, 255, 255, 0.05)
+      border-radius: $border-radius-md
       cursor: pointer
-      transition: all 0.2s ease
-      color: rgba(255, 255, 255, 0.8)
-      font-size: 0.875rem
+      transition: all $transition-base
+      color: rgba(255, 255, 255, 0.7)
+      font-size: $font-size-sm
       
       &:hover
-        background: rgba(255, 255, 255, 0.1)
-        border-color: rgba(255, 255, 255, 0.3)
+        background: rgba(255, 255, 255, 0.08)
+        border-color: rgba($star-cyan, 0.3)
       
       &.has-event
-        background: rgba(100, 200, 255, 0.2)
-        border-color: rgba(100, 200, 255, 0.5)
-        font-weight: 600
+        background: rgba($constellation-blue, 0.2)
+        border-color: rgba($star-blue, 0.5)
+        font-weight: $font-weight-semibold
+        color: $star-white
+        
+        &::before
+          content: ''
+          position: absolute
+          bottom: 4px
+          width: 4px
+          height: 4px
+          background: $star-cyan
+          border-radius: 50%
       
       &.today
-        background: rgba(255, 150, 100, 0.2)
-        border-color: rgba(255, 150, 100, 0.5)
+        background: rgba($constellation-amber, 0.2)
+        border-color: rgba($star-gold, 0.5)
+        color: $star-gold
+        font-weight: $font-weight-bold
   
   .calendar-events
-    margin-top: 1.5rem
-    padding-top: 1.5rem
-    border-top: 1px solid rgba(255, 255, 255, 0.1)
+    margin-top: $spacing-lg
+    padding-top: $spacing-lg
+    border-top: 1px solid rgba(255, 255, 255, 0.08)
     
     .event-item
-      padding: 0.75rem
-      margin-bottom: 0.5rem
-      background: rgba(100, 200, 255, 0.1)
-      border-left: 3px solid rgba(100, 200, 255, 0.5)
-      border-radius: 4px
+      padding: $spacing-md
+      margin-bottom: $spacing-sm
+      background: rgba($constellation-blue, 0.1)
+      border-left: 3px solid $star-cyan
+      border-radius: $border-radius-md
       
       .event-name
-        font-weight: 600
-        color: #fff
-        margin-bottom: 0.25rem
+        font-weight: $font-weight-semibold
+        color: $star-white
+        margin-bottom: $spacing-xs
       
       .event-time
-        font-size: 0.875rem
+        font-size: $font-size-sm
         color: rgba(255, 255, 255, 0.6)
 
-// Observation guide
+// ============================================
+// Observation Guide
+// ============================================
+
 .observation-guide
-  background: rgba(255, 255, 255, 0.05)
-  border: 1px solid rgba(255, 255, 255, 0.1)
-  border-radius: 8px
-  padding: 1.5rem
-  backdrop-filter: blur(10px)
+  background: rgba(255, 255, 255, 0.03)
+  border: 1px solid rgba(255, 255, 255, 0.08)
+  border-radius: $border-radius-lg
+  padding: $spacing-lg
+  backdrop-filter: blur(20px)
   
   .guide-header
-    margin-bottom: 1.5rem
+    margin-bottom: $spacing-lg
     
     h3
-      margin: 0 0 0.5rem 0
-      color: #fff
+      margin: 0 0 $spacing-sm 0
+      color: $star-white
+      font-weight: $font-weight-semibold
     
     .guide-location
-      font-size: 0.875rem
-      color: rgba(255, 255, 255, 0.6)
+      font-size: $font-size-sm
+      color: rgba(255, 255, 255, 0.5)
   
   .guide-section
-    margin-bottom: 1.5rem
+    margin-bottom: $spacing-lg
     
     h4
       color: rgba(255, 255, 255, 0.9)
-      margin: 0 0 0.75rem 0
-      font-size: 1rem
+      margin: 0 0 $spacing-sm 0
+      font-size: $font-size-lg
+      font-weight: $font-weight-medium
     
     .guide-content
       color: rgba(255, 255, 255, 0.8)
-      line-height: 1.6
+      line-height: $line-height-relaxed
       
       ul, ol
-        margin: 0.5rem 0
-        padding-left: 1.5rem
+        margin: $spacing-sm 0
+        padding-left: $spacing-lg
         
         li
-          margin-bottom: 0.5rem
+          margin-bottom: $spacing-xs
   
   .guide-tips
-    background: rgba(255, 200, 100, 0.1)
-    border-left: 3px solid rgba(255, 200, 100, 0.5)
-    padding: 1rem
-    border-radius: 4px
-    margin-top: 1rem
+    background: rgba($constellation-amber, 0.1)
+    border-left: 3px solid $star-gold
+    padding: $spacing-md
+    border-radius: $border-radius-md
+    margin-top: $spacing-md
     
     .tips-title
-      font-weight: 600
-      color: rgba(255, 200, 100, 0.9)
-      margin-bottom: 0.5rem
+      font-weight: $font-weight-semibold
+      color: $star-gold
+      margin-bottom: $spacing-sm
     
     .tips-content
       color: rgba(255, 255, 255, 0.8)
-      font-size: 0.875rem
+      font-size: $font-size-sm
 
-// Astronomy theme integration
+// ============================================
+// Astronomy Theme Integration
+// ============================================
+
 body.astronomy-theme
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f1a2e 100%)
+  background: linear-gradient(135deg, $space-void 0%, $space-dark 50%, $nebula-blue 100%)
   color: rgba(255, 255, 255, 0.9)
+  min-height: 100vh
+  
+  // Apply starry background
+  &::before
+    content: ''
+    @extend .starry-background
   
   .main-content
     background: rgba(255, 255, 255, 0.02)
+    border-radius: $border-radius-xl
+    backdrop-filter: blur(10px)
   
   a
-    color: rgba(100, 200, 255, 0.9)
+    color: $star-cyan
     
     &:hover
-      color: rgba(100, 200, 255, 1)
+      color: $star-white
+      text-shadow: 0 0 10px rgba($star-cyan, 0.5)
 
-// Responsive adjustments
-@media (max-width: 768px)
+// ============================================
+// Dark Theme Astronomy Enhancements
+// ============================================
+
+[data-theme="dark"]
+  // Enhanced dark theme with subtle space feel
+  background: linear-gradient(180deg, $dark-bg-primary 0%, $space-dark 100%)
+  
+  // Add subtle star pattern
+  &::before
+    content: ''
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 60px 70px, rgba(255,255,255,0.2), transparent),
+      radial-gradient(1px 1px at 100px 50px, rgba(255,255,255,0.25), transparent),
+      radial-gradient(1px 1px at 140px 90px, rgba(255,255,255,0.15), transparent),
+      radial-gradient(1px 1px at 180px 20px, rgba(255,255,255,0.3), transparent)
+    background-size: 200px 200px
+    pointer-events: none
+    z-index: -1
+    animation: twinkle-soft 10s infinite ease-in-out
+  
+  .site-header
+    background: rgba($dark-bg-primary, 0.8)
+    backdrop-filter: blur(20px)
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05)
+  
+  .post-card
+    background: rgba($dark-bg-secondary, 0.6)
+    border: 1px solid rgba(255, 255, 255, 0.05)
+    backdrop-filter: blur(10px)
+    
+    &:hover
+      border-color: rgba($star-cyan, 0.2)
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 40px rgba($constellation-blue, 0.05)
+  
+  .widget
+    background: rgba($dark-bg-secondary, 0.6)
+    border: 1px solid rgba(255, 255, 255, 0.05)
+    backdrop-filter: blur(10px)
+  
+  .site-footer
+    background: rgba($dark-bg-primary, 0.8)
+    backdrop-filter: blur(20px)
+    border-top: 1px solid rgba(255, 255, 255, 0.05)
+
+// ============================================
+// Responsive Adjustments
+// ============================================
+
+@media (max-width: $breakpoint-md)
   .constellation-nav
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr))
   
   .astronomy-card
-    padding: 1rem
+    padding: $spacing-md
   
   .calendar-grid
-    gap: 0.25rem
+    gap: 2px
     
     .calendar-day
-      font-size: 0.75rem
+      font-size: $font-size-xs
+
+@media (max-width: $breakpoint-sm)
+  .starry-background
+    .nebula
+      display: none
+  
+  .astronomy-calendar
+    .calendar-grid
+      .calendar-day-header
+        font-size: $font-size-xs
+        padding: $spacing-xs
+  
+  .observation-guide
+    padding: $spacing-md
