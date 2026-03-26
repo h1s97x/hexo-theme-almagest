@@ -1,0 +1,119 @@
+<%
+// 脚本引入组件
+const config = theme;
+const version = config.version || '1.0.0';
+const cdn_prefix = config.cdn_prefix || '';
+%>
+
+<!-- Theme Scripts -->
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/theme.js' : url_for('/js/theme.js') %>?v=<%= version %>"></script>
+
+<% if (config.features?.search) { %>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/search.js' : url_for('/js/search.js') %>?v=<%= version %>"></script>
+<% } %>
+
+<% if (config.image?.lazy_load) { %>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/lazy-load.js' : url_for('/js/lazy-load.js') %>?v=<%= version %>"></script>
+<% } %>
+
+<% if (config.features?.code_copy) { %>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/code-copy.js' : url_for('/js/code-copy.js') %>?v=<%= version %>"></script>
+<% } %>
+
+<!-- Astronomy Animations -->
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/astronomy.js' : url_for('/js/astronomy.js') %>?v=<%= version %>"></script>
+
+<!-- Back to Top -->
+<script>
+(function() {
+  const backToTop = document.getElementById('back-to-top');
+  if (!backToTop) return;
+
+  function checkScroll() {
+    if (window.scrollY > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  }
+
+  window.addEventListener('scroll', checkScroll, { passive: true });
+  
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  checkScroll();
+})();
+</script>
+
+<!-- Mobile Menu -->
+<script>
+(function() {
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (!mobileMenuBtn || !mobileMenu) return;
+
+  let isOpen = false;
+
+  function toggleMenu() {
+    isOpen = !isOpen;
+    mobileMenu.classList.toggle('active', isOpen);
+    mobileMenuBtn.setAttribute('aria-expanded', isOpen.toString());
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  mobileMenuBtn.addEventListener('click', toggleMenu);
+
+  // Close menu on link click
+  const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      if (isOpen) toggleMenu();
+    });
+  });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isOpen) {
+      toggleMenu();
+    }
+  });
+})();
+</script>
+
+<!-- Reading Time Calculator -->
+<% if (config.features?.reading_time) { %>
+<script>
+(function() {
+  const readingTimeEl = document.getElementById('reading-time');
+  if (!readingTimeEl) return;
+
+  const content = document.querySelector('.article-content');
+  if (!content) return;
+
+  const text = content.textContent || content.innerText;
+  const wordsPerMinute = 200;
+  const words = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(words / wordsPerMinute);
+
+  readingTimeEl.textContent = readingTime;
+})();
+</script>
+<% } %>
+
+<!-- Debug Mode -->
+<% if (config.debug) { %>
+<script>
+console.log('Theme Almagest v<%= version %>');
+console.log('Config:', <%- JSON.stringify(config) %>);
+</script>
+<% } %>
+
+<!-- Custom Scripts -->
+<% if (config.inject?.body_end) { %>
+<%- config.inject.body_end %>
+<% } %>
