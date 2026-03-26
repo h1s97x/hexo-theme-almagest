@@ -1,0 +1,79 @@
+<%
+// 分页组件
+const config = theme;
+const current = page.current || 1;
+const total = page.total || 1;
+const prev_link = page.prev_link;
+const next_link = page.next_link;
+%>
+
+<% if (total > 1) { %>
+<nav class="pagination" role="navigation" aria-label="pagination">
+  <!-- 上一页 -->
+  <% if (prev_link) { %>
+    <a href="<%= url_for(prev_link) %>" class="extend prev" rel="prev" aria-label="Previous page">
+      <svg viewBox="0 0 24 24" width="16" height="16">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+      </svg>
+    </a>
+  <% } else { %>
+    <span class="extend prev disabled">
+      <svg viewBox="0 0 24 24" width="16" height="16">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+      </svg>
+    </span>
+  <% } %>
+  
+  <!-- 页码 -->
+  <% 
+    let start_page = Math.max(1, current - 2);
+    let end_page = Math.min(total, current + 2);
+    
+    // 确保至少显示5个页码
+    if (end_page - start_page < 4) {
+      if (start_page === 1) {
+        end_page = Math.min(total, 5);
+      } else {
+        start_page = Math.max(1, total - 4);
+      }
+    }
+  %>
+  
+  <% if (start_page > 1) { %>
+    <a href="<%= url_for('/') %>" class="page-number">1</a>
+    <% if (start_page > 2) { %>
+      <span class="page-ellipsis">...</span>
+    <% } %>
+  <% } %>
+  
+  <% for (let i = start_page; i <= end_page; i++) { %>
+    <% if (i === current) { %>
+      <span class="page-number current"><%= i %></span>
+    <% } else { %>
+      <a href="<%= url_for(i === 1 ? '/' : '/page/' + i + '/') %>" class="page-number"><%= i %></a>
+    <% } %>
+  <% } %>
+  
+  <% if (end_page < total) { %>
+    <% if (end_page < total - 1) { %>
+      <span class="page-ellipsis">...</span>
+    <% } %>
+    <a href="<%= url_for('/page/' + total + '/') %>" class="page-number"><%= total %></a>
+  <% } %>
+  
+  <!-- 下一页 -->
+  <% if (next_link) { %>
+    <a href="<%= url_for(next_link) %>" class="extend next" rel="next" aria-label="Next page">
+      <svg viewBox="0 0 24 24" width="16" height="16">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+      </svg>
+    </a>
+  <% } else { %>
+    <span class="extend next disabled">
+      <svg viewBox="0 0 24 24" width="16" height="16">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+      </svg>
+    </span>
+  <% } %>
+</nav>
+<% } %>
