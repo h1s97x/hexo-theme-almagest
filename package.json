@@ -1,7 +1,7 @@
 {
   "name": "hexo-theme-almagest",
   "version": "1.0.0",
-  "description": "一个简洁而强大的 Hexo 主题，参考 Stellar 主题但更易于定制。A minimal yet powerful Hexo theme inspired by Stellar with enhanced customization.",
+  "description": "一个星空风格的 Hexo 主题，参考 Stellar 主题制作，支持深色/浅色主题切换。A starry night themed Hexo theme inspired by Stellar with dark/light mode support.",
   "main": "package.json",
   "scripts": {
     "lint": "eslint source/js/**/*.js",
