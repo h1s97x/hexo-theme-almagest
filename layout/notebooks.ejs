@@ -1,75 +1,69 @@
-<%- include _partial/head %>
-<body class="notebooks-page">
-  <%- include _partial/header %>
+<%
+// Notebooks 页面布局
+const config = theme;
+%>
+
+<div class="notebooks-container">
+  <aside class="notebooks-sidebar">
+    <%- partial('_partial/notebooks-nav') %>
+  </aside>
   
-  <div class="notebooks-container">
-    <aside class="notebooks-sidebar">
-      <%- include _partial/notebooks-nav %>
-    </aside>
-    
-    <main class="notebooks-content">
-      <div class="notebooks-header">
-        <h1><%= page.title || __('notebooks.my_notebooks') %></h1>
-        <% if (page.description) { %>
-          <p class="notebooks-description"><%= page.description %></p>
-        <% } %>
-      </div>
-      
-      <% if (page.notebooks && page.notebooks.length > 0) { %>
-        <div class="notebooks-grid">
-          <% page.notebooks.forEach(notebook => { %>
-            <div class="notebooks-card">
-              <div class="notebooks-card-header">
-                <h3 class="notebooks-card-title">
-                  <a href="<%= notebook.path %>"><%= notebook.title %></a>
-                </h3>
-              </div>
-              
-              <div class="notebooks-card-body">
-                <% if (notebook.description) { %>
-                  <p class="notebooks-card-description"><%= notebook.description %></p>
-                <% } %>
-                
-                <% if (notebook.notes && notebook.notes.length > 0) { %>
-                  <div class="notebooks-card-notes">
-                    <h4><%= __('notebooks.recent_notes') %></h4>
-                    <ul class="notebooks-card-notes-list">
-                      <% notebook.notes.slice(0, 3).forEach(note => { %>
-                        <li>
-                          <a href="<%= note.path %>"><%= note.title %></a>
-                        </li>
-                      <% }); %>
-                    </ul>
-                  </div>
-                <% } %>
-              </div>
-              
-              <div class="notebooks-card-footer">
-                <span class="notebooks-card-count">
-                  <%= notebook.notes ? notebook.notes.length : 0 %> <%= __('notebooks.notes') %>
-                </span>
-                <a href="<%= notebook.path %>" class="notebooks-card-link">
-                  <%= __('notebooks.view_all') %>
-                </a>
-              </div>
-            </div>
-          <% }); %>
-        </div>
-      <% } else { %>
-        <div class="notebooks-empty-state">
-          <p><%= __('notebooks.no_notebooks') %></p>
-          <a href="<%= config.root %>notebooks/new" class="notebooks-create-btn">
-            <%= __('notebooks.create_first') %>
-          </a>
-        </div>
+  <main class="notebooks-content">
+    <div class="notebooks-header">
+      <h1><%= page.title || __('notebooks.my_notebooks') %></h1>
+      <% if (page.description) { %>
+        <p class="notebooks-description"><%= page.description %></p>
       <% } %>
-      
-      <div class="notebooks-body">
-        <%- page.content %>
+    </div>
+    
+    <% if (page.notebooks && page.notebooks.length > 0) { %>
+      <div class="notebooks-grid">
+        <% page.notebooks.forEach(notebook => { %>
+          <div class="notebooks-card">
+            <div class="notebooks-card-header">
+              <h3 class="notebooks-card-title">
+                <a href="<%= url_for(notebook.path) %>"><%= notebook.title %></a>
+              </h3>
+            </div>
+            
+            <div class="notebooks-card-body">
+              <% if (notebook.description) { %>
+                <p class="notebooks-card-description"><%= notebook.description %></p>
+              <% } %>
+              
+              <% if (notebook.notes && notebook.notes.length > 0) { %>
+                <div class="notebooks-card-notes">
+                  <h4><%= __('notebooks.recent_notes') %></h4>
+                  <ul class="notebooks-card-notes-list">
+                    <% notebook.notes.slice(0, 3).forEach(note => { %>
+                      <li>
+                        <a href="<%= url_for(note.path) %>"><%= note.title %></a>
+                      </li>
+                    <% }); %>
+                  </ul>
+                </div>
+              <% } %>
+            </div>
+            
+            <div class="notebooks-card-footer">
+              <span class="notebooks-card-count">
+                <%= notebook.notes ? notebook.notes.length : 0 %> <%= __('notebooks.notes') %>
+              </span>
+              <a href="<%= url_for(notebook.path) %>" class="notebooks-card-link">
+                <%= __('notebooks.view_all') %>
+              </a>
+            </div>
+          </div>
+        <% }); %>
       </div>
-    </main>
-  </div>
-  
-  <%- include _partial/footer %>
-</body>
-</html>
+    <% } else { %>
+      <div class="notebooks-empty-state">
+        <p><%= __('notebooks.no_notebooks') %></p>
+      </div>
+    <% } %>
+    
+    <div class="notebooks-body">
+      <%- page.content %>
+    </div>
+  </main>
+</div>

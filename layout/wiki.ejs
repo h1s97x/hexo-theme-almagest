@@ -1,50 +1,47 @@
-<%- include _partial/head %>
-<body class="wiki-page">
-  <%- include _partial/header %>
+<%
+// Wiki 页面布局
+const config = theme;
+%>
+
+<div class="wiki-container">
+  <aside class="wiki-sidebar">
+    <%- partial('_partial/wiki-nav') %>
+  </aside>
   
-  <div class="wiki-container">
-    <aside class="wiki-sidebar">
-      <%- include _partial/wiki-nav %>
-    </aside>
+  <main class="wiki-content">
+    <div class="wiki-header">
+      <h1><%= page.title %></h1>
+      <% if (page.description) { %>
+        <p class="wiki-description"><%= page.description %></p>
+      <% } %>
+    </div>
     
-    <main class="wiki-content">
-      <div class="wiki-header">
-        <h1><%= page.title %></h1>
-        <% if (page.description) { %>
-          <p class="wiki-description"><%= page.description %></p>
-        <% } %>
+    <div class="wiki-body">
+      <%- page.content %>
+    </div>
+    
+    <% if (page.children && page.children.length > 0) { %>
+      <div class="wiki-children">
+        <h2><%= __('wiki.related_pages') %></h2>
+        <ul class="wiki-children-list">
+          <% page.children.forEach(child => { %>
+            <li>
+              <a href="<%= url_for(child.path) %>"><%= child.title %></a>
+              <% if (child.description) { %>
+                <p class="wiki-child-description"><%= child.description %></p>
+              <% } %>
+            </li>
+          <% }); %>
+        </ul>
       </div>
-      
-      <div class="wiki-body">
-        <%- page.content %>
+    <% } %>
+    
+    <% if (page.parent) { %>
+      <div class="wiki-parent">
+        <a href="<%= url_for(page.parent.path) %>" class="wiki-parent-link">
+          ← <%= __('wiki.back_to_parent') %>: <%= page.parent.title %>
+        </a>
       </div>
-      
-      <% if (page.children && page.children.length > 0) { %>
-        <div class="wiki-children">
-          <h2><%= __('wiki.related_pages') %></h2>
-          <ul class="wiki-children-list">
-            <% page.children.forEach(child => { %>
-              <li>
-                <a href="<%= child.path %>"><%= child.title %></a>
-                <% if (child.description) { %>
-                  <p class="wiki-child-description"><%= child.description %></p>
-                <% } %>
-              </li>
-            <% }); %>
-          </ul>
-        </div>
-      <% } %>
-      
-      <% if (page.parent) { %>
-        <div class="wiki-parent">
-          <a href="<%= page.parent.path %>" class="wiki-parent-link">
-            ← <%= __('wiki.back_to_parent') %>: <%= page.parent.title %>
-          </a>
-        </div>
-      <% } %>
-    </main>
-  </div>
-  
-  <%- include _partial/footer %>
-</body>
-</html>
+    <% } %>
+  </main>
+</div>

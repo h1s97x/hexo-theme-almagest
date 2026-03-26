@@ -1,66 +1,63 @@
-<%- include _partial/head %>
-<body class="topic-page">
-  <%- include _partial/header %>
+<%
+// Topic 页面布局
+const config = theme;
+%>
+
+<div class="topic-container">
+  <aside class="topic-sidebar">
+    <%- partial('_partial/topic-nav') %>
+  </aside>
   
-  <div class="topic-container">
-    <aside class="topic-sidebar">
-      <%- include _partial/topic-nav %>
-    </aside>
+  <main class="topic-content">
+    <div class="topic-header">
+      <h1><%= page.title %></h1>
+      <% if (page.subtitle) { %>
+        <p class="topic-subtitle"><%= page.subtitle %></p>
+      <% } %>
+      <% if (page.description) { %>
+        <p class="topic-description"><%= page.description %></p>
+      <% } %>
+    </div>
     
-    <main class="topic-content">
-      <div class="topic-header">
-        <h1><%= page.title %></h1>
-        <% if (page.subtitle) { %>
-          <p class="topic-subtitle"><%= page.subtitle %></p>
-        <% } %>
-        <% if (page.description) { %>
-          <p class="topic-description"><%= page.description %></p>
-        <% } %>
-      </div>
-      
-      <% if (page.articles && page.articles.length > 0) { %>
-        <div class="topic-articles">
-          <h2><%= __('topic.articles_in_series') %></h2>
-          <ol class="topic-articles-list">
-            <% page.articles.forEach((article, index) => { %>
-              <li class="topic-article-item">
-                <div class="topic-article-number"><%= index + 1 %></div>
-                <div class="topic-article-info">
-                  <a href="<%= article.path %>" class="topic-article-title">
-                    <%= article.title %>
-                  </a>
-                  <% if (article.excerpt) { %>
-                    <p class="topic-article-excerpt"><%= article.excerpt %></p>
-                  <% } %>
-                  <div class="topic-article-meta">
-                    <span class="topic-article-date"><%= article.date.format('YYYY-MM-DD') %></span>
-                  </div>
+    <% if (page.articles && page.articles.length > 0) { %>
+      <div class="topic-articles">
+        <h2><%= __('topic.articles_in_series') %></h2>
+        <ol class="topic-articles-list">
+          <% page.articles.forEach((article, index) => { %>
+            <li class="topic-article-item">
+              <div class="topic-article-number"><%= index + 1 %></div>
+              <div class="topic-article-info">
+                <a href="<%= url_for(article.path) %>" class="topic-article-title">
+                  <%= article.title %>
+                </a>
+                <% if (article.excerpt) { %>
+                  <p class="topic-article-excerpt"><%= article.excerpt %></p>
+                <% } %>
+                <div class="topic-article-meta">
+                  <span class="topic-article-date"><%= date(article.date, 'YYYY-MM-DD') %></span>
                 </div>
-              </li>
-            <% }); %>
-          </ol>
-        </div>
-      <% } %>
-      
-      <div class="topic-body">
-        <%- page.content %>
+              </div>
+            </li>
+          <% }); %>
+        </ol>
       </div>
-      
-      <% if (page.related_topics && page.related_topics.length > 0) { %>
-        <div class="topic-related">
-          <h2><%= __('topic.related_topics') %></h2>
-          <ul class="topic-related-list">
-            <% page.related_topics.forEach(topic => { %>
-              <li>
-                <a href="<%= topic.path %>"><%= topic.title %></a>
-              </li>
-            <% }); %>
-          </ul>
-        </div>
-      <% } %>
-    </main>
-  </div>
-  
-  <%- include _partial/footer %>
-</body>
-</html>
+    <% } %>
+    
+    <div class="topic-body">
+      <%- page.content %>
+    </div>
+    
+    <% if (page.related_topics && page.related_topics.length > 0) { %>
+      <div class="topic-related">
+        <h2><%= __('topic.related_topics') %></h2>
+        <ul class="topic-related-list">
+          <% page.related_topics.forEach(topic => { %>
+            <li>
+              <a href="<%= url_for(topic.path) %>"><%= topic.title %></a>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+  </main>
+</div>
