@@ -1,0 +1,677 @@
+// Hexo Theme Almagest - Component Styles
+// ======================================
+
+// ============================================
+// Post Card Component
+// ============================================
+
+.post-card
+  background: $light-bg-primary
+  border-radius: $border-radius-lg
+  box-shadow: $shadow-sm
+  overflow: hidden
+  transition: transform $transition-base, box-shadow $transition-base
+  margin-bottom: $spacing-lg
+
+  &:hover
+    transform: translateY(-4px)
+    box-shadow: $shadow-lg
+
+  .post-card-image
+    position: relative
+    padding-top: 56.25%
+    overflow: hidden
+    background: $light-bg-secondary
+
+    img
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      object-fit: cover
+      transition: transform $transition-slow
+
+  &:hover .post-card-image img
+    transform: scale(1.05)
+
+  .post-card-content
+    padding: $padding-lg
+
+  .post-card-category
+    display: inline-block
+    padding: $padding-xs $padding-sm
+    font-size: $font-size-xs
+    font-weight: $font-weight-medium
+    color: $primary-color
+    background: rgba($primary-color, 0.1)
+    border-radius: $border-radius-sm
+    margin-bottom: $spacing-sm
+
+  .post-card-title
+    margin: 0 0 $spacing-sm 0
+    font-size: $font-size-xl
+    font-weight: $font-weight-semibold
+    line-height: $line-height-tight
+
+    a
+      color: $light-text-primary
+      text-decoration: none
+
+      &:hover
+        color: $primary-color
+
+  .post-card-excerpt
+    color: $light-text-secondary
+    font-size: $font-size-sm
+    line-height: $line-height-relaxed
+    margin-bottom: $spacing-md
+
+  .post-card-meta
+    display: flex
+    align-items: center
+    gap: $spacing-md
+    font-size: $font-size-xs
+    color: $light-text-tertiary
+
+    .meta-item
+      display: flex
+      align-items: center
+      gap: $spacing-xs
+
+      svg
+        width: 14px
+        height: 14px
+
+body.dark-theme
+  .post-card
+    background: $dark-bg-secondary
+
+    .post-card-image
+      background: $dark-bg-tertiary
+
+    .post-card-title a
+      color: $dark-text-primary
+
+      &:hover
+        color: $primary-light
+
+    .post-card-excerpt
+      color: $dark-text-secondary
+
+    .post-card-meta
+      color: $dark-text-tertiary
+
+// ============================================
+// Pagination Component
+// ============================================
+
+.pagination
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: $spacing-sm
+  margin-top: $spacing-2xl
+  padding: $padding-lg 0
+
+  .page-number
+  .extend
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    min-width: 40px
+    height: 40px
+    padding: 0 $padding-md
+    font-size: $font-size-sm
+    font-weight: $font-weight-medium
+    color: $light-text-secondary
+    background: $light-bg-secondary
+    border-radius: $border-radius-md
+    text-decoration: none
+    transition: all $transition-base
+
+    &:hover
+      color: $primary-color
+      background: rgba($primary-color, 0.1)
+
+    &.current
+      color: white
+      background: $primary-color
+      cursor: default
+
+      &:hover
+        background: $primary-color
+
+  .page-ellipsis
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    min-width: 40px
+    height: 40px
+    color: $light-text-tertiary
+
+body.dark-theme
+  .pagination
+    .page-number
+    .extend
+      color: $dark-text-secondary
+      background: $dark-bg-secondary
+
+      &:hover
+        color: $primary-light
+        background: rgba($primary-light, 0.1)
+
+      &.current
+        color: white
+        background: $primary-color
+
+// ============================================
+// Widget Component
+// ============================================
+
+.widget
+  background: $light-bg-primary
+  border-radius: $border-radius-lg
+  padding: $padding-lg
+  margin-bottom: $spacing-lg
+  box-shadow: $shadow-sm
+
+  .widget-title
+    font-size: $font-size-lg
+    font-weight: $font-weight-semibold
+    color: $light-text-primary
+    margin: 0 0 $spacing-md 0
+    padding-bottom: $padding-sm
+    border-bottom: 2px solid $primary-color
+
+  .widget-content
+    color: $light-text-secondary
+    font-size: $font-size-sm
+    line-height: $line-height-relaxed
+
+  .widget-list
+    list-style: none
+    padding: 0
+    margin: 0
+
+    li
+      padding: $padding-sm 0
+      border-bottom: 1px solid $light-divider
+
+      &:last-child
+        border-bottom: none
+
+    a
+      display: flex
+      align-items: center
+      justify-content: space-between
+      color: $light-text-secondary
+      text-decoration: none
+      transition: color $transition-base
+
+      &:hover
+        color: $primary-color
+
+      .count
+        font-size: $font-size-xs
+        color: $light-text-tertiary
+
+  .widget-tags-cloud
+    display: flex
+    flex-wrap: wrap
+    gap: $spacing-xs
+
+    .tag-cloud-item
+      display: inline-block
+      padding: $padding-xs $padding-sm
+      color: $light-text-secondary
+      background: $light-bg-secondary
+      border-radius: $border-radius-sm
+      text-decoration: none
+      transition: all $transition-base
+
+      &:hover
+        color: $primary-color
+        background: rgba($primary-color, 0.1)
+
+body.dark-theme
+  .widget
+    background: $dark-bg-secondary
+
+    .widget-title
+      color: $dark-text-primary
+      border-bottom-color: $primary-light
+
+    .widget-content
+      color: $dark-text-secondary
+
+    .widget-list li
+      border-bottom-color: $dark-divider
+
+      a
+        color: $dark-text-secondary
+
+        &:hover
+          color: $primary-light
+
+        .count
+          color: $dark-text-tertiary
+
+    .widget-tags-cloud .tag-cloud-item
+      color: $dark-text-secondary
+      background: $dark-bg-tertiary
+
+      &:hover
+        color: $primary-light
+        background: rgba($primary-light, 0.1)
+
+// ============================================
+// Tag Component
+// ============================================
+
+.tag
+  display: inline-flex
+  align-items: center
+  padding: $padding-xs $padding-sm
+  font-size: $font-size-xs
+  font-weight: $font-weight-medium
+  color: $light-text-secondary
+  background: $light-bg-secondary
+  border-radius: $border-radius-full
+  text-decoration: none
+  transition: all $transition-base
+
+  &:hover
+    color: $primary-color
+    background: rgba($primary-color, 0.1)
+
+body.dark-theme
+  .tag
+    color: $dark-text-secondary
+    background: $dark-bg-tertiary
+
+    &:hover
+      color: $primary-light
+      background: rgba($primary-light, 0.1)
+
+// ============================================
+// Back to Top Button
+// ============================================
+
+.back-to-top
+  position: fixed
+  bottom: $spacing-xl
+  right: $spacing-xl
+  width: 48px
+  height: 48px
+  display: flex
+  align-items: center
+  justify-content: center
+  background: $primary-color
+  color: white
+  border: none
+  border-radius: 50%
+  box-shadow: $shadow-lg
+  cursor: pointer
+  opacity: 0
+  visibility: hidden
+  transform: translateY(20px)
+  transition: all $transition-base
+  z-index: $z-index-fixed
+
+  &.visible
+    opacity: 1
+    visibility: visible
+    transform: translateY(0)
+
+  &:hover
+    background: $primary-dark
+    transform: translateY(-4px)
+
+  svg
+    width: 24px
+    height: 24px
+
+// ============================================
+// Search Box Component
+// ============================================
+
+.search-box
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background: rgba(0, 0, 0, 0.5)
+  backdrop-filter: blur(4px)
+  display: flex
+  align-items: flex-start
+  justify-content: center
+  padding-top: 15vh
+  opacity: 0
+  visibility: hidden
+  transition: all $transition-base
+  z-index: $z-index-modal
+
+  &.active
+    opacity: 1
+    visibility: visible
+
+  .search-container
+    width: 100%
+    max-width: 600px
+    background: $light-bg-primary
+    border-radius: $border-radius-lg
+    box-shadow: $shadow-xl
+    overflow: hidden
+    transform: translateY(-20px)
+    transition: transform $transition-base
+
+  &.active .search-container
+    transform: translateY(0)
+
+  .search-input-wrapper
+    display: flex
+    align-items: center
+    padding: $padding-lg
+    border-bottom: 1px solid $light-border
+
+    svg
+      width: 20px
+      height: 20px
+      color: $light-text-tertiary
+      margin-right: $spacing-sm
+
+    .search-input
+      flex: 1
+      border: none
+      font-size: $font-size-lg
+      color: $light-text-primary
+      background: transparent
+
+      &:focus
+        outline: none
+
+      &::placeholder
+        color: $light-text-tertiary
+
+  .search-results
+    max-height: 400px
+    overflow-y: auto
+    padding: $padding-md
+
+    .search-result-item
+      display: block
+      padding: $padding-md
+      border-radius: $border-radius-md
+      text-decoration: none
+      transition: background $transition-base
+
+      &:hover
+        background: $light-bg-secondary
+
+      .result-title
+        font-size: $font-size-base
+        font-weight: $font-weight-medium
+        color: $light-text-primary
+        margin-bottom: $spacing-xs
+
+      .result-excerpt
+        font-size: $font-size-sm
+        color: $light-text-secondary
+
+body.dark-theme
+  .search-box
+    .search-container
+      background: $dark-bg-secondary
+
+    .search-input-wrapper
+      border-bottom-color: $dark-border
+
+      svg
+        color: $dark-text-tertiary
+
+      .search-input
+        color: $dark-text-primary
+
+        &::placeholder
+          color: $dark-text-tertiary
+
+    .search-results .search-result-item:hover
+      background: $dark-bg-tertiary
+
+// ============================================
+// Mobile Menu Component
+// ============================================
+
+.mobile-menu
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background: $light-bg-primary
+  z-index: $z-index-modal - 1
+  opacity: 0
+  visibility: hidden
+  transition: all $transition-base
+  padding-top: 80px
+
+  &.active
+    opacity: 1
+    visibility: visible
+
+  .mobile-nav
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: $padding-xl
+
+    .mobile-nav-link
+      display: block
+      padding: $padding-md $padding-lg
+      font-size: $font-size-lg
+      font-weight: $font-weight-medium
+      color: $light-text-primary
+      text-decoration: none
+      transition: color $transition-base
+
+      &:hover
+        color: $primary-color
+
+body.dark-theme
+  .mobile-menu
+    background: $dark-bg-primary
+
+    .mobile-nav .mobile-nav-link
+      color: $dark-text-primary
+
+      &:hover
+        color: $primary-light
+
+// ============================================
+// Loading Skeleton
+// ============================================
+
+.skeleton
+  background: linear-gradient(90deg, $light-bg-secondary 25%, $light-bg-tertiary 50%, $light-bg-secondary 75%)
+  background-size: 200% 100%
+  animation: skeleton-loading 1.5s infinite
+  border-radius: $border-radius-md
+
+@keyframes skeleton-loading
+  0%
+    background-position: 200% 0
+  100%
+    background-position: -200% 0
+
+body.dark-theme
+  .skeleton
+    background: linear-gradient(90deg, $dark-bg-secondary 25%, $dark-bg-tertiary 50%, $dark-bg-secondary 75%)
+    background-size: 200% 100%
+
+// ============================================
+// Toast Notification
+// ============================================
+
+.toast
+  position: fixed
+  bottom: $spacing-xl
+  left: 50%
+  transform: translateX(-50%) translateY(100px)
+  padding: $padding-md $padding-lg
+  background: $dark-bg-primary
+  color: white
+  border-radius: $border-radius-md
+  box-shadow: $shadow-xl
+  opacity: 0
+  visibility: hidden
+  transition: all $transition-base
+  z-index: $z-index-tooltip
+
+  &.show
+    opacity: 1
+    visibility: visible
+    transform: translateX(-50%) translateY(0)
+
+  &.success
+    background: $success-color
+
+  &.error
+    background: $danger-color
+
+  &.warning
+    background: $warning-color
+    color: $dark-text-primary
+
+// ============================================
+// Article Header Component
+// ============================================
+
+.article-header
+  margin-bottom: $spacing-xl
+
+  .article-title
+    font-size: $font-size-3xl
+    font-weight: $font-weight-bold
+    color: $light-text-primary
+    margin: 0 0 $spacing-md 0
+    line-height: $line-height-tight
+
+  .article-meta
+    display: flex
+    flex-wrap: wrap
+    gap: $spacing-md
+    font-size: $font-size-sm
+    color: $light-text-tertiary
+    margin-bottom: $spacing-md
+
+    .meta-item
+      display: flex
+      align-items: center
+      gap: $spacing-xs
+
+      svg
+        width: 16px
+        height: 16px
+
+      a
+        color: $light-text-secondary
+
+        &:hover
+          color: $primary-color
+
+  .article-tags
+    display: flex
+    flex-wrap: wrap
+    gap: $spacing-sm
+
+body.dark-theme
+  .article-header
+    .article-title
+      color: $dark-text-primary
+
+    .article-meta
+      color: $dark-text-tertiary
+
+      a:hover
+        color: $primary-light
+
+// ============================================
+// TOC (Table of Contents) Component
+// ============================================
+
+.toc-wrapper
+  background: $light-bg-secondary
+  border-radius: $border-radius-lg
+  padding: $padding-lg
+  margin-bottom: $spacing-xl
+
+  .toc-title
+    font-size: $font-size-lg
+    font-weight: $font-weight-semibold
+    color: $light-text-primary
+    margin: 0 0 $spacing-md 0
+
+  .toc-content
+    ol
+      list-style: none
+      padding-left: 0
+      margin: 0
+
+    li
+      margin: $spacing-xs 0
+
+    a
+      color: $light-text-secondary
+      text-decoration: none
+      font-size: $font-size-sm
+      transition: color $transition-base
+
+      &:hover
+        color: $primary-color
+
+    .toc-child
+      padding-left: $padding-lg
+      margin-top: $spacing-xs
+
+body.dark-theme
+  .toc-wrapper
+    background: $dark-bg-secondary
+
+    .toc-title
+      color: $dark-text-primary
+
+    a
+      color: $dark-text-secondary
+
+      &:hover
+        color: $primary-light
+
+// ============================================
+// Page Header Component
+// ============================================
+
+.page-header
+  text-align: center
+  margin-bottom: $spacing-2xl
+  padding: $padding-2xl 0
+
+  .page-title
+    font-size: $font-size-4xl
+    font-weight: $font-weight-bold
+    color: $light-text-primary
+    margin: 0 0 $spacing-md 0
+
+  .page-subtitle
+    font-size: $font-size-lg
+    color: $light-text-secondary
+    margin: 0
+
+body.dark-theme
+  .page-header
+    .page-title
+      color: $dark-text-primary
+
+    .page-subtitle
+      color: $dark-text-secondary
