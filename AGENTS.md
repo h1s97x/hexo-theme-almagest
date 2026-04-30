@@ -138,7 +138,16 @@ pnpm format
 
 主要配置项：
 - `style.prefers_theme`: 主题偏好 (auto/light/dark)
-- `features`: 功能开关（搜索、评论、目录等）
+- `features`: 功能开关
+  - `search`: 搜索功能
+  - `comments`: 评论系统
+  - `toc`: 文章目录
+  - `code_copy`: 代码复制
+  - `back_to_top`: 返回顶部
+  - `reading_time`: 阅读时间
+  - `word_count`: 字数统计
+  - `pjax`: 无刷新导航
+  - `reading_mode`: 阅读模式
 - `toc`: 文章目录配置
 - `reading_progress`: 阅读进度条配置
 
@@ -164,6 +173,10 @@ excerpt: 摘要
 | `{% folding %}` | 折叠块 | `{% folding 标题 %}内容{% endfolding %}` |
 | `{% link %}` | 链接卡片 | `{% link url 标题 描述 %}` |
 | `{% tabs %}` | 选项卡 | `{% tabs %}...{% endtabs %}` |
+| `{% label %}` | 标签徽章 | `{% label text primary %}` |
+| `{% video %}` | 视频 | `{% video url %}` |
+| `{% audio %}` | 音频 | `{% audio url %}` |
+| `{% gallery %}` | 图片画廊 | `{% gallery %}![](url){% endgallery %}` |
 
 ## 用户偏好与长期约束
 

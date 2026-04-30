@@ -3,7 +3,13 @@
 const config = theme;
 const version = config.version || '1.0.0';
 const cdn_prefix = config.cdn_prefix || '';
+const pjaxEnabled = config.features?.pjax !== false;
 %>
+
+<!-- Pjax Library (必须在其他脚本之前加载) -->
+<% if (pjaxEnabled) { %>
+<script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script>
+<% } %>
 
 <!-- Theme Scripts -->
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/theme.js' : url_for('/js/theme.js') %>?v=<%= version %>"></script>
@@ -25,8 +31,156 @@ const cdn_prefix = config.cdn_prefix || '';
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/astronomy.js' : url_for('/js/astronomy.js') %>?v=<%= version %>"></script>
 <% } %>
 
+<!-- Utilities -->
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/utils.js' : url_for('/js/utils.js') %>?v=<%= version %>"></script>
+
+<!-- Pjax 初始化 -->
+<% if (pjaxEnabled) { %>
+<script data-pjax>
+(function() {
+  'use strict';
+
+  // Pjax 配置
+  const pjaxSelectors = [
+    '#body-wrap',
+    '.js-pjax'
+  ];
+
+  // 检查是否支持 Pjax
+  if (typeof Pjax === 'undefined') {
+    console.warn('Pjax library not loaded');
+    return;
+  }
+
+  // 创建 Pjax 实例
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([href^="#"]):not([href^="javascript"]):not([data-no-pjax])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: typeof ga === 'function',
+    scrollRestoration: false
+  });
+
+  // 全局函数存储
+  window.globalFn = window.globalFn || {
+    pjaxSend: {},
+    pjaxComplete: {}
+  };
+
+  // 添加全局回调函数
+  window.addFn = function(key, fn, type) {
+    const store = type === 'send' ? window.globalFn.pjaxSend : window.globalFn.pjaxComplete;
+    store[key] = fn;
+  };
+
+  // 辅助函数：触发全局回调
+  function triggerFn(fnObj) {
+    if (!fnObj) return;
+    Object.values(fnObj).forEach(function(fn) {
+      try {
+        if (typeof fn === 'function') fn();
+      } catch (err) {
+        console.debug('Pjax callback error:', err);
+      }
+    });
+  }
+
+  // Pjax:send 事件 - 页面开始加载
+  document.addEventListener('pjax:send', function() {
+    // 移除事件监听器
+    const sendOnce = window.globalFn.pjaxSendOnce;
+    if (sendOnce) Object.keys(sendOnce).forEach(k => delete sendOnce[k]);
+
+    // 重置阅读模式
+    document.body.classList.remove('read-mode');
+
+    // 显示 loading
+    const loading = document.querySelector('.loading-wrap');
+    if (loading) loading.classList.add('active');
+
+    // 触发 send 回调
+    triggerFn(window.globalFn.pjaxSend);
+  });
+
+  // Pjax:complete 事件 - 页面加载完成
+  document.addEventListener('pjax:complete', function() {
+    // 移除 complete 监听器
+    const completeOnce = window.globalFn.pjaxCompleteOnce;
+    if (completeOnce) Object.keys(completeOnce).forEach(k => delete completeOnce[k]);
+
+    // 隐藏 loading
+    const loading = document.querySelector('.loading-wrap');
+    if (loading) loading.classList.remove('active');
+
+    // 重新执行 data-pjax 脚本
+    document.querySelectorAll('script[data-pjax]').forEach(function(item) {
+      const newScript = document.createElement('script');
+      const content = item.textContent || item.innerHTML || '';
+      Array.from(item.attributes).forEach(function(attr) {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      newScript.appendChild(document.createTextNode(content));
+      item.parentNode.replaceChild(newScript, item);
+    });
+
+    // 触发 complete 回调
+    triggerFn(window.globalFn.pjaxComplete);
+
+    // 滚动到顶部
+    window.scrollTo(0, 0);
+  });
+
+  // Pjax:error 事件 - 加载出错
+  document.addEventListener('pjax:error', function(e) {
+    if (e.request && e.request.status === 404) {
+      window.location.href = e.request.responseURL;
+    }
+  });
+
+  // 重新初始化组件
+  document.addEventListener('pjax:success', function() {
+    // 重新初始化懒加载
+    if (window.lazyload && typeof window.lazyload.update === 'function') {
+      window.lazyload.update();
+    }
+
+    // 重新初始化代码复制
+    initCodeCopy();
+
+    // 重新初始化星空动画
+    if (window.astronomy && typeof window.astronomy.init === 'function') {
+      window.astronomy.init();
+    }
+  });
+
+  // 代码复制初始化
+  function initCodeCopy() {
+    document.querySelectorAll('.copy-button').forEach(function(btn) {
+      if (btn.dataset.initialized) return;
+      btn.dataset.initialized = 'true';
+
+      btn.addEventListener('click', function() {
+        const code = btn.closest('.code-block').querySelector('code');
+        if (!code) return;
+
+        navigator.clipboard.writeText(code.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          setTimeout(function() {
+            btn.textContent = 'Copy';
+          }, 2000);
+        });
+      });
+    });
+  }
+  initCodeCopy();
+
+})();
+</script>
+<% } %>
+
 <!-- Back to Top -->
-<script>
+<% if (config.features?.back_to_top) { %>
+<script data-pjax>
 (function() {
   const backToTop = document.getElementById('back-to-top');
   if (!backToTop) return;
@@ -40,20 +194,16 @@ const cdn_prefix = config.cdn_prefix || '';
   }
 
   window.addEventListener('scroll', checkScroll, { passive: true });
-
   backToTop.addEventListener('click', function() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-
   checkScroll();
 })();
 </script>
+<% } %>
 
 <!-- Mobile Menu -->
-<script>
+<script data-pjax>
 (function() {
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -71,8 +221,7 @@ const cdn_prefix = config.cdn_prefix || '';
   mobileMenuBtn.addEventListener('click', toggleMenu);
 
   // Close menu on link click
-  const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
-  mobileLinks.forEach(link => {
+  mobileMenu.querySelectorAll('a').forEach(function(link) {
     link.addEventListener('click', function() {
       if (isOpen) toggleMenu();
     });
@@ -80,16 +229,14 @@ const cdn_prefix = config.cdn_prefix || '';
 
   // Close menu on escape key
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && isOpen) {
-      toggleMenu();
-    }
+    if (e.key === 'Escape' && isOpen) toggleMenu();
   });
 })();
 </script>
 
 <!-- Reading Progress Bar -->
-<% if (config.reading_progress?.enable && page.layout === 'post') { %>
-<script>
+<% if (config.reading_progress?.enable) { %>
+<script data-pjax>
 (function() {
   const progressBar = document.querySelector('#reading-progress .reading-progress-bar');
   const progressContainer = document.getElementById('reading-progress');
@@ -109,8 +256,8 @@ const cdn_prefix = config.cdn_prefix || '';
 <% } %>
 
 <!-- Reading Time Calculator -->
-<% if (config.features?.reading_time && page.layout === 'post') { %>
-<script>
+<% if (config.features?.reading_time) { %>
+<script data-pjax>
 (function() {
   const readingTimeEl = document.getElementById('reading-time');
   if (!readingTimeEl) return;
@@ -121,16 +268,14 @@ const cdn_prefix = config.cdn_prefix || '';
   const text = content.textContent || content.innerText;
   const wordsPerMinute = 200;
   const words = text.trim().split(/\s+/).length;
-  const readingTime = Math.ceil(words / wordsPerMinute);
-
-  readingTimeEl.textContent = readingTime;
+  readingTimeEl.textContent = Math.ceil(words / wordsPerMinute);
 })();
 </script>
 <% } %>
 
 <!-- Word Count -->
-<% if (config.features?.word_count && page.layout === 'post') { %>
-<script>
+<% if (config.features?.word_count) { %>
+<script data-pjax>
 (function() {
   const wordCountEl = document.getElementById('word-count');
   if (!wordCountEl) return;
@@ -139,16 +284,36 @@ const cdn_prefix = config.cdn_prefix || '';
   if (!content) return;
 
   const text = content.textContent || content.innerText;
-  const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-
+  const words = text.trim().split(/\s+/).filter(function(w) { return w.length > 0; }).length;
   wordCountEl.textContent = words;
+})();
+</script>
+<% } %>
+
+<!-- Read Mode Toggle -->
+<% if (config.features?.reading_mode) { %>
+<script data-pjax>
+(function() {
+  const readModeBtn = document.getElementById('read-mode');
+  if (!readModeBtn) return;
+
+  // 从 localStorage 恢复阅读模式状态
+  const isReadMode = localStorage.getItem('read-mode') === 'true';
+  if (isReadMode) {
+    document.body.classList.add('read-mode');
+  }
+
+  readModeBtn.addEventListener('click', function() {
+    const isActive = document.body.classList.toggle('read-mode');
+    localStorage.setItem('read-mode', isActive);
+  });
 })();
 </script>
 <% } %>
 
 <!-- TOC Toggle -->
 <% if (config.toc?.collapse) { %>
-<script>
+<script data-pjax>
 (function() {
   const tocToggle = document.querySelector('.toc-toggle');
   const tocContent = document.querySelector('.toc-content.collapsible');
@@ -166,46 +331,58 @@ const cdn_prefix = config.cdn_prefix || '';
 <% } %>
 
 <!-- Tabs Navigation -->
-<script>
+<script data-pjax>
 (function() {
-  // Initialize tabs
   document.querySelectorAll('.tabs-wrapper').forEach(function(tabsWrapper) {
     const buttons = tabsWrapper.querySelectorAll('.tab-btn');
     const panes = tabsWrapper.querySelectorAll('.tab-pane');
 
     buttons.forEach(function(btn, idx) {
       btn.addEventListener('click', function() {
-        // Remove active class from all buttons and panes
         buttons.forEach(function(b) { b.classList.remove('active'); });
         panes.forEach(function(p) { p.classList.remove('active'); });
-
-        // Add active class to clicked button and corresponding pane
         btn.classList.add('active');
-        if (panes[idx]) {
-          panes[idx].classList.add('active');
-        }
+        if (panes[idx]) panes[idx].classList.add('active');
       });
-    });
-  });
-
-  // Code copy buttons
-  document.querySelectorAll('.code-copy-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const codeBlock = btn.closest('.code-block-wrapper');
-      const code = codeBlock ? codeBlock.querySelector('code') : null;
-
-      if (code) {
-        navigator.clipboard.writeText(code.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          setTimeout(function() {
-            btn.textContent = 'Copy';
-          }, 2000);
-        });
-      }
     });
   });
 })();
 </script>
+
+<!-- TOC Active Highlight -->
+<% if (config.toc?.enable) { %>
+<script data-pjax>
+(function() {
+  const toc = document.querySelector('.toc-wrapper');
+  if (!toc) return;
+
+  const links = toc.querySelectorAll('a');
+  const sections = [];
+
+  links.forEach(function(link) {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const section = document.querySelector(href);
+      if (section) sections.push({ link: link, section: section });
+    }
+  });
+
+  function updateToc() {
+    let current = '';
+    sections.forEach(function(item) {
+      const rect = item.section.getBoundingClientRect();
+      if (rect.top <= 100) current = '#' + item.section.id;
+    });
+
+    sections.forEach(function(item) {
+      item.link.classList.toggle('active', item.link.getAttribute('href') === current);
+    });
+  }
+
+  window.addEventListener('scroll', btf.throttle(updateToc, 100));
+})();
+</script>
+<% } %>
 
 <!-- Debug Mode -->
 <% if (config.debug) { %>

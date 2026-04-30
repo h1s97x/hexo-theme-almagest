@@ -739,3 +739,54 @@ body.dark-theme
 
 .align-wrapper
   margin: $spacing-lg 0
+
+// ============================================
+// Read Mode - 阅读模式
+// ============================================
+
+body.read-mode
+  // 隐藏不必要的元素
+  .sidebar,
+  #header,
+  #footer,
+  .post-nav,
+  .comments-wrapper,
+  .toc-wrapper,
+  #rightside-config-hide,
+  .article-tags,
+  .article-meta
+    display: none !important
+
+  // 调整内容宽度
+  .main-content
+    padding: 0
+
+  .container
+    max-width: 720px
+
+  .article-container
+    max-width: 720px
+    margin: 0 auto
+    padding: $spacing-2xl 0
+
+  // 隐藏背景效果
+  .starry-background,
+  .bg-canvas
+    display: none
+
+  // 恢复阅读模式按钮
+  #rightside-config-hide
+    display: flex !important
+    opacity: 1 !important
+    visibility: visible !important
+    transform: none !important
+
+  // 阅读模式按钮样式
+  .read-mode
+    background: var(--color-primary)
+    border-color: var(--color-primary)
+    color: white
+
+    &:hover
+      background: var(--color-primary-dark)
+      border-color: var(--color-primary-dark)

@@ -88,12 +88,14 @@ menu:
 # 功能开关
 features:
   search: true           # 搜索功能
-  comments: true          # 评论系统
-  toc: true               # 文章目录
-  code_copy: true         # 代码复制
-  back_to_top: true       # 返回顶部
-  reading_time: true      # 阅读时间
-  word_count: true        # 字数统计
+  comments: true         # 评论系统
+  toc: true              # 文章目录
+  code_copy: true        # 代码复制
+  back_to_top: true      # 返回顶部
+  reading_time: true     # 阅读时间
+  word_count: true       # 字数统计
+  pjax: true             # 无刷新导航
+  reading_mode: true     # 阅读模式
 
 # 社交链接
 social:
@@ -208,6 +210,38 @@ excerpt: 文章摘要            # 摘要（可选）
 <!-- tab -->
 内容3
 {% endtabs %}
+```
+
+### Label 标签
+
+```markdown
+{% label 默认标签 %}
+{% label 主要标签 primary %}
+{% label 成功标签 success %}
+{% label 警告标签 warning %}
+{% label 危险标签 danger %}
+```
+
+### Video 视频
+
+```markdown
+{% video https://example.com/video.mp4 %}
+```
+
+### Audio 音频
+
+```markdown
+{% audio https://example.com/audio.mp3 %}
+```
+
+### Gallery 图片画廊
+
+```markdown
+{% gallery %}
+![](https://example.com/image1.jpg)
+![](https://example.com/image2.jpg)
+![](https://example.com/image3.jpg)
+{% endgallery %}
 ```
 
 ## 页面创建
