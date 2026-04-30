@@ -15,7 +15,9 @@ const Astronomy = {
   // Initialize starry background animation
   initStarryBackground() {
     const background = document.querySelector('.starry-background');
-    if (!background) return;
+    if (!background) {
+      return;
+    }
 
     // Create animated stars
     const starCount = 100;
@@ -72,7 +74,9 @@ const Astronomy = {
   // Initialize astronomy calendar
   initCalendar() {
     const calendar = document.querySelector('.astronomy-calendar');
-    if (!calendar) return;
+    if (!calendar) {
+      return;
+    }
 
     const prevBtn = calendar.querySelector('.calendar-nav button:first-child');
     const nextBtn = calendar.querySelector('.calendar-nav button:last-child');
@@ -100,7 +104,9 @@ const Astronomy = {
     const startingDayOfWeek = firstDay.getDay();
 
     const grid = document.querySelector('.calendar-grid');
-    if (!grid) return;
+    if (!grid) {
+      return;
+    }
 
     // Clear existing days
     const dayElements = grid.querySelectorAll('.calendar-day');
@@ -137,16 +143,18 @@ const Astronomy = {
   },
 
   // Check if day has events
-  hasEvent(year, month, day) {
+  hasEvent(_year, _month, _day) {
     // This would be populated from actual event data
     // For now, return false
     return false;
   },
 
   // Show events for a specific day
-  showDayEvents(year, month, day) {
+  showDayEvents(_year, _month, _day) {
     const eventsContainer = document.querySelector('.calendar-events');
-    if (!eventsContainer) return;
+    if (!eventsContainer) {
+      return;
+    }
 
     // Clear existing events
     eventsContainer.innerHTML = '';
@@ -217,7 +225,7 @@ const Astronomy = {
   },
 
   // Get observation tips for a location
-  getObservationTips(latitude, longitude, date) {
+  getObservationTips(latitude, _longitude, _date) {
     const tips = [];
 
     // Add tips based on location and date

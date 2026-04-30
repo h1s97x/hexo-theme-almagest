@@ -1,0 +1,53 @@
+<%
+// Donation Component
+const config = theme.donate || {};
+const title = config.title || '感谢您的支持';
+const description = config.description || '';
+%>
+
+<div class="donate-wrapper">
+  <div class="donate-header">
+    <h3 class="donate-title"><%= title %></h3>
+    <% if (description) { %>
+      <p class="donate-description"><%= description %></p>
+    <% } %>
+  </div>
+
+  <div class="donate-buttons">
+    <% if (config.methods?.alipay || config.methods?.alipay_qr) { %>
+      <button class="donate-btn alipay" data-target="alipay">
+        <svg class="icon" viewBox="0 0 24 24" width="20" height="20">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
+        </svg>
+        <span>支付宝</span>
+      </button>
+    <% } %>
+
+    <% if (config.methods?.wechat || config.methods?.wechat_qr) { %>
+      <button class="donate-btn wechat" data-target="wechat">
+        <svg class="icon" viewBox="0 0 24 24" width="20" height="20">
+          <path d="M9.5 4C5.36 4 2 6.69 2 10c0 1.89 1.08 3.56 2.78 4.66L4 17l2.57-1.38C7.85 16.4 8.68 17 9.5 17c2.48 0 4.5-2.02 4.5-4.5S11.98 8 9.5 8c-.28 0-.55.03-.81.07L7.22 6.57C7.09 6.38 7 6.19 7 6c0-.34.08-.66.22-.95L9.5 4zm5.5 3c2.48 0 4.5 2.02 4.5 4.5s-2.02 4.5-4.5 4.5-4.5-2.02-4.5-4.5h1c0 1.93 1.57 3.5 3.5 3.5s3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5c-.28 0-.55.03-.81.07L16.72 6.57C16.59 6.38 16.5 6.19 16.5 6c0-.34.08-.66.22-.95L18.5 4c-.84.77-1.5 1.73-1.5 3z" fill="currentColor"/>
+        </svg>
+        <span>微信</span>
+      </button>
+    <% } %>
+  </div>
+
+  <% if (config.methods?.alipay_qr || config.methods?.wechat_qr) { %>
+  <div class="donate-qr-codes">
+    <% if (config.methods?.alipay_qr) { %>
+      <div class="qr-code" id="qr-alipay" style="display: none;">
+        <img src="<%= config.methods.alipay_qr %>" alt="Alipay QR Code">
+        <p>支付宝扫码打赏</p>
+      </div>
+    <% } %>
+
+    <% if (config.methods?.wechat_qr) { %>
+      <div class="qr-code" id="qr-wechat" style="display: none;">
+        <img src="<%= config.methods.wechat_qr %>" alt="WeChat QR Code">
+        <p>微信扫码打赏</p>
+      </div>
+    <% } %>
+  </div>
+  <% } %>
+</div>

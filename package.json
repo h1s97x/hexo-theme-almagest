@@ -11,7 +11,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "clean": "rm -rf .preview-demo public db.json",
+    "preview": "hexo server"
   },
   "repository": {
     "type": "git",

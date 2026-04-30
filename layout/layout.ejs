@@ -21,24 +21,26 @@ const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}
   <div id="app" class="app-container">
     <!-- Header -->
     <%- partial('_partial/header') %>
-    
+
     <!-- Main Content -->
     <main class="main-content" role="main">
       <div class="container">
         <!-- Breadcrumb -->
-        <%- partial('_partial/breadcrumb') %>
-        
+        <% if (page.layout !== 'index') { %>
+          <%- partial('_partial/breadcrumb') %>
+        <% } %>
+
         <div class="content-wrapper <%= page_type %>">
           <!-- Sidebar (Left) -->
           <% if (config.sidebar?.enable && config.sidebar?.position === 'left') { %>
             <%- partial('_partial/sidebar') %>
           <% } %>
-          
+
           <!-- Main Article -->
           <article class="article-container">
             <%- body %>
           </article>
-          
+
           <!-- Sidebar (Right) -->
           <% if (config.sidebar?.enable && config.sidebar?.position === 'right') { %>
             <%- partial('_partial/sidebar') %>
@@ -46,21 +48,26 @@ const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}
         </div>
       </div>
     </main>
-    
+
     <!-- Footer -->
     <%- partial('_partial/footer') %>
-    
+
     <!-- Back to Top Button -->
     <% if (config.features?.back_to_top) { %>
       <button id="back-to-top" class="back-to-top" aria-label="Back to top">
         <svg viewBox="0 0 24 24" width="24" height="24">
-          <path d="M7 14l5-5 5 5z" fill="currentColor"/>
+          <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" fill="currentColor"/>
         </svg>
       </button>
     <% } %>
   </div>
-  
+
   <!-- Scripts -->
   <%- partial('_partial/scripts') %>
+
+  <!-- Custom Inject -->
+  <% if (config.inject?.body_end) { %>
+    <%- config.inject.body_end %>
+  <% } %>
 </body>
 </html>

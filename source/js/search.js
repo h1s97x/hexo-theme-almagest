@@ -59,8 +59,7 @@
   function buildSearchIndex() {
     searchData.forEach((item, index) => {
       const title = item.title.toLowerCase();
-      const content = item.content.toLowerCase();
-      
+
       title.split(/\s+/).forEach(word => {
         if (word.length > 0) {
           if (!searchIndex[word]) {
@@ -76,7 +75,9 @@
 
   // Perform search
   function performSearch(query, resultsContainer) {
-    if (!resultsContainer) return;
+    if (!resultsContainer) {
+      return;
+    }
 
     const queryWords = query.toLowerCase().split(/\s+/);
     const results = new Set();
@@ -122,7 +123,7 @@
     results.slice(0, 20).forEach(result => {
       const item = result.item;
       const excerpt = getExcerpt(item.content, query, 150);
-      
+
       html += '<div class="search-result-item">';
       html += '<h3 class="result-title"><a href="' + item.url + '">' + highlightQuery(item.title, query) + '</a></h3>';
       html += '<p class="result-excerpt">' + highlightQuery(excerpt, query) + '</p>';
@@ -139,11 +140,15 @@
     const queryIndex = content.toLowerCase().indexOf(query.toLowerCase());
     let start = Math.max(0, queryIndex - 50);
     let end = Math.min(content.length, start + length);
-    
+
     let excerpt = content.substring(start, end);
-    if (start > 0) excerpt = '...' + excerpt;
-    if (end < content.length) excerpt = excerpt + '...';
-    
+    if (start > 0) {
+      excerpt = '...' + excerpt;
+    }
+    if (end < content.length) {
+      excerpt = excerpt + '...';
+    }
+
     return excerpt;
   }
 
@@ -160,7 +165,7 @@
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      "'": '&#039;'
+      '\'': '&#039;'
     };
     return text.replace(/[&<>"']/g, m => map[m]);
   }

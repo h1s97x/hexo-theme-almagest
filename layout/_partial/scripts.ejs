@@ -21,7 +21,9 @@ const cdn_prefix = config.cdn_prefix || '';
 <% } %>
 
 <!-- Astronomy Animations -->
+<% if (config.astronomy?.enable) { %>
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/astronomy.js' : url_for('/js/astronomy.js') %>?v=<%= version %>"></script>
+<% } %>
 
 <!-- Back to Top -->
 <script>
@@ -38,7 +40,7 @@ const cdn_prefix = config.cdn_prefix || '';
   }
 
   window.addEventListener('scroll', checkScroll, { passive: true });
-  
+
   backToTop.addEventListener('click', function() {
     window.scrollTo({
       top: 0,
@@ -85,8 +87,29 @@ const cdn_prefix = config.cdn_prefix || '';
 })();
 </script>
 
+<!-- Reading Progress Bar -->
+<% if (config.reading_progress?.enable && page.layout === 'post') { %>
+<script>
+(function() {
+  const progressBar = document.querySelector('#reading-progress .reading-progress-bar');
+  const progressContainer = document.getElementById('reading-progress');
+  if (!progressBar || !progressContainer) return;
+
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = Math.min(progress, 100) + '%';
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+})();
+</script>
+<% } %>
+
 <!-- Reading Time Calculator -->
-<% if (config.features?.reading_time) { %>
+<% if (config.features?.reading_time && page.layout === 'post') { %>
 <script>
 (function() {
   const readingTimeEl = document.getElementById('reading-time');
@@ -105,15 +128,67 @@ const cdn_prefix = config.cdn_prefix || '';
 </script>
 <% } %>
 
+<!-- Word Count -->
+<% if (config.features?.word_count && page.layout === 'post') { %>
+<script>
+(function() {
+  const wordCountEl = document.getElementById('word-count');
+  if (!wordCountEl) return;
+
+  const content = document.querySelector('.article-content');
+  if (!content) return;
+
+  const text = content.textContent || content.innerText;
+  const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+
+  wordCountEl.textContent = words;
+})();
+</script>
+<% } %>
+
+<!-- Donate Button -->
+<% if (config.donate?.enable) { %>
+<script>
+(function() {
+  const donateBtns = document.querySelectorAll('.donate-btn');
+  if (!donateBtns.length) return;
+
+  donateBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const target = this.getAttribute('data-target');
+      const qrCode = document.getElementById('qr-' + target);
+      if (qrCode) {
+        qrCode.style.display = qrCode.style.display === 'none' ? 'block' : 'none';
+      }
+    });
+  });
+})();
+</script>
+<% } %>
+
+<!-- TOC Toggle -->
+<% if (config.toc?.collapse) { %>
+<script>
+(function() {
+  const tocToggle = document.querySelector('.toc-toggle');
+  const tocContent = document.querySelector('.toc-content.collapsible');
+  if (!tocToggle || !tocContent) return;
+
+  tocToggle.addEventListener('click', function() {
+    tocContent.classList.toggle('collapsed');
+    const icon = tocToggle.querySelector('.icon');
+    if (icon) {
+      icon.style.transform = tocContent.classList.contains('collapsed') ? 'rotate(-90deg)' : '';
+    }
+  });
+})();
+</script>
+<% } %>
+
 <!-- Debug Mode -->
 <% if (config.debug) { %>
 <script>
 console.log('Theme Almagest v<%= version %>');
 console.log('Config:', <%- JSON.stringify(config) %>);
 </script>
-<% } %>
-
-<!-- Custom Scripts -->
-<% if (config.inject?.body_end) { %>
-<%- config.inject.body_end %>
 <% } %>

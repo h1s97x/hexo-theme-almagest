@@ -1,0 +1,38 @@
+<%
+// Post Navigation Component
+// 显示上一篇和下一篇文章
+const prev = page.prev;
+const next = page.next;
+%>
+
+<% if (prev || next) { %>
+<nav class="post-nav">
+  <div class="post-nav-prev">
+    <% if (prev) { %>
+      <a href="<%= url_for(prev.path) %>" class="nav-link">
+        <span class="nav-label">
+          <svg class="icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+          </svg>
+          <%= __('prev_post') %>
+        </span>
+        <span class="nav-title"><%= prev.title %></span>
+      </a>
+    <% } %>
+  </div>
+
+  <div class="post-nav-next">
+    <% if (next) { %>
+      <a href="<%= url_for(next.path) %>" class="nav-link">
+        <span class="nav-label">
+          <%= __('next_post') %>
+          <svg class="icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="nav-title"><%= next.title %></span>
+      </a>
+    <% } %>
+  </div>
+</nav>
+<% } %>

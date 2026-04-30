@@ -1,0 +1,560 @@
+// Hexo Theme Almagest - Extra Components Styles
+// ==============================================
+
+// ============================================
+// Reading Progress Bar
+// ============================================
+
+.reading-progress
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  z-index: $z-index-fixed
+  overflow: hidden
+
+  .reading-progress-bar
+    height: 100%
+    width: 0
+    transition: width 0.1s ease
+
+// ============================================
+// Table of Contents (TOC)
+// ============================================
+
+.toc-wrapper
+  position: sticky
+  top: $spacing-xl
+  max-height: calc(100vh - #{$spacing-xl * 2})
+  background: $light-bg-secondary
+  border-radius: $border-radius-lg
+  padding: $padding-lg
+  overflow-y: auto
+  font-size: $font-size-sm
+
+  &.toc-right
+    order: 2
+    margin-left: $spacing-xl
+
+  &.toc-left
+    order: 0
+    margin-right: $spacing-xl
+
+  .toc-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: $spacing-md
+
+    .toc-title
+      display: flex
+      align-items: center
+      gap: $spacing-sm
+      font-size: $font-size-base
+      font-weight: $font-weight-semibold
+      color: $light-text-primary
+      margin: 0
+
+      svg
+        width: 18px
+        height: 18px
+        color: $primary-color
+
+    .toc-toggle
+      background: none
+      border: none
+      cursor: pointer
+      color: $light-text-tertiary
+      padding: 0
+      transition: transform $transition-base
+
+      svg
+        width: 16px
+        height: 16px
+
+  .toc-content
+    .toc-list
+      list-style: none
+      padding: 0
+      margin: 0
+
+      li
+        margin-bottom: $spacing-xs
+
+      a
+        display: block
+        padding: $padding-xs $padding-sm
+        color: $light-text-secondary
+        text-decoration: none
+        border-left: 2px solid transparent
+        transition: all $transition-base
+
+        &:hover
+          color: $primary-color
+          border-left-color: $primary-color
+
+        &.active
+          color: $primary-color
+          border-left-color: $primary-color
+          font-weight: $font-weight-medium
+
+    .toc-list-number
+      counter-reset: toc-counter
+
+      li
+        counter-increment: toc-counter
+
+        a::before
+          content: counter(toc-counter) ". "
+          color: $light-text-tertiary
+
+  &.collapsed .toc-content
+    display: none
+
+body.dark-theme
+  .toc-wrapper
+    background: $dark-bg-secondary
+
+    .toc-title
+      color: $dark-text-primary
+
+    .toc-content a
+      color: $dark-text-secondary
+
+      &:hover
+      &.active
+        color: $primary-light
+        border-left-color: $primary-light
+
+// ============================================
+// Post Navigation
+// ============================================
+
+.post-nav
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: $spacing-lg
+  margin-top: $spacing-2xl
+  padding-top: $spacing-xl
+  border-top: 1px solid $light-divider
+
+  .post-nav-prev
+    text-align: left
+
+  .post-nav-next
+    text-align: right
+
+  .nav-link
+    display: inline-block
+    padding: $padding-lg
+    background: $light-bg-secondary
+    border-radius: $border-radius-lg
+    text-decoration: none
+    transition: all $transition-base
+
+    &:hover
+      background: rgba($primary-color, 0.1)
+
+      .nav-title
+        color: $primary-color
+
+    .nav-label
+      display: flex
+      align-items: center
+      gap: $spacing-xs
+      font-size: $font-size-xs
+      color: $light-text-tertiary
+      margin-bottom: $spacing-xs
+
+      svg
+        width: 14px
+        height: 14px
+
+    .nav-title
+      font-size: $font-size-base
+      font-weight: $font-weight-medium
+      color: $light-text-primary
+      transition: color $transition-base
+      display: -webkit-box
+      -webkit-line-clamp: 2
+      -webkit-box-orient: vertical
+      overflow: hidden
+
+body.dark-theme
+  .post-nav
+    border-top-color: $dark-divider
+
+    .nav-link
+      background: $dark-bg-secondary
+
+      &:hover
+        background: rgba($primary-light, 0.1)
+
+        .nav-title
+          color: $primary-light
+
+      .nav-label
+        color: $dark-text-tertiary
+
+      .nav-title
+        color: $dark-text-primary
+
+// ============================================
+// Donation Component
+// ============================================
+
+.donate-wrapper
+  margin-top: $spacing-2xl
+  padding: $padding-xl
+  background: $light-bg-secondary
+  border-radius: $border-radius-lg
+  text-align: center
+
+  .donate-header
+    margin-bottom: $spacing-lg
+
+    .donate-title
+      font-size: $font-size-xl
+      font-weight: $font-weight-semibold
+      color: $light-text-primary
+      margin: 0 0 $spacing-sm 0
+
+    .donate-description
+      font-size: $font-size-sm
+      color: $light-text-secondary
+      margin: 0
+
+  .donate-buttons
+    display: flex
+    justify-content: center
+    gap: $spacing-lg
+
+  .donate-btn
+    display: inline-flex
+    align-items: center
+    gap: $spacing-sm
+    padding: $padding-md $padding-xl
+    font-size: $font-size-base
+    font-weight: $font-weight-medium
+    color: white
+    background: $primary-color
+    border: none
+    border-radius: $border-radius-full
+    cursor: pointer
+    transition: all $transition-base
+
+    &:hover
+      background: $primary-dark
+      transform: translateY(-2px)
+
+    svg
+      width: 20px
+      height: 20px
+
+    &.alipay
+      background: #1677ff
+
+      &:hover
+        background: #0958d9
+
+    &.wechat
+      background: #07c160
+
+      &:hover
+        background: #05903d
+
+  .donate-qr-codes
+    margin-top: $spacing-xl
+
+    .qr-code
+      img
+        max-width: 200px
+        border-radius: $border-radius-md
+        box-shadow: $shadow-md
+
+      p
+        font-size: $font-size-sm
+        color: $light-text-secondary
+        margin: $spacing-sm 0 0 0
+
+body.dark-theme
+  .donate-wrapper
+    background: $dark-bg-secondary
+
+    .donate-title
+      color: $dark-text-primary
+
+    .donate-description
+      color: $dark-text-secondary
+
+// ============================================
+// Article Copyright
+// ============================================
+
+.article-copyright
+  margin-top: $spacing-xl
+  padding: $padding-lg
+  background: rgba($primary-color, 0.05)
+  border-left: 4px solid $primary-color
+  border-radius: 0 $border-radius-md $border-radius-md 0
+  font-size: $font-size-sm
+  color: $light-text-secondary
+
+body.dark-theme
+  .article-copyright
+    background: rgba($primary-light, 0.05)
+    border-left-color: $primary-light
+    color: $dark-text-secondary
+
+// ============================================
+// Article Image
+// ============================================
+
+.article-image
+  margin: $spacing-xl 0
+
+  img
+    max-width: 100%
+    height: auto
+    border-radius: $border-radius-lg
+
+  figcaption
+    margin-top: $spacing-sm
+    font-size: $font-size-sm
+    color: $light-text-tertiary
+    text-align: center
+
+body.dark-theme
+  .article-image figcaption
+    color: $dark-text-tertiary
+
+// ============================================
+// Note Tags
+// ============================================
+
+.note
+  margin: $spacing-lg 0
+  padding: $padding-lg
+  border-radius: $border-radius-md
+  border-left: 4px solid
+
+  .note-content
+    p:last-child
+      margin-bottom: 0
+
+  &.note-default
+    background: $light-bg-secondary
+    border-left-color: $light-text-tertiary
+
+  &.note-primary
+    background: rgba(#4a90d9, 0.1)
+    border-left-color: #4a90d9
+
+  &.note-success
+    background: rgba(#52c41a, 0.1)
+    border-left-color: #52c41a
+
+  &.note-warning
+    background: rgba(#faad14, 0.1)
+    border-left-color: #faad14
+
+  &.note-danger
+    background: rgba(#ff4d4f, 0.1)
+    border-left-color: #ff4d4f
+
+body.dark-theme
+  .note
+    &.note-default
+      background: $dark-bg-secondary
+      border-left-color: $dark-text-tertiary
+
+    &.note-primary
+      background: rgba($primary-light, 0.1)
+      border-left-color: $primary-light
+
+// ============================================
+// Timeline
+// ============================================
+
+.timeline
+  margin: $spacing-xl 0
+
+  .timeline-title
+    font-size: $font-size-lg
+    font-weight: $font-weight-semibold
+    color: $light-text-primary
+    margin-bottom: $spacing-lg
+
+  .timeline-content
+    position: relative
+    padding-left: $spacing-xl
+
+    &::before
+      content: ''
+      position: absolute
+      left: 6px
+      top: 0
+      bottom: 0
+      width: 2px
+      background: $light-divider
+
+  .timeline-node
+    position: relative
+    margin-bottom: $spacing-lg
+
+    &::before
+      content: ''
+      position: absolute
+      left: -#{$spacing-xl + 3px}
+      top: 6px
+      width: 12px
+      height: 12px
+      background: $primary-color
+      border-radius: 50%
+
+    .timeline-node-title
+      font-weight: $font-weight-semibold
+      color: $light-text-primary
+      margin-bottom: $spacing-xs
+
+body.dark-theme
+  .timeline
+    .timeline-title
+      color: $dark-text-primary
+
+    .timeline-content::before
+      background: $dark-divider
+
+    .timeline-node::before
+      background: $primary-light
+
+    .timeline-node-title
+      color: $dark-text-primary
+
+// ============================================
+// Folding/Collapse
+// ============================================
+
+.folding-block
+  margin: $spacing-lg 0
+  border: 1px solid $light-border
+  border-radius: $border-radius-md
+  overflow: hidden
+
+  .folding-title
+    display: flex
+    align-items: center
+    padding: $padding-md $padding-lg
+    font-weight: $font-weight-medium
+    color: $light-text-primary
+    background: $light-bg-secondary
+    cursor: pointer
+    user-select: none
+
+    &::before
+      content: '▶'
+      font-size: $font-size-xs
+      margin-right: $spacing-sm
+      transition: transform $transition-base
+
+  &[open] .folding-title::before
+    transform: rotate(90deg)
+
+  .folding-content
+    padding: $padding-lg
+    border-top: 1px solid $light-border
+
+body.dark-theme
+  .folding-block
+    border-color: $dark-border
+
+    .folding-title
+      color: $dark-text-primary
+      background: $dark-bg-secondary
+
+    .folding-content
+      border-top-color: $dark-border
+
+// ============================================
+// Link Card
+// ============================================
+
+.link-card
+  display: block
+  margin: $spacing-lg 0
+  padding: $padding-lg
+  background: $light-bg-secondary
+  border-radius: $border-radius-lg
+  text-decoration: none
+  transition: all $transition-base
+
+  &:hover
+    background: rgba($primary-color, 0.1)
+    transform: translateY(-2px)
+
+  .link-card-content
+    .link-title
+      font-size: $font-size-base
+      font-weight: $font-weight-medium
+      color: $light-text-primary
+      margin-bottom: $spacing-xs
+
+    .link-desc
+      font-size: $font-size-sm
+      color: $light-text-secondary
+      margin-bottom: $spacing-sm
+
+    .link-url
+      font-size: $font-size-xs
+      color: $light-text-tertiary
+
+body.dark-theme
+  .link-card
+    background: $dark-bg-secondary
+
+    &:hover
+      background: rgba($primary-light, 0.1)
+
+    .link-title
+      color: $dark-text-primary
+
+    .link-desc
+      color: $dark-text-secondary
+
+// ============================================
+// Badge
+// ============================================
+
+.badge
+  display: inline-flex
+  align-items: center
+  padding: $padding-xs $padding-sm
+  font-size: $font-size-xs
+  font-weight: $font-weight-medium
+  border-radius: $border-radius-sm
+
+  &.badge-default
+    color: $light-text-secondary
+    background: $light-bg-secondary
+
+  &.badge-primary
+    color: white
+    background: $primary-color
+
+  &.badge-success
+    color: white
+    background: #52c41a
+
+  &.badge-warning
+    color: white
+    background: #faad14
+
+  &.badge-danger
+    color: white
+    background: #ff4d4f
+
+body.dark-theme
+  .badge
+    &.badge-default
+      color: $dark-text-secondary
+      background: $dark-bg-secondary
