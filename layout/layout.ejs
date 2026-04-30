@@ -33,61 +33,57 @@ const pjaxEnabled = config.features?.pjax !== false;
   <% } %>
 
   <div id="app" class="app-container">
-    <%- partial('_partial/sidebar') %>
+    <!-- Header -->
+    <%- partial('_partial/header') %>
 
-    <div id="body-wrap">
-      <!-- Header -->
-      <%- partial('_partial/header') %>
+    <!-- Main Content -->
+    <main class="main-content" role="main">
+      <div class="container">
+        <!-- Breadcrumb -->
+        <% if (page.layout !== 'index') { %>
+          <%- partial('_partial/breadcrumb') %>
+        <% } %>
 
-      <!-- Main Content -->
-      <main class="main-content" role="main">
-        <div class="container">
-          <!-- Breadcrumb -->
-          <% if (page.layout !== 'index') { %>
-            <%- partial('_partial/breadcrumb') %>
+        <div class="content-wrapper <%= page_type %>">
+          <!-- Sidebar (Left) -->
+          <% if (config.sidebar?.enable && config.sidebar?.position === 'left') { %>
+            <%- partial('_partial/sidebar') %>
           <% } %>
 
-          <div class="content-wrapper <%= page_type %>">
-            <!-- Sidebar (Left) -->
-            <% if (config.sidebar?.enable && config.sidebar?.position === 'left') { %>
-              <%- partial('_partial/sidebar') %>
-            <% } %>
+          <!-- Main Article -->
+          <article class="article-container">
+            <%- body %>
+          </article>
 
-            <!-- Main Article -->
-            <article class="article-container">
-              <%- body %>
-            </article>
-
-            <!-- Sidebar (Right) -->
-            <% if (config.sidebar?.enable && config.sidebar?.position === 'right') { %>
-              <%- partial('_partial/sidebar') %>
-            <% } %>
-          </div>
+          <!-- Sidebar (Right) -->
+          <% if (config.sidebar?.enable && config.sidebar?.position === 'right') { %>
+            <%- partial('_partial/sidebar') %>
+          <% } %>
         </div>
-      </main>
+      </div>
+    </main>
 
-      <!-- Footer -->
-      <%- partial('_partial/footer') %>
-    </div>
+    <!-- Footer -->
+    <%- partial('_partial/footer') %>
+  </div>
 
-    <!-- Rightside Buttons -->
-    <div id="rightside-config-hide">
-      <% if (config.features?.back_to_top) { %>
-        <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" fill="currentColor"/>
-          </svg>
-        </button>
-      <% } %>
+  <!-- Rightside Buttons -->
+  <div id="rightside-config-hide">
+    <% if (config.features?.back_to_top) { %>
+      <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" fill="currentColor"/>
+        </svg>
+      </button>
+    <% } %>
 
-      <% if (config.features?.reading_mode) { %>
-        <button id="read-mode" class="read-mode" aria-label="Read mode">
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
-          </svg>
-        </button>
-      <% } %>
-    </div>
+    <% if (config.features?.reading_mode) { %>
+      <button id="read-mode" class="read-mode" aria-label="Read mode">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
+        </svg>
+      </button>
+    <% } %>
   </div>
 
   <!-- Scripts -->
