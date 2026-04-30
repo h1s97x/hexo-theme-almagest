@@ -159,15 +159,81 @@ pre:hover .code-copy-btn
     padding $space-md
     font-size $font-size-xs
     margin $space-md 0
-  
+
   code
     font-size $font-size-xs
-  
+
   .code-copy-btn
     opacity 1
     top 4px
     right 4px
     padding 4px 8px
+    font-size 11px
+
+// ============================================================
+// Code Block Wrapper - Enhanced
+// ============================================================
+
+.code-block-wrapper
+  position relative
+  margin $spacing-lg 0
+
+.code-block-header
+  display flex
+  justify-content space-between
+  align-items center
+  padding $padding-sm $padding-md
+  background var(--color-bg-secondary)
+  border 1px solid var(--color-border)
+  border-bottom none
+  border-radius $border-radius-lg $border-radius-lg 0 0
+
+.code-lang
+  font-size $font-size-xs
+  font-weight $font-weight-medium
+  color var(--color-text-secondary)
+  font-family $font-family-code
+
+.code-copy-btn
+  position relative
+  top auto
+  right auto
+  padding $padding-xs $padding-sm
+  background transparent
+  color var(--color-text-secondary)
+  border 1px solid var(--color-border)
+  border-radius $border-radius-sm
+  cursor pointer
+  font-size $font-size-xs
+  opacity 1
+  transition all 0.2s
+
+.code-copy-btn:hover
+  background var(--color-primary)
+  border-color var(--color-primary)
+  color white
+
+.code-copy-btn.copied
+  background $color-success
+  border-color $color-success
+  color white
+
+// Remove old code block styles (use wrapper instead)
+.code-block-wrapper pre
+  margin 0
+  border-radius 0 0 $border-radius-lg $border-radius-lg
+  border-top none
+
+// Mobile styles for code block
+@media (max-width: $breakpoint-md)
+  .code-block-header
+    padding $padding-xs $padding-sm
+
+  .code-lang
+    font-size 11px
+
+  .code-copy-btn
+    padding 2px 6px
     font-size 11px
 
 </content>

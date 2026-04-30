@@ -212,8 +212,9 @@ excerpt: 摘要
 - 星空效果仅在暗色主题下显示
 
 ### 代码高亮样式异常
-- 检查 `_config.yml` 中 `code_theme` 配置
+- 检查 `_config.yml` 中 `highlight.light_theme` 和 `highlight.dark_theme` 配置
 - 确认 CDN 链接可访问
+- 主题会根据深色/浅色模式自动切换
 
 ### 评论系统不显示
 - 确认对应评论服务（giscus等）的配置正确

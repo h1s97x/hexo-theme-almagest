@@ -7,7 +7,7 @@
 - **双主题支持**: 支持浅色和深色主题，支持跟随系统自动切换
 - **星空背景效果**: 暗色主题下精美的星星动画效果
 - **响应式设计**: 完美适配桌面端和移动端
-- **丰富功能**: 文章目录、代码高亮、代码复制、图片懒加载、图片灯箱、无刷新导航、数学公式等
+- **丰富功能**: 文章目录、代码高亮（双主题）、代码复制、图片懒加载、图片灯箱、无刷新导航、数学公式等
 - **自定义标签**: 内置多种实用标签（note、timeline、folding 等）
 - **SEO 优化**: 支持 Open Graph、Twitter Card 等
 - **评论系统**: 支持 Giscus、Disqus 等评论系统
@@ -115,6 +115,22 @@ menu:
     - 工具3: /tools/tool3/
   关于: /about/
 ```
+
+### 代码高亮配置
+
+```yaml
+highlight:
+  enable: true
+  light_theme: "github"        # 浅色主题
+  dark_theme: "atom-one-dark"  # 深色主题
+  line_number: true
+  copy_button: true
+  show_lang: true
+```
+
+**可用主题：**
+- 浅色: github, atom-one-light, vs, xcode, vs2015
+- 深色: atom-one-dark, monokai, dracula, nord, github-dark, one-dark-pro
 
 ## 文章 Front Matter
 

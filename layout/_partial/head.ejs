@@ -42,8 +42,59 @@ const site_config = config;
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Code Highlight -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/atom-one-light.min.css">
+<!-- Code Highlight (双主题支持) -->
+<% if (config.highlight?.enable) { %>
+  <% const hljsVersion = '11.8.0'; %>
+  <% const lightTheme = config.highlight?.light_theme || 'github'; %>
+  <% const darkTheme = config.highlight?.dark_theme || 'atom-one-dark'; %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@<%= hljsVersion %>/styles/<%= lightTheme %>.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@<%= hljsVersion %>/styles/<%= darkTheme %>.min.css" id="hljs-dark" disabled>
+  <script>
+    (function() {
+      var STORAGE_KEY = 'theme-preference';
+      var THEME_ATTRIBUTE = 'data-theme';
+      var hljsLight = document.getElementById('hljs-light');
+      var hljsDark = document.getElementById('hljs-dark');
+
+      function updateCodeTheme(theme) {
+        if (!hljsLight || !hljsDark) return;
+        if (theme === 'dark') {
+          hljsLight.disabled = true;
+          hljsDark.disabled = false;
+        } else {
+          hljsLight.disabled = false;
+          hljsDark.disabled = true;
+        }
+      }
+
+      function init() {
+        var savedTheme = localStorage.getItem(STORAGE_KEY);
+        if (savedTheme) {
+          updateCodeTheme(savedTheme);
+        } else {
+          var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          updateCodeTheme(isDark ? 'dark' : 'light');
+        }
+      }
+
+      init();
+
+      // Listen for theme changes
+      document.addEventListener('themeChanged', function(e) {
+        updateCodeTheme(e.detail.theme);
+      });
+
+      // Also update on system preference change
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+          if (!localStorage.getItem(STORAGE_KEY)) {
+            updateCodeTheme(e.matches ? 'dark' : 'light');
+          }
+        });
+      }
+    })();
+  </script>
+<% } %>
 
 <!-- KaTeX (数学公式) -->
 <% if (config.math?.enable && config.math?.engine === 'katex') { %>

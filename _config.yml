@@ -387,19 +387,18 @@ highlight:
   enable: true
   
   # 代码高亮主题
-  theme: "atom-one-dark"
-  
-  # 可用主题:
-  # - atom-one-light, atom-one-dark
-  # - github, github-dark
-  # - monokai, monokai-sublime
-  # - dracula, nord, one-dark-pro
-  # - vs, vs2015, xcode
+  # 浅色主题: github, github-dark, atom-one-light, vs, xcode, vs2015
+  # 深色主题: atom-one-dark, monokai, dracula, nord, github-dark, one-dark-pro
+  light_theme: "github"
+  dark_theme: "atom-one-dark"
   
   # 是否显示行号
   line_number: true
   
-  # 是否启用代码复制
+  # 代码块标题
+  code_block_title: true
+  
+  # 代码复制按钮
   copy_button: true
   
   # 复制按钮样式: flat | hover
