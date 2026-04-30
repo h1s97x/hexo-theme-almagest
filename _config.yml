@@ -56,6 +56,10 @@ menu:
   归档: /blog/archives/
   分类: /blog/categories/
   标签: /blog/tags/
+  工具:
+    - 工具1: /tools/tool1/
+    - 工具2: /tools/tool2/
+    - 工具3: /tools/tool3/
   关于: /about/
 
 # ============================================================

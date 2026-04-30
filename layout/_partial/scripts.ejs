@@ -244,7 +244,13 @@ const pjaxEnabled = config.features?.pjax !== false;
 
   // Close menu on link click
   mobileMenu.querySelectorAll('a').forEach(function(link) {
-    link.addEventListener('click', function() {
+    link.addEventListener('click', function(e) {
+      // 如果点击的是父菜单（有子菜单），不关闭菜单
+      if (link.classList.contains('mobile-nav-parent')) {
+        e.preventDefault();
+        link.closest('.mobile-nav-item').classList.toggle('open');
+        return;
+      }
       if (isOpen) toggleMenu();
     });
   });

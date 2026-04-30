@@ -101,6 +101,19 @@ features:
 social:
   github: "https://github.com/your-username"
   email: "your.email@example.com"
+
+# 导航菜单（支持子菜单）
+menu:
+  首页: /
+  归档: /archives/
+  分类: /categories/
+  标签: /tags/
+  # 子菜单示例
+  工具:
+    - 工具1: /tools/tool1/
+    - 工具2: /tools/tool2/
+    - 工具3: /tools/tool3/
+  关于: /about/
 ```
 
 ## 文章 Front Matter

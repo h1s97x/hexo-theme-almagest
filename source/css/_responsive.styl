@@ -101,6 +101,26 @@ small
   align-items center
   touch-action manipulation
 
+// Mobile Submenu
+.mobile-nav-item.has-sub
+  flex-direction column
+
+.mobile-nav-parent
+  justify-content space-between
+
+.mobile-nav-submenu
+  display none
+  flex-direction column
+  padding-left $space-lg
+
+.mobile-nav-item.open .mobile-nav-submenu
+  display flex
+
+.mobile-nav-submenu-item
+  padding $space-sm $space-md
+  font-size $font-size-sm
+  color var(--color-text-secondary)
+
 // Content Layout - Single Column
 .content-wrapper
   grid-template-columns 1fr
@@ -308,7 +328,45 @@ img
   .nav-link
     font-size $font-size-base
     padding $space-sm 0
-  
+
+  // Submenu
+  .has-sub
+    position relative
+
+  .nav-submenu
+    position absolute
+    top 100%
+    left 0
+    min-width 160px
+    background var(--color-bg)
+    border 1px solid var(--color-border)
+    border-radius $border-radius-md
+    box-shadow $shadow-lg
+    opacity 0
+    visibility hidden
+    transform translateY(10px)
+    transition all 0.2s ease
+    z-index 100
+
+  .has-sub:hover .nav-submenu
+    opacity 1
+    visibility visible
+    transform translateY(0)
+
+  .nav-submenu-item
+    display block
+    padding $padding-sm $padding-md
+    color var(--color-text)
+    text-decoration none
+    transition background 0.2s
+
+  .nav-submenu-item:hover
+    background var(--color-bg-secondary)
+
+  .sub-menu-icon
+    margin-left 4px
+    vertical-align middle
+
   .mobile-menu-btn
     display none
   
