@@ -35,6 +35,56 @@ const pjaxEnabled = config.features?.pjax !== false;
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/astronomy.js' : url_for('/js/astronomy.js') %>?v=<%= version %>"></script>
 <% } %>
 
+<!-- Mermaid Charts -->
+<% if (config.mermaid?.enable) { %>
+  <% const mermaidVersion = config.mermaid?.version || '10.6.1'; %>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@<%= mermaidVersion %>/dist/mermaid.min.js"></script>
+  <script data-pjax>
+  (function() {
+    var mermaidConfig = <%= JSON.stringify(config.mermaid?.options || {}) %>;
+    mermaidConfig.startOnLoad = false;
+
+    // 根据主题选择 mermaid 主题
+    var currentTheme = document.documentElement.getAttribute('data-theme');
+    if (currentTheme === 'dark' && '<%= config.mermaid?.dark_theme %>') {
+      mermaidConfig.theme = '<%= config.mermaid?.dark_theme %>';
+    } else {
+      mermaidConfig.theme = '<%= config.mermaid?.theme || 'default' %>';
+    }
+
+    mermaid.initialize(mermaidConfig);
+
+    function renderMermaid() {
+      var mermaidElements = document.querySelectorAll('.mermaid');
+      if (mermaidElements.length > 0) {
+        mermaid.run({ nodes: Array.from(mermaidElements) });
+      }
+    }
+
+    // 初始化
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderMermaid);
+    } else {
+      renderMermaid();
+    }
+
+    // Pjax 后重新渲染
+    document.addEventListener('pjax:success', function() {
+      renderMermaid();
+    });
+
+    // 主题切换时重新渲染
+    document.addEventListener('themeChanged', function(e) {
+      if (e.detail && e.detail.theme) {
+        mermaidConfig.theme = e.detail.theme === 'dark' ? '<%= config.mermaid?.dark_theme || 'dark' %>' : '<%= config.mermaid?.theme || 'default' %>';
+        mermaid.initialize(mermaidConfig);
+        renderMermaid();
+      }
+    });
+  })();
+  </script>
+<% } %>
+
 <!-- Utilities -->
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/utils.js' : url_for('/js/utils.js') %>?v=<%= version %>"></script>
 

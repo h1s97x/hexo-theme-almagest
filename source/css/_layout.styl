@@ -187,6 +187,25 @@ footer
   margin-top $space-3xl
   transition background-color $transition-base, border-color $transition-base
 
+.footer-analytics
+  text-align center
+  padding-bottom $space-lg
+  border-bottom 1px solid var(--color-border)
+  margin-bottom $space-lg
+
+.footer-uv,
+.footer-pv
+  display inline-block
+  margin 0 $space-md
+  font-size $font-size-sm
+  color var(--color-text-secondary)
+
+.footer-uv::before
+  content "👁 "
+  
+.footer-pv::before
+  content "📊 "
+
 // ============================================================
 // Back to Top Button
 // ============================================================

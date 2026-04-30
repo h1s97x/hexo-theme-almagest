@@ -7,7 +7,7 @@
 - **双主题支持**: 支持浅色和深色主题，支持跟随系统自动切换
 - **星空背景效果**: 暗色主题下精美的星星动画效果
 - **响应式设计**: 完美适配桌面端和移动端
-- **丰富功能**: 文章目录、代码高亮（双主题）、代码复制、图片懒加载、图片灯箱、无刷新导航、数学公式等
+- **丰富功能**: 文章目录、代码高亮（双主题）、代码复制、图片懒加载、图片灯箱、无刷新导航、数学公式、Mermaid 图表、访问统计等
 - **自定义标签**: 内置多种实用标签（note、timeline、folding 等）
 - **SEO 优化**: 支持 Open Graph、Twitter Card 等
 - **评论系统**: 支持 Giscus、Disqus 等评论系统
@@ -131,6 +131,18 @@ highlight:
 **可用主题：**
 - 浅色: github, atom-one-light, vs, xcode, vs2015
 - 深色: atom-one-dark, monokai, dracula, nord, github-dark, one-dark-pro
+
+### 访问统计配置
+
+```yaml
+analytics:
+  enable: true
+  service: "busuanzi"  # busuanzi | google
+  busuanzi:
+    site_uv: true      # 站点访客数
+    site_pv: true      # 站点浏览量
+    page_pv: true      # 文章浏览量
+```
 
 ## 文章 Front Matter
 
@@ -271,6 +283,27 @@ excerpt: 文章摘要            # 摘要（可选）
 ![](https://example.com/image2.jpg)
 ![](https://example.com/image3.jpg)
 {% endgallery %}
+```
+
+### Mermaid 图表
+
+主题支持 Mermaid 图表，包括流程图、时序图、甘特图等。
+
+````markdown
+```mermaid
+graph TD
+    A[Start] --> B{Is it?}
+    B -->|Yes| C[OK]
+    B -->|No| D[End]
+```
+````
+
+**配置项：**
+```yaml
+mermaid:
+  enable: true
+  theme: "default"    # 深色主题下使用 dark
+  dark_theme: "dark"
 ```
 
 ### 数学公式

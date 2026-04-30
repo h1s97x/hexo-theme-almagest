@@ -459,6 +459,66 @@ math:
     cdn: "jsdelivr"
 
 # ============================================================
+# Mermaid 图表配置 (Mermaid Configuration)
+# ============================================================
+
+mermaid:
+  # 是否启用 Mermaid 图表支持
+  enable: true
+  
+  # Mermaid 版本
+  version: "10.6.1"
+  
+  # 主题: default, dark, forest, neutral, null
+  theme: "default"
+  
+  # 深色主题
+  dark_theme: "dark"
+  
+  # 配置选项
+  options:
+    # 安全模式
+    securityLevel: "loose"
+    # 是否启用字体图标
+    fontFamily: "Arial, sans-serif"
+    # 流程图方向: TB, BT, LR, RL
+    flowchart:
+      curve: "basis"
+    # 时序图配置
+    sequence:
+      useMaxWidth: true
+      diagramMaxWidth: 800
+
+# ============================================================
+# 访问统计配置 (Analytics Configuration)
+# ============================================================
+
+analytics:
+  # 是否启用访问统计
+  enable: true
+  
+  # 统计服务: busuanzi | google | custom
+  service: "busuanzi"
+  
+  # 不蒜子统计 (国内推荐)
+  busuanzi:
+    # 站点 UV
+    site_uv: true
+    # 站点 PV
+    site_pv: true
+    # 文章 PV
+    page_pv: true
+    # 不蒜子版本
+    version: "2.3"
+  
+  # Google Analytics
+  google:
+    # 追踪 ID
+    tracking_id: ""
+    # 匿名化 IP
+    anonymize_ip: true
+
+# ============================================================
 # 高级配置 (Advanced Configuration)
 # ============================================================
 

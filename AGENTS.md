@@ -152,6 +152,8 @@ pnpm format
 - `toc`: 文章目录配置
 - `reading_progress`: 阅读进度条配置
 - `image`: 图片配置（lazy_load、lightbox 等）
+- `analytics`: 访问统计配置
+- `mermaid`: Mermaid 图表配置
 
 ### 文章 Front Matter
 
