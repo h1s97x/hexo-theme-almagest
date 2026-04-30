@@ -146,26 +146,6 @@ const cdn_prefix = config.cdn_prefix || '';
 </script>
 <% } %>
 
-<!-- Donate Button -->
-<% if (config.donate?.enable) { %>
-<script>
-(function() {
-  const donateBtns = document.querySelectorAll('.donate-btn');
-  if (!donateBtns.length) return;
-
-  donateBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const target = this.getAttribute('data-target');
-      const qrCode = document.getElementById('qr-' + target);
-      if (qrCode) {
-        qrCode.style.display = qrCode.style.display === 'none' ? 'block' : 'none';
-      }
-    });
-  });
-})();
-</script>
-<% } %>
-
 <!-- TOC Toggle -->
 <% if (config.toc?.collapse) { %>
 <script>
@@ -184,6 +164,48 @@ const cdn_prefix = config.cdn_prefix || '';
 })();
 </script>
 <% } %>
+
+<!-- Tabs Navigation -->
+<script>
+(function() {
+  // Initialize tabs
+  document.querySelectorAll('.tabs-wrapper').forEach(function(tabsWrapper) {
+    const buttons = tabsWrapper.querySelectorAll('.tab-btn');
+    const panes = tabsWrapper.querySelectorAll('.tab-pane');
+
+    buttons.forEach(function(btn, idx) {
+      btn.addEventListener('click', function() {
+        // Remove active class from all buttons and panes
+        buttons.forEach(function(b) { b.classList.remove('active'); });
+        panes.forEach(function(p) { p.classList.remove('active'); });
+
+        // Add active class to clicked button and corresponding pane
+        btn.classList.add('active');
+        if (panes[idx]) {
+          panes[idx].classList.add('active');
+        }
+      });
+    });
+  });
+
+  // Code copy buttons
+  document.querySelectorAll('.code-copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const codeBlock = btn.closest('.code-block-wrapper');
+      const code = codeBlock ? codeBlock.querySelector('code') : null;
+
+      if (code) {
+        navigator.clipboard.writeText(code.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          setTimeout(function() {
+            btn.textContent = 'Copy';
+          }, 2000);
+        });
+      }
+    });
+  });
+})();
+</script>
 
 <!-- Debug Mode -->
 <% if (config.debug) { %>

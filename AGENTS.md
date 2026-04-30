@@ -33,7 +33,6 @@ hexo-theme-almagest/
 │       ├── sidebar.ejs        # 侧边栏
 │       ├── toc.ejs             # 文章目录
 │       ├── post-nav.ejs        # 文章导航
-│       ├── donate.ejs          # 打赏组件
 │       ├── comments.ejs       # 评论组件
 │       ├── search-box.ejs     # 搜索框
 │       ├── pagination.ejs      # 分页
@@ -84,7 +83,7 @@ hexo-theme-almagest/
 
 ### 模板入口
 - `layout/layout.ejs`: 主布局文件，所有页面都继承此布局
-- `layout/post.ejs`: 文章详情页，包含目录、导航、打赏等功能
+- `layout/post.ejs`: 文章详情页，包含目录、导航等功能
 
 ### 脚本入口
 - `scripts/index.js`: 注册所有主题脚本
@@ -142,7 +141,6 @@ pnpm format
 - `features`: 功能开关（搜索、评论、目录等）
 - `toc`: 文章目录配置
 - `reading_progress`: 阅读进度条配置
-- `donate`: 打赏功能配置
 
 ### 文章 Front Matter
 

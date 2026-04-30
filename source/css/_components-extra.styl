@@ -200,94 +200,6 @@ body.dark-theme
         color: $dark-text-primary
 
 // ============================================
-// Donation Component
-// ============================================
-
-.donate-wrapper
-  margin-top: $spacing-2xl
-  padding: $padding-xl
-  background: $light-bg-secondary
-  border-radius: $border-radius-lg
-  text-align: center
-
-  .donate-header
-    margin-bottom: $spacing-lg
-
-    .donate-title
-      font-size: $font-size-xl
-      font-weight: $font-weight-semibold
-      color: $light-text-primary
-      margin: 0 0 $spacing-sm 0
-
-    .donate-description
-      font-size: $font-size-sm
-      color: $light-text-secondary
-      margin: 0
-
-  .donate-buttons
-    display: flex
-    justify-content: center
-    gap: $spacing-lg
-
-  .donate-btn
-    display: inline-flex
-    align-items: center
-    gap: $spacing-sm
-    padding: $padding-md $padding-xl
-    font-size: $font-size-base
-    font-weight: $font-weight-medium
-    color: white
-    background: $primary-color
-    border: none
-    border-radius: $border-radius-full
-    cursor: pointer
-    transition: all $transition-base
-
-    &:hover
-      background: $primary-dark
-      transform: translateY(-2px)
-
-    svg
-      width: 20px
-      height: 20px
-
-    &.alipay
-      background: #1677ff
-
-      &:hover
-        background: #0958d9
-
-    &.wechat
-      background: #07c160
-
-      &:hover
-        background: #05903d
-
-  .donate-qr-codes
-    margin-top: $spacing-xl
-
-    .qr-code
-      img
-        max-width: 200px
-        border-radius: $border-radius-md
-        box-shadow: $shadow-md
-
-      p
-        font-size: $font-size-sm
-        color: $light-text-secondary
-        margin: $spacing-sm 0 0 0
-
-body.dark-theme
-  .donate-wrapper
-    background: $dark-bg-secondary
-
-    .donate-title
-      color: $dark-text-primary
-
-    .donate-description
-      color: $dark-text-secondary
-
-// ============================================
 // Article Copyright
 // ============================================
 
@@ -558,3 +470,272 @@ body.dark-theme
     &.badge-default
       color: $dark-text-secondary
       background: $dark-bg-secondary
+
+// ============================================
+// Tabs - 多标签页切换
+// ============================================
+
+.tabs-wrapper
+  margin: $spacing-lg 0
+  border: 1px solid $light-border
+  border-radius: $border-radius-md
+  overflow: hidden
+
+.tabs-nav
+  display: flex
+  flex-wrap: wrap
+  background: $light-bg-secondary
+  border-bottom: 1px solid $light-border
+  padding: 0
+  margin: 0
+
+.tab-btn
+  padding: $padding-md $padding-lg
+  font-size: $font-size-sm
+  font-weight: $font-weight-medium
+  color: $light-text-secondary
+  background: transparent
+  border: none
+  border-bottom: 2px solid transparent
+  cursor: pointer
+  transition: all $transition-base
+  margin-bottom: -1px
+
+  &:hover
+    color: $primary-color
+
+  &.active
+    color: $primary-color
+    border-bottom-color: $primary-color
+    background: $light-bg-primary
+
+.tabs-content
+  .tab-pane
+    display: none
+    padding: $padding-lg
+
+    &.active
+      display: block
+
+  // Preserve markdown content styling
+  h1, h2, h3, h4, h5, h6
+    margin-top: $spacing-lg
+    margin-bottom: $spacing-md
+
+  p, ul, ol, pre
+    margin-bottom: $spacing-md
+
+  p:last-child
+    margin-bottom: 0
+
+body.dark-theme
+  .tabs-wrapper
+    border-color: $dark-border
+
+  .tabs-nav
+    background: $dark-bg-secondary
+    border-bottom-color: $dark-border
+
+  .tab-btn
+    color: $dark-text-secondary
+
+    &:hover
+      color: $primary-light
+
+    &.active
+      color: $primary-light
+      background: $dark-bg-primary
+
+// ============================================
+// Gallery - 图片画廊
+// ============================================
+
+.gallery-wrapper
+  display: grid
+  grid-template-columns: repeat(var(--gallery-cols, 3), 1fr)
+  gap: $spacing-md
+  margin: $spacing-lg 0
+
+  img
+    width: 100%
+    height: auto
+    border-radius: $border-radius-md
+    object-fit: cover
+    transition: transform $transition-base
+
+    &:hover
+      transform: scale(1.02)
+
+@media (max-width: 768px)
+  .gallery-wrapper
+    grid-template-columns: repeat(2, 1fr)
+
+// ============================================
+// Code Block Enhancement
+// ============================================
+
+.code-block-wrapper
+  margin: $spacing-lg 0
+  border-radius: $border-radius-md
+  overflow: hidden
+  background: $code-bg
+  border: 1px solid $light-border
+
+.code-block-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: $padding-sm $padding-md
+  background: darken($code-bg, 5%)
+  border-bottom: 1px solid $light-border
+
+  .code-lang
+    font-size: $font-size-xs
+    font-weight: $font-weight-medium
+    color: $light-text-tertiary
+
+.code-copy-btn
+  padding: $padding-xs $padding-sm
+  font-size: $font-size-xs
+  color: $light-text-tertiary
+  background: transparent
+  border: 1px solid $light-border
+  border-radius: $border-radius-sm
+  cursor: pointer
+  transition: all $transition-base
+
+  &:hover
+    color: $primary-color
+    border-color: $primary-color
+
+.code-block
+  margin: 0
+  padding: $padding-lg
+  overflow-x: auto
+  font-size: $font-size-sm
+  line-height: $line-height-base
+
+body.dark-theme
+  .code-block-wrapper
+    border-color: $dark-border
+
+  .code-block-header
+    background: lighten($code-bg-dark, 5%)
+
+    .code-lang
+      color: $dark-text-tertiary
+
+  .code-copy-btn
+    color: $dark-text-tertiary
+    border-color: $dark-border
+
+// ============================================
+// Label Enhancement
+// ============================================
+
+.label
+  display: inline
+  padding: 2px 8px
+  font-size: 0.875em
+  font-weight: $font-weight-medium
+  border-radius: $border-radius-sm
+  background: $light-bg-secondary
+  color: $light-text-primary
+
+  &.label-primary
+    background: rgba($primary-color, 0.15)
+    color: $primary-color
+
+  &.label-success
+    background: rgba(#52c41a, 0.15)
+    color: #52c41a
+
+  &.label-warning
+    background: rgba(#faad14, 0.15)
+    color: #faad14
+
+  &.label-danger
+    background: rgba(#ff4d4f, 0.15)
+    color: #ff4d4f
+
+  &.label-info
+    background: rgba(#1890ff, 0.15)
+    color: #1890ff
+
+body.dark-theme
+  .label
+    background: $dark-bg-secondary
+    color: $dark-text-primary
+
+    &.label-primary
+      background: rgba($primary-light, 0.15)
+      color: $primary-light
+
+// ============================================
+// Table Wrapper - 响应式表格
+// ============================================
+
+.table-wrapper
+  overflow-x: auto
+  margin: $spacing-lg 0
+  border-radius: $border-radius-md
+  border: 1px solid $light-border
+
+  table
+    margin: 0
+    min-width: 100%
+
+  // Preserve table styles from _components.styl
+  th, td
+    white-space: nowrap
+
+body.dark-theme
+  .table-wrapper
+    border-color: $dark-border
+
+// ============================================
+// Video & Audio Player
+// ============================================
+
+.video-player,
+.audio-player
+  max-width: 100%
+  margin: $spacing-lg 0
+  border-radius: $border-radius-md
+
+.video-player
+  width: 100%
+  height: auto
+
+.audio-player
+  width: 100%
+  height: 40px
+
+// ============================================
+// Grid Layout
+// ============================================
+
+.grid-layout
+  display: grid
+  gap: $spacing-lg
+  margin: $spacing-lg 0
+
+  &.grid-cols-2
+    grid-template-columns: repeat(2, 1fr)
+
+  &.grid-cols-3
+    grid-template-columns: repeat(3, 1fr)
+
+  &.grid-cols-4
+    grid-template-columns: repeat(4, 1fr)
+
+@media (max-width: 768px)
+  .grid-layout
+    grid-template-columns: 1fr !important
+
+// ============================================
+// Text Align Wrapper
+// ============================================
+
+.align-wrapper
+  margin: $spacing-lg 0
