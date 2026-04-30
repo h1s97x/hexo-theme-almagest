@@ -38,6 +38,24 @@ const pjaxEnabled = config.features?.pjax !== false;
 <!-- Utilities -->
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/utils.js' : url_for('/js/utils.js') %>?v=<%= version %>"></script>
 
+<!-- KaTeX JS (数学公式) -->
+<% if (config.math?.enable && config.math?.engine === 'katex' && config.math?.katex?.load_js !== false) { %>
+  <% const katexVersion = config.math?.katex?.version || '0.16.9'; %>
+  <script src="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/katex.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/contrib/auto-render.min.js" defer onload="renderMathInElement(document.body, <%= JSON.stringify(config.math?.katex?.options || {}) %>)"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/contrib/copy-tex.min.js" defer></script>
+  <script data-pjax>
+  (function() {
+    // 重新渲染数学公式 (Pjax 后)
+    document.addEventListener('pjax:success', function() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, <%= JSON.stringify(config.math?.katex?.options || {}) %>);
+      }
+    });
+  })();
+  </script>
+<% } %>
+
 <!-- Pjax 初始化 -->
 <% if (pjaxEnabled) { %>
 <script data-pjax>

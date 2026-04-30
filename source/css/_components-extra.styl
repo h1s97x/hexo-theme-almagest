@@ -2,6 +2,53 @@
 // ==============================================
 
 // ============================================
+// KaTeX - 数学公式样式
+// ============================================
+
+// KaTeX 公式显示优化
+.katex-display
+  overflow-x: auto
+  overflow-y: hidden
+  padding: $spacing-md 0
+
+  // 防止公式换行导致布局问题
+  table
+    display: inline-table
+
+// KaTeX 错误样式
+.katex-error
+  color: #cc0000
+  font-family: monospace
+
+// 复制 KaTeX 按钮
+.copy-tex
+  position: absolute
+  top: 0
+  right: 0
+  padding: 4px 8px
+  font-size: 12px
+  color: $light-text-tertiary
+  background: transparent
+  border: none
+  cursor: pointer
+  opacity: 0
+  transition: opacity 0.2s
+
+  &:hover
+    color: $primary-color
+
+.katex-block:hover .copy-tex,
+.hover\\:show:hover .copy-tex
+  opacity: 1
+
+body.dark-theme
+  .copy-tex
+    color: $dark-text-tertiary
+
+    &:hover
+      color: $primary-light
+
+// ============================================
 // Medium Zoom - 图片灯箱
 // ============================================
 

@@ -410,13 +410,50 @@ highlight:
 
 math:
   # 是否启用数学公式支持
-  enable: false
+  enable: true
   
   # 公式渲染引擎: mathjax | katex
-  engine: "mathjax"
+  engine: "katex"
   
   # 是否在首页/归档页渲染公式
   render_on_all_pages: false
+  
+  # KaTeX 配置 (engine: katex 时生效)
+  katex:
+    # KaTeX CSS 版本
+    version: "0.16.9"
+    
+    # 是否加载 KaTeX JS (可选，如果使用插件可以不加载)
+    load_js: true
+    
+    # KaTeX 配置选项
+    options:
+      # 是否显示加载错误
+      throwError: false
+      # 错误处理方式: warn | error | false
+      errorColor: "#cc0000"
+      
+  # MathJax 配置 (engine: mathjax 时生效)
+  mathjax:
+    # MathJax 版本
+    version: "3"
+    
+    # 配置选项
+    options:
+      # 是否启用右键菜单
+      enableMenu: true
+      
+      # TeX 扩展
+      tex:
+        inlineMath: [["$", "$"], ["\\(", "\\)"]]
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]]
+      
+      # SVG 输出
+      svg:
+        fontCache: "global"
+    
+    # 是否使用 CDN
+    cdn: "jsdelivr"
 
 # ============================================================
 # 高级配置 (Advanced Configuration)

@@ -7,7 +7,7 @@
 - **双主题支持**: 支持浅色和深色主题，支持跟随系统自动切换
 - **星空背景效果**: 暗色主题下精美的星星动画效果
 - **响应式设计**: 完美适配桌面端和移动端
-- **丰富功能**: 文章目录、代码高亮、代码复制、图片懒加载、图片灯箱、无刷新导航等
+- **丰富功能**: 文章目录、代码高亮、代码复制、图片懒加载、图片灯箱、无刷新导航、数学公式等
 - **自定义标签**: 内置多种实用标签（note、timeline、folding 等）
 - **SEO 优化**: 支持 Open Graph、Twitter Card 等
 - **评论系统**: 支持 Giscus、Disqus 等评论系统
@@ -242,6 +242,27 @@ excerpt: 文章摘要            # 摘要（可选）
 ![](https://example.com/image2.jpg)
 ![](https://example.com/image3.jpg)
 {% endgallery %}
+```
+
+### 数学公式
+
+主题支持 KaTeX 渲染数学公式。
+
+```markdown
+# 行内公式
+这是一个行内公式 $E = mc^2$
+
+# 块级公式
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+```
+
+**配置项：**
+```yaml
+math:
+  enable: true
+  engine: "katex"  # 或 "mathjax"
 ```
 
 ## 页面创建

@@ -89,6 +89,7 @@ hexo-theme-almagest/
 - `scripts/index.js`: 注册所有主题脚本
 - `scripts/helpers.js`: 模板辅助函数（时间格式化、阅读时间等）
 - `scripts/tags.js`: 自定义标签（note、timeline、folding 等）
+- `scripts/math-helper.js`: 数学公式辅助函数
 
 ### 样式入口
 - `source/css/main.styl`: 样式入口，导入所有样式文件
@@ -217,3 +218,8 @@ excerpt: 摘要
 ### 评论系统不显示
 - 确认对应评论服务（giscus等）的配置正确
 - 确认 `features.comments` 已启用
+
+### 数学公式不渲染
+- 确认 `math.enable` 配置为 `true`
+- 检查 `math.engine` 配置（katex 或 mathjax）
+- 确认 CDN 链接可访问
