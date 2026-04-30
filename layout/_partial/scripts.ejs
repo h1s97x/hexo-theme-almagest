@@ -22,6 +22,10 @@ const pjaxEnabled = config.features?.pjax !== false;
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/lazy-load.js' : url_for('/js/lazy-load.js') %>?v=<%= version %>"></script>
 <% } %>
 
+<% if (config.image?.lightbox) { %>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/medium-zoom.js' : url_for('/js/medium-zoom.js') %>?v=<%= version %>"></script>
+<% } %>
+
 <% if (config.features?.code_copy) { %>
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/code-copy.js' : url_for('/js/code-copy.js') %>?v=<%= version %>"></script>
 <% } %>

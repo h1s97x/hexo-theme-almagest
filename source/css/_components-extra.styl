@@ -2,6 +2,24 @@
 // ==============================================
 
 // ============================================
+// Medium Zoom - 图片灯箱
+// ============================================
+
+.zoom-overlay
+  cursor: zoom-out
+
+.zoom-image
+  cursor: zoom-out
+
+// 缩放动画
+img.zoomable
+  cursor: zoom-in
+  transition: transform 0.2s ease
+
+  &:hover
+    transform: scale(1.02)
+
+// ============================================
 // Reading Progress Bar
 // ============================================
 

@@ -150,6 +150,7 @@ pnpm format
   - `reading_mode`: 阅读模式
 - `toc`: 文章目录配置
 - `reading_progress`: 阅读进度条配置
+- `image`: 图片配置（lazy_load、lightbox 等）
 
 ### 文章 Front Matter
 
@@ -200,6 +201,10 @@ excerpt: 摘要
 ### 图片懒加载不生效
 - 确认 `source/js/lazy-load.js` 已正确引入
 - 确认 `image.lazy_load` 配置已启用
+
+### 图片灯箱不工作
+- 确认 `image.lightbox` 配置为 `true`
+- 图片需要有 `zoomable` 类或位于 `article` 区域内
 
 ### 星空动画效果不显示
 - 确认 `astronomy.enable` 配置为 `true`
