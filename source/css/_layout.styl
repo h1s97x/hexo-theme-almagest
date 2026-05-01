@@ -386,6 +386,14 @@ footer
   display flex
   align-items center
   justify-content center
+  opacity 1
+  transition opacity 0.3s ease
+  // 默认隐藏，通过 JS 控制显示
+  display none
+
+  // 激活状态（显示）
+  &.active
+    display flex
 
 .loading-animation
   display flex

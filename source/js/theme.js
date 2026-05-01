@@ -129,10 +129,11 @@
 
   /**
    * Dispatch custom theme change event
+   * 派发主题切换事件，通知其他组件（如代码高亮、Mermaid 等）
    */
   function dispatchThemeChangeEvent(theme) {
     window.dispatchEvent(
-      new CustomEvent('themechange', {
+      new CustomEvent('themeChanged', {
         detail: { theme: theme }
       })
     );
@@ -209,7 +210,7 @@
     toggleTheme: toggleTheme,
     getSystemPreference: getSystemPreference,
     onThemeChange: function(callback) {
-      window.addEventListener('themechange', function(e) {
+      window.addEventListener('themeChanged', function(e) {
         callback(e.detail.theme);
       });
     }

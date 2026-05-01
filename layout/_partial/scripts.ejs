@@ -112,15 +112,22 @@ const pjaxEnabled = config.features?.pjax !== false;
 (function() {
   'use strict';
 
+  // ========================================
   // Pjax 配置
+  // ========================================
   const pjaxSelectors = [
     '#body-wrap',
     '.js-pjax'
   ];
 
+  // Pjax 超时时间（毫秒），超过此时间自动隐藏 loading
+  const PJAX_TIMEOUT = 10000;
+
   // 检查是否支持 Pjax
   if (typeof Pjax === 'undefined') {
     console.warn('Pjax library not loaded');
+    // Pjax 未加载时隐藏 loading
+    hideLoading();
     return;
   }
 
@@ -130,10 +137,13 @@ const pjaxEnabled = config.features?.pjax !== false;
     selectors: pjaxSelectors,
     cacheBust: false,
     analytics: typeof ga === 'function',
-    scrollRestoration: false
+    scrollRestoration: false,
+    timeout: PJAX_TIMEOUT
   });
 
+  // ========================================
   // 全局函数存储
+  // ========================================
   window.globalFn = window.globalFn || {
     pjaxSend: {},
     pjaxComplete: {}
@@ -157,18 +167,62 @@ const pjaxEnabled = config.features?.pjax !== false;
     });
   }
 
+  // ========================================
+  // Loading 动画控制
+  // ========================================
+  let loadingTimer = null;
+
+  function showLoading() {
+    const loading = document.querySelector('.loading-wrap');
+    if (loading) {
+      loading.style.display = 'flex';
+      loading.classList.add('active');
+    }
+  }
+
+  function hideLoading() {
+    const loading = document.querySelector('.loading-wrap');
+    if (loading) {
+      loading.classList.remove('active');
+      // 延迟隐藏元素，避免动画中断
+      setTimeout(function() {
+        if (!loading.classList.contains('active')) {
+          loading.style.display = 'none';
+        }
+      }, 300);
+    }
+    // 清除超时定时器
+    if (loadingTimer) {
+      clearTimeout(loadingTimer);
+      loadingTimer = null;
+    }
+  }
+
+  // 设置超时保护，确保 loading 不会一直显示
+  function setLoadingTimeout() {
+    if (loadingTimer) clearTimeout(loadingTimer);
+    loadingTimer = setTimeout(function() {
+      console.warn('Pjax timeout, hiding loading');
+      hideLoading();
+    }, PJAX_TIMEOUT);
+  }
+
+  // ========================================
+  // Pjax 事件处理
+  // ========================================
+
   // Pjax:send 事件 - 页面开始加载
   document.addEventListener('pjax:send', function() {
     // 移除事件监听器
     const sendOnce = window.globalFn.pjaxSendOnce;
-    if (sendOnce) Object.keys(sendOnce).forEach(k => delete sendOnce[k]);
+    if (sendOnce) Object.keys(sendOnce).forEach(function(k) { delete sendOnce[k]; });
 
     // 重置阅读模式
     document.body.classList.remove('read-mode');
 
-    // 显示 loading
-    const loading = document.querySelector('.loading-wrap');
-    if (loading) loading.classList.add('active');
+    // 显示 loading 并设置超时
+    showLoading();
+    setLoadingTimeout();
 
     // 触发 send 回调
     triggerFn(window.globalFn.pjaxSend);
@@ -178,11 +232,10 @@ const pjaxEnabled = config.features?.pjax !== false;
   document.addEventListener('pjax:complete', function() {
     // 移除 complete 监听器
     const completeOnce = window.globalFn.pjaxCompleteOnce;
-    if (completeOnce) Object.keys(completeOnce).forEach(k => delete completeOnce[k]);
+    if (completeOnce) Object.keys(completeOnce).forEach(function(k) { delete completeOnce[k]; });
 
     // 隐藏 loading
-    const loading = document.querySelector('.loading-wrap');
-    if (loading) loading.classList.remove('active');
+    hideLoading();
 
     // 重新执行 data-pjax 脚本
     document.querySelectorAll('script[data-pjax]').forEach(function(item) {
@@ -204,12 +257,18 @@ const pjaxEnabled = config.features?.pjax !== false;
 
   // Pjax:error 事件 - 加载出错
   document.addEventListener('pjax:error', function(e) {
+    console.error('Pjax error:', e);
+    // 隐藏 loading
+    hideLoading();
+    // 如果是 404，跳转到实际 URL
     if (e.request && e.request.status === 404) {
       window.location.href = e.request.responseURL;
     }
   });
 
-  // 重新初始化组件
+  // ========================================
+  // 重新初始化组件 (pjax:success)
+  // ========================================
   document.addEventListener('pjax:success', function() {
     // 重新初始化懒加载
     if (window.lazyload && typeof window.lazyload.update === 'function') {
@@ -225,7 +284,9 @@ const pjaxEnabled = config.features?.pjax !== false;
     }
   });
 
+  // ========================================
   // 代码复制初始化
+  // ========================================
   function initCodeCopy() {
     document.querySelectorAll('.copy-button').forEach(function(btn) {
       if (btn.dataset.initialized) return;
@@ -245,6 +306,15 @@ const pjaxEnabled = config.features?.pjax !== false;
     });
   }
   initCodeCopy();
+
+  // ========================================
+  // 页面初始加载完成后隐藏 loading
+  // ========================================
+  if (document.readyState !== 'loading') {
+    hideLoading();
+  } else {
+    document.addEventListener('DOMContentLoaded', hideLoading);
+  }
 
 })();
 </script>
