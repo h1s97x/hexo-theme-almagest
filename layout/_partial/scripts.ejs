@@ -532,6 +532,30 @@ const pjaxEnabled = config.features?.pjax !== false;
 </script>
 <% } %>
 
+<!-- Typing Effect -->
+<% if (is_home() && config.index?.slogan?.enable) { %>
+<script src="<%= url_for('/js/typing.js') %>"></script>
+<% } %>
+
+<!-- Random Banner -->
+<% if (is_home() && config.index?.random_img) { %>
+<script data-pjax>
+(function() {
+  'use strict';
+
+  var bannerImg = document.querySelector('.banner-img[data-random="true"]');
+  if (!bannerImg) return;
+
+  // 尝试从 knownImages 获取随机图片
+  if (window.knownImages && window.knownImages.length > 0) {
+    var randomIndex = Math.floor(Math.random() * window.knownImages.length);
+    var randomImg = window.knownImages[randomIndex];
+    bannerImg.style.backgroundImage = 'url(' + randomImg + ')';
+  }
+})();
+</script>
+<% } %>
+
 <!-- Debug Mode -->
 <% if (config.debug) { %>
 <script>

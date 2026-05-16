@@ -1,14 +1,47 @@
 <%
 // 首页布局
 const config = theme;
-const per_page = config.pagination?.per_page || 10;
+const indexCfg = config.index || {};
+const bannerCfg = indexCfg;
+const sloganCfg = bannerCfg.slogan || {};
+const typingEnabled = sloganCfg.enable !== false;
+const sloganText = sloganCfg.text || config.subtitle || '';
+
+// Banner 图片处理
+let bannerImg = bannerCfg.banner_img || '';
+if (bannerCfg.random_img) {
+  // 随机图片逻辑 (运行时由 JS 处理)
+  bannerImg = 'random';
+}
+const bannerHeight = bannerCfg.banner_img_height || 100;
+const bannerMask = bannerCfg.banner_mask_alpha || 0.3;
+const parallax = bannerCfg.parallax !== false;
 %>
 
-<!-- Page Title -->
-<div class="page-header">
-  <h1 class="page-title"><%= config.title %></h1>
-  <p class="page-subtitle"><%= config.subtitle %></p>
-</div>
+<!-- 首页 Banner -->
+<% if (bannerImg) { %>
+  <div class="banner-wrapper<%= parallax ? ' parallax' : '' %>" style="height: <%= bannerHeight %>vh;">
+    <div class="banner-img" style="background-image: url('<%= bannerImg === 'random' ? '' : url_for(bannerImg) %>');" data-random="<%= bannerCfg.random_img %>"></div>
+    <div class="banner-mask" style="opacity: <%= bannerMask %>;"></div>
+    <div class="banner-content">
+      <h1 class="banner-title"><%= config.title %></h1>
+      <% if (typingEnabled && sloganText) { %>
+        <p class="banner-subtitle">
+          <span class="typing-effect" data-text="<%= sloganText %>" data-speed="<%= sloganCfg.typeSpeed || 70 %>" data-cursor="<%= sloganCfg.cursorChar || '_' %>" data-loop="<%= sloganCfg.loop || false %>"></span>
+          <span class="typing-cursor"><%= sloganCfg.cursorChar || '_' %></span>
+        </p>
+      <% } else { %>
+        <p class="banner-subtitle"><%= config.subtitle %></p>
+      <% } %>
+      <!-- 向下滚动箭头 -->
+      <div class="scroll-down-arrow">
+        <svg viewBox="0 0 24 24" width="32" height="32">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+<% } %>
 
 <!-- Posts List -->
 <div class="posts-container">

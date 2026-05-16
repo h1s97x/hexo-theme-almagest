@@ -1,0 +1,73 @@
+<%
+/**
+ * 版权声明组件 (Copyright)
+ * 参考 Fluid 主题的版权组件实现
+ * 在文章底部显示版权信息
+ */
+
+const postCfg = theme.post || {};
+const copyrightCfg = postCfg.copyright || {};
+
+if (!copyrightCfg.enable) return;
+
+// 获取文章信息
+const author = post.author || theme.author || config.author || '';
+const postDate = post.date ? post.date.format('YYYY-MM-DD') : '';
+const updateDate = post.updated ? post.updated.format('YYYY-MM-DD') : '';
+const permalink = post.permalink || url_for(post.path);
+
+// 协议信息
+const licenseMap = {
+  'BY': { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+  'BY-SA': { name: 'CC BY-SA 4.0', url: 'https://creativecommons.org/licenses/by-sa/4.0/' },
+  'BY-ND': { name: 'CC BY-ND 4.0', url: 'https://creativecommons.org/licenses/by-nd/4.0/' },
+  'BY-NC': { name: 'CC BY-NC 4.0', url: 'https://creativecommons.org/licenses/by-nc/4.0/' },
+  'BY-NC-SA': { name: 'CC BY-NC-SA 4.0', url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/' },
+  'BY-NC-ND': { name: 'CC BY-NC-ND 4.0', url: 'https://creativecommons.org/licenses/by-nc-nd/4.0/' },
+  'ZERO': { name: 'CC0 1.0', url: 'https://creativecommons.org/publicdomain/zero/1.0/' }
+};
+
+const licenseKey = copyrightCfg.license || 'BY';
+const licenseInfo = licenseMap[licenseKey] || licenseMap['BY'];
+%>
+
+<div class="copyright-wrapper">
+  <div class="copyright-title">
+    <svg viewBox="0 0 24 24" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+    </svg>
+    <%= __('copyright.title') || '版权声明' %>
+  </div>
+  <div class="copyright-content">
+    <% if (copyrightCfg.show_author !== false && author) { %>
+      <div class="copyright-item">
+        <span class="copyright-label"><%= __('copyright.author') || '作者' %>:</span>
+        <span class="copyright-value"><%= author %></span>
+      </div>
+    <% } %>
+    <% if (copyrightCfg.show_date !== false && postDate) { %>
+      <div class="copyright-item">
+        <span class="copyright-label"><%= __('copyright.date') || '发布于' %>:</span>
+        <span class="copyright-value"><%= postDate %></span>
+      </div>
+    <% } %>
+    <% if (copyrightCfg.show_update_date && updateDate) { %>
+      <div class="copyright-item">
+        <span class="copyright-label"><%= __('copyright.update') || '更新于' %>:</span>
+        <span class="copyright-value"><%= updateDate %></span>
+      </div>
+    <% } %>
+    <div class="copyright-item">
+      <span class="copyright-label"><%= __('copyright.link') || '原文链接' %>:</span>
+      <a href="<%= permalink %>" target="_blank" rel="noopener noreferrer"><%= permalink %></a>
+    </div>
+  </div>
+  <div class="copyright-license">
+    <a class="license-icon" href="<%= licenseInfo.url %>" target="_blank" rel="noopener noreferrer" title="<%= licenseInfo.name %>">
+      <svg viewBox="0 0 24 24" width="20" height="20">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+      </svg>
+      <span><%= licenseInfo.name %></span>
+    </a>
+  </div>
+</div>

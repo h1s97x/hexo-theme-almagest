@@ -1,0 +1,48 @@
+<%
+/**
+ * 关于页面布局
+ * 参考 Fluid 主题的关于页面实现
+ * 展示头像、名称、简介和社交链接
+ */
+
+const config = theme;
+const aboutCfg = config.about || {};
+const avatar = aboutCfg.avatar || '/images/avatar.jpg';
+const name = aboutCfg.name || config.author || '';
+const intro = aboutCfg.intro || '';
+const icons = aboutCfg.icons || [];
+%>
+
+<div class="about-page">
+  <!-- 关于页面头部 -->
+  <div class="about-header">
+    <img src="<%= url_for(avatar) %>" alt="<%= name %>" class="about-avatar" onerror="this.style.display='none'">
+    <h1 class="about-name"><%= name %></h1>
+    <% if (intro) { %>
+      <p class="about-intro"><%= intro %></p>
+    <% } %>
+
+    <% if (icons && icons.length > 0) { %>
+      <div class="about-icons">
+        <% icons.forEach(function(icon) { %>
+          <% if (icon.qrcode) { %>
+            <!-- 二维码图标 -->
+            <span class="about-icon-link" title="<%= icon.tip || '' %>" data-qrcode="<%= url_for(icon.qrcode) %>">
+              <i class="<%= icon.class %>"></i>
+            </span>
+          <% } else if (icon.link) { %>
+            <!-- 链接图标 -->
+            <a href="<%= icon.link %>" class="about-icon-link" target="_blank" rel="noopener noreferrer" title="<%= icon.tip || '' %>">
+              <i class="<%= icon.class %>"></i>
+            </a>
+          <% } %>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- 页面内容 -->
+  <div class="about-content">
+    <%- page.content %>
+  </div>
+</div>

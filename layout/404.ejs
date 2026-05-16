@@ -1,68 +1,64 @@
 <%
-// 404 错误页面布局
+/**
+ * 404 错误页面布局
+ * 参考 Fluid 主题的 404 页面实现
+ * 包含错误提示、自动跳转、返回首页按钮
+ */
+
 const config = theme;
+const page404Cfg = config.page404 || {};
+const redirectDelay = page404Cfg.redirect_delay || 5000;
 %>
 
-<!-- 404 Container -->
-<div class="error-container">
-  <!-- Error Code -->
-  <div class="error-code">
-    <h1 class="error-number">404</h1>
-  </div>
-  
-  <!-- Error Message -->
-  <div class="error-message">
-    <h2 class="error-title"><%= __('page_not_found') %></h2>
-    <p class="error-description">
-      <%= __('page_not_found_description') %>
-    </p>
-  </div>
-  
-  <!-- Error Illustration -->
-  <div class="error-illustration">
-    <svg viewBox="0 0 200 200" width="200" height="200">
-      <!-- Simple illustration of a lost astronaut or similar -->
-      <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
-      <circle cx="100" cy="60" r="20" fill="currentColor" opacity="0.3"/>
-      <rect x="85" y="85" width="30" height="40" fill="currentColor" opacity="0.3"/>
-      <rect x="75" y="95" width="15" height="30" fill="currentColor" opacity="0.3"/>
-      <rect x="110" y="95" width="15" height="30" fill="currentColor" opacity="0.3"/>
-      <rect x="80" y="130" width="12" height="25" fill="currentColor" opacity="0.3"/>
-      <rect x="108" y="130" width="12" height="25" fill="currentColor" opacity="0.3"/>
-    </svg>
-  </div>
-  
-  <!-- Action Buttons -->
-  <div class="error-actions">
-    <a href="<%= url_for('/') %>" class="btn btn-primary">
-      <%= __('back_to_home') %>
-    </a>
-    
-    <% if (config.features?.search) { %>
-      <button class="btn btn-secondary" id="search-btn-404">
-        <%= __('search') %>
-      </button>
-    <% } %>
-  </div>
-  
-  <!-- Suggestions -->
-  <div class="error-suggestions">
-    <h3><%= __('suggestions') %></h3>
-    <ul>
-      <li><%= __('check_url') %></li>
-      <li><%= __('try_search') %></li>
-      <li><a href="<%= url_for('/') %>"><%= __('visit_homepage') %></a></li>
-      <% if (config.menu) { %>
-        <li>
-          <%= __('browse_menu') %>:
-          <% for (const [name, path] of Object.entries(config.menu)) { %>
-            <a href="<%= url_for(path) %>"><%= name %></a><% if (Object.entries(config.menu).indexOf([name, path]) < Object.entries(config.menu).length - 1) { %>, <% } %>
-          <% } %>
-        </li>
-      <% } %>
-    </ul>
-  </div>
-</div>
+<div class="page-404">
+  <div class="error-code">404</div>
+  <h1 class="error-title"><%= __('404.title') || '页面未找到' %></h1>
+  <p class="error-desc"><%= __('404.description') || '抱歉，您访问的页面不存在或已被移除' %></p>
 
-</content>
-</invoke>
+  <div class="error-actions">
+    <a href="<%= url_for('/') %>" class="error-btn btn-primary">
+      <svg viewBox="0 0 24 24" width="16" height="16" style="margin-right: 6px;">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/>
+      </svg>
+      <%= __('404.back_home') || '返回首页' %>
+    </a>
+    <a href="javascript:history.back();" class="error-btn btn-secondary">
+      <svg viewBox="0 0 24 24" width="16" height="16" style="margin-right: 6px;">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+      </svg>
+      <%= __('404.go_back') || '返回上页' %>
+    </a>
+  </div>
+
+  <% if (redirectDelay > 0) { %>
+    <div class="error-countdown" id="error-countdown">
+      <%= redirectDelay / 1000 %> 秒后自动返回首页...
+    </div>
+
+    <script>
+      (function() {
+        'use strict';
+
+        var delay = <%= redirectDelay %>;
+        var countdownEl = document.getElementById('error-countdown');
+        var remaining = Math.floor(delay / 1000);
+
+        function updateCountdown() {
+          if (remaining <= 0) {
+            window.location.href = '<%= url_for('/') %>';
+            return;
+          }
+
+          if (countdownEl) {
+            countdownEl.textContent = remaining + ' 秒后自动返回首页...';
+          }
+          remaining--;
+          setTimeout(updateCountdown, 1000);
+        }
+
+        // 启动倒计时
+        setTimeout(updateCountdown, 1000);
+      })();
+    </script>
+  <% } %>
+</div>
