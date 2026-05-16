@@ -48,6 +48,11 @@ const site_config = config;
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <% } %>
 
+<!-- Iconfont -->
+<% if (config.iconfont) { %>
+  <link rel="stylesheet" href="<%= config.iconfont %>">
+<% } %>
+
 <!-- Code Highlight (双主题支持) -->
 <% if (config.highlight?.enable) { %>
   <% const hljsVersion = '11.8.0'; %>

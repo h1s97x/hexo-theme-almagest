@@ -2,6 +2,48 @@
 // ==============================================
 
 // ============================================
+// Lazy Load - 懒加载占位图样式
+// ============================================
+
+// 懒加载占位容器
+.lazy-placeholder
+  position: relative
+  display: block
+  overflow: hidden
+
+  // 懒加载中的占位图
+  .lazy-loading-img
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    width: 40px
+    height: 40px
+    object-fit: contain
+    opacity: 0.5
+    transition: opacity 0.3s ease
+
+  // 图片加载完成
+  img.loaded
+    opacity: 1
+
+  // 加载完成后的过渡效果
+  &.loaded
+    .lazy-loading-img
+      opacity: 0
+
+    img
+      opacity: 1
+
+// 图片懒加载过渡动画
+img[data-src]
+  opacity: 0
+  transition: opacity 0.3s ease
+
+  &.loaded
+    opacity: 1
+
+// ============================================
 // Mermaid - 图表样式
 // ============================================
 
