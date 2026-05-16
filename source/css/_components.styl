@@ -409,15 +409,32 @@ body.dark-theme
     overflow-y: auto
     padding: $padding-md
 
+    .search-results-count
+      font-size: $font-size-xs
+      color: $light-text-tertiary
+      padding: 0 $padding-sm $padding-sm
+      border-bottom: 1px solid $light-border
+      margin-bottom: $padding-sm
+
+      p
+        margin: 0
+
+    .search-results-list
+      display: flex
+      flex-direction: column
+      gap: $spacing-sm
+
     .search-result-item
       display: block
       padding: $padding-md
       border-radius: $border-radius-md
       text-decoration: none
-      transition: background $transition-base
+      transition: background $transition-base, box-shadow $transition-base
+      border: 1px solid transparent
 
       &:hover
         background: $light-bg-secondary
+        border-color: $light-border
 
       .result-title
         font-size: $font-size-base
@@ -425,9 +442,68 @@ body.dark-theme
         color: $light-text-primary
         margin-bottom: $spacing-xs
 
+        a
+          color: inherit
+          text-decoration: none
+
+          &:hover
+            color: $light-link
+
+      .result-date
+        font-size: $font-size-xs
+        color: $light-text-tertiary
+        margin-bottom: $spacing-xs
+
       .result-excerpt
         font-size: $font-size-sm
         color: $light-text-secondary
+        line-height: 1.6
+        margin-bottom: $spacing-xs
+
+        mark
+          background: rgba(255, 230, 0, 0.3)
+          color: inherit
+          padding: 0 2px
+          border-radius: 2px
+
+      .result-meta
+        display: flex
+        gap: $spacing-sm
+        font-size: $font-size-xs
+
+        .result-categories,
+        .result-tags
+          color: $light-text-tertiary
+
+        .result-categories
+          color: $light-link
+
+    .no-results
+      padding: $padding-lg
+      text-align: center
+      color: $light-text-tertiary
+
+      p
+        margin: 0
+
+    .search-loading
+      padding: $padding-lg
+      text-align: center
+      color: $light-text-tertiary
+
+      p
+        margin: 0
+
+    .search-more
+      padding: $padding-md
+      text-align: center
+      font-size: $font-size-sm
+      color: $light-text-tertiary
+      border-top: 1px solid $light-border
+      margin-top: $spacing-sm
+
+      p
+        margin: 0
 
 body.dark-theme
   .search-box
@@ -446,8 +522,38 @@ body.dark-theme
         &::placeholder
           color: $dark-text-tertiary
 
-    .search-results .search-result-item:hover
-      background: $dark-bg-tertiary
+    .search-results
+      .search-result-item:hover
+        background: $dark-bg-tertiary
+        border-color: $dark-border
+
+      .search-results-count
+        border-bottom-color: $dark-border
+        color: $dark-text-tertiary
+
+      .result-title
+        color: $dark-text-primary
+
+        a:hover
+          color: $dark-link
+
+      .result-date,
+      .result-meta
+        color: $dark-text-tertiary
+
+      .result-excerpt
+        color: $dark-text-secondary
+
+        mark
+          background: rgba(255, 230, 0, 0.15)
+
+      .no-results,
+      .search-loading
+        color: $dark-text-tertiary
+
+      .search-more
+        border-top-color: $dark-border
+        color: $dark-text-tertiary
 
 // ============================================
 // Mobile Menu Component

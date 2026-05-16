@@ -194,6 +194,30 @@ pjax_loading:
     minimum: 0.08
 
 # ============================================================
+# 搜索功能 (Search)
+# ============================================================
+# 需要安装 hexo-generator-searchdb 插件
+# npm install hexo-generator-searchdb --save
+#
+# 插件会自动生成搜索索引文件
+search:
+  enable: true
+  # 搜索索引文件的路径 (必须与 hexo-generator-searchdb 配置一致)
+  path: /local-search.xml
+  # 生成索引文件的位置
+  generate_path: /local-search.xml
+  # 搜索范围: post, page, all
+  field: post
+  # 是否搜索文章内容
+  content: true
+  # 搜索框占位文字
+  placeholder: 'Type to search...'
+  # 是否显示搜索结果数量
+  show_count: true
+  # 最多显示的结果数量
+  limit: 20
+
+# ============================================================
 # 首页 Banner 配置 (Home Page Banner)
 # ============================================================
 
