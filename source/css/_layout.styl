@@ -433,3 +433,48 @@ footer
   40%
     transform scale(1)
     opacity 1
+
+// ============================================
+// NProgress 样式覆盖 (Pjax 加载进度条)
+// ============================================
+
+// NProgress 进度条容器
+#nprogress
+  // 进度条颜色
+  .bar
+    background var(--color-primary)
+    height 3px
+    position fixed
+    top 0
+    left 0
+    z-index 99999
+    box-shadow 0 0 3px var(--color-primary)
+
+  // 加载指示器 (可选)
+  .spinner
+    display none
+
+  // 加载指示器图标
+  .peg
+    display block
+    position absolute
+    right 0
+    width 100px
+    height 100%
+    box-shadow 0 0 10px var(--color-primary)
+    opacity 1.0
+
+// NProgress 全屏遮罩 (可选，用于阻止加载时点击)
+.nprogress-busy
+  pointer-events none
+
+  &::after
+    content ''
+    position fixed
+    top 0
+    left 0
+    right 0
+    bottom 0
+    background transparent
+    z-index 99998
+
