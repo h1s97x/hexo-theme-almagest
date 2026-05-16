@@ -108,11 +108,20 @@
         header.appendChild(langLabel);
       }
 
-      // Create copy button
+      // Create copy button with SVG icon
       var copyButton = document.createElement('button');
       copyButton.className = 'code-copy-btn';
-      copyButton.textContent = 'Copy';
       copyButton.setAttribute('aria-label', 'Copy code');
+
+      // SVG icons for copy state and copied state
+      copyButton.innerHTML =
+        '<svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16">' +
+        '<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"/>' +
+        '</svg>' +
+        '<svg class="check-icon" viewBox="0 0 24 24" width="16" height="16">' +
+        '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>' +
+        '</svg>';
+      copyButton.dataset.copyState = 'copy';
       header.appendChild(copyButton);
 
       // Add copy functionality
@@ -122,21 +131,24 @@
         navigator.clipboard
           .writeText(code)
           .then(function () {
-            var originalText = copyButton.textContent;
-            copyButton.textContent = 'Copied!';
+            // Switch to copied state
+            copyButton.dataset.copyState = 'copied';
             copyButton.classList.add('copied');
 
             setTimeout(function () {
-              copyButton.textContent = originalText;
+              // Switch back to copy state
+              copyButton.dataset.copyState = 'copy';
               copyButton.classList.remove('copied');
             }, 2000);
           })
-          .catch(function (err) {
-            console.error('Failed to copy code:', err);
-            copyButton.textContent = 'Failed';
+          .catch(function () {
+            // Keep original behavior on error
+            copyButton.dataset.copyState = 'error';
+            copyButton.classList.add('error');
 
             setTimeout(function () {
-              copyButton.textContent = 'Copy';
+              copyButton.dataset.copyState = 'copy';
+              copyButton.classList.remove('error');
             }, 2000);
           });
       });
