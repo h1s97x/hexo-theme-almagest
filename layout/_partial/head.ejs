@@ -38,9 +38,15 @@ const site_config = config;
 <link rel="stylesheet" href="<%= url_for('/css/main.css') %>">
 
 <!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<% if (config.font?.font_family) { %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=<%= config.font.font_family %>:wght@400;500;600;700&display=swap" rel="stylesheet">
+<% } else { %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<% } %>
 
 <!-- Code Highlight (双主题支持) -->
 <% if (config.highlight?.enable) { %>

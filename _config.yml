@@ -48,6 +48,47 @@ style:
   code_theme: 'atom-one-dark'
 
 # ============================================================
+# 字体配置 (Font Configuration)
+# 参考 Fluid 主题设计
+# ============================================================
+
+font:
+  # 全局字体大小
+  font_size: 16px
+
+  # 全局字体族，留空则使用系统默认
+  # 示例: "'Helvetica Neue', Arial, sans-serif"
+  font_family:
+
+  # 代码字体大小 (百分比)
+  code_font_size: 85%
+
+  # 字母间距
+  letter_spacing: 0.02em
+
+# ============================================================
+# 导航栏配置 (Navbar Configuration)
+# ============================================================
+
+navbar:
+  # 导航栏毛玻璃特效
+  # 实验性功能，可能造成页面滚动掉帧
+  ground_glass:
+    enable: false
+    # 模糊像素，数字越大越模糊
+    px: 3
+    # 不透明度 (0-1)，注意透明过度可能看不清菜单字体
+    alpha: 0.7
+
+# ============================================================
+# 滚动条配置 (Scrollbar Configuration)
+# ============================================================
+
+scrollbar:
+  # 是否启用自定义滚动条样式
+  enable: true
+
+# ============================================================
 # 导航菜单配置 (Navigation Menu)
 # ============================================================
 
@@ -674,3 +715,88 @@ feature:
 fancybox:
   enable: true
   auto_hook: true
+
+# ============================================================
+# 归档页配置 (Archive Page Configuration)
+# ============================================================
+
+archive:
+  # Banner 图片
+  banner_img: /images/banner.jpg
+  # Banner 高度 (屏幕百分比)
+  banner_img_height: 60
+  # Banner 遮罩透明度
+  banner_mask_alpha: 0.3
+
+# ============================================================
+# 分类页配置 (Category Page Configuration)
+# ============================================================
+
+category:
+  # 是否启用分类页
+  enable: true
+  # Banner 图片
+  banner_img: /images/banner.jpg
+  # Banner 高度
+  banner_img_height: 60
+  # Banner 遮罩透明度
+  banner_mask_alpha: 0.3
+  # 分类排序: -length | name
+  order_by: '-length'
+  # 折叠深度，0 全部折叠
+  collapse_depth: 0
+  # 文章排序
+  post_order_by: '-date'
+  # 单个分类中最大显示文章数
+  post_limit: 10
+
+# ============================================================
+# 标签页配置 (Tag Page Configuration)
+# ============================================================
+
+tag:
+  # 是否启用标签页
+  enable: true
+  # Banner 图片
+  banner_img: /images/banner.jpg
+  # Banner 高度
+  banner_img_height: 80
+  # Banner 遮罩透明度
+  banner_mask_alpha: 0.3
+  # 标签云字体大小范围
+  tagcloud:
+    min_font: 15
+    max_font: 30
+    unit: px
+    start_color: '#BBBBEE'
+    end_color: '#337ab7'
+
+# ============================================================
+# 友链页面配置 (Links Page Configuration)
+# ============================================================
+
+links:
+  enable: true
+  banner_img: /images/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  items:
+    - title: 'Fluid Blog'
+      intro: 'Fluid 主题博客'
+      link: 'https://hexo.fluid-dev.com/'
+      avatar: '/images/avatar.png'
+  # 头像加载失败时的替换图片
+  onerror_avatar: /images/avatar.png
+  # 友链下方自定义区域
+  custom:
+    enable: false
+    content: '<p>在下方留言申请加入我的友链</p>'
+
+# ============================================================
+# 自定义页面配置 (Custom Page Configuration)
+# ============================================================
+
+page:
+  banner_img: /images/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3

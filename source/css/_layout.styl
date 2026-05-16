@@ -211,6 +211,19 @@ header
   z-index $z-index-sticky
   transition background-color $transition-base, border-color $transition-base
 
+  // Ground glass effect (frosted glass)
+  // 参考 Fluid 主题设计
+  &.ground-glass
+    background-color rgba(var(--color-bg-rgb, 255, 255, 255), 0.7)
+    backdrop-filter blur(3px)
+    -webkit-backdrop-filter blur(3px)
+    border-bottom 1px solid rgba(var(--color-border-rgb, 224, 224, 224), 0.5)
+
+    // Dark theme support
+    body.dark-theme &
+      background-color rgba(var(--color-bg-rgb, 26, 26, 26), 0.7)
+      border-bottom 1px solid rgba(var(--color-border-rgb, 64, 64, 64), 0.5)
+
 // ============================================================
 // Main Content
 // ============================================================

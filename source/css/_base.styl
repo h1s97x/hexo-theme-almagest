@@ -475,3 +475,33 @@ body.dark-theme
   clip: rect(0, 0, 0, 0)
   white-space: nowrap
   border-width: 0
+
+// ============================================
+// Custom Scrollbar Styles
+// 参考 Fluid 主题设计
+// ============================================
+
+// WebKit 浏览器滚动条
+::-webkit-scrollbar
+  width: 8px
+  height: 8px
+
+::-webkit-scrollbar-track
+  background: transparent
+
+::-webkit-scrollbar-thumb
+  background: var(--color-scrollbar, #c4c6c9)
+  border-radius: 4px
+
+  &:hover
+    background: var(--color-scrollbar-hover, #a6a6a6)
+
+// Firefox 滚动条
+*
+  scrollbar-width: thin
+  scrollbar-color: var(--color-scrollbar, #c4c6c9) transparent
+
+// Dark theme scrollbar
+body.dark-theme
+  --color-scrollbar: #687582
+  --color-scrollbar-hover: #9da8b3
