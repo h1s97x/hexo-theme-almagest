@@ -161,6 +161,19 @@ features:
   # 一键切换到专注阅读的干净界面
   reading_mode: true
 
+  # 代码块行号显示
+  # 在代码块左侧显示行号
+  code_line_number: true
+
+  # 代码块行高亮
+  # 支持 highlight 行号范围语法
+  # 使用方式: ```js {1,3-5}
+  code_highlight: true
+
+  # 代码块折叠
+  # 长代码块可折叠显示
+  code_fold: true
+
 # ============================================================
 # Pjax 加载动画配置 (Pjax Loading Animation)
 # 参考 Fluid 主题的 NProgress 实现

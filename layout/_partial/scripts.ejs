@@ -58,6 +58,19 @@ window.mediumZoomConfig = {
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/code-copy.js' : url_for('/js/code-copy.js') %>?v=<%= version %>"></script>
 <% } %>
 
+<% if (config.features?.code_copy) { %>
+<!-- 代码块高级功能：行号、高亮、折叠 -->
+<script>
+window.codeFeaturesConfig = {
+  enableHighlight: <%= config.code?.highlight?.enable !== false %>,
+  highlightLines: <%- JSON.stringify(config.code?.highlight?.highlight_lines || []) %>,
+  enableFold: <%= config.code?.highlight?.enable_fold !== false %>,
+  foldHeight: <%= config.code?.highlight?.fold_height || 300 %>
+};
+</script>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/code-features.js' : url_for('/js/code-features.js') %>?v=<%= version %>"></script>
+<% } %>
+
 <!-- Scroll Animation -->
 <% if (config.features?.scroll_animation !== false) { %>
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/scroll-animation.js' : url_for('/js/scroll-animation.js') %>?v=<%= version %>"></script>
