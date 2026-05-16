@@ -1353,6 +1353,21 @@ body.dark-theme
   &.tag-size-5
     font-size: $font-size-2xl
 
+// 标签云颜色渐变
+.tag-link
+  // 使用 CSS 变量设置颜色
+  --tag-color: $primary-color
+
+  color: var(--tag-color)
+  border: 1px solid var(--tag-color)
+  transition: all 0.3s ease
+
+  &:hover
+    background: var(--tag-color)
+    color: white
+    transform: translateY(-2px)
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
+
 .tags-list
   margin-top: $spacing-2xl
 

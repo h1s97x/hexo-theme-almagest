@@ -12,15 +12,23 @@
       <div class="tags-container">
         <% if (site.tags.length > 0) { %>
           <div class="tag-cloud">
+            <%
+              // 计算标签数量范围，用于字体大小分级
+              var tagCounts = site.tags.map(function(t) { return t.posts.length; });
+              var maxCount = Math.max.apply(Math, tagCounts);
+              var minCount = Math.min.apply(Math, tagCounts);
+              // 预定义的颜色数组
+              var tagColors = theme.tag?.colors || ['#4a90d9', '#50c1e9', '#72d5a4', '#f6a623', '#f56368', '#a855f7', '#ec4899'];
+            %>
             <% site.tags.forEach(function(tag) { %>
-              <% 
+              <%
                 var postCount = tag.posts.length;
-                var maxCount = Math.max.apply(Math, site.tags.map(function(t) { return t.posts.length; }));
-                var minCount = Math.min.apply(Math, site.tags.map(function(t) { return t.posts.length; }));
                 var size = minCount === maxCount ? 1 : (postCount - minCount) / (maxCount - minCount);
                 var sizeClass = 'tag-size-' + Math.ceil(size * 5);
+                // 根据标签名称的 hash 选择颜色
+                var colorIndex = tag.name.split('').reduce(function(acc, char) { return acc + char.charCodeAt(0); }, 0) % tagColors.length;
               %>
-              <a href="<%- config.root %>tags/<%= tag.name %>/" class="tag-link <%= sizeClass %>" title="<%= tag.name %> (<%= postCount %> posts)">
+              <a href="<%- config.root %>tags/<%= tag.name %>/" class="tag-link <%= sizeClass %>" title="<%= tag.name %> (<%= postCount %> posts)" style="--tag-color: <%= tagColors[colorIndex] %>">
                 <%= tag.name %>
               </a>
             <% }); %>
