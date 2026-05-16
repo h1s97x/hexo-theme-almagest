@@ -31,7 +31,8 @@
    * Detect the theme to use based on:
    * 1. Saved preference in localStorage
    * 2. System preference (prefers-color-scheme)
-   * 3. Default to light theme
+   * 3. Theme config default (auto | light | dark)
+   * 4. Default to light theme
    */
   function detectTheme() {
     // Check if user has saved preference
@@ -40,13 +41,29 @@
       return savedTheme;
     }
 
-    // Check system preference
+    // Check theme config default (set by theme configuration)
+    const themeConfig = window.themeConfig || {};
+    const defaultMode = themeConfig.darkMode || 'auto';
+
+    if (defaultMode === DARK_THEME) {
+      return DARK_THEME;
+    }
+    if (defaultMode === LIGHT_THEME) {
+      return LIGHT_THEME;
+    }
+
+    // auto: Check system preference
     const systemPreference = getSystemPreference();
     if (systemPreference) {
       return systemPreference;
     }
 
-    // Default to light theme
+    // auto fallback: local time (18:00-06:00 use dark)
+    const hour = new Date().getHours();
+    if (hour >= 18 || hour < 6) {
+      return DARK_THEME;
+    }
+
     return LIGHT_THEME;
   }
 

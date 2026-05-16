@@ -800,3 +800,99 @@ page:
   banner_img: /images/banner.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
+
+# ============================================================
+# 暗色模式配置 (Dark Mode Configuration)
+# ============================================================
+
+# 暗色模式独立配置块，替代 style.prefers_theme
+dark_mode:
+  # 是否启用暗色模式切换
+  enable: true
+  # 默认模式: auto | light | dark
+  # auto: 根据系统设置自动切换，18:00-06:00 自动进入暗色模式
+  # light: 始终亮色
+  # dark: 始终暗色
+  default: auto
+
+# ============================================================
+# 颜色配置 (Color Configuration)
+# 参考 Fluid 主题设计
+# ============================================================
+
+color:
+  # body 背景色
+  body_bg_color: '#f8f9fa'
+  body_bg_color_dark: '#0f172a'
+  # 导航栏背景色
+  navbar_bg_color: 'rgba(255, 255, 255, 0.95)'
+  navbar_bg_color_dark: 'rgba(15, 23, 42, 0.95)'
+  # 导航栏文字色
+  navbar_text_color: '#334155'
+  navbar_text_color_dark: '#e2e8f0'
+  # 主面板背景色
+  board_color: '#ffffff'
+  board_color_dark: '#1e293b'
+  # 全局文字色
+  text_color: '#334155'
+  text_color_dark: '#cbd5e1'
+  # 次级文字色 (摘要、简介等)
+  sec_text_color: '#64748b'
+  sec_text_color_dark: '#94a3b8'
+  # 文章标题色
+  post_heading_color: '#1e293b'
+  post_heading_color_dark: '#e2e8f0'
+  # 链接色
+  link_color: '#0066cc'
+  link_color_dark: '#60a5fa'
+  # 链接悬浮色
+  link_hover_color: '#4a90d9'
+  link_hover_color_dark: '#93c5fd'
+  # 链接悬浮背景色
+  link_hover_bg_color: 'rgba(74, 144, 217, 0.1)'
+  link_hover_bg_color_dark: 'rgba(96, 165, 250, 0.15)'
+  # 分隔线颜色
+  line_color: '#e2e8f0'
+  line_color_dark: '#334155'
+  # 按钮背景色
+  button_bg_color: 'transparent'
+  button_bg_color_dark: 'transparent'
+  # 按钮悬浮背景色
+  button_hover_bg_color: '#f1f5f9'
+  button_hover_bg_color_dark: '#334155'
+
+# ============================================================
+# 静态资源 CDN 前缀配置 (Static Assets CDN)
+# 参考 Fluid 主题设计
+# 可自定义成 CDN 地址，如果不知道如何设置请不要改动
+# ============================================================
+
+static_prefix:
+  # 内部静态资源
+  internal_js: /js
+  internal_css: /css
+  internal_img: /images
+  # Google Fonts
+  google_fonts: https://fonts.googleapis.com
+  # Highlight.js
+  highlightjs: https://cdn.jsdelivr.net/npm/highlight.js
+  # KaTeX
+  katex: https://cdn.jsdelivr.net/npm/katex
+  # MathJax
+  mathjax: https://cdn.jsdelivr.net/npm/mathjax
+  # Pjax
+  pjax: https://cdn.jsdelivr.net/npm/pjax
+  # Mermaid
+  mermaid: https://cdn.jsdelivr.net/npm/mermaid
+  # Busuanzi 统计
+  busuanzi: https://busuanzi.ibruce.info/busuanzi
+  # Font Awesome (可选)
+  font_awesome: https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free
+
+# ============================================================
+# 旧配置兼容 (兼容性保留，建议迁移到新配置)
+# ============================================================
+
+# 以下配置保留向后兼容，新用户建议使用上方的新配置
+# style.prefers_theme -> 请使用 dark_mode.default
+# cdn_prefix -> 请使用 static_prefix.internal_js

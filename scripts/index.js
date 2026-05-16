@@ -19,3 +19,6 @@ require('./filters');
 
 // Register tags
 require('./tags');
+
+// Register stylus variable injection
+require('./stylus-inject');
