@@ -34,6 +34,11 @@ window.NProgressConfig = <%- JSON.stringify({
 <% } %>
 
 <% if (config.image?.lazy_load) { %>
+<!-- Random Banner 随机头图 -->
+<% if (config.index?.random_img) { %>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/random-banner.js' : url_for('/js/random-banner.js') %>?v=<%= version %>"></script>
+<% } %>
+
 <!-- Lazy Load 配置 -->
 <script>
 window.lazyLoadConfig = {
