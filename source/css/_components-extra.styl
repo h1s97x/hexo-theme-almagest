@@ -1635,3 +1635,24 @@ body.read-mode
 
     &:hover
       color: var(--color-primary-dark)
+
+// TOC 增强样式
+.toc-header
+  cursor: pointer
+  user-select: none
+
+.toc-list a
+  &.active
+    color: var(--color-primary)
+    font-weight: 600
+
+  &.toc-active
+    color: var(--color-primary) !important
+    background: var(--color-primary-light)
+    border-radius: 4px
+
+.toc-toggle
+  transition: transform 0.2s ease
+
+  &.collapsed
+    transform: rotate(-90deg)

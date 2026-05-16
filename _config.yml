@@ -588,6 +588,16 @@ toc:
   # 最大深度 (h2-h6)
   max_depth: 6
 
+  # 跟随滚动 - 自动高亮当前阅读位置
+  scroll_follow:
+    enable: true
+
+  # 展开/折叠 - 点击标题展开或折叠子项
+  expand:
+    enable: true
+    # 折叠深度，超过此深度的项默认折叠
+    collapse_depth: 2
+
   # 是否折叠
   collapse: false
 
