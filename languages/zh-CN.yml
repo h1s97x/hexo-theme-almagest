@@ -17,6 +17,10 @@ updated: 更新于
 posted_on: 发布于
 in: 在
 with_tags: 标签为
+reading_time: 阅读时长
+word_count: 字数
+min_read: 分钟阅读
+words: 字
 
 # 侧边栏
 recent_posts: 最近文章

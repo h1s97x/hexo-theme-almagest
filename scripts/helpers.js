@@ -39,16 +39,27 @@ module.exports = function (hexo) {
   });
 
   // Get reading time
-  // Usage: <%= get_reading_time(content) %>
-  hexo.extend.helper.register('get_reading_time', function (content) {
+  // Usage: <%= get_reading_time(content, options) %>
+  // Options: { awl: average word length, wpm: words per minute }
+  hexo.extend.helper.register('get_reading_time', function (content, options) {
     // Remove HTML tags
     const text = content.replace(/<[^>]*>/g, '');
 
-    // Calculate reading time (200 words per minute)
-    const wordCount = text.split(/\s+/).length;
-    const readingTime = Math.ceil(wordCount / 200);
+    // Get configuration
+    const config = this.theme.article?.reading_time || {};
+    const awl = options?.awl || config.awl || 2; // Average word length
+    const wpm = options?.wpm || config.wpm || 60; // Words per minute
 
-    return readingTime;
+    // Calculate character count
+    const charCount = text.replace(/\s+/g, '').length;
+
+    // Calculate reading time in minutes
+    // Formula: (charCount / awl) / wpm
+    const wordCount = charCount / awl;
+    const readingTime = Math.ceil(wordCount / wpm);
+
+    // Minimum 1 minute
+    return Math.max(1, readingTime);
   });
 
   // Get word count
@@ -57,10 +68,17 @@ module.exports = function (hexo) {
     // Remove HTML tags
     const text = content.replace(/<[^>]*>/g, '');
 
-    // Count words
-    const words = text.split(/\s+/).filter(w => w.length > 0).length;
+    // Count characters (excluding spaces)
+    const charCount = text.replace(/\s+/g, '').length;
 
-    return words;
+    // Get configuration
+    const config = this.theme.article?.reading_time || {};
+    const awl = config.awl || 2; // Average word length
+
+    // Calculate word count
+    const wordCount = Math.ceil(charCount / awl);
+
+    return wordCount;
   });
 
   // Check if post is featured
