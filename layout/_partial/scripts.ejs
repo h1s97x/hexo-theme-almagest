@@ -20,6 +20,13 @@ const pjaxEnabled = config.features?.pjax !== false;
 <% } %>
 
 <% if (config.image?.lazy_load) { %>
+<!-- Lazy Load 配置 -->
+<script>
+window.lazyLoadConfig = {
+  loadingImg: '<%= config.image?.loading_img || '' %>',
+  placeholderColor: '<%= config.image?.placeholder_color || '#1a1a2e' %>'
+};
+</script>
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/lazy-load.js' : url_for('/js/lazy-load.js') %>?v=<%= version %>"></script>
 <% } %>
 
