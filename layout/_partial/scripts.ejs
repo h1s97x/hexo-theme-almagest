@@ -8,7 +8,8 @@ const pjaxEnabled = config.features?.pjax !== false;
 
 <!-- Pjax Library (必须在其他脚本之前加载) -->
 <% if (pjaxEnabled) { %>
-<script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script>
+<% const pjaxPrefix = config.static_prefix?.pjax || 'https://cdn.jsdelivr.net/npm/pjax'; %>
+<script src="<%= pjaxPrefix %>@0.2.8/pjax.min.js"></script>
 <% } %>
 
 <!-- Theme Scripts -->
@@ -44,7 +45,8 @@ window.mediumZoomConfig = {
 <!-- Mermaid Charts -->
 <% if (config.mermaid?.enable) { %>
   <% const mermaidVersion = config.mermaid?.version || '10.6.1'; %>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@<%= mermaidVersion %>/dist/mermaid.min.js"></script>
+  <% const mermaidPrefix = config.static_prefix?.mermaid || 'https://cdn.jsdelivr.net/npm/mermaid'; %>
+  <script src="<%= mermaidPrefix %>@<%= mermaidVersion %>/dist/mermaid.min.js"></script>
   <script data-pjax>
   (function() {
     var mermaidConfig = <%= JSON.stringify(config.mermaid?.options || {}) %>;
@@ -97,9 +99,10 @@ window.mediumZoomConfig = {
 <!-- KaTeX JS (数学公式) -->
 <% if (config.math?.enable && config.math?.engine === 'katex' && config.math?.katex?.load_js !== false) { %>
   <% const katexVersion = config.math?.katex?.version || '0.16.9'; %>
-  <script src="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/katex.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/contrib/auto-render.min.js" defer onload="renderMathInElement(document.body, <%= JSON.stringify(config.math?.katex?.options || {}) %>)"></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/contrib/copy-tex.min.js" defer></script>
+  <% const katexPrefix = config.static_prefix?.katex || 'https://cdn.jsdelivr.net/npm/katex'; %>
+  <script src="<%= katexPrefix %>@<%= katexVersion %>/dist/katex.min.js" defer></script>
+  <script src="<%= katexPrefix %>@<%= katexVersion %>/dist/contrib/auto-render.min.js" defer onload="renderMathInElement(document.body, <%= JSON.stringify(config.math?.katex?.options || {}) %>)"></script>
+  <script src="<%= katexPrefix %>@<%= katexVersion %>/dist/contrib/copy-tex.min.js" defer></script>
   <script data-pjax>
   (function() {
     // 重新渲染数学公式 (Pjax 后)

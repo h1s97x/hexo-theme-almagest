@@ -53,8 +53,9 @@ const site_config = config;
   <% const hljsVersion = '11.8.0'; %>
   <% const lightTheme = config.highlight?.light_theme || 'github'; %>
   <% const darkTheme = config.highlight?.dark_theme || 'atom-one-dark'; %>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@<%= hljsVersion %>/styles/<%= lightTheme %>.min.css" id="hljs-light">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@<%= hljsVersion %>/styles/<%= darkTheme %>.min.css" id="hljs-dark" disabled>
+  <% const hljsPrefix = config.static_prefix?.highlightjs || 'https://cdn.jsdelivr.net/npm/highlight.js'; %>
+  <link rel="stylesheet" href="<%= hljsPrefix %>@<%= hljsVersion %>/styles/<%= lightTheme %>.min.css" id="hljs-light">
+  <link rel="stylesheet" href="<%= hljsPrefix %>@<%= hljsVersion %>/styles/<%= darkTheme %>.min.css" id="hljs-dark" disabled>
   <script>
     (function() {
       var STORAGE_KEY = 'theme-preference';
@@ -105,24 +106,34 @@ const site_config = config;
 <!-- KaTeX (数学公式) -->
 <% if (config.math?.enable && config.math?.engine === 'katex') { %>
   <% const katexVersion = config.math?.katex?.version || '0.16.9'; %>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@<%= katexVersion %>/dist/contrib/copy-tex.min.css">
+  <% const katexPrefix = config.static_prefix?.katex || 'https://cdn.jsdelivr.net/npm/katex'; %>
+  <link rel="stylesheet" href="<%= katexPrefix %>@<%= katexVersion %>/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <link rel="stylesheet" href="<%= katexPrefix %>@<%= katexVersion %>/dist/contrib/copy-tex.min.css">
 <% } %>
 
 <!-- MathJax (数学公式) -->
 <% if (config.math?.enable && config.math?.engine === 'mathjax') { %>
+  <% const mathjaxPrefix = config.static_prefix?.mathjax || 'https://cdn.jsdelivr.net/npm/mathjax'; %>
   <% if (config.math?.mathjax?.version === '3') { %>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="<%= mathjaxPrefix %>@3/es5/tex-mml-chtml.js"></script>
   <% } else { %>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script src="<%= mathjaxPrefix %>@2.7.9/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   <% } %>
 <% } %>
+
+<!-- Theme Global Config -->
+<script>
+window.themeConfig = window.themeConfig || {};
+window.themeConfig.darkMode = '<%= config.dark_mode?.default || config.style?.prefers_theme || 'auto' %>';
+</script>
 
 <!-- Theme Initialization Script (prevents FOUC) -->
 <script>
   (function() {
     const STORAGE_KEY = 'theme-preference';
     const THEME_ATTRIBUTE = 'data-theme';
+    // 主题默认配置，从主题配置注入
+    const defaultMode = '<%= config.dark_mode?.default || config.style?.prefers_theme || 'auto' %>';
     
     function getSystemPreference() {
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -132,6 +143,26 @@ const site_config = config;
         return 'light';
       }
       return null;
+    }
+    
+    function getDefaultTheme() {
+      if (defaultMode === 'dark') {
+        return 'dark';
+      }
+      if (defaultMode === 'light') {
+        return 'light';
+      }
+      // auto: 优先遵循系统偏好
+      const systemPreference = getSystemPreference();
+      if (systemPreference) {
+        return systemPreference;
+      }
+      // 无系统偏好时，检查本地时间 (18:00-06:00 使用暗色)
+      var hour = new Date().getHours();
+      if (hour >= 18 || hour < 6) {
+        return 'dark';
+      }
+      return 'light';
     }
     
     function initTheme() {
@@ -144,12 +175,7 @@ const site_config = config;
       if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
         html.setAttribute(THEME_ATTRIBUTE, savedTheme);
       } else {
-        const systemPreference = getSystemPreference();
-        if (systemPreference) {
-          html.setAttribute(THEME_ATTRIBUTE, systemPreference);
-        } else {
-          html.setAttribute(THEME_ATTRIBUTE, 'light');
-        }
+        html.setAttribute(THEME_ATTRIBUTE, getDefaultTheme());
       }
       
       // Remove no-transition class after a brief delay
