@@ -24,14 +24,14 @@ hexo server
 
 ## 常用命令
 
-| 命令 | 说明 |
-|------|------|
-| `hexo new post "标题"` | 创建新文章 |
-| `hexo new page "页面名"` | 创建新页面 |
-| `hexo generate` | 生成静态文件 |
-| `hexo server` | 启动开发服务器 |
-| `hexo clean` | 清除缓存 |
-| `hexo deploy` | 部署网站 |
+| 命令                     | 说明           |
+| ------------------------ | -------------- |
+| `hexo new post "标题"`   | 创建新文章     |
+| `hexo new page "页面名"` | 创建新页面     |
+| `hexo generate`          | 生成静态文件   |
+| `hexo server`            | 启动开发服务器 |
+| `hexo clean`             | 清除缓存       |
+| `hexo deploy`            | 部署网站       |
 
 ## 文章 Front Matter
 
@@ -56,7 +56,7 @@ theme:
   subtitle: 网站副标题
   description: 网站描述
   author: 作者名称
-  language: zh-CN  # 或 en, zh-TW
+  language: zh-CN # 或 en, zh-TW
 ```
 
 ### 菜单配置
@@ -78,7 +78,7 @@ theme:
   style:
     primary_color: '#0066cc'
     secondary_color: '#666666'
-    prefers_theme: 'auto'  # 或 'light', 'dark'
+    prefers_theme: 'auto' # 或 'light', 'dark'
 ```
 
 ### 功能配置
@@ -90,7 +90,7 @@ theme:
     comments: true
     toc: true
     code_copy: true
-  
+
   comments:
     enable: true
     provider: giscus
@@ -110,11 +110,11 @@ theme:
   wiki:
     enable: true
     projects:
-      - name: "项目文档"
-        path: "/wiki/project/"
+      - name: '项目文档'
+        path: '/wiki/project/'
         pages:
-          - title: "快速开始"
-            path: "/wiki/project/getting-started/"
+          - title: '快速开始'
+            path: '/wiki/project/getting-started/'
 ```
 
 ### Topic 系统
@@ -122,8 +122,8 @@ theme:
 ```yaml
 theme:
   topics:
-    - name: "JavaScript 学习路线"
-      path: "/topics/javascript-learning/"
+    - name: 'JavaScript 学习路线'
+      path: '/topics/javascript-learning/'
       count: 5
 ```
 
@@ -135,9 +135,9 @@ theme:
     enable: true
     categories:
       learning:
-        name: "学习笔记"
-        icon: "📚"
-        path: "/notebooks/learning/"
+        name: '学习笔记'
+        icon: '📚'
+        path: '/notebooks/learning/'
 ```
 
 ### 天文功能
@@ -148,10 +148,10 @@ theme:
     enable: true
     background: static
     events:
-      - name: "四象限仪流星雨"
-        type: "meteor_shower"
-        date: "2024-01-04"
-        visibility: "全球可见"
+      - name: '四象限仪流星雨'
+        type: 'meteor_shower'
+        date: '2024-01-04'
+        visibility: '全球可见'
 ```
 
 ## 模板标签
@@ -192,14 +192,14 @@ theme:
 
 ## 常用变量
 
-| 变量 | 说明 |
-|------|------|
-| `config` | Hexo 配置 |
-| `page` | 当前页面对象 |
-| `posts` | 文章列表 |
-| `categories` | 分类列表 |
-| `tags` | 标签列表 |
-| `__()` | 多语言翻译函数 |
+| 变量         | 说明           |
+| ------------ | -------------- |
+| `config`     | Hexo 配置      |
+| `page`       | 当前页面对象   |
+| `posts`      | 文章列表       |
+| `categories` | 分类列表       |
+| `tags`       | 标签列表       |
+| `__()`       | 多语言翻译函数 |
 
 ## 多语言支持
 

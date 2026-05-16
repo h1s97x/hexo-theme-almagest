@@ -121,14 +121,15 @@ menu:
 ```yaml
 highlight:
   enable: true
-  light_theme: "github"        # 浅色主题
-  dark_theme: "atom-one-dark"  # 深色主题
+  light_theme: 'github' # 浅色主题
+  dark_theme: 'atom-one-dark' # 深色主题
   line_number: true
   copy_button: true
   show_lang: true
 ```
 
 **可用主题：**
+
 - 浅色: github, atom-one-light, vs, xcode, vs2015
 - 深色: atom-one-dark, monokai, dracula, nord, github-dark, one-dark-pro
 
@@ -137,11 +138,11 @@ highlight:
 ```yaml
 analytics:
   enable: true
-  service: "busuanzi"  # busuanzi | google
+  service: 'busuanzi' # busuanzi | google
   busuanzi:
-    site_uv: true      # 站点访客数
-    site_pv: true      # 站点浏览量
-    page_pv: true      # 文章浏览量
+    site_uv: true # 站点访客数
+    site_pv: true # 站点浏览量
+    page_pv: true # 文章浏览量
 ```
 
 ## 文章 Front Matter
@@ -156,8 +157,8 @@ categories:
 tags:
   - 标签1
   - 标签2
-cover: /images/cover.jpg    # 封面图片
-excerpt: 文章摘要            # 摘要（可选）
+cover: /images/cover.jpg # 封面图片
+excerpt: 文章摘要 # 摘要（可选）
 ---
 ```
 
@@ -191,10 +192,13 @@ excerpt: 文章摘要            # 摘要（可选）
 
 ```markdown
 {% timeline %}
+
 <!-- node 第一阶段 -->
+
 内容...
 
 <!-- node 第二阶段 -->
+
 内容...
 {% endtimeline %}
 ```
@@ -244,11 +248,17 @@ excerpt: 文章摘要            # 摘要（可选）
 
 ```markdown
 {% tabs 标签页 %}
+
 <!-- tab 标签1 -->
+
 内容1
+
 <!-- tab 标签2 -->
+
 内容2
+
 <!-- tab -->
+
 内容3
 {% endtabs %}
 ```
@@ -299,11 +309,12 @@ graph TD
 ````
 
 **配置项：**
+
 ```yaml
 mermaid:
   enable: true
-  theme: "default"    # 深色主题下使用 dark
-  dark_theme: "dark"
+  theme: 'default' # 深色主题下使用 dark
+  dark_theme: 'dark'
 ```
 
 ### 数学公式
@@ -312,19 +323,22 @@ mermaid:
 
 ```markdown
 # 行内公式
+
 这是一个行内公式 $E = mc^2$
 
 # 块级公式
+
 $$
 \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
 $$
 ```
 
 **配置项：**
+
 ```yaml
 math:
   enable: true
-  engine: "katex"  # 或 "mathjax"
+  engine: 'katex' # 或 "mathjax"
 ```
 
 ## 页面创建
@@ -395,12 +409,13 @@ type: links
 ---
 
 {% links %}
+
 - site:
-    name: 博客名称
-    url: https://example.com
-    avatar: https://example.com/avatar.png
-    description: 博客描述
-{% endlinks %}
+  name: 博客名称
+  url: https://example.com
+  avatar: https://example.com/avatar.png
+  description: 博客描述
+  {% endlinks %}
 ```
 
 ## 评论系统
@@ -414,13 +429,13 @@ type: links
 services:
   giscus:
     enable: true
-    repo: "your-username/your-repo"
-    repo_id: "your-repo-id"
-    category: "Announcements"
-    category_id: "your-category-id"
-    mapping: "pathname"
-    theme: "dark_dimmed"
-    lang: "zh-CN"
+    repo: 'your-username/your-repo'
+    repo_id: 'your-repo-id'
+    category: 'Announcements'
+    category_id: 'your-category-id'
+    mapping: 'pathname'
+    theme: 'dark_dimmed'
+    lang: 'zh-CN'
 ```
 
 ## 开发

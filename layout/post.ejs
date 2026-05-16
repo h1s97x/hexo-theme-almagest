@@ -106,11 +106,7 @@ const tocEnabled = config.toc?.enable !== false && page.toc;
     <% } %>
 
     <!-- Copyright -->
-    <% if (config.copyright?.enable !== false) { %>
-      <div class="article-copyright">
-        <p><%= __('copyright_notice') %></p>
-      </div>
-    <% } %>
+    <%- partial('_partial/copyright', { post: page }) %>
 
     <!-- Post Navigation -->
     <%- partial('_partial/post-nav') %>

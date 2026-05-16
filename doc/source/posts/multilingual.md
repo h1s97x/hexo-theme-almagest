@@ -24,7 +24,7 @@ Additional languages can be added easily.
 Edit `_config.yml`:
 
 ```yaml
-language: en  # or zh-CN, zh-TW
+language: en # or zh-CN, zh-TW
 ```
 
 ## Supported Languages

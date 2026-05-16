@@ -114,7 +114,7 @@ img.zoomable
 .toc-wrapper
   position: sticky
   top: $spacing-xl
-  max-height: calc(100vh - #{$spacing-xl * 2})
+  max-height: "calc(100vh - %s)" % ($spacing-xl * 2)
   background: $light-bg-secondary
   border-radius: $border-radius-lg
   padding: $padding-lg
@@ -406,7 +406,7 @@ body.dark-theme
     &::before
       content: ''
       position: absolute
-      left: -#{$spacing-xl + 3px}
+      left: -(($spacing-xl + 3px))
       top: 6px
       width: 12px
       height: 12px
@@ -828,6 +828,292 @@ body.dark-theme
 
 .align-wrapper
   margin: $spacing-lg 0
+
+// ============================================
+// Banner - 首页 Banner
+// ============================================
+
+.banner-wrapper
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 100%
+  overflow: hidden
+  background: $light-bg-secondary
+
+  // Banner 背景图片
+  .banner-img
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-size: cover
+    background-position: center
+    background-repeat: no-repeat
+    z-index: 1
+
+    // 视差效果
+    .parallax &
+      background-attachment: fixed
+
+      @media (max-width: 768px)
+        background-attachment: scroll
+
+  // 遮罩层
+  .banner-mask
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: #000
+    z-index: 2
+
+  // Banner 内容
+  .banner-content
+    position: relative
+    z-index: 3
+    text-align: center
+    color: #fff
+    padding: $spacing-2xl
+
+    .banner-title
+      font-size: 3rem
+      font-weight: $font-weight-bold
+      margin-bottom: $spacing-md
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3)
+
+    .banner-subtitle
+      font-size: 1.25rem
+      font-weight: $font-weight-normal
+      opacity: 0.9
+      min-height: 1.5em
+
+      // 打字机光标
+      .typing-cursor
+        display: inline-block
+        animation: typingCursor 1s infinite
+        margin-left: 2px
+
+    // 向下滚动箭头
+    .scroll-down-arrow
+      position: absolute
+      bottom: $spacing-2xl
+      left: 50%
+      transform: translateX(-50%)
+      animation: scrollDownBounce 2s infinite
+      cursor: pointer
+      opacity: 0.7
+      transition: opacity 0.3s
+
+      &:hover
+        opacity: 1
+
+// 打字机光标闪烁动画
+@keyframes typingCursor
+  0%, 100%
+    opacity: 1
+  50%
+    opacity: 0
+
+// 向下箭头弹跳动画
+@keyframes scrollDownBounce
+  0%, 20%, 50%, 80%, 100%
+    transform: translateX(-50%) translateY(0)
+  40%
+    transform: translateX(-50%) translateY(-10px)
+  60%
+    transform: translateX(-50%) translateY(-5px)
+
+@media (max-width: 768px)
+  .banner-wrapper
+    .banner-content
+      .banner-title
+        font-size: 2rem
+
+      .banner-subtitle
+        font-size: 1rem
+
+// ============================================
+// Copyright - 版权声明
+// ============================================
+
+.copyright-wrapper
+  margin: $spacing-2xl 0 $spacing-lg
+  padding: $spacing-lg $spacing-xl
+  background: var(--color-bg-secondary)
+  border-radius: $border-radius-md
+  border-left: 4px solid var(--color-primary)
+
+  .copyright-title
+    font-size: $font-size-base
+    font-weight: $font-weight-bold
+    margin-bottom: $spacing-sm
+    color: var(--color-text-primary)
+
+  .copyright-content
+    font-size: $font-size-sm
+    color: var(--color-text-secondary)
+    line-height: 1.8
+
+    a
+      color: var(--color-primary)
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+    .copyright-item
+      margin: $spacing-xs 0
+
+      .copyright-label
+        font-weight: $font-weight-medium
+        margin-right: $spacing-sm
+
+      .copyright-value
+        color: var(--color-text-primary)
+
+  .copyright-license
+    margin-top: $spacing-md
+    padding-top: $spacing-md
+    border-top: 1px solid var(--color-border)
+
+    .license-icon
+      display: inline-flex
+      align-items: center
+      gap: $spacing-xs
+      font-size: $font-size-sm
+      color: var(--color-text-secondary)
+
+      svg
+        width: 20px
+        height: 20px
+
+// ============================================
+// Page 404
+// ============================================
+
+.page-404
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  min-height: 60vh
+  text-align: center
+  padding: $spacing-2xl
+
+  .error-code
+    font-size: 8rem
+    font-weight: $font-weight-bold
+    color: var(--color-primary)
+    line-height: 1
+    margin-bottom: $spacing-md
+    text-shadow: 0 0 30px rgba($primary-color, 0.3)
+
+    body.dark-theme &
+      text-shadow: 0 0 30px rgba($primary-light, 0.3)
+
+  .error-title
+    font-size: 1.5rem
+    font-weight: $font-weight-bold
+    margin-bottom: $spacing-sm
+    color: var(--color-text-primary)
+
+  .error-desc
+    font-size: $font-size-base
+    color: var(--color-text-secondary)
+    margin-bottom: $spacing-xl
+
+  .error-actions
+    display: flex
+    gap: $spacing-md
+
+    .error-btn
+      display: inline-flex
+      align-items: center
+      padding: $spacing-sm $spacing-lg
+      border-radius: $border-radius-md
+      font-size: $font-size-base
+      font-weight: $font-weight-medium
+      text-decoration: none
+      transition: all 0.3s ease
+
+      &.btn-primary
+        background: var(--color-primary)
+        color: #fff
+
+        &:hover
+          background: var(--color-primary-dark)
+          transform: translateY(-2px)
+
+      &.btn-secondary
+        background: var(--color-bg-secondary)
+        color: var(--color-text-primary)
+        border: 1px solid var(--color-border)
+
+        &:hover
+          background: var(--color-bg-hover)
+
+  .error-countdown
+    margin-top: $spacing-lg
+    font-size: $font-size-sm
+    color: var(--color-text-tertiary)
+
+// ============================================
+// About Page - 关于页面
+// ============================================
+
+.about-page
+  .about-header
+    text-align: center
+    padding: $spacing-2xl 0
+
+    .about-avatar
+      width: 120px
+      height: 120px
+      border-radius: 50%
+      object-fit: cover
+      margin-bottom: $spacing-lg
+      border: 4px solid var(--color-primary)
+      box-shadow: 0 4px 20px rgba($primary-color, 0.2)
+
+    .about-name
+      font-size: 1.75rem
+      font-weight: $font-weight-bold
+      margin-bottom: $spacing-sm
+      color: var(--color-text-primary)
+
+    .about-intro
+      font-size: $font-size-base
+      color: var(--color-text-secondary)
+      max-width: 500px
+      margin: 0 auto
+
+  .about-icons
+    display: flex
+    justify-content: center
+    gap: $spacing-md
+    margin-top: $spacing-xl
+
+    .about-icon-link
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 44px
+      height: 44px
+      border-radius: 50%
+      background: var(--color-bg-secondary)
+      color: var(--color-text-secondary)
+      font-size: 1.25rem
+      text-decoration: none
+      transition: all 0.3s ease
+
+      &:hover
+        background: var(--color-primary)
+        color: #fff
+        transform: translateY(-3px)
 
 // ============================================
 // Read Mode - 阅读模式

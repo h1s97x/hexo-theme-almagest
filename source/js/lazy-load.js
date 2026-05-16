@@ -3,7 +3,7 @@
  * Implements lazy loading for images
  */
 
-(function() {
+(function () {
   'use strict';
 
   function initLazyLoad() {
@@ -20,31 +20,34 @@
       return;
     }
 
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          const src = img.getAttribute('data-src');
-          const srcset = img.getAttribute('data-srcset');
+    const imageObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src');
+            const srcset = img.getAttribute('data-srcset');
 
-          // Load image
-          if (src) {
-            img.src = src;
+            // Load image
+            if (src) {
+              img.src = src;
+            }
+            if (srcset) {
+              img.srcset = srcset;
+            }
+
+            // Add loaded class
+            img.classList.add('loaded');
+
+            // Stop observing this image
+            observer.unobserve(img);
           }
-          if (srcset) {
-            img.srcset = srcset;
-          }
-
-          // Add loaded class
-          img.classList.add('loaded');
-
-          // Stop observing this image
-          observer.unobserve(img);
-        }
-      });
-    }, {
-      rootMargin: '50px'
-    });
+        });
+      },
+      {
+        rootMargin: '50px'
+      }
+    );
 
     images.forEach(img => {
       imageObserver.observe(img);
@@ -75,5 +78,4 @@
   } else {
     initLazyLoad();
   }
-
 })();

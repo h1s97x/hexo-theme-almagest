@@ -91,6 +91,7 @@ tags:
 4. **Use descriptive names**: Make categories clear and meaningful
 
 Example structure:
+
 ```
 - Technology
   - Web Development
@@ -110,6 +111,7 @@ Example structure:
 5. **Use hyphens**: Use hyphens for multi-word tags (e.g., "web-development")
 
 Example tags:
+
 ```
 javascript, react, vue, web-development, tutorial, tips, best-practices
 ```
@@ -119,6 +121,7 @@ javascript, react, vue, web-development, tutorial, tips, best-practices
 ### Categories Widget
 
 The categories widget displays:
+
 - All categories
 - Number of posts in each category
 - Links to category pages
@@ -126,6 +129,7 @@ The categories widget displays:
 ### Tags Widget
 
 The tags widget displays:
+
 - Top 20 most popular tags
 - Tag cloud with size based on post count
 - Links to tag pages
@@ -139,8 +143,8 @@ To hide the widgets, edit `_config.yml`:
 ```yaml
 sidebar:
   widgets:
-    categories: true  # Set to false to hide
-    tags: true        # Set to false to hide
+    categories: true # Set to false to hide
+    tags: true # Set to false to hide
 ```
 
 ### Changing Widget Order

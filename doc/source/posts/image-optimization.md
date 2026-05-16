@@ -40,10 +40,10 @@ In your Markdown, use the `data-src` attribute:
 Or in HTML:
 
 ```html
-<img 
-  data-src="/images/my-image.jpg" 
+<img
+  data-src="/images/my-image.jpg"
   data-srcset="/images/my-image-small.jpg 480w, /images/my-image-large.jpg 1200w"
-  alt="My Image" 
+  alt="My Image"
 />
 ```
 
@@ -61,12 +61,12 @@ Or in HTML:
 For responsive images, use the `srcset` attribute:
 
 ```html
-<img 
+<img
   src="/images/my-image.jpg"
   srcset="
-    /images/my-image-small.jpg 480w,
-    /images/my-image-medium.jpg 768w,
-    /images/my-image-large.jpg 1200w
+    /images/my-image-small.jpg   480w,
+    /images/my-image-medium.jpg  768w,
+    /images/my-image-large.jpg  1200w
   "
   sizes="(max-width: 480px) 100vw, (max-width: 768px) 80vw, 100vw"
   alt="My Image"
@@ -79,8 +79,8 @@ For art direction:
 
 ```html
 <picture>
-  <source media="(max-width: 480px)" srcset="/images/my-image-small.jpg">
-  <source media="(max-width: 768px)" srcset="/images/my-image-medium.jpg">
+  <source media="(max-width: 480px)" srcset="/images/my-image-small.jpg" />
+  <source media="(max-width: 768px)" srcset="/images/my-image-medium.jpg" />
   <img src="/images/my-image-large.jpg" alt="My Image" />
 </picture>
 ```
@@ -88,7 +88,7 @@ For art direction:
 ### Combining Lazy Loading and Responsive
 
 ```html
-<img 
+<img
   data-src="/images/my-image.jpg"
   data-srcset="
     /images/my-image-small.jpg 480w,
@@ -102,19 +102,19 @@ For art direction:
 
 ### Recommended Formats
 
-| Format | Use Case | Pros | Cons |
-|--------|----------|------|------|
-| JPEG | Photos | Small file size | Lossy compression |
-| PNG | Graphics | Lossless, transparency | Larger file size |
-| WebP | Modern browsers | Excellent compression | Limited support |
-| AVIF | Future-proof | Best compression | Very limited support |
+| Format | Use Case        | Pros                   | Cons                 |
+| ------ | --------------- | ---------------------- | -------------------- |
+| JPEG   | Photos          | Small file size        | Lossy compression    |
+| PNG    | Graphics        | Lossless, transparency | Larger file size     |
+| WebP   | Modern browsers | Excellent compression  | Limited support      |
+| AVIF   | Future-proof    | Best compression       | Very limited support |
 
 ### Using Modern Formats
 
 ```html
 <picture>
-  <source type="image/webp" srcset="/images/my-image.webp">
-  <source type="image/jpeg" srcset="/images/my-image.jpg">
+  <source type="image/webp" srcset="/images/my-image.webp" />
+  <source type="image/jpeg" srcset="/images/my-image.jpg" />
   <img src="/images/my-image.jpg" alt="My Image" />
 </picture>
 ```
@@ -179,7 +179,7 @@ Edit `_config.yml`:
 
 ```yaml
 image:
-  placeholder_color: "#f0f0f0"
+  placeholder_color: '#f0f0f0'
 ```
 
 ### Lazy Load Settings
@@ -187,11 +187,14 @@ image:
 Edit `source/js/lazy-load.js`:
 
 ```javascript
-const imageObserver = new IntersectionObserver((entries, observer) => {
-  // ...
-}, {
-  rootMargin: '50px'  // Load 50px before entering viewport
-});
+const imageObserver = new IntersectionObserver(
+  (entries, observer) => {
+    // ...
+  },
+  {
+    rootMargin: '50px' // Load 50px before entering viewport
+  }
+);
 ```
 
 ## Styling Images
@@ -204,7 +207,7 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
   overflow hidden
   background-color var(--color-placeholder-bg)
   border-radius $border-radius-lg
-  
+
   img
     width 100%
     height auto
@@ -218,12 +221,12 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
   display grid
   grid-template-columns repeat(auto-fill, minmax(200px, 1fr))
   gap $space-lg
-  
+
   .gallery-item
     position relative
     overflow hidden
     border-radius $border-radius-lg
-    
+
     img
       width 100%
       height 100%

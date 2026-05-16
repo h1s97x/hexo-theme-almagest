@@ -7,16 +7,16 @@
 # ============================================================
 
 # 主题名称
-title: "H1S97X"
+title: 'H1S97X'
 
 # 副标题
-subtitle: "技术分享与生活记录 | 或有月下赏花人 应无所憾"
+subtitle: '技术分享与生活记录 | 或有月下赏花人 应无所憾'
 
 # 网站描述
-description: "专注于技术开发、系统运维、游戏世界和学术学习的个人博客"
+description: '专注于技术开发、系统运维、游戏世界和学术学习的个人博客'
 
 # 作者名称
-author: "H1S97X"
+author: 'H1S97X'
 
 # 网站语言
 language: zh-CN
@@ -27,25 +27,25 @@ language: zh-CN
 
 style:
   # 主题色 (星空蓝)
-  primary_color: "#4a90d9"
-  
+  primary_color: '#4a90d9'
+
   # 强调色 (星青色)
-  accent_color: "#06b6d4"
-  
+  accent_color: '#06b6d4'
+
   # 主题偏好: auto | light | dark
   # auto: 根据系统设置自动切换
   # light: 始终使用亮色主题
   # dark: 始终使用暗色主题
-  prefers_theme: "dark"
-  
+  prefers_theme: 'dark'
+
   # 启用星空背景效果 (仅暗色主题)
   enable_starry_background: true
-  
+
   # 启用平滑过渡
   smooth_transition: true
-  
+
   # 代码块主题: atom-one-light | atom-one-dark | github | monokai
-  code_theme: "atom-one-dark"
+  code_theme: 'atom-one-dark'
 
 # ============================================================
 # 导航菜单配置 (Navigation Menu)
@@ -69,13 +69,13 @@ menu:
 sidebar:
   # 是否启用侧边栏
   enable: true
-  
+
   # 侧边栏位置: left | right
   position: right
-  
+
   # 侧边栏宽度 (像素)
   width: 280
-  
+
   # 侧边栏组件
   widgets:
     - about
@@ -90,32 +90,158 @@ sidebar:
 features:
   # 搜索功能
   search: true
-  
+
   # 评论系统
   comments: true
-  
+
   # 目录 (Table of Contents)
   toc: true
-  
+
   # 代码复制按钮
   code_copy: true
-  
+
   # 返回顶部按钮
   back_to_top: true
-  
+
   # 阅读时间估计
   reading_time: true
-  
+
   # 文章字数统计
   word_count: true
-  
+
   # Pjax 无刷新导航
   # 启用后页面切换将使用无刷新加载，提升体验
   pjax: true
-  
+
   # 阅读模式
   # 一键切换到专注阅读的干净界面
   reading_mode: true
+
+# ============================================================
+# 首页 Banner 配置 (Home Page Banner)
+# ============================================================
+
+index:
+  # 首页 Banner 头图
+  # 可以是相对路径或绝对路径
+  banner_img: /images/banner.jpg
+
+  # Banner 高度 (屏幕百分比, 0-100)
+  banner_img_height: 100
+
+  # Banner 黑色蒙版不透明度 (0-1.0)
+  banner_mask_alpha: 0.3
+
+  # 是否开启随机头图
+  # 开启后将 source/images/random/ 目录下的图片随机作为 Banner
+  random_img: false
+
+  # 视差滚动效果
+  parallax: true
+
+  # 首页副标题打字机效果
+  slogan:
+    enable: true
+    # 为空则使用上方 subtitle 配置
+    text: ''
+    # 打字速度 (数字越大越慢)
+    typeSpeed: 70
+    # 游标字符
+    cursorChar: '_'
+    # 是否循环
+    loop: false
+
+  # 自动截取文章摘要
+  auto_excerpt:
+    enable: true
+    length: 200
+
+  # 文章元信息展示
+  post_meta:
+    date: true
+    category: true
+    tag: true
+
+# ============================================================
+# 文章页配置 (Post Page)
+# ============================================================
+
+post:
+  banner_img: /images/banner.jpg
+  banner_img_height: 70
+  banner_mask_alpha: 0.3
+
+  # 文章目录 (TOC) 配置
+  toc:
+    enable: true
+    # 是否默认展开全部目录
+    expand_all: true
+    # 目录位置: left | right
+    placement: right
+    # 目录标题层级
+    headingSelector: 'h1,h2,h3,h4,h5,h6'
+    # 折叠深度 (0 为全部折叠)
+    collapseDepth: 0
+
+  # 版权声明
+  copyright:
+    enable: true
+    # 协议类型: BY | BY-SA | BY-ND | BY-NC | BY-NC-SA | BY-NC-ND | ZERO
+    license: 'BY'
+    # 显示作者
+    show_author: true
+    # 显示发布日期
+    show_date: true
+    # 显示更新日期
+    show_update_date: false
+
+  # 上一篇/下一篇导航
+  prev_next:
+    enable: true
+
+  # 文章图片可点击放大
+  image_zoom:
+    enable: true
+    # 放大后图片链接替换规则
+    # 例如: ['-slim', ''] 将链接中 `-slim` 移除
+    img_url_replace: ['', '']
+
+  # 脚注语法
+  footnote:
+    enable: true
+    header: ''
+
+# ============================================================
+# 404 页面配置 (404 Page)
+# ============================================================
+
+page404:
+  enable: true
+  banner_img: /images/banner.jpg
+  banner_img_height: 85
+  banner_mask_alpha: 0.3
+  # 重定向到首页的延迟 (毫秒), 0 为不跳转
+  redirect_delay: 5000
+
+# ============================================================
+# 关于页面配置 (About Page)
+# ============================================================
+
+about:
+  enable: true
+  banner_img: /images/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  # 头像
+  avatar: /images/avatar.jpg
+  # 名称 (为空则使用 site.author)
+  name: ''
+  # 简介
+  intro: ''
+  # 社交图标 (class 为图标 CSS class)
+  icons:
+    # - { class: "iconfont icon-github-fill", link: "https://github.com", tip: "GitHub" }
+    # - { class: "iconfont icon-wechat-fill", qrcode: "/images/wechat.jpg" }
 
 # ============================================================
 # 社交链接 (Social Links)
@@ -123,19 +249,19 @@ features:
 
 social:
   # GitHub
-  github: "https://github.com/h1s97x"
-  
+  github: 'https://github.com/h1s97x'
+
   # Twitter
-  twitter: ""
-  
+  twitter: ''
+
   # 微博
-  weibo: ""
-  
+  weibo: ''
+
   # 知乎
-  zhihu: ""
-  
+  zhihu: ''
+
   # 邮箱
-  email: ""
+  email: ''
 
 # ============================================================
 # 第三方服务 (Third-party Services)
@@ -145,27 +271,27 @@ services:
   # Giscus 评论系统
   giscus:
     enable: false
-    repo: ""
-    repo_id: ""
-    category: "Announcements"
-    category_id: ""
-    mapping: "pathname"
+    repo: ''
+    repo_id: ''
+    category: 'Announcements'
+    category_id: ''
+    mapping: 'pathname'
     reactions_enabled: true
     emit_metadata: false
-    input_position: "bottom"
-    theme: "dark"
-    lang: "zh-CN"
-    loading: "lazy"
-  
+    input_position: 'bottom'
+    theme: 'dark'
+    lang: 'zh-CN'
+    loading: 'lazy'
+
   # Google Analytics
   google_analytics:
     enable: false
-    tracking_id: ""
-  
+    tracking_id: ''
+
   # 百度统计
   baidu_analytics:
     enable: false
-    tracking_id: ""
+    tracking_id: ''
 
 # ============================================================
 # 分页配置 (Pagination Configuration)
@@ -174,9 +300,9 @@ services:
 pagination:
   # 每页文章数
   per_page: 8
-  
+
   # 分页类型: pagination | infinite
-  type: "pagination"
+  type: 'pagination'
 
 # ============================================================
 # 文章配置 (Article Configuration)
@@ -185,18 +311,18 @@ pagination:
 article:
   # 文章摘要长度 (字符数)
   excerpt_length: 200
-  
+
   # 是否显示文章更新时间
   show_updated: true
-  
+
   # 是否显示阅读时间
   show_reading_time: true
-  
+
   # 是否显示字数统计
   show_word_count: true
-  
+
   # 日期格式
-  date_format: "YYYY-MM-DD"
+  date_format: 'YYYY-MM-DD'
 
 # ============================================================
 # 图片配置 (Image Configuration)
@@ -205,13 +331,13 @@ article:
 image:
   # 启用图片懒加载
   lazy_load: true
-  
+
   # 图片占位符颜色
-  placeholder_color: "#1a1a2e"
-  
+  placeholder_color: '#1a1a2e'
+
   # 默认文章封面 (留空则不显示)
-  default_cover: ""
-  
+  default_cover: ''
+
   # 图片灯箱
   # 点击文章中的图片可放大查看
   lightbox: true
@@ -223,13 +349,13 @@ image:
 astronomy:
   # 启用天文主题组件
   enable: true
-  
+
   # 星星动画速度: slow | normal | fast
-  animation_speed: "normal"
-  
+  animation_speed: 'normal'
+
   # 显示星座导航
   show_constellation_nav: false
-  
+
   # 显示天文日历
   show_astronomy_calendar: false
 
@@ -243,9 +369,9 @@ inject:
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+
   # 在 </body> 前注入自定义代码
-  body_end: ""
+  body_end: ''
 
 # ============================================================
 # RSS 配置 (RSS Configuration)
@@ -254,18 +380,18 @@ inject:
 rss:
   # 是否启用 RSS
   enable: true
-  
+
   # RSS 路径
-  path: "atom.xml"
-  
+  path: 'atom.xml'
+
   # RSS 标题
-  title: ""
-  
+  title: ''
+
   # RSS 描述
-  description: ""
-  
+  description: ''
+
   # RSS 作者
-  author: ""
+  author: ''
 
 # ============================================================
 # 友链配置 (Friends Links Configuration)
@@ -274,10 +400,10 @@ rss:
 friends:
   # 是否启用友链功能
   enable: false
-  
+
   # 友链页面标题
-  title: "友情链接"
-  
+  title: '友情链接'
+
   # 友链列表
   links:
     # 示例:
@@ -293,30 +419,30 @@ friends:
 seo:
   # 是否启用 SEO 优化
   enable: true
-  
+
   # Google SEO
   google:
     # Google 站点验证
-    site_verification: ""
-    
+    site_verification: ''
+
     # Google Analytics 追踪 ID
-    tracking_id: ""
-  
+    tracking_id: ''
+
   # 百度 SEO
   baidu:
     # 百度站点验证
-    site_verification: ""
-    
+    site_verification: ''
+
     # 百度统计追踪 ID
-    tracking_id: ""
-  
+    tracking_id: ''
+
   # Open Graph
   open_graph:
     enable: true
     twitter_card: true
-    twitter_id: ""
-    twitter_site: ""
-  
+    twitter_id: ''
+    twitter_site: ''
+
   # 优先级设置
   priority:
     homepage: 1.0
@@ -333,28 +459,28 @@ seo:
 toc:
   # 是否启用文章目录
   enable: true
-  
+
   # 目录位置: left | right
-  position: "right"
-  
+  position: 'right'
+
   # 目录宽度 (像素)
   width: 260
-  
+
   # 是否在移动端显示
   mobile: false
-  
+
   # 是否自动编号
   list_number: true
-  
+
   # 目录标题
-  title: "目录"
-  
+  title: '目录'
+
   # 最小深度 (h2-h6)
   min_depth: 2
-  
+
   # 最大深度 (h2-h6)
   max_depth: 6
-  
+
   # 是否折叠
   collapse: false
 
@@ -365,16 +491,16 @@ toc:
 reading_progress:
   # 是否启用阅读进度条
   enable: true
-  
+
   # 进度条位置: top | bottom
-  position: "top"
-  
+  position: 'top'
+
   # 进度条高度 (像素)
   height: 3
-  
+
   # 进度条颜色
-  color: "#4a90d9"
-  
+  color: '#4a90d9'
+
   # 是否显示百分比
   show_percent: false
 
@@ -385,25 +511,25 @@ reading_progress:
 highlight:
   # 是否启用代码高亮
   enable: true
-  
+
   # 代码高亮主题
   # 浅色主题: github, github-dark, atom-one-light, vs, xcode, vs2015
   # 深色主题: atom-one-dark, monokai, dracula, nord, github-dark, one-dark-pro
-  light_theme: "github"
-  dark_theme: "atom-one-dark"
-  
+  light_theme: 'github'
+  dark_theme: 'atom-one-dark'
+
   # 是否显示行号
   line_number: true
-  
+
   # 代码块标题
   code_block_title: true
-  
+
   # 代码复制按钮
   copy_button: true
-  
+
   # 复制按钮样式: flat | hover
-  copy_style: "hover"
-  
+  copy_style: 'hover'
+
   # 代码块语言标签
   show_lang: true
 
@@ -414,49 +540,49 @@ highlight:
 math:
   # 是否启用数学公式支持
   enable: true
-  
+
   # 公式渲染引擎: mathjax | katex
-  engine: "katex"
-  
+  engine: 'katex'
+
   # 是否在首页/归档页渲染公式
   render_on_all_pages: false
-  
+
   # KaTeX 配置 (engine: katex 时生效)
   katex:
     # KaTeX CSS 版本
-    version: "0.16.9"
-    
+    version: '0.16.9'
+
     # 是否加载 KaTeX JS (可选，如果使用插件可以不加载)
     load_js: true
-    
+
     # KaTeX 配置选项
     options:
       # 是否显示加载错误
       throwError: false
       # 错误处理方式: warn | error | false
-      errorColor: "#cc0000"
-      
+      errorColor: '#cc0000'
+
   # MathJax 配置 (engine: mathjax 时生效)
   mathjax:
     # MathJax 版本
-    version: "3"
-    
+    version: '3'
+
     # 配置选项
     options:
       # 是否启用右键菜单
       enableMenu: true
-      
+
       # TeX 扩展
       tex:
-        inlineMath: [["$", "$"], ["\\(", "\\)"]]
-        displayMath: [["$$", "$$"], ["\\[", "\\]"]]
-      
+        inlineMath: [['$', '$'], ["\\(", "\\)"]]
+        displayMath: [['$$', '$$'], ["\\[", "\\]"]]
+
       # SVG 输出
       svg:
-        fontCache: "global"
-    
+        fontCache: 'global'
+
     # 是否使用 CDN
-    cdn: "jsdelivr"
+    cdn: 'jsdelivr'
 
 # ============================================================
 # Mermaid 图表配置 (Mermaid Configuration)
@@ -465,25 +591,25 @@ math:
 mermaid:
   # 是否启用 Mermaid 图表支持
   enable: true
-  
+
   # Mermaid 版本
-  version: "10.6.1"
-  
+  version: '10.6.1'
+
   # 主题: default, dark, forest, neutral, null
-  theme: "default"
-  
+  theme: 'default'
+
   # 深色主题
-  dark_theme: "dark"
-  
+  dark_theme: 'dark'
+
   # 配置选项
   options:
     # 安全模式
-    securityLevel: "loose"
+    securityLevel: 'loose'
     # 是否启用字体图标
-    fontFamily: "Arial, sans-serif"
+    fontFamily: 'Arial, sans-serif'
     # 流程图方向: TB, BT, LR, RL
     flowchart:
-      curve: "basis"
+      curve: 'basis'
     # 时序图配置
     sequence:
       useMaxWidth: true
@@ -496,10 +622,10 @@ mermaid:
 analytics:
   # 是否启用访问统计
   enable: true
-  
+
   # 统计服务: busuanzi | google | custom
-  service: "busuanzi"
-  
+  service: 'busuanzi'
+
   # 不蒜子统计 (国内推荐)
   busuanzi:
     # 站点 UV
@@ -509,12 +635,12 @@ analytics:
     # 文章 PV
     page_pv: true
     # 不蒜子版本
-    version: "2.3"
-  
+    version: '2.3'
+
   # Google Analytics
   google:
     # 追踪 ID
-    tracking_id: ""
+    tracking_id: ''
     # 匿名化 IP
     anonymize_ip: true
 
@@ -526,13 +652,13 @@ analytics:
 debug: false
 
 # 自定义 CDN 前缀
-cdn_prefix: ""
+cdn_prefix: ''
 
 # 资源版本号 (用于缓存清除)
-version: "1.0.0"
+version: '1.0.0'
 
 # 自定义 CSS 类
-custom_css_class: ""
+custom_css_class: ''
 
 # 是否启用平滑滚动
 smooth_scroll: true
@@ -542,7 +668,7 @@ feature:
   # 是否启用特色图片
   enable: true
   # 默认占位图
-  placeholder: ""
+  placeholder: ''
 
 # 图片灯箱配置
 fancybox:

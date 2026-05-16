@@ -82,16 +82,19 @@ hexo-theme-almagest/
 ## 关键入口 / 核心模块
 
 ### 模板入口
+
 - `layout/layout.ejs`: 主布局文件，所有页面都继承此布局
 - `layout/post.ejs`: 文章详情页，包含目录、导航等功能
 
 ### 脚本入口
+
 - `scripts/index.js`: 注册所有主题脚本
 - `scripts/helpers.js`: 模板辅助函数（时间格式化、阅读时间等）
 - `scripts/tags.js`: 自定义标签（note、timeline、folding 等）
 - `scripts/math-helper.js`: 数学公式辅助函数
 
 ### 样式入口
+
 - `source/css/main.styl`: 样式入口，导入所有样式文件
 
 ## 运行与预览
@@ -99,12 +102,14 @@ hexo-theme-almagest/
 ### 本地预览
 
 1. 在 Hexo 站点根目录安装主题：
+
    ```bash
    cd your-hexo-site
    git clone https://github.com/your-username/hexo-theme-almagest.git themes/almagest
    ```
 
 2. 修改站点 `_config.yml`：
+
    ```yaml
    theme: almagest
    ```
@@ -138,6 +143,7 @@ pnpm format
 ### 主题配置 (`_config.yml`)
 
 主要配置项：
+
 - `style.prefers_theme`: 主题偏好 (auto/light/dark)
 - `features`: 功能开关
   - `search`: 搜索功能
@@ -170,17 +176,17 @@ excerpt: 摘要
 
 ## 自定义标签
 
-| 标签 | 用途 | 示例 |
-|------|------|------|
-| `{% note %}` | 提示框 | `{% note default %}内容{% endnote %}` |
-| `{% timeline %}` | 时间线 | `{% timeline %}...{% endtimeline %}` |
-| `{% folding %}` | 折叠块 | `{% folding 标题 %}内容{% endfolding %}` |
-| `{% link %}` | 链接卡片 | `{% link url 标题 描述 %}` |
-| `{% tabs %}` | 选项卡 | `{% tabs %}...{% endtabs %}` |
-| `{% label %}` | 标签徽章 | `{% label text primary %}` |
-| `{% video %}` | 视频 | `{% video url %}` |
-| `{% audio %}` | 音频 | `{% audio url %}` |
-| `{% gallery %}` | 图片画廊 | `{% gallery %}![](url){% endgallery %}` |
+| 标签             | 用途     | 示例                                     |
+| ---------------- | -------- | ---------------------------------------- |
+| `{% note %}`     | 提示框   | `{% note default %}内容{% endnote %}`    |
+| `{% timeline %}` | 时间线   | `{% timeline %}...{% endtimeline %}`     |
+| `{% folding %}`  | 折叠块   | `{% folding 标题 %}内容{% endfolding %}` |
+| `{% link %}`     | 链接卡片 | `{% link url 标题 描述 %}`               |
+| `{% tabs %}`     | 选项卡   | `{% tabs %}...{% endtabs %}`             |
+| `{% label %}`    | 标签徽章 | `{% label text primary %}`               |
+| `{% video %}`    | 视频     | `{% video url %}`                        |
+| `{% audio %}`    | 音频     | `{% audio url %}`                        |
+| `{% gallery %}`  | 图片画廊 | `{% gallery %}![](url){% endgallery %}`  |
 
 ## 开发规范与 Git 工作流
 
@@ -199,6 +205,7 @@ main (保护分支)
 ```
 
 #### 分支命名规范
+
 - 新功能：`feat/功能描述`（如 `feat/homepage-banner`）
 - Bug 修复：`fix/问题描述`（如 `fix/pjax-loading`）
 - 重构：`refactor/重构内容`（如 `refactor/css-variables`）
@@ -206,6 +213,7 @@ main (保护分支)
 - 样式：`style/样式内容`（如 `style/dark-mode-colors`）
 
 #### 开发流程
+
 1. **创建分支**：`git checkout -b feat/xxx`
 2. **开发功能**：按规范编写代码，确保有注释
 3. **本地验证**：运行 `pnpm lint`、`pnpm style:lint`
@@ -235,6 +243,7 @@ main (保护分支)
 - **footer**: 关联 Issue（如 `Closes #123`）
 
 ### 代码规范
+
 - JavaScript 使用 ESLint + Prettier
 - Stylus 使用 Stylelint + Prettier
 - 提交前运行 `pnpm lint` 和 `pnpm format`
@@ -261,12 +270,14 @@ main (保护分支)
      - 创建 GitHub Release
 
 ### 组件开发
+
 - 新增组件放在 `layout/_partial/` 目录
 - 对应样式放在 `source/css/_components-extra.styl`
 - 遵循现有的命名约定
 - 每个组件必须包含配置项开关
 
 ### 功能扩展原则
+
 - 优先使用配置项控制功能开关（参考 Fluid 主题设计）
 - 借鉴成熟主题（Fluid、Butterfly、Stellar）的 MIT 代码
 - 保持代码简洁，避免过度工程化
@@ -275,27 +286,33 @@ main (保护分支)
 ## 常见问题和预防
 
 ### 图片懒加载不生效
+
 - 确认 `source/js/lazy-load.js` 已正确引入
 - 确认 `image.lazy_load` 配置已启用
 
 ### 图片灯箱不工作
+
 - 确认 `image.lightbox` 配置为 `true`
 - 图片需要有 `zoomable` 类或位于 `article` 区域内
 
 ### 星空动画效果不显示
+
 - 确认 `astronomy.enable` 配置为 `true`
 - 星空效果仅在暗色主题下显示
 
 ### 代码高亮样式异常
+
 - 检查 `_config.yml` 中 `highlight.light_theme` 和 `highlight.dark_theme` 配置
 - 确认 CDN 链接可访问
 - 主题会根据深色/浅色模式自动切换
 
 ### 评论系统不显示
+
 - 确认对应评论服务（giscus等）的配置正确
 - 确认 `features.comments` 已启用
 
 ### 数学公式不渲染
+
 - 确认 `math.enable` 配置为 `true`
 - 检查 `math.engine` 配置（katex 或 mathjax）
 - 确认 CDN 链接可访问

@@ -3,7 +3,7 @@
  * Handles search functionality
  */
 
-(function() {
+(function () {
   'use strict';
 
   let searchData = [];
@@ -23,7 +23,7 @@
     loadSearchData();
 
     // Handle search form submission
-    searchForm.addEventListener('submit', function(e) {
+    searchForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const query = searchInput.value.trim();
       if (query) {
@@ -32,7 +32,7 @@
     });
 
     // Handle real-time search
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
       const query = this.value.trim();
       if (query.length > 0) {
         performSearch(query, searchResults);
@@ -92,21 +92,23 @@
     });
 
     // Score and sort results
-    const scoredResults = Array.from(results).map(index => {
-      const item = searchData[index];
-      let score = 0;
+    const scoredResults = Array.from(results)
+      .map(index => {
+        const item = searchData[index];
+        let score = 0;
 
-      queryWords.forEach(word => {
-        if (item.title.toLowerCase().includes(word)) {
-          score += 10;
-        }
-        if (item.content.toLowerCase().includes(word)) {
-          score += 1;
-        }
-      });
+        queryWords.forEach(word => {
+          if (item.title.toLowerCase().includes(word)) {
+            score += 10;
+          }
+          if (item.content.toLowerCase().includes(word)) {
+            score += 1;
+          }
+        });
 
-      return { item, score, index };
-    }).sort((a, b) => b.score - a.score);
+        return { item, score, index };
+      })
+      .sort((a, b) => b.score - a.score);
 
     // Display results
     displayResults(scoredResults, resultsContainer, query);
@@ -115,7 +117,8 @@
   // Display search results
   function displayResults(results, container, query) {
     if (results.length === 0) {
-      container.innerHTML = '<div class="no-results"><p>No results found for "' + escapeHtml(query) + '"</p></div>';
+      container.innerHTML =
+        '<div class="no-results"><p>No results found for "' + escapeHtml(query) + '"</p></div>';
       return;
     }
 
@@ -125,7 +128,12 @@
       const excerpt = getExcerpt(item.content, query, 150);
 
       html += '<div class="search-result-item">';
-      html += '<h3 class="result-title"><a href="' + item.url + '">' + highlightQuery(item.title, query) + '</a></h3>';
+      html +=
+        '<h3 class="result-title"><a href="' +
+        item.url +
+        '">' +
+        highlightQuery(item.title, query) +
+        '</a></h3>';
       html += '<p class="result-excerpt">' + highlightQuery(excerpt, query) + '</p>';
       html += '<a href="' + item.url + '" class="result-link">' + item.url + '</a>';
       html += '</div>';
@@ -165,12 +173,11 @@
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      '\'': '&#039;'
+      "'": '&#039;'
     };
     return text.replace(/[&<>"']/g, m => map[m]);
   }
 
   // Initialize on DOM ready
   document.addEventListener('DOMContentLoaded', initSearch);
-
 })();

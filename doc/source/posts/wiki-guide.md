@@ -27,26 +27,26 @@ theme:
   wiki:
     enable: true
     projects:
-      - name: "项目文档"
-        path: "/wiki/project/"
+      - name: '项目文档'
+        path: '/wiki/project/'
         pages:
-          - title: "快速开始"
-            path: "/wiki/project/getting-started/"
-            description: "快速开始指南"
+          - title: '快速开始'
+            path: '/wiki/project/getting-started/'
+            description: '快速开始指南'
             children:
-              - title: "安装"
-                path: "/wiki/project/getting-started/installation/"
-              - title: "配置"
-                path: "/wiki/project/getting-started/configuration/"
-          - title: "API 文档"
-            path: "/wiki/project/api/"
-            description: "API 参考文档"
-      - name: "用户手册"
-        path: "/wiki/manual/"
+              - title: '安装'
+                path: '/wiki/project/getting-started/installation/'
+              - title: '配置'
+                path: '/wiki/project/getting-started/configuration/'
+          - title: 'API 文档'
+            path: '/wiki/project/api/'
+            description: 'API 参考文档'
+      - name: '用户手册'
+        path: '/wiki/manual/'
         pages:
-          - title: "基础概念"
-            path: "/wiki/manual/concepts/"
-    edit_url: "https://github.com/your-repo/edit/main/source/"
+          - title: '基础概念'
+            path: '/wiki/manual/concepts/'
+    edit_url: 'https://github.com/your-repo/edit/main/source/'
 ```
 
 ## 创建 Wiki 页面

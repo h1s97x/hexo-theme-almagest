@@ -4,18 +4,21 @@
  * MIT License
  */
 
-(function() {
+(function () {
   'use strict';
 
-  const MediumZoom = function(options) {
-    this.options = Object.assign({
-      margin: 0,
-      gutter: 40,
-      background: 'rgba(0, 0, 0, 0.85)',
-      scrollable: false,
-      zoomable: true,
-      draggable: true
-    }, options);
+  const MediumZoom = function (options) {
+    this.options = Object.assign(
+      {
+        margin: 0,
+        gutter: 40,
+        background: 'rgba(0, 0, 0, 0.85)',
+        scrollable: false,
+        zoomable: true,
+        draggable: true
+      },
+      options
+    );
 
     this._opened = false;
     this._active = null;
@@ -25,9 +28,11 @@
     this._init();
   };
 
-  MediumZoom.prototype._init = function() {
-    const zoomables = document.querySelectorAll('article img, .article-content img, .markdown-body img');
-    zoomables.forEach(function(img) {
+  MediumZoom.prototype._init = function () {
+    const zoomables = document.querySelectorAll(
+      'article img, .article-content img, .markdown-body img'
+    );
+    zoomables.forEach(function (img) {
       if (!img.closest('a') && !img.classList.contains('no-zoom')) {
         img.classList.add('zoomable');
       }
@@ -43,7 +48,7 @@
     document.addEventListener('keydown', this._handleKeydown.bind(this));
   };
 
-  MediumZoom.prototype._handleClick = function(e) {
+  MediumZoom.prototype._handleClick = function (e) {
     const target = e.target;
 
     if (target.tagName === 'IMG' && target.classList.contains('zoomable')) {
@@ -57,13 +62,13 @@
     }
   };
 
-  MediumZoom.prototype._handleScroll = function() {
+  MediumZoom.prototype._handleScroll = function () {
     if (this._opened && !this.options.scrollable) {
       this._close();
     }
   };
 
-  MediumZoom.prototype._handleKeydown = function(e) {
+  MediumZoom.prototype._handleKeydown = function (e) {
     if (!this._opened) {
       return;
     }
@@ -73,7 +78,7 @@
     }
   };
 
-  MediumZoom.prototype._open = function(img) {
+  MediumZoom.prototype._open = function (img) {
     this._opened = true;
     this._active = img;
 
@@ -126,13 +131,20 @@
     const targetY = window.innerHeight / 2;
 
     zoomed.style.transformOrigin = originX + 'px ' + originY + 'px';
-    zoomed.style.transform = 'translate(-50%, -50%) translate(' + (targetX - originX) + 'px, ' + (targetY - originY) + 'px) scale(' + (targetWidth / originWidth) + ')';
+    zoomed.style.transform =
+      'translate(-50%, -50%) translate(' +
+      (targetX - originX) +
+      'px, ' +
+      (targetY - originY) +
+      'px) scale(' +
+      targetWidth / originWidth +
+      ')';
 
     overlay.appendChild(zoomed);
     document.body.appendChild(overlay);
 
     // 触发动画
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
       overlay.style.opacity = '1';
       zoomed.style.opacity = '1';
       zoomed.style.transform = 'translate(-50%, -50%) scale(1)';
@@ -146,7 +158,7 @@
     document.body.style.overflow = 'hidden';
   };
 
-  MediumZoom.prototype._close = function() {
+  MediumZoom.prototype._close = function () {
     if (!this._opened || this._hiding) {
       return;
     }
@@ -165,24 +177,33 @@
     overlay.style.opacity = '0';
     zoomed.style.opacity = '0';
 
-    setTimeout(function() {
-      if (overlay.parentNode) {
-        overlay.parentNode.removeChild(overlay);
-      }
-      document.body.style.overflow = '';
-      this._opened = false;
-      this._active = null;
-      this._overlay = null;
-      this._zoomed = null;
-      this._hiding = false;
-    }.bind(this), 300);
+    setTimeout(
+      function () {
+        if (overlay.parentNode) {
+          overlay.parentNode.removeChild(overlay);
+        }
+        document.body.style.overflow = '';
+        this._opened = false;
+        this._active = null;
+        this._overlay = null;
+        this._zoomed = null;
+        this._hiding = false;
+      }.bind(this),
+      300
+    );
   };
 
-  MediumZoom.prototype.update = function() {
+  MediumZoom.prototype.update = function () {
     // 重新初始化，用于 Pjax 后刷新
-    const zoomables = document.querySelectorAll('article img, .article-content img, .markdown-body img');
-    zoomables.forEach(function(img) {
-      if (!img.closest('a') && !img.classList.contains('no-zoom') && !img.classList.contains('zoomable')) {
+    const zoomables = document.querySelectorAll(
+      'article img, .article-content img, .markdown-body img'
+    );
+    zoomables.forEach(function (img) {
+      if (
+        !img.closest('a') &&
+        !img.classList.contains('no-zoom') &&
+        !img.classList.contains('zoomable')
+      ) {
         img.classList.add('zoomable');
       }
     });
@@ -190,19 +211,18 @@
 
   // 导出
   window.MediumZoom = MediumZoom;
-
 })();
 
 // 初始化
-(function() {
+(function () {
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     window.mediumZoom = new window.MediumZoom();
   });
 
   // Pjax 成功后重新初始化
-  document.addEventListener('pjax:success', function() {
+  document.addEventListener('pjax:success', function () {
     if (window.mediumZoom) {
       window.mediumZoom.update();
     }

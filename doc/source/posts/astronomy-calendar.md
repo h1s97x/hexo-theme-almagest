@@ -29,30 +29,30 @@ theme:
   astronomy:
     enable: true
     events:
-      - name: "四象限仪流星雨"
-        type: "meteor_shower"
-        date: "2024-01-04"
-        visibility: "全球可见"
-        description: "四象限仪流星雨是每年最活跃的流星雨之一，高峰期每小时可见 40-100 颗流星。"
-        image: "/images/events/quadrantids.svg"
-        peak_rate: "40-100 颗/小时"
-        best_time: "凌晨 2-6 点"
-      
-      - name: "月全食"
-        type: "lunar_eclipse"
-        date: "2024-03-25"
-        visibility: "亚洲、欧洲、非洲、大洋洲"
-        description: "这是 2024 年的第一次月全食，持续时间约 5 小时。"
-        image: "/images/events/lunar-eclipse.svg"
-        duration: "约 5 小时"
-        max_time: "2024-03-25 10:00 UTC"
-      
-      - name: "日偏食"
-        type: "solar_eclipse"
-        date: "2024-10-02"
-        visibility: "南美洲、南大西洋、南极洲"
-        description: "这是 2024 年的日偏食，在南美洲可见。"
-        image: "/images/events/solar-eclipse.svg"
+      - name: '四象限仪流星雨'
+        type: 'meteor_shower'
+        date: '2024-01-04'
+        visibility: '全球可见'
+        description: '四象限仪流星雨是每年最活跃的流星雨之一，高峰期每小时可见 40-100 颗流星。'
+        image: '/images/events/quadrantids.svg'
+        peak_rate: '40-100 颗/小时'
+        best_time: '凌晨 2-6 点'
+
+      - name: '月全食'
+        type: 'lunar_eclipse'
+        date: '2024-03-25'
+        visibility: '亚洲、欧洲、非洲、大洋洲'
+        description: '这是 2024 年的第一次月全食，持续时间约 5 小时。'
+        image: '/images/events/lunar-eclipse.svg'
+        duration: '约 5 小时'
+        max_time: '2024-03-25 10:00 UTC'
+
+      - name: '日偏食'
+        type: 'solar_eclipse'
+        date: '2024-10-02'
+        visibility: '南美洲、南大西洋、南极洲'
+        description: '这是 2024 年的日偏食，在南美洲可见。'
+        image: '/images/events/solar-eclipse.svg'
 ```
 
 ### 2. 事件类型
@@ -91,7 +91,7 @@ layout: page
 
 # 天文事件日历
 
-<%- include _partial/astronomy-calendar %>
+<%- include \_partial/astronomy-calendar %>
 
 ## 事件说明
 
@@ -168,42 +168,42 @@ theme:
     enable: true
     events:
       # 流星雨
-      - name: "四象限仪流星雨"
-        type: "meteor_shower"
-        date: "2024-01-04"
-        visibility: "全球可见"
-        description: "四象限仪流星雨是每年最活跃的流星雨之一。"
-        peak_rate: "40-100 颗/小时"
-        best_time: "凌晨 2-6 点"
-      
+      - name: '四象限仪流星雨'
+        type: 'meteor_shower'
+        date: '2024-01-04'
+        visibility: '全球可见'
+        description: '四象限仪流星雨是每年最活跃的流星雨之一。'
+        peak_rate: '40-100 颗/小时'
+        best_time: '凌晨 2-6 点'
+
       # 月食
-      - name: "月全食"
-        type: "lunar_eclipse"
-        date: "2024-03-25"
-        visibility: "亚洲、欧洲、非洲、大洋洲"
-        description: "这是 2024 年的第一次月全食。"
-        duration: "约 5 小时"
-      
+      - name: '月全食'
+        type: 'lunar_eclipse'
+        date: '2024-03-25'
+        visibility: '亚洲、欧洲、非洲、大洋洲'
+        description: '这是 2024 年的第一次月全食。'
+        duration: '约 5 小时'
+
       # 日食
-      - name: "日偏食"
-        type: "solar_eclipse"
-        date: "2024-10-02"
-        visibility: "南美洲、南大西洋、南极洲"
-        description: "这是 2024 年的日偏食。"
-      
+      - name: '日偏食'
+        type: 'solar_eclipse'
+        date: '2024-10-02'
+        visibility: '南美洲、南大西洋、南极洲'
+        description: '这是 2024 年的日偏食。'
+
       # 行星现象
-      - name: "木星冲"
-        type: "opposition"
-        date: "2024-11-07"
-        visibility: "全球可见"
-        description: "木星将在这一天达到最亮。"
-      
+      - name: '木星冲'
+        type: 'opposition'
+        date: '2024-11-07'
+        visibility: '全球可见'
+        description: '木星将在这一天达到最亮。'
+
       # 超级月亮
-      - name: "超级月亮"
-        type: "supermoon"
-        date: "2024-08-19"
-        visibility: "全球可见"
-        description: "月球将比平时大 14% 左右。"
+      - name: '超级月亮'
+        type: 'supermoon'
+        date: '2024-08-19'
+        visibility: '全球可见'
+        description: '月球将比平时大 14% 左右。'
 ```
 
 ### 页面配置示例
@@ -216,7 +216,7 @@ layout: page
 
 # 2024 年天文事件日历
 
-<%- include _partial/astronomy-calendar %>
+<%- include \_partial/astronomy-calendar %>
 
 ## 主要事件
 
