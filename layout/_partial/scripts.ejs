@@ -58,6 +58,11 @@ window.mediumZoomConfig = {
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/code-copy.js' : url_for('/js/code-copy.js') %>?v=<%= version %>"></script>
 <% } %>
 
+<!-- Scroll Animation -->
+<% if (config.features?.scroll_animation !== false) { %>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/scroll-animation.js' : url_for('/js/scroll-animation.js') %>?v=<%= version %>"></script>
+<% } %>
+
 <!-- Astronomy Animations -->
 <% if (config.astronomy?.enable) { %>
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/astronomy.js' : url_for('/js/astronomy.js') %>?v=<%= version %>"></script>
