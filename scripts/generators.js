@@ -5,9 +5,9 @@
 
 'use strict';
 
-module.exports = function(hexo) {
+module.exports = function (hexo) {
   // Archive generator
-  hexo.extend.generator.register('archive', function(locals) {
+  hexo.extend.generator.register('archive', function (locals) {
     return {
       path: 'archives/index.html',
       layout: 'archive',
@@ -18,7 +18,7 @@ module.exports = function(hexo) {
   });
 
   // Categories generator
-  hexo.extend.generator.register('categories', function(locals) {
+  hexo.extend.generator.register('categories', function (locals) {
     return {
       path: 'categories/index.html',
       layout: 'categories',
@@ -29,7 +29,7 @@ module.exports = function(hexo) {
   });
 
   // Tags generator
-  hexo.extend.generator.register('tags', function(locals) {
+  hexo.extend.generator.register('tags', function (locals) {
     return {
       path: 'tags/index.html',
       layout: 'tags',
@@ -40,9 +40,9 @@ module.exports = function(hexo) {
   });
 
   // Search index generator
-  hexo.extend.generator.register('search', function(locals) {
+  hexo.extend.generator.register('search', function (locals) {
     const searchData = [];
-    
+
     locals.posts.forEach(post => {
       if (post.published !== false) {
         searchData.push({

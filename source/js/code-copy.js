@@ -3,7 +3,7 @@
  * Adds copy button and language label to code blocks
  */
 
-(function() {
+(function () {
   'use strict';
 
   // 常用语言名称映射
@@ -74,7 +74,7 @@
   function initCodeBlocks() {
     var codeBlocks = document.querySelectorAll('pre code');
 
-    codeBlocks.forEach(function(codeBlock) {
+    codeBlocks.forEach(function (codeBlock) {
       var pre = codeBlock.parentElement;
 
       // Skip if already processed
@@ -116,26 +116,29 @@
       header.appendChild(copyButton);
 
       // Add copy functionality
-      copyButton.addEventListener('click', function() {
+      copyButton.addEventListener('click', function () {
         var code = codeBlock.textContent;
 
-        navigator.clipboard.writeText(code).then(function() {
-          var originalText = copyButton.textContent;
-          copyButton.textContent = 'Copied!';
-          copyButton.classList.add('copied');
+        navigator.clipboard
+          .writeText(code)
+          .then(function () {
+            var originalText = copyButton.textContent;
+            copyButton.textContent = 'Copied!';
+            copyButton.classList.add('copied');
 
-          setTimeout(function() {
-            copyButton.textContent = originalText;
-            copyButton.classList.remove('copied');
-          }, 2000);
-        }).catch(function(err) {
-          console.error('Failed to copy code:', err);
-          copyButton.textContent = 'Failed';
+            setTimeout(function () {
+              copyButton.textContent = originalText;
+              copyButton.classList.remove('copied');
+            }, 2000);
+          })
+          .catch(function (err) {
+            console.error('Failed to copy code:', err);
+            copyButton.textContent = 'Failed';
 
-          setTimeout(function() {
-            copyButton.textContent = 'Copy';
-          }, 2000);
-        });
+            setTimeout(function () {
+              copyButton.textContent = 'Copy';
+            }, 2000);
+          });
       });
 
       // Insert header
@@ -152,5 +155,4 @@
 
   // Re-initialize after Pjax
   document.addEventListener('pjax:success', initCodeBlocks);
-
 })();

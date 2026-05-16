@@ -4,7 +4,7 @@
  * and system preference detection
  */
 
-(function() {
+(function () {
   'use strict';
 
   const STORAGE_KEY = 'theme-preference';
@@ -148,13 +148,13 @@
       return;
     }
 
-    themeToggleBtn.addEventListener('click', function(e) {
+    themeToggleBtn.addEventListener('click', function (e) {
       e.preventDefault();
       toggleTheme();
     });
 
     // Support keyboard navigation
-    themeToggleBtn.addEventListener('keydown', function(e) {
+    themeToggleBtn.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         toggleTheme();
@@ -174,7 +174,7 @@
     const lightModeQuery = window.matchMedia('(prefers-color-scheme: light)');
 
     // Handle preference changes
-    const handleChange = function() {
+    const handleChange = function () {
       // Only apply system preference if user hasn't saved a preference
       if (!localStorage.getItem(STORAGE_KEY)) {
         const theme = detectTheme();
@@ -200,7 +200,7 @@
    */
   window.ThemeManager = {
     getCurrentTheme: getCurrentTheme,
-    setTheme: function(theme) {
+    setTheme: function (theme) {
       if (theme === LIGHT_THEME || theme === DARK_THEME) {
         applyTheme(theme);
         saveThemePreference(theme);
@@ -209,8 +209,8 @@
     },
     toggleTheme: toggleTheme,
     getSystemPreference: getSystemPreference,
-    onThemeChange: function(callback) {
-      window.addEventListener('themeChanged', function(e) {
+    onThemeChange: function (callback) {
+      window.addEventListener('themeChanged', function (e) {
         callback(e.detail.theme);
       });
     }

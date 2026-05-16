@@ -25,18 +25,18 @@ Topic 系统提供了一个结构化的方式来组织和展示系列文章。�
 ```yaml
 theme:
   topics:
-    - name: "JavaScript 学习路线"
-      path: "/topics/javascript-learning/"
+    - name: 'JavaScript 学习路线'
+      path: '/topics/javascript-learning/'
       count: 5
       subtopics:
-        - name: "基础概念"
-          path: "/topics/javascript-learning/basics/"
-        - name: "高级特性"
-          path: "/topics/javascript-learning/advanced/"
-    - name: "Web 开发最佳实践"
-      path: "/topics/web-best-practices/"
+        - name: '基础概念'
+          path: '/topics/javascript-learning/basics/'
+        - name: '高级特性'
+          path: '/topics/javascript-learning/advanced/'
+    - name: 'Web 开发最佳实践'
+      path: '/topics/web-best-practices/'
       count: 8
-  topics_archive_url: "/topics/"
+  topics_archive_url: '/topics/'
 ```
 
 ## 创建 Topic 页面
@@ -164,16 +164,16 @@ JavaScript 学习路线
 ```yaml
 theme:
   topics:
-    - name: "JavaScript 学习路线"
-      path: "/topics/javascript-learning/"
+    - name: 'JavaScript 学习路线'
+      path: '/topics/javascript-learning/'
       count: 5
       subtopics:
-        - name: "基础概念"
-          path: "/topics/javascript-learning/basics/"
-        - name: "高级特性"
-          path: "/topics/javascript-learning/advanced/"
-        - name: "实战项目"
-          path: "/topics/javascript-learning/projects/"
+        - name: '基础概念'
+          path: '/topics/javascript-learning/basics/'
+        - name: '高级特性'
+          path: '/topics/javascript-learning/advanced/'
+        - name: '实战项目'
+          path: '/topics/javascript-learning/projects/'
 ```
 
 ## 常见问题

@@ -3,21 +3,21 @@
  * 基于 Butterfly 主题的 utils.js，MIT License
  */
 
-(function() {
+(function () {
   'use strict';
 
   const btf = {
     // 节流函数
-    throttle: function(func, wait, options) {
+    throttle: function (func, wait, options) {
       let timeout;
       let previous = 0;
-      const later = function() {
+      const later = function () {
         previous = options.leading === false ? 0 : Date.now();
         timeout = null;
         func.apply(this, arguments);
       };
 
-      return function() {
+      return function () {
         const now = Date.now();
         if (!previous && options.leading === false) {
           previous = now;
@@ -37,9 +37,9 @@
     },
 
     // 防抖函数
-    debounce: function(func, wait, immediate) {
+    debounce: function (func, wait, immediate) {
       let timeout;
-      return function() {
+      return function () {
         const context = this;
         const args = arguments;
         if (timeout) {
@@ -47,14 +47,14 @@
         }
         if (immediate) {
           const callNow = !timeout;
-          timeout = setTimeout(function() {
+          timeout = setTimeout(function () {
             timeout = null;
           }, wait);
           if (callNow) {
             func.apply(context, args);
           }
         } else {
-          timeout = setTimeout(function() {
+          timeout = setTimeout(function () {
             func.apply(context, args);
           }, wait);
         }
@@ -62,7 +62,7 @@
     },
 
     // 滚动到指定位置
-    scrollToDest: function(pos, time) {
+    scrollToDest: function (pos, time) {
       time = time || 500;
       const currentPos = window.scrollY;
       const isNavFixed = document.getElementById('header').classList.contains('fixed');
@@ -76,7 +76,7 @@
       }
 
       const startTime = performance.now();
-      const animate = function(currentTime) {
+      const animate = function (currentTime) {
         const timeElapsed = currentTime - startTime;
         const progress = Math.min(timeElapsed / time, 1);
         window.scrollTo(0, currentPos + (pos - currentPos) * progress);
@@ -88,27 +88,30 @@
     },
 
     // 获取滚动百分比
-    getScrollPercent: function(currentTop, ele) {
+    getScrollPercent: function (currentTop, ele) {
       let docHeight, winHeight, headerHeight, contentMath;
       if (!docHeight || ele.clientHeight !== docHeight) {
         docHeight = ele.clientHeight;
         winHeight = window.innerHeight;
         headerHeight = ele.offsetTop;
-        contentMath = Math.max(docHeight - winHeight, document.documentElement.scrollHeight - winHeight);
+        contentMath = Math.max(
+          docHeight - winHeight,
+          document.documentElement.scrollHeight - winHeight
+        );
       }
       const scrollPercent = (currentTop - headerHeight) / contentMath;
       return Math.max(0, Math.min(100, Math.round(scrollPercent * 100)));
     },
 
     // 动画进入
-    animateIn: function(ele, animation) {
+    animateIn: function (ele, animation) {
       ele.style.display = 'block';
       ele.style.animation = animation;
     },
 
     // 动画退出
-    animateOut: function(ele, animation) {
-      const handleAnimationEnd = function() {
+    animateOut: function (ele, animation) {
+      const handleAnimationEnd = function () {
         ele.style.display = '';
         ele.style.animation = '';
         ele.removeEventListener('animationend', handleAnimationEnd);
@@ -118,7 +121,7 @@
     },
 
     // 元素包装
-    wrap: function(selector, eleType, options) {
+    wrap: function (selector, eleType, options) {
       const createEle = document.createElement(eleType);
       for (const [key, value] of Object.entries(options)) {
         createEle.setAttribute(key, value);
@@ -128,17 +131,17 @@
     },
 
     // 检测元素是否隐藏
-    isHidden: function(ele) {
+    isHidden: function (ele) {
       return ele.offsetHeight === 0 && ele.offsetWidth === 0;
     },
 
     // 获取元素顶部位置
-    getEleTop: function(ele) {
+    getEleTop: function (ele) {
       return ele.getBoundingClientRect().top + window.scrollY;
     },
 
     // 相对时间格式化
-    diffDate: function(inputDate, more) {
+    diffDate: function (inputDate, more) {
       const dateNow = new Date();
       const datePost = new Date(inputDate);
       const diffMs = dateNow - datePost;
@@ -170,14 +173,17 @@
     },
 
     // 懒加载评论
-    loadComment: function(dom, callback) {
+    loadComment: function (dom, callback) {
       if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(function(entries) {
-          if (entries[0].isIntersecting) {
-            callback();
-            observer.disconnect();
-          }
-        }, { threshold: [0] });
+        const observer = new IntersectionObserver(
+          function (entries) {
+            if (entries[0].isIntersecting) {
+              callback();
+              observer.disconnect();
+            }
+          },
+          { threshold: [0] }
+        );
         observer.observe(dom);
       } else {
         callback();
@@ -186,29 +192,32 @@
 
     // 修复 body padding-right (防止滚动条消失导致布局偏移)
     fixBodyPaddingRight: {
-      add: function() {
+      add: function () {
         const paddingRight = window.innerWidth - document.body.clientWidth;
         if (paddingRight > 0) {
           document.body.style.paddingRight = paddingRight + 'px';
           document.body.style.overflow = 'hidden';
         }
       },
-      remove: function() {
+      remove: function () {
         document.body.style.paddingRight = '';
         document.body.style.overflow = '';
       }
     },
 
     // 添加 Pjax 事件监听
-    addEventListenerPjax: function(ele, event, fn, option) {
+    addEventListenerPjax: function (ele, event, fn, option) {
       ele.addEventListener(event, fn, option);
-      window.addFn('pjaxSendOnce_' + Math.random(), function() {
-        ele.removeEventListener(event, fn, option);
-      }, 'send');
+      window.addFn(
+        'pjaxSendOnce_' + Math.random(),
+        function () {
+          ele.removeEventListener(event, fn, option);
+        },
+        'send'
+      );
     }
   };
 
   // 导出到全局
   window.btf = window.btf || btf;
-
 })();

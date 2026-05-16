@@ -28,31 +28,31 @@ theme:
     enable: true
     categories:
       learning:
-        name: "学习笔记"
-        icon: "📚"
-        path: "/notebooks/learning/"
+        name: '学习笔记'
+        icon: '📚'
+        path: '/notebooks/learning/'
         notebooks:
-          - title: "JavaScript 笔记"
-            path: "/notebooks/learning/javascript/"
+          - title: 'JavaScript 笔记'
+            path: '/notebooks/learning/javascript/'
             count: 12
-          - title: "Python 笔记"
-            path: "/notebooks/learning/python/"
+          - title: 'Python 笔记'
+            path: '/notebooks/learning/python/'
             count: 8
       reading:
-        name: "阅读笔记"
-        icon: "📖"
-        path: "/notebooks/reading/"
+        name: '阅读笔记'
+        icon: '📖'
+        path: '/notebooks/reading/'
         notebooks:
-          - title: "技术书籍"
-            path: "/notebooks/reading/tech-books/"
+          - title: '技术书籍'
+            path: '/notebooks/reading/tech-books/'
             count: 5
       ideas:
-        name: "想法和灵感"
-        icon: "💡"
-        path: "/notebooks/ideas/"
+        name: '想法和灵感'
+        icon: '💡'
+        path: '/notebooks/ideas/'
         notebooks:
-          - title: "项目想法"
-            path: "/notebooks/ideas/projects/"
+          - title: '项目想法'
+            path: '/notebooks/ideas/projects/'
             count: 3
 ```
 
@@ -106,7 +106,7 @@ description: JavaScript 学习笔记集合
 
 创建单个笔记文件：
 
-```markdown
+````markdown
 ---
 title: 变量和数据类型
 date: 2024-01-01
@@ -128,6 +128,7 @@ JavaScript 中的变量用于存储数据值...
 ```javascript
 var x = 5;
 ```
+````
 
 ### let
 
@@ -148,6 +149,7 @@ const z = 15;
 - 布尔值
 - 对象
 - 数组
+
 ```
 
 ## Notebooks 页面特性
@@ -195,23 +197,25 @@ const z = 15;
 ### 笔记本结构
 
 ```
+
 学习笔记
 ├── JavaScript 笔记
-│   ├── 变量和数据类型
-│   ├── 函数和作用域
-│   └── 异步编程
+│ ├── 变量和数据类型
+│ ├── 函数和作用域
+│ └── 异步编程
 ├── Python 笔记
-│   ├── 基础语法
-│   └── 面向对象编程
+│ ├── 基础语法
+│ └── 面向对象编程
 阅读笔记
 ├── 技术书籍
-│   ├── 《JavaScript 高级程序设计》
-│   └── 《深入浅出 Node.js》
+│ ├── 《JavaScript 高级程序设计》
+│ └── 《深入浅出 Node.js》
 想法和灵感
 ├── 项目想法
-│   ├── 个人博客系统
-│   └── 任务管理应用
-```
+│ ├── 个人博客系统
+│ └── 任务管理应用
+
+````
 
 ### 完整配置示例
 
@@ -242,7 +246,7 @@ theme:
         icon: "💡"
         path: "/notebooks/ideas/"
         count: 3
-```
+````
 
 ## 常见问题
 

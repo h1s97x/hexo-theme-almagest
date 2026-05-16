@@ -5,19 +5,19 @@
 
 'use strict';
 
-module.exports = function(hexo) {
+module.exports = function (hexo) {
   // Before generate
-  hexo.on('generateBefore', function() {
+  hexo.on('generateBefore', function () {
     console.log('Minimal Pro: Generating...');
   });
 
   // After generate
-  hexo.on('generateAfter', function() {
+  hexo.on('generateAfter', function () {
     console.log('Minimal Pro: Generation complete');
   });
 
   // Ready
-  hexo.on('ready', function() {
+  hexo.on('ready', function () {
     console.log('Minimal Pro: Theme ready');
   });
 };

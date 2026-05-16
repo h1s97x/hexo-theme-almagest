@@ -5,7 +5,7 @@
 
 'use strict';
 
-module.exports = function(hexo) {
+module.exports = function (hexo) {
   const config = hexo.theme.config.math || {};
 
   // 检查是否启用数学公式
@@ -19,7 +19,7 @@ module.exports = function(hexo) {
   }
 
   // 判断页面是否需要渲染数学公式
-  hexo.extend.helper.register('is_math_page', function() {
+  hexo.extend.helper.register('is_math_page', function () {
     if (!isMathEnabled()) return false;
 
     const page = this.page;
@@ -39,7 +39,7 @@ module.exports = function(hexo) {
   });
 
   // 获取数学公式 CDN 链接
-  hexo.extend.helper.register('math_cdn', function(type, file) {
+  hexo.extend.helper.register('math_cdn', function (type, file) {
     const cdnBase = 'https://cdn.jsdelivr.net/npm';
     const version = config.katex?.version || '0.16.9';
 

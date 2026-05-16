@@ -4,7 +4,7 @@
  * 为首页副标题添加打字机动画效果
  */
 
-(function() {
+(function () {
   'use strict';
 
   /**
@@ -28,7 +28,7 @@
   /**
    * 初始化打字机
    */
-  TypingEffect.prototype.init = function() {
+  TypingEffect.prototype.init = function () {
     if (!this.text) {
       return;
     }
@@ -39,7 +39,7 @@
   /**
    * 打字动画核心逻辑
    */
-  TypingEffect.prototype.type = function() {
+  TypingEffect.prototype.type = function () {
     const self = this;
     const currentText = this.text;
     let displayText = '';
@@ -79,7 +79,7 @@
       typeSpeed = 500; // 暂停 0.5 秒后开始打下一行
     }
 
-    this.timer = setTimeout(function() {
+    this.timer = setTimeout(function () {
       self.type();
     }, typeSpeed);
   };
@@ -87,7 +87,7 @@
   /**
    * 隐藏光标
    */
-  TypingEffect.prototype.hideCursor = function() {
+  TypingEffect.prototype.hideCursor = function () {
     const cursor = this.element.parentNode.querySelector('.typing-cursor');
     if (cursor) {
       cursor.style.display = 'none';
@@ -97,7 +97,7 @@
   /**
    * 销毁打字机
    */
-  TypingEffect.prototype.destroy = function() {
+  TypingEffect.prototype.destroy = function () {
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
@@ -110,7 +110,7 @@
   function initTypingEffects() {
     const elements = document.querySelectorAll('.typing-effect');
 
-    elements.forEach(function(element) {
+    elements.forEach(function (element) {
       // 如果已经有实例，先销毁
       if (element._typingInstance) {
         element._typingInstance.destroy();

@@ -30,8 +30,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'  # 缓存 pnpm 依赖，需要先安装 pnpm
-          cache-dependency-path: 'pnpm-lock.yaml'  # 指定 lock 文件路径，提高缓存命中率
+          cache: 'pnpm' # 缓存 pnpm 依赖，需要先安装 pnpm
+          cache-dependency-path: 'pnpm-lock.yaml' # 指定 lock 文件路径，提高缓存命中率
 
       # 验证 pnpm 安装
       - name: Verify pnpm

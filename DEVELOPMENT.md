@@ -335,11 +335,11 @@ hexo clean
 <%- include _partial/head %>
 <body>
   <%- include _partial/header %>
-  
+
   <main class="main-content">
     <!-- 页面内容 -->
   </main>
-  
+
   <%- include _partial/footer %>
 </body>
 </html>
