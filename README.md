@@ -4,78 +4,52 @@
 
 ## 特性
 
-- **双主题支持**: 支持浅色和深色主题，支持跟随系统自动切换
-- **星空背景效果**: 暗色主题下精美的星星动画效果
-- **响应式设计**: 完美适配桌面端和移动端
-- **丰富功能**: 文章目录、代码高亮（双主题）、代码复制、图片懒加载、图片灯箱、无刷新导航、数学公式、Mermaid 图表、访问统计等
-- **自定义标签**: 内置多种实用标签（note、timeline、folding 等）
-- **SEO 优化**: 支持 Open Graph、Twitter Card 等
-- **评论系统**: 支持 Giscus、Disqus 等评论系统
-- **模块化设计**: 清晰的代码结构，易于定制
-
-## 预览
-
-> 主题预览截图（建议自行截图替换）
+| 分类     | 功能                                                                            |
+| -------- | ------------------------------------------------------------------------------- |
+| **主题** | 深色/浅色主题、自动跟随系统、Pjax 无刷新导航                                    |
+| **首页** | Banner 头图、随机图片、打字机效果、星空背景                                     |
+| **文章** | 目录（跟随滚动/折叠）、阅读时间、字数统计、版权声明、代码高亮、行高亮、代码折叠 |
+| **样式** | 滚动条样式、标签云颜色、导航栏毛玻璃、响应式设计                                |
+| **功能** | 搜索增强、图片灯箱、懒加载、脚注语法、友链页面、Open Graph SEO                  |
+| **评论** | Giscus、Disqus、Google Analytics、不蒜子统计                                    |
 
 ## 安装
 
-### 方式一（推荐）：克隆到主题目录
-
 ```bash
 cd your-hexo-site
-git clone https://github.com/your-username/hexo-theme-almagest.git themes/almagest
+git clone https://github.com/h1s97x/hexo-theme-almagest.git themes/almagest
 ```
 
-### 方式二：npm 安装
-
-```bash
-cd your-hexo-site
-npm install hexo-theme-almagest --save
-```
-
-然后在 Hexo 配置文件中：
+修改 Hexo 站点 `_config.yml`：
 
 ```yaml
 theme: almagest
 ```
 
-## 配置
+## 快速配置
 
-### 基础配置
-
-在 Hexo 站点的 `_config.yml` 中配置：
-
-```yaml
-# 站点配置
-title: 我的博客
-subtitle: 技术分享与生活记录
-author: 博主名称
-language: zh-CN
-
-# 主题配置
-theme: almagest
-
-# URL 配置
-url: https://example.com
-root: /
-```
-
-### 主题配置
-
-在 `themes/almagest/_config.yml` 中配置主题选项：
+在 `themes/almagest/_config.yml` 中：
 
 ```yaml
 # 基础信息
-title: "博客标题"
-subtitle: "博客副标题"
-author: "作者名称"
+title: '博客标题'
+author: '作者名称'
 
-# 样式配置
-style:
-  primary_color: "#4a90d9"      # 主题色
-  accent_color: "#06b6d4"        # 强调色
-  prefers_theme: "auto"          # 主题偏好: auto | light | dark
-  enable_starry_background: true # 星空背景效果
+# 暗色模式
+dark_mode:
+  enable: true
+  default: auto # auto | light | dark
+
+# 功能开关
+features:
+  search: true
+  comments: true
+  toc: true
+  code_copy: true
+  back_to_top: true
+  reading_time: true
+  pjax: true
+  scroll_animation: true
 
 # 导航菜单
 menu:
@@ -84,65 +58,122 @@ menu:
   分类: /categories/
   标签: /tags/
   关于: /about/
-
-# 功能开关
-features:
-  search: true           # 搜索功能
-  comments: true         # 评论系统
-  toc: true              # 文章目录
-  code_copy: true        # 代码复制
-  back_to_top: true      # 返回顶部
-  reading_time: true     # 阅读时间
-  word_count: true       # 字数统计
-  pjax: true             # 无刷新导航
-  reading_mode: true     # 阅读模式
-
-# 社交链接
-social:
-  github: "https://github.com/your-username"
-  email: "your.email@example.com"
-
-# 导航菜单（支持子菜单）
-menu:
-  首页: /
-  归档: /archives/
-  分类: /categories/
-  标签: /tags/
-  # 子菜单示例
-  工具:
-    - 工具1: /tools/tool1/
-    - 工具2: /tools/tool2/
-    - 工具3: /tools/tool3/
-  关于: /about/
+  友链: /links/
 ```
 
-### 代码高亮配置
+## 功能配置
+
+### 首页 Banner
 
 ```yaml
-highlight:
-  enable: true
-  light_theme: 'github' # 浅色主题
-  dark_theme: 'atom-one-dark' # 深色主题
-  line_number: true
-  copy_button: true
-  show_lang: true
+index:
+  banner_img: /images/banner.jpg
+  banner_img_height: 100
+  banner_mask_alpha: 0.3
+  random_img: false # 设为 true 使用随机图片
+  parallax: true
+  slogan:
+    enable: true
+    typeSpeed: 70
+    cursorChar: '_'
+    loop: false
 ```
 
-**可用主题：**
+将随机图片放在 `source/img/random/` 目录。
 
-- 浅色: github, atom-one-light, vs, xcode, vs2015
-- 深色: atom-one-dark, monokai, dracula, nord, github-dark, one-dark-pro
+### 代码高亮
 
-### 访问统计配置
+```yaml
+code:
+  highlight_line:
+    enable: true # 行高亮
+  collapse:
+    enable: true # 代码折叠
+    max_lines: 30
+```
+
+行高亮用法：
+
+````markdown
+```javascript
+// [!code highlight]
+const x = 1; // 这行会高亮
+```
+````
+
+### 文章目录
+
+```yaml
+toc:
+  expand_all: true
+  scroll_follow:
+    enable: true # 跟随滚动
+  expand:
+    enable: true # 展开/折叠
+    collapse_depth: 2
+```
+
+### 搜索功能
+
+需要安装 `hexo-generator-searchdb`：
+
+```bash
+npm install hexo-generator-searchdb --save
+```
+
+```yaml
+search:
+  enable: true
+  path: /local-search.xml
+  field: post
+  content: true
+```
+
+### Open Graph / Twitter Card
+
+```yaml
+open_graph:
+  enable: true
+  twitter_card: summary_large_image
+  twitter_id: '@your_twitter_id'
+```
+
+### 评论系统 (Giscus)
+
+1. 访问 [giscus.app](https://giscus.app) 生成配置
+2. 在仓库设置中启用 GitHub Discussions
+
+```yaml
+services:
+  giscus:
+    enable: true
+    repo: 'your-username/your-repo'
+    repo_id: 'xxx'
+    category: 'Announcements'
+    category_id: 'xxx'
+```
+
+### 访问统计
 
 ```yaml
 analytics:
   enable: true
   service: 'busuanzi' # busuanzi | google
-  busuanzi:
-    site_uv: true # 站点访客数
-    site_pv: true # 站点浏览量
-    page_pv: true # 文章浏览量
+```
+
+### 数学公式
+
+```yaml
+math:
+  enable: true
+  engine: 'katex' # katex | mathjax
+```
+
+### Mermaid 图表
+
+```yaml
+mermaid:
+  enable: true
 ```
 
 ## 文章 Front Matter
@@ -152,254 +183,103 @@ analytics:
 title: 文章标题
 date: 2024-01-01 12:00:00
 categories:
-  - 分类1
-  - 分类2
+  - 分类
 tags:
-  - 标签1
-  - 标签2
-cover: /images/cover.jpg # 封面图片
-excerpt: 文章摘要 # 摘要（可选）
+  - 标签
+cover: /images/cover.jpg
+excerpt: 摘要
+sticky: true # 置顶
+math: true # 启用数学公式
 ---
 ```
 
 ## 自定义标签
 
-### Note 标签
+### Note 提示框
 
 ```markdown
-{% note default %}
-默认提示框内容
-{% endnote %}
-
-{% note primary %}
-主要提示框
-{% endnote %}
-
-{% note success %}
-成功提示框
-{% endnote %}
-
-{% note warning %}
-警告提示框
-{% endnote %}
-
-{% note danger %}
-危险提示框
-{% endnote %}
+{% note default %}默认提示{% endnote %}
+{% note primary %}主要提示{% endnote %}
+{% note success %}成功提示{% endnote %}
+{% note warning %}警告提示{% endnote %}
+{% note danger %}危险提示{% endnote %}
 ```
 
-### Timeline 时间线
+### 时间线
 
 ```markdown
 {% timeline %}
 
-<!-- node 第一阶段 -->
+<!-- timeline 2024 -->
 
-内容...
-
-<!-- node 第二阶段 -->
-
-内容...
-{% endtimeline %}
+- 事件1
+- 事件2
+<!-- timeline 2023 -->
+- 事件3
+  {% endtimeline %}
 ```
 
-### Folding 折叠块
+### 折叠块
 
 ```markdown
-{% folding 点击展开查看更多 %}
-这里是折叠的内容
-支持 Markdown 格式
+{% folding 点击展开 %}
+这是隐藏的内容
 {% endfolding %}
 ```
 
-### Quote 引用块
+### 友链卡片
 
 ```markdown
-{% quot 引用内容 %}
-{% quot 引用内容 icon:hashtag %}
+{% link url 标题 描述 %}
 ```
 
-### Checkbox 任务列表
+### 代码组/选项卡
 
 ```markdown
-{% checkbox checked:true 已完成的任务 %}
-{% checkbox 未完成的任务 %}
-```
-
-### Link Card 链接卡片
-
-```markdown
-{% link https://example.com 链接标题 链接描述 %}
-```
-
-### Button 按钮
-
-```markdown
-{% button 点击这里 https://example.com primary %}
-```
-
-### Image with Caption
-
-```markdown
-{% image https://example.com/image.jpg 图片描述 图片说明 %}
-```
-
-### Tabs 选项卡
-
-```markdown
-{% tabs 标签页 %}
-
-<!-- tab 标签1 -->
-
-内容1
-
-<!-- tab 标签2 -->
-
-内容2
+{% tabs tab1 %}
 
 <!-- tab -->
 
-内容3
+第一个标签的内容
+
+<!-- tab -->
+
+第二个标签的内容
 {% endtabs %}
-```
-
-### Label 标签
-
-```markdown
-{% label 默认标签 %}
-{% label 主要标签 primary %}
-{% label 成功标签 success %}
-{% label 警告标签 warning %}
-{% label 危险标签 danger %}
-```
-
-### Video 视频
-
-```markdown
-{% video https://example.com/video.mp4 %}
-```
-
-### Audio 音频
-
-```markdown
-{% audio https://example.com/audio.mp3 %}
-```
-
-### Gallery 图片画廊
-
-```markdown
-{% gallery %}
-![](https://example.com/image1.jpg)
-![](https://example.com/image2.jpg)
-![](https://example.com/image3.jpg)
-{% endgallery %}
-```
-
-### Mermaid 图表
-
-主题支持 Mermaid 图表，包括流程图、时序图、甘特图等。
-
-````markdown
-```mermaid
-graph TD
-    A[Start] --> B{Is it?}
-    B -->|Yes| C[OK]
-    B -->|No| D[End]
-```
-````
-
-**配置项：**
-
-```yaml
-mermaid:
-  enable: true
-  theme: 'default' # 深色主题下使用 dark
-  dark_theme: 'dark'
-```
-
-### 数学公式
-
-主题支持 KaTeX 渲染数学公式。
-
-```markdown
-# 行内公式
-
-这是一个行内公式 $E = mc^2$
-
-# 块级公式
-
-$$
-\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
-$$
-```
-
-**配置项：**
-
-```yaml
-math:
-  enable: true
-  engine: 'katex' # 或 "mathjax"
 ```
 
 ## 页面创建
 
-### 关于页面
-
 ```bash
+# 关于页面
 hexo new page about
+
+# 友链页面
+hexo new page links
 ```
 
-编辑 `source/about/index.md`：
+关于页面 `source/about/index.md`：
 
 ```markdown
 ---
 title: 关于
 date: 2024-01-01
-type: about
 ---
 
-这里写关于页面的内容...
+# 头像
+
+![avatar](图片地址)
+
+# 名称
+
+你的名字
+
+# 简介
+
+个人简介...
 ```
 
-### 分类页面
-
-```bash
-hexo new page categories
-```
-
-编辑 `source/categories/index.md`：
-
-```markdown
----
-title: 分类
-date: 2024-01-01
-type: categories
----
-```
-
-### 标签页面
-
-```bash
-hexo new page tags
-```
-
-编辑 `source/tags/index.md`：
-
-```markdown
----
-title: 标签
-date: 2024-01-01
-type: tags
----
-```
-
-### 友链页面
-
-```bash
-hexo new page links
-```
-
-编辑 `source/links/index.md`：
+友链页面 `source/links/index.md`：
 
 ```markdown
 ---
@@ -407,6 +287,8 @@ title: 友情链接
 date: 2024-01-01
 type: links
 ---
+
+# 友链
 
 {% links %}
 
@@ -418,85 +300,47 @@ type: links
   {% endlinks %}
 ```
 
-## 评论系统
-
-### Giscus（推荐）
-
-1. 访问 [Giscus](https://giscus.app) 生成配置
-2. 在主题配置中启用：
-
-```yaml
-services:
-  giscus:
-    enable: true
-    repo: 'your-username/your-repo'
-    repo_id: 'your-repo-id'
-    category: 'Announcements'
-    category_id: 'your-category-id'
-    mapping: 'pathname'
-    theme: 'dark_dimmed'
-    lang: 'zh-CN'
-```
-
 ## 开发
 
 ### 项目结构
 
 ```
 hexo-theme-almagest/
-├── layout/                 # EJS 模板文件
-│   ├── layout.ejs         # 主布局
-│   ├── index.ejs          # 首页
-│   ├── post.ejs           # 文章页
-│   └── _partial/          # 组件目录
-├── source/                # 静态资源
-│   ├── css/              # 样式文件 (Stylus)
-│   └── js/               # JavaScript 文件
-├── scripts/              # Hexo 脚本
-├── languages/            # 多语言文件
-├── _config.yml          # 主题配置
+├── layout/              # EJS 模板
+│   ├── index.ejs       # 首页
+│   ├── post.ejs        # 文章页
+│   └── _partial/        # 组件
+├── source/
+│   ├── css/            # Stylus 样式
+│   └── js/              # JavaScript
+├── scripts/            # Hexo 脚本
+├── languages/           # i18n 文件
+├── _config.yml         # 主题配置
 └── package.json
 ```
 
 ### 开发命令
 
 ```bash
-# 安装依赖
 pnpm install
-
-# 代码检查
-pnpm lint
-pnpm style:lint
-
-# 代码格式化
-pnpm format
+pnpm lint        # ESLint 检查
+pnpm style:lint  # Stylelint 检查
+pnpm format      # 代码格式化
 ```
 
-### 添加自定义样式
+### 代码规范
 
-在 `source/css/` 目录下创建自定义样式文件，然后在 `main.styl` 中导入。
-
-### 添加自定义脚本
-
-在 `source/js/` 目录下创建自定义脚本，然后在 `layout/_partial/scripts.ejs` 中引入。
+- JavaScript: ESLint + Prettier
+- Stylus: Stylelint + Prettier
+- 提交前运行 `pnpm lint && pnpm format`
 
 ## 更新
 
 ```bash
 cd themes/almagest
-git pull
+git pull origin main
 ```
 
 ## 许可证
 
 [MIT License](LICENSE)
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-## 致谢
-
-- [Hexo](https://hexo.io/)
-- [Stellar Theme](https://github.com/xaoxuu/hexo-theme-stellar)
-- [Hexo Theme Next](https://github.com/next-theme/hexo-theme-next)
