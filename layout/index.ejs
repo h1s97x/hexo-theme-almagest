@@ -8,20 +8,21 @@ const typingEnabled = sloganCfg.enable !== false;
 const sloganText = sloganCfg.text || config.subtitle || '';
 
 // Banner 图片处理
-let bannerImg = bannerCfg.banner_img || '';
-if (bannerCfg.random_img) {
-  // 随机图片逻辑 (运行时由 JS 处理)
-  bannerImg = 'random';
-}
+const bannerImg = bannerCfg.banner_img || '';
 const bannerHeight = bannerCfg.banner_img_height || 100;
 const bannerMask = bannerCfg.banner_mask_alpha || 0.3;
 const parallax = bannerCfg.parallax !== false;
+const useRandomImg = bannerCfg.random_img === true;
 %>
 
 <!-- 首页 Banner -->
-<% if (bannerImg) { %>
+<% if (bannerImg || useRandomImg) { %>
   <div class="banner-wrapper<%= parallax ? ' parallax' : '' %>" style="height: <%= bannerHeight %>vh;">
-    <div class="banner-img" style="background-image: url('<%= bannerImg === 'random' ? '' : url_for(bannerImg) %>');" data-random="<%= bannerCfg.random_img %>"></div>
+    <% if (useRandomImg) { %>
+      <div class="banner-img" data-random-src="<%= url_for('/img/random/') %>"></div>
+    <% } else { %>
+      <div class="banner-img" style="background-image: url('<%= url_for(bannerImg) %>');"></div>
+    <% } %>
     <div class="banner-mask" style="opacity: <%= bannerMask %>;"></div>
     <div class="banner-content">
       <h1 class="banner-title"><%= config.title %></h1>
