@@ -32,8 +32,87 @@ module.exports = function (hexo) {
       );
     }
 
+    // 处理脚注语法
+    // 将 [^1] 和 [^1]: note 转换为 HTML 脚注
+    const footnoteConfig = hexo.theme.config.post?.footnote;
+    if (footnoteConfig?.enable !== false && data.content) {
+      data.content = processFootnotes(data.content, footnoteConfig);
+    }
+
     return data;
   });
+
+  /**
+   * 处理脚注语法
+   * 将 Markdown 脚注语法转换为 HTML 脚注
+   * @param {string} content - 文章内容
+   * @param {object} config - 脚注配置
+   * @returns {string} 处理后的内容
+   */
+  function processFootnotes(content, config) {
+    const header = config?.header || '';
+    const footnotes = {};
+    let footnoteIndex = 0;
+    const footnoteRefs = [];
+
+    // 提取脚注定义: [^1]: content
+    content = content.replace(
+      /\[\^(\w+)\]:\s*(.+?)(?=\n\[\^|\n{2,}|\s*$)/gs,
+      function (match, id, text) {
+        footnoteIndex++;
+        footnotes[id] = {
+          id: id,
+          index: footnoteIndex,
+          text: text.trim()
+        };
+        return '';
+      }
+    );
+
+    // 替换脚注引用: [^1]
+    content = content.replace(/\[\^(\w+)\](?!:)/g, function (match, id) {
+      if (!footnotes[id]) return match;
+      const fn = footnotes[id];
+      const refId = 'fnref-' + id;
+      const fnId = 'fn-' + id;
+
+      if (!footnoteRefs.includes(id)) {
+        footnoteRefs.push(id);
+      }
+
+      return (
+        '<sup class="footnote-ref"><a href="#' +
+        fnId +
+        '" id="' +
+        refId +
+        '">[' +
+        fn.index +
+        ']</a></sup>'
+      );
+    });
+
+    // 生成脚注列表
+    if (footnoteRefs.length > 0) {
+      let footnoteHtml = '<div class="footnotes">';
+      if (header) {
+        footnoteHtml += '<h3 class="footnotes-header">' + header + '</h3>';
+      }
+      footnoteHtml += '<ol class="footnotes-list">';
+
+      footnoteRefs.forEach(function (id) {
+        const fn = footnotes[id];
+        footnoteHtml += '<li id="fn-' + id + '" class="footnote-item">';
+        footnoteHtml += fn.text;
+        footnoteHtml += ' <a href="#fnref-' + id + '" class="footnote-backref">&#8617;</a>';
+        footnoteHtml += '</li>';
+      });
+
+      footnoteHtml += '</ol></div>';
+      content += footnoteHtml;
+    }
+
+    return content;
+  }
 
   // Generate excerpt automatically if not provided
   hexo.extend.filter.register('excerpt', function (data) {
