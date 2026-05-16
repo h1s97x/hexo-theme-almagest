@@ -19,18 +19,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 安装 pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       # 设置 Node.js 环境
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'pnpm'  # 缓存 pnpm 依赖，需要先安装 pnpm
+          cache-dependency-path: 'pnpm-lock.yaml'  # 指定 lock 文件路径，提高缓存命中率
 
-      # 安装 pnpm
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+      # 验证 pnpm 安装
+      - name: Verify pnpm
+        run: pnpm --version
 
       # 安装依赖
       - name: Install dependencies
