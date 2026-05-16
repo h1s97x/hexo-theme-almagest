@@ -9,75 +9,87 @@ Hexo Theme Almagest 是一个优雅的星空风格 Hexo 博客主题，灵感来
 - **框架**: Hexo >= 6.0.0
 - **模板引擎**: EJS
 - **样式预处理**: Stylus
-- **Node.js**: >= 14.0.0
+- **Node.js**: >= 18.0.0
 - **包管理器**: pnpm
 
 ## 目录结构
 
-```
+````
 hexo-theme-almagest/
-├── layout/                     # EJS 模板文件
-│   ├── layout.ejs             # 主布局
-│   ├── index.ejs              # 首页
-│   ├── post.ejs               # 文章页
-│   ├── page.ejs               # 页面
-│   ├── archive.ejs            # 归档页
-│   ├── categories.ejs         # 分类页
-│   ├── tags.ejs               # 标签页
-│   ├── 404.ejs                # 404 页
-│   └── _partial/              # 组件目录
-│       ├── head.ejs           # 头部资源
-│       ├── header.ejs          # 头部导航
-│       ├── footer.ejs          # 页脚
-│       ├── navbar.ejs          # 导航栏
-│       ├── sidebar.ejs        # 侧边栏
-│       ├── toc.ejs             # 文章目录
-│       ├── post-nav.ejs        # 文章导航
-│       ├── comments.ejs       # 评论组件
-│       ├── search-box.ejs     # 搜索框
-│       ├── pagination.ejs      # 分页
-│       ├── post-card.ejs      # 文章卡片
-│       ├── categories-widget.ejs
-│       ├── tags-widget.ejs
-│       ├── breadcrumb.ejs
-│       ├── scripts.ejs
-│       └── ...                 # 其他组件
-├── source/                    # 静态资源
-│   ├── css/                  # 样式文件
-│   │   ├── main.styl         # 入口文件
-│   │   ├── _variables.styl   # 变量
-│   │   ├── _mixins.styl      # 混入
-│   │   ├── _base.styl        # 基础样式
-│   │   ├── _layout.styl      # 布局样式
-│   │   ├── _components.styl  # 组件样式
-│   │   ├── _components-extra.styl  # 扩展组件
-│   │   ├── _responsive.styl # 响应式
-│   │   ├── _theme-light.styl # 亮色主题
-│   │   ├── _theme-dark.styl  # 暗色主题
+├── .github/
+│   └── workflows/          # CI/CD 工作流
+│       ├── pr-check.yml     # PR 检查
+│       └── release.yml      # 发布流程
+├── layout/                 # EJS 模板文件
+│   ├── layout.ejs          # 主布局
+│   ├── index.ejs           # 首页
+│   ├── post.ejs            # 文章页
+│   ├── page.ejs            # 页面
+│   ├── archive.ejs         # 归档页
+│   ├── categories.ejs      # 分类页
+│   ├── tags.ejs            # 标签页
+│   ├── about.ejs           # 关于页
+│   ├── links.ejs           # 友链页
+│   ├── 404.ejs             # 404 页
+│   └── _partial/            # 组件目录
+│       ├── head.ejs        # 头部资源
+│       ├── header.ejs      # 头部导航
+│       ├── footer.ejs      # 页脚
+│       ├── sidebar.ejs      # 侧边栏
+│       ├── toc.ejs         # 文章目录
+│       ├── post-nav.ejs    # 文章导航
+│       ├── post-card.ejs   # 文章卡片
+│       ├── copyright.ejs   # 版权声明
+│       ├── scripts.ejs      # 脚本引入
+│       └── ...
+├── source/
+│   ├── css/                # 样式文件
+│   │   ├── main.styl       # 入口文件
+│   │   ├── _variables.styl # 变量
+│   │   ├── _mixins.styl    # 混入
+│   │   ├── _base.styl      # 基础样式
+│   │   ├── _layout.styl    # 布局样式
+│   │   ├── _components.styl     # 组件样式
+│   │   ├── _components-extra.styl # 扩展组件
+│   │   ├── _responsive.styl      # 响应式
+│   │   ├── _theme-light.styl     # 亮色主题
+│   │   ├── _theme-dark.styl      # 暗色主题
 │   │   ├── _code-highlight.styl  # 代码高亮
-│   │   └── _astronomy.styl   # 星空效果
-│   └── js/                   # JavaScript 文件
-│       ├── theme.js          # 主题切换
-│       ├── search.js         # 搜索功能
-│       ├── code-copy.js      # 代码复制
-│       ├── lazy-load.js       # 图片懒加载
-│       └── astronomy.js       # 星空动画
-├── scripts/                  # Hexo 脚本
-│   ├── index.js              # 入口
-│   ├── events.js             # 事件处理
-│   ├── generators.js         # 生成器
-│   ├── helpers.js            # 辅助函数
-│   ├── filters.js            # 过滤器
-│   └── tags.js               # 自定义标签
-├── languages/               # 多语言文件
+│   │   └── _astronomy.styl       # 星空效果
+│   └── js/                 # JavaScript 文件
+│       ├── theme.js        # 主题切换
+│       ├── search.js       # 搜索功能
+│       ├── code-copy.js    # 代码复制
+│       ├── code-features.js # 代码块高级功能
+│       ├── lazy-load.js    # 图片懒加载
+│       ├── medium-zoom.js  # 图片灯箱
+│       ├── typing.js      # 打字机效果
+│       ├── scroll-animation.js # 滚动动画
+│       ├── toc.js          # 目录功能
+│       ├── astronomy.js    # 星空动画
+│       ├── random-banner.js # 随机 Banner
+│       └── utils.js        # 工具函数
+├── scripts/                # Hexo 脚本
+│   ├── index.js           # 入口
+│   ├── events.js          # 事件处理
+│   ├── generators.js      # 生成器
+│   ├── helpers.js         # 辅助函数
+│   ├── filters.js         # 过滤器
+│   ├── tags.js            # 自定义标签
+│   ├── math-helper.js     # 数学公式
+│   ├── stylus-inject.js   # Stylus 变量注入
+│   └── random-banner.js   # 随机 Banner
+├── languages/             # 多语言文件
 │   ├── zh-CN.yml
 │   ├── en.yml
 │   └── zh-TW.yml
-├── _config.yml              # 主题配置
+├── _config.yml            # 主题配置
 ├── package.json
-├── README.md
-└── LICENSE
-```
+├── README.md              # 用户文档
+├── AGENTS.md              # 开发规范
+├── CHANGELOG.md          # 更新日志
+├── LICENSE
+└── .stylelintrc.json     # Stylelint 配置
 
 ## 关键入口 / 核心模块
 
@@ -106,7 +118,7 @@ hexo-theme-almagest/
    ```bash
    cd your-hexo-site
    git clone https://github.com/your-username/hexo-theme-almagest.git themes/almagest
-   ```
+````
 
 2. 修改站点 `_config.yml`：
 
@@ -144,22 +156,28 @@ pnpm format
 
 主要配置项：
 
-- `style.prefers_theme`: 主题偏好 (auto/light/dark)
+- `dark_mode`: 暗色模式配置 (enable, default: auto/light/dark)
+- `static_prefix`: CDN 资源前缀配置
+- `color`: 颜色配置（亮色/暗色双主题）
+- `font`: 字体配置 (font_size, font_family, code_font_size)
+- `navbar`: 导航栏配置 (ground_glass 毛玻璃效果)
+- `index`: 首页配置 (banner_img, random_img, slogan 打字机)
+- `article`: 文章配置 (reading_time, copyright, toc)
 - `features`: 功能开关
   - `search`: 搜索功能
-  - `comments`: 评论系统
-  - `toc`: 文章目录
+  - `toc`: 文章目录 (scroll_follow 跟随滚动, expand 展开折叠)
   - `code_copy`: 代码复制
+  - `code_highlight`: 代码高亮 (行高亮, 折叠)
   - `back_to_top`: 返回顶部
-  - `reading_time`: 阅读时间
-  - `word_count`: 字数统计
-  - `pjax`: 无刷新导航
+  - `lazy_load`: 图片懒加载
   - `reading_mode`: 阅读模式
-- `toc`: 文章目录配置
-- `reading_progress`: 阅读进度条配置
-- `image`: 图片配置（lazy_load、lightbox 等）
-- `analytics`: 访问统计配置
-- `mermaid`: Mermaid 图表配置
+  - `pjax`: 无刷新导航
+  - `pjax_loading`: NProgress 加载进度条
+  - `scroll_animation`: 滚动动画
+- `image`: 图片配置（lazy_load, lightbox, loading_img）
+- `search`: 搜索配置 (path, field, content)
+- `open_graph`: Open Graph SEO 配置
+- `code`: 代码块配置 (highlight_line, collapse)
 
 ### 文章 Front Matter
 
@@ -287,13 +305,14 @@ main (保护分支)
 
 ### 图片懒加载不生效
 
-- 确认 `source/js/lazy-load.js` 已正确引入
 - 确认 `image.lazy_load` 配置已启用
+- 占位图路径需要存在于 `source/` 目录下
 
 ### 图片灯箱不工作
 
 - 确认 `image.lightbox` 配置为 `true`
 - 图片需要有 `zoomable` 类或位于 `article` 区域内
+- 使用 `image.img_url_replace` 可以替换放大时的图片 URL
 
 ### 星空动画效果不显示
 
@@ -302,17 +321,28 @@ main (保护分支)
 
 ### 代码高亮样式异常
 
-- 检查 `_config.yml` 中 `highlight.light_theme` 和 `highlight.dark_theme` 配置
+- 检查 `code.highlight.enable` 是否为 `true`
 - 确认 CDN 链接可访问
-- 主题会根据深色/浅色模式自动切换
+- 主题会根据深色/浅色模式自动切换高亮主题
 
-### 评论系统不显示
+### 代码块行高亮不生效
 
-- 确认对应评论服务（giscus等）的配置正确
-- 确认 `features.comments` 已启用
+- 使用 `// [!code highlight]` 注释标记高亮行
+- 确认 `code.highlight_line.enable` 为 `true`
 
 ### 数学公式不渲染
 
 - 确认 `math.enable` 配置为 `true`
 - 检查 `math.engine` 配置（katex 或 mathjax）
 - 确认 CDN 链接可访问
+
+### Pjax 页面切换后功能失效
+
+- 所有功能脚本都需要在 `scripts.ejs` 中监听 `pjax:complete` 事件重新初始化
+- 使用 `Almagine.pjaxReInit()` 触发重新初始化
+
+### 暗色模式切换不生效
+
+- 确认 `dark_mode.enable` 为 `true`
+- 检查浏览器控制台是否有 JS 错误
+- 确认 CSS 变量定义正确（\_theme-light.styl / \_theme-dark.styl）
