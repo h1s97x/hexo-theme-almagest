@@ -81,6 +81,17 @@ window.codeFeaturesConfig = {
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/scroll-animation.js' : url_for('/js/scroll-animation.js') %>?v=<%= version %>"></script>
 <% } %>
 
+<!-- TOC Enhancement -->
+<% if (config.toc?.enable && (config.toc?.scroll_follow?.enable || config.toc?.expand?.enable)) { %>
+<script>
+window.tocConfig = {
+  scroll_follow: <%- JSON.stringify(config.toc?.scroll_follow || {}) %>,
+  expand: <%- JSON.stringify(config.toc?.expand || {}) %>
+};
+</script>
+<script src="<%= cdn_prefix ? cdn_prefix + '/js/toc.js' : url_for('/js/toc.js') %>?v=<%= version %>"></script>
+<% } %>
+
 <!-- Astronomy Animations -->
 <% if (config.astronomy?.enable) { %>
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/astronomy.js' : url_for('/js/astronomy.js') %>?v=<%= version %>"></script>
