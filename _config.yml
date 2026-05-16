@@ -159,6 +159,38 @@ features:
   reading_mode: true
 
 # ============================================================
+# Pjax 加载动画配置 (Pjax Loading Animation)
+# 参考 Fluid 主题的 NProgress 实现
+# ============================================================
+
+pjax_loading:
+  # 是否启用 Pjax 加载进度条
+  enable: true
+
+  # 进度条颜色
+  color: '#29d'
+
+  # 进度条高度 (像素)
+  height: 3
+
+  # 是否显示加载图标 (Safari 兼容)
+  show_spinner: false
+
+  # NProgress 配置 (高级选项)
+  # 参考: https://github.com/rstacruz/nprogress
+  options:
+    # 缓慢开始
+    trickle: true
+    # 缓慢速度
+    trickle_speed: 100
+    # 缓动函数
+    easing: 'ease'
+    # 动画速度 (毫秒)
+    speed: 200
+    # 最小百分比
+    minimum: 0.08
+
+# ============================================================
 # 首页 Banner 配置 (Home Page Banner)
 # ============================================================
 
@@ -882,6 +914,8 @@ static_prefix:
   mathjax: https://cdn.jsdelivr.net/npm/mathjax
   # Pjax
   pjax: https://cdn.jsdelivr.net/npm/pjax
+  # NProgress (Pjax 加载进度条)
+  nprogress: https://cdn.jsdelivr.net/npm/nprogress
   # Mermaid
   mermaid: https://cdn.jsdelivr.net/npm/mermaid
   # Busuanzi 统计

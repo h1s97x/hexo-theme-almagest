@@ -12,6 +12,20 @@ const pjaxEnabled = config.features?.pjax !== false;
 <script src="<%= pjaxPrefix %>@0.2.8/pjax.min.js"></script>
 <% } %>
 
+<!-- NProgress (Pjax 加载进度条) -->
+<% if (pjaxEnabled && config.pjax_loading?.enable !== false) { %>
+<% const nprogressPrefix = config.static_prefix?.nprogress || 'https://cdn.jsdelivr.net/npm/nprogress'; %>
+<link rel="stylesheet" href="<%= nprogressPrefix %>@0.2.0/nprogress.min.css">
+<script src="<%= nprogressPrefix %>@0.2.0/nprogress.min.js"></script>
+<script>
+window.NProgressConfig = <%- JSON.stringify({
+  color: config.pjax_loading?.color || '#29d',
+  showSpinner: config.pjax_loading?.show_spinner || false,
+  options: config.pjax_loading?.options || {}
+}) %>;
+</script>
+<% } %>
+
 <!-- Theme Scripts -->
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/theme.js' : url_for('/js/theme.js') %>?v=<%= version %>"></script>
 
@@ -229,6 +243,11 @@ window.mediumZoomConfig = {
     // 重置阅读模式
     document.body.classList.remove('read-mode');
 
+    // 启动 NProgress 进度条
+    if (window.NProgress) {
+      NProgress.start();
+    }
+
     // 显示 loading 并设置超时
     showLoading();
     setLoadingTimeout();
@@ -242,6 +261,11 @@ window.mediumZoomConfig = {
     // 移除 complete 监听器
     const completeOnce = window.globalFn.pjaxCompleteOnce;
     if (completeOnce) Object.keys(completeOnce).forEach(function(k) { delete completeOnce[k]; });
+
+    // 完成 NProgress 进度条
+    if (window.NProgress) {
+      NProgress.done();
+    }
 
     // 隐藏 loading
     hideLoading();
@@ -267,6 +291,10 @@ window.mediumZoomConfig = {
   // Pjax:error 事件 - 加载出错
   document.addEventListener('pjax:error', function(e) {
     console.error('Pjax error:', e);
+    // 取消 NProgress 进度条
+    if (window.NProgress) {
+      NProgress.done();
+    }
     // 隐藏 loading
     hideLoading();
     // 如果是 404，跳转到实际 URL
@@ -274,6 +302,31 @@ window.mediumZoomConfig = {
       window.location.href = e.request.responseURL;
     }
   });
+
+  // ========================================
+  // NProgress 初始化配置
+  // ========================================
+  if (window.NProgress && window.NProgressConfig) {
+    const cfg = window.NProgressConfig;
+    NProgress.configure({
+      minimum: cfg.options?.minimum || 0.08,
+      easing: cfg.options?.easing || 'ease',
+      speed: cfg.options?.speed || 200,
+      trickle: cfg.options?.trickle !== false,
+      trickleSpeed: cfg.options?.trickle_speed || 100,
+      showSpinner: cfg.showSpinner || false,
+      parent: 'body',
+      barSelector: '#nprogress .bar',
+      spinnerSelector: '#nprogress .spinner'
+    });
+
+    // 设置进度条颜色
+    if (cfg.color) {
+      const style = document.createElement('style');
+      style.textContent = '#nprogress .bar { background: ' + cfg.color + '; box-shadow: 0 0 3px ' + cfg.color + '; } #nprogress .peg { box-shadow: 0 0 10px ' + cfg.color + '; }';
+      document.head.appendChild(style);
+    }
+  }
 
   // ========================================
   // 重新初始化组件 (pjax:success)
