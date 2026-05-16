@@ -150,6 +150,9 @@ features:
   # 文章字数统计
   word_count: true
 
+  # 滚动动画（元素进入视口时触发淡入动画）
+  scroll_animation: true
+
   # Pjax 无刷新导航
   # 启用后页面切换将使用无刷新加载，提升体验
   pjax: true

@@ -475,6 +475,52 @@ body.dark-theme
       color: $dark-text-primary
 
 // ============================================
+// Scroll Animation (滚动进入视口动画)
+// ============================================
+
+// 滚动动画基础样式
+[data-scroll]
+  opacity: 0
+  transform: translateY(20px)
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out
+
+// 进入视口后显示
+[data-scroll].scroll-show
+  opacity: 1
+  transform: translateY(0)
+
+// 归档页时间线动画
+.archive-item
+  opacity: 0
+  transform: translateY(20px)
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out
+
+  &.scroll-show
+    opacity: 1
+    transform: translateY(0)
+
+// 年份标题动画
+.archive-year
+  opacity: 0
+  transform: translateY(20px)
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out
+
+  &.scroll-show
+    opacity: 1
+    transform: translateY(0)
+
+// 时间线节点动画
+body
+  .timeline-node
+    opacity: 0
+    transform: translateX(-20px)
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out
+
+    &.scroll-show
+      opacity: 1
+      transform: translateX(0)
+
+// ============================================
 // Folding/Collapse
 // ============================================
 
