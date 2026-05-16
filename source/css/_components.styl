@@ -53,6 +53,9 @@
     font-size: $font-size-xl
     font-weight: $font-weight-semibold
     line-height: $line-height-tight
+    display: flex
+    align-items: center
+    gap: $spacing-xs
 
     a
       color: $light-text-primary
@@ -60,6 +63,12 @@
 
       &:hover
         color: $primary-color
+
+  .post-sticky-icon
+    color: $primary-color
+    flex-shrink: 0
+    display: inline-flex
+    align-items: center
 
   .post-card-excerpt
     color: $light-text-secondary

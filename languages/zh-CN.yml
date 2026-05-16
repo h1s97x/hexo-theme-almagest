@@ -6,6 +6,10 @@ archives: 归档
 categories: 分类
 tags: 标签
 about: 关于
+links: 友链
+
+# 文章
+pinned: 置顶
 
 # 分页
 prev: 上一页
