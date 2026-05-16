@@ -1,0 +1,120 @@
+# Release 工作流
+# 在 main 分支推送或创建 Tag 时触发
+# 自动生成 CHANGELOG 并创建 GitHub Release
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码（带完整历史记录）
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      # 安装 pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      # 安装依赖
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 运行所有检查
+      - name: Run all checks
+        run: |
+          pnpm lint
+          pnpm style:lint
+          pnpm format:check
+
+      # 生成 CHANGELOG（基于 Tag）
+      - name: Generate CHANGELOG
+        if: startsWith(github.ref, 'refs/tags/')
+        id: changelog
+        run: |
+          # 获取上一个 tag
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # 没有上一个 tag，获取所有提交
+            COMMITS=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            # 获取两个 tag 之间的提交
+            COMMITS=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+
+          # 分类提交
+          FEATURES=$(echo "$COMMITS" | grep "^\- feat" || true)
+          FIXES=$(echo "$COMMITS" | grep "^\- fix" || true)
+          REFACTORS=$(echo "$COMMITS" | grep "^\- refactor" || true)
+          DOCS=$(echo "$COMMITS" | grep "^\- docs" || true)
+          STYLES=$(echo "$COMMITS" | grep "^\- style" || true)
+          OTHERS=$(echo "$COMMITS" | grep -v "^\- feat\|^\- fix\|^\- refactor\|^\- docs\|^\- style" || true)
+
+          # 构建 CHANGELOG 内容
+          CHANGELOG=""
+
+          if [ -n "$FEATURES" ]; then
+            CHANGELOG="${CHANGELOG}### Features\n${FEATURES}\n\n"
+          fi
+
+          if [ -n "$FIXES" ]; then
+            CHANGELOG="${CHANGELOG}### Bug Fixes\n${FIXES}\n\n"
+          fi
+
+          if [ -n "$REFACTORS" ]; then
+            CHANGELOG="${CHANGELOG}### Refactors\n${REFACTORS}\n\n"
+          fi
+
+          if [ -n "$STYLES" ]; then
+            CHANGELOG="${CHANGELOG}### Styles\n${STYLES}\n\n"
+          fi
+
+          if [ -n "$DOCS" ]; then
+            CHANGELOG="${CHANGELOG}### Documentation\n${DOCS}\n\n"
+          fi
+
+          if [ -n "$OTHERS" ]; then
+            CHANGELOG="${CHANGELOG}### Others\n${OTHERS}\n\n"
+          fi
+
+          # 写入文件
+          echo -e "$CHANGELOG" > CHANGELOG_TMP.md
+
+          # 设置输出
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          cat CHANGELOG_TMP.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # 创建 GitHub Release（仅 Tag 推送时）
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG_TMP.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -182,20 +182,93 @@ excerpt: 摘要
 | `{% audio %}` | 音频 | `{% audio url %}` |
 | `{% gallery %}` | 图片画廊 | `{% gallery %}![](url){% endgallery %}` |
 
-## 用户偏好与长期约束
+## 开发规范与 Git 工作流
+
+### Git 分支策略
+
+所有开发必须遵循分支工作流，**禁止直接推送到 main 分支或强制推送**。
+
+```
+main (保护分支)
+  ↑
+  ├── feat/homepage-banner    # 新功能
+  ├── feat/typing-effect      # 新功能
+  ├── fix/sidebar-duplicate   # Bug 修复
+  ├── refactor/nav-styles     # 重构
+  └── docs/readme-update      # 文档
+```
+
+#### 分支命名规范
+- 新功能：`feat/功能描述`（如 `feat/homepage-banner`）
+- Bug 修复：`fix/问题描述`（如 `fix/pjax-loading`）
+- 重构：`refactor/重构内容`（如 `refactor/css-variables`）
+- 文档：`docs/文档内容`（如 `docs/readme-update`）
+- 样式：`style/样式内容`（如 `style/dark-mode-colors`）
+
+#### 开发流程
+1. **创建分支**：`git checkout -b feat/xxx`
+2. **开发功能**：按规范编写代码，确保有注释
+3. **本地验证**：运行 `pnpm lint`、`pnpm style:lint`
+4. **提交代码**：遵循 Conventional Commits 规范
+   - `feat: 新增首页 Banner`
+   - `fix: 修复 Pjax loading 不隐藏`
+   - `refactor: 重构导航栏样式`
+5. **推送到远程**：`git push origin feat/xxx`
+6. **创建 PR**：在 GitHub 上创建 Pull Request
+7. **Code Review**：至少通过一次 Review 后方可合并
+8. **合并到 main**：使用 Squash Merge，保持主线历史整洁
+
+### 提交信息规范（Conventional Commits）
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+- **type**: feat | fix | docs | style | refactor | test | chore
+- **scope**: layout | css | js | config | docs | script
+- **subject**: 简短描述（不超过 50 字符）
+- **body**: 详细描述（可选）
+- **footer**: 关联 Issue（如 `Closes #123`）
 
 ### 代码规范
 - JavaScript 使用 ESLint + Prettier
 - Stylus 使用 Stylelint + Prettier
-- 提交前运行 lint 和 format
+- 提交前运行 `pnpm lint` 和 `pnpm format`
+- 所有代码必须有中文注释，解释关键逻辑
+
+### CI/CD 要求
+
+项目需配置 GitHub Actions 工作流：
+
+1. **PR 检查工作流**（`.github/workflows/pr-check.yml`）
+   - 触发条件：Pull Request 创建/更新
+   - 检查内容：
+     - `pnpm install`
+     - `pnpm lint`（ESLint 检查）
+     - `pnpm style:lint`（Stylelint 检查）
+     - `pnpm format:check`（Prettier 格式检查）
+   - 任一检查失败则阻止合并
+
+2. **Release 工作流**（`.github/workflows/release.yml`）
+   - 触发条件：main 分支推送或 Tag 创建
+   - 执行内容：
+     - 版本号自动更新
+     - 生成 CHANGELOG
+     - 创建 GitHub Release
 
 ### 组件开发
 - 新增组件放在 `layout/_partial/` 目录
 - 对应样式放在 `source/css/_components-extra.styl`
 - 遵循现有的命名约定
+- 每个组件必须包含配置项开关
 
-### 功能扩展
-- 优先使用配置项控制功能开关
+### 功能扩展原则
+- 优先使用配置项控制功能开关（参考 Fluid 主题设计）
+- 借鉴成熟主题（Fluid、Butterfly、Stellar）的 MIT 代码
 - 保持代码简洁，避免过度工程化
 - 保持主题的轻量级特性
 
