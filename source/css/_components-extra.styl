@@ -114,7 +114,7 @@ img.zoomable
 .toc-wrapper
   position: sticky
   top: $spacing-xl
-  max-height: calc(100vh - #{$spacing-xl * 2})
+  max-height: "calc(100vh - %s)" % ($spacing-xl * 2)
   background: $light-bg-secondary
   border-radius: $border-radius-lg
   padding: $padding-lg
@@ -406,7 +406,7 @@ body.dark-theme
     &::before
       content: ''
       position: absolute
-      left: -#{$spacing-xl + 3px}
+      left: -(($spacing-xl + 3px))
       top: 6px
       width: 12px
       height: 12px
