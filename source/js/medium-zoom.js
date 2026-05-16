@@ -100,7 +100,20 @@
 
     // 创建 zoomed 容器
     const zoomed = document.createElement('img');
-    zoomed.src = img.src;
+    // 应用 img_url_replace 规则 (将压缩图替换为原图)
+    let zoomSrc = img.src;
+    if (this.options.imgUrlReplace && this.options.imgUrlReplace.length === 2) {
+      const from = this.options.imgUrlReplace[0];
+      const to = this.options.imgUrlReplace[1];
+      if (from && from.startsWith('re:')) {
+        // 正则替换
+        const regex = new RegExp(from.slice(3), 'g');
+        zoomSrc = zoomSrc.replace(regex, to);
+      } else {
+        zoomSrc = zoomSrc.replace(from, to);
+      }
+    }
+    zoomed.src = zoomSrc; // 使用替换后的 URL (可能为高清原图)
     zoomed.className = 'zoom-image';
     zoomed.style.cssText = [
       'position: absolute',
@@ -218,7 +231,11 @@
   'use strict';
 
   document.addEventListener('DOMContentLoaded', function () {
-    window.mediumZoom = new window.MediumZoom();
+    // 读取 img_url_replace 配置 (由 scripts.ejs 注入)
+    var imgUrlReplace = window.mediumZoomConfig && window.mediumZoomConfig.imgUrlReplace;
+    window.mediumZoom = new window.MediumZoom({
+      imgUrlReplace: imgUrlReplace || null
+    });
   });
 
   // Pjax 成功后重新初始化

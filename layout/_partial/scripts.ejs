@@ -23,6 +23,12 @@ const pjaxEnabled = config.features?.pjax !== false;
 <% } %>
 
 <% if (config.image?.lightbox) { %>
+<!-- Medium Zoom 配置 -->
+<script>
+window.mediumZoomConfig = {
+  imgUrlReplace: <%- JSON.stringify(config.image?.img_url_replace || []) %>
+};
+</script>
 <script src="<%= cdn_prefix ? cdn_prefix + '/js/medium-zoom.js' : url_for('/js/medium-zoom.js') %>?v=<%= version %>"></script>
 <% } %>
 

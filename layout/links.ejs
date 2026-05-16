@@ -1,0 +1,56 @@
+<%
+// 友链页面布局 (Links Page Layout)
+// 展示友情链接列表，支持头像、名称、简介、链接
+
+const config = theme;
+const linksConfig = config.links;
+const linksList = linksConfig?.items || [];
+%>
+
+<!-- Page Header -->
+<div class="page-header">
+  <h1 class="page-title"><%= page.title || __('links') %></h1>
+  <% if (page.subtitle) { %>
+    <p class="page-subtitle"><%= page.subtitle %></p>
+  <% } %>
+</div>
+
+<!-- Links List -->
+<div class="links-container">
+  <div class="links-grid">
+    <% linksList.forEach(function(item) { %>
+      <a href="<%= item.link %>" target="_blank" rel="noopener noreferrer" class="link-card" title="<%= item.title %>">
+        <div class="link-avatar">
+          <% if (item.avatar) { %>
+            <img src="<%= item.avatar %>" alt="<%= item.title %>" loading="lazy"
+                 onerror="this.onerror=null;this.src='<%= linksConfig.onerror_avatar || item.avatar %>'">
+          <% } else { %>
+            <div class="link-avatar-placeholder">
+              <%= item.title.charAt(0).toUpperCase() %>
+            </div>
+          <% } %>
+        </div>
+        <div class="link-info">
+          <h3 class="link-title"><%= item.title %></h3>
+          <% if (item.intro) { %>
+            <p class="link-intro"><%= item.intro %></p>
+          <% } %>
+        </div>
+      </a>
+    <% }); %>
+  </div>
+</div>
+
+<!-- Custom Content -->
+<% if (linksConfig.custom?.enable && linksConfig.custom.content) { %>
+  <div class="links-custom">
+    <%- linksConfig.custom.content %>
+  </div>
+<% } %>
+
+<!-- Page Content (用户自定义 Markdown 内容) -->
+<% if (page.content && page.content.trim()) { %>
+  <div class="page-content">
+    <%- page.content %>
+  </div>
+<% } %>
