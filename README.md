@@ -334,12 +334,16 @@ pnpm format      # 代码格式化
 - Stylus: Stylelint + Prettier
 - 提交前运行 `pnpm lint && pnpm format`
 
-## 更新
+## 文档
 
-```bash
-cd themes/almagest
-git pull origin main
-```
+更多详细文档请参考 [doc](./doc/) 目录：
+
+- [文档目录](./doc/README.md) - 文档索引
+- [快速开始](./doc/guide/getting-started.md) - 安装与基础配置
+- [配置详解](./doc/guide/config.md) - 完整配置说明
+- [进阶教程](./doc/guide/advanced.md) - 高级功能教程
+- [Front Matter](./doc/examples/front-matter.md) - 文章元数据
+- [自定义标签](./doc/examples/tags.md) - 标签使用示例
 
 ## 许可证
 
