@@ -2,7 +2,7 @@
 const config = theme;
 %>
 
-<header class="site-header">
+<header class="site-header<%= config.navbar?.ground_glass?.enable ? ' ground-glass' : '' %>">
   <div class="header-container">
     <!-- Logo -->
     <div class="logo">

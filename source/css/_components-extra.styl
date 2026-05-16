@@ -1116,6 +1116,204 @@ body.dark-theme
         transform: translateY(-3px)
 
 // ============================================
+// Category & Tag Page Styles
+// 参考 Fluid 主题设计
+// ============================================
+
+// Category Page
+.categories-container
+  margin: $spacing-2xl 0
+
+.categories-list
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
+  gap: $spacing-lg
+
+.category-item
+  background: var(--color-card-bg)
+  border: 1px solid var(--color-border)
+  border-radius: $border-radius-lg
+  padding: $spacing-lg
+  transition: transform $transition-base, box-shadow $transition-base
+
+  &:hover
+    transform: translateY(-2px)
+    box-shadow: $shadow-md
+
+.category-title
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin: 0 0 $spacing-md 0
+  font-size: $font-size-lg
+
+  a
+    color: var(--color-text)
+    text-decoration: none
+
+    &:hover
+      color: var(--color-primary)
+
+.category-count
+  font-size: $font-size-sm
+  color: var(--color-text-tertiary)
+  background: var(--color-bg-secondary)
+  padding: $spacing-xs $spacing-sm
+  border-radius: $border-radius-sm
+
+.category-posts
+  margin-top: $spacing-md
+
+  .post-item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: $spacing-sm 0
+    border-bottom: 1px solid var(--color-border-light)
+
+    &:last-child
+      border-bottom: none
+
+  .post-link
+    color: var(--color-text-secondary)
+    text-decoration: none
+    font-size: $font-size-sm
+
+    &:hover
+      color: var(--color-primary)
+
+  .post-date
+    font-size: $font-size-xs
+    color: var(--color-text-tertiary)
+
+// Tag Page
+.tags-container
+  margin: $spacing-2xl 0
+
+.tag-cloud
+  display: flex
+  flex-wrap: wrap
+  gap: $spacing-sm
+  justify-content: center
+  padding: $spacing-xl 0
+
+.tag-link
+  display: inline-block
+  padding: $spacing-xs $spacing-md
+  border-radius: $border-radius-md
+  text-decoration: none
+  color: var(--color-text-secondary)
+  background: var(--color-bg-secondary)
+  border: 1px solid var(--color-border)
+  transition: all $transition-base
+
+  &:hover
+    color: var(--color-primary)
+    border-color: var(--color-primary)
+    transform: translateY(-2px)
+
+  // Tag size classes
+  &.tag-size-1
+    font-size: $font-size-sm
+
+  &.tag-size-2
+    font-size: $font-size-base
+
+  &.tag-size-3
+    font-size: $font-size-lg
+
+  &.tag-size-4
+    font-size: $font-size-xl
+
+  &.tag-size-5
+    font-size: $font-size-2xl
+
+.tags-list
+  margin-top: $spacing-2xl
+
+.tag-section
+  margin-bottom: $spacing-xl
+  padding-bottom: $spacing-xl
+  border-bottom: 1px solid var(--color-border-light)
+
+  &:last-child
+    border-bottom: none
+
+.tag-title
+  display: flex
+  align-items: center
+  gap: $spacing-sm
+  margin: 0 0 $spacing-md 0
+  font-size: $font-size-xl
+
+  a
+    color: var(--color-text)
+    text-decoration: none
+
+    &:hover
+      color: var(--color-primary)
+
+.tag-posts
+  .post-item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: $spacing-sm 0
+
+  .post-link
+    color: var(--color-text-secondary)
+    text-decoration: none
+
+    &:hover
+      color: var(--color-primary)
+
+  .post-date
+    font-size: $font-size-sm
+    color: var(--color-text-tertiary)
+
+// Archive Page Enhancement
+.archive-container
+  margin: $spacing-2xl 0
+
+.archive-year
+  margin-bottom: $spacing-2xl
+
+.year-title
+  display: flex
+  align-items: center
+  gap: $spacing-sm
+  margin: 0 0 $spacing-lg 0
+  font-size: $font-size-2xl
+  color: var(--color-text)
+
+.year-count
+  font-size: $font-size-sm
+  color: var(--color-text-tertiary)
+
+.archive-posts
+  border-left: 2px solid var(--color-border)
+  padding-left: $spacing-lg
+
+.archive-item
+  display: flex
+  align-items: baseline
+  gap: $spacing-md
+  padding: $spacing-sm 0
+
+.archive-date
+  font-size: $font-size-sm
+  color: var(--color-text-tertiary)
+  white-space: nowrap
+  min-width: 60px
+
+.archive-title
+  color: var(--color-text-secondary)
+  text-decoration: none
+
+  &:hover
+    color: var(--color-primary)
+
+// ============================================
 // Read Mode - 阅读模式
 // ============================================
 
