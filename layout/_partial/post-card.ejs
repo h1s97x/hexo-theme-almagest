@@ -22,6 +22,13 @@ const excerpt = post.excerpt || strip_html(post.content)?.substring(0, config.ar
     <% } %>
     
     <h2 class="post-card-title">
+      <% if (post.sticky && config.index.post_sticky?.enable) { %>
+        <span class="post-sticky-icon" title="<%= __('pinned') %>">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" fill="currentColor"/>
+          </svg>
+        </span>
+      <% } %>
       <a href="<%= url_for(post.path) %>"><%= post.title %></a>
     </h2>
     

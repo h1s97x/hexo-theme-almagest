@@ -6,6 +6,10 @@ archives: Archives
 categories: Categories
 tags: Tags
 about: About
+links: Links
+
+# Post
+pinned: Pinned
 
 # Pagination
 prev: Previous
