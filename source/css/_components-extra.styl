@@ -683,9 +683,15 @@ body.dark-theme
     font-weight: $font-weight-medium
     color: $light-text-tertiary
 
+// Code Copy Button with SVG Icon
 .code-copy-btn
-  padding: $padding-xs $padding-sm
-  font-size: $font-size-xs
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 28px
+  height: 28px
+  padding: 0
   color: $light-text-tertiary
   background: transparent
   border: 1px solid $light-border
@@ -693,9 +699,36 @@ body.dark-theme
   cursor: pointer
   transition: all $transition-base
 
+  // Hide icons by default
+  .copy-icon,
+  .check-icon
+    display: none
+
+  // Show copy icon by default
+  .copy-icon
+    display: block
+
+  // Hover state
   &:hover
     color: $primary-color
     border-color: $primary-color
+
+  // Copied state
+  &[data-copy-state='copied'],
+  &.copied
+    color: #52c41a
+    border-color: #52c41a
+
+    .copy-icon
+      display: none
+    .check-icon
+      display: block
+
+  // Error state
+  &[data-copy-state='error'],
+  &.error
+    color: #ff4d4f
+    border-color: #ff4d4f
 
 .code-block
   margin: 0
@@ -717,6 +750,10 @@ body.dark-theme
   .code-copy-btn
     color: $dark-text-tertiary
     border-color: $dark-border
+
+    &:hover
+      color: $primary-color
+      border-color: $primary-color
 
 // ============================================
 // Label Enhancement
