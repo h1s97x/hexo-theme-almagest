@@ -235,3 +235,89 @@ pre:hover .code-copy-btn
   .code-copy-btn
     padding 2px 6px
     font-size 11px
+
+// ==============================================
+// 代码块高级功能：行号、高亮、折叠
+// ==============================================
+
+// 代码行号样式
+.line-numbers
+  position relative
+  padding-left 3.8em
+  counter-reset linenumber
+
+  > table
+    margin 0
+    border-spacing 0
+
+  td
+    padding 0
+
+  .gutter
+    position absolute
+    left 0
+    top 0
+    width 3.5em
+    text-align right
+    background rgba($color-bg-container, 0.95)
+    border-right 1px solid $color-border-light
+    padding $padding-sm 0
+    line-height line-height-base
+
+    pre
+      margin 0
+      padding 0 $padding-sm
+      color $color-text-quaternary
+      font-size $font-size-code
+      background transparent
+      border none
+      overflow visible
+
+  .code
+    padding 0
+
+// 代码行高亮样式
+.highlight-line
+  background rgba($color-primary, 0.1)
+  margin 0 (-1 * $padding-sm)
+  padding 0 $padding-sm
+  border-left 3px solid $color-primary
+
+// 代码块折叠功能
+.code-fold-btn
+  position absolute
+  top $padding-sm
+  right $padding-lg
+  padding 2px 8px
+  font-size 11px
+  background rgba($color-bg-container, 0.8)
+  border 1px solid $color-border-light
+  border-radius $border-radius-sm
+  cursor pointer
+  opacity 0
+  transition opacity 0.3s
+  z-index 10
+  color $color-text-secondary
+  line-height 1.5
+
+  &:hover
+    background rgba($color-primary, 0.1)
+    border-color $color-primary
+
+.code-block-wrapper:hover .code-fold-btn
+  opacity 1
+
+// 折叠后的代码块
+pre.code-block-folded
+  max-height 300px
+  overflow hidden
+
+  &::after
+    content ''
+    position absolute
+    bottom 0
+    left 0
+    right 0
+    height 80px
+    background linear-gradient(transparent, rgba($color-bg-container, 0.95))
+    pointer-events none
