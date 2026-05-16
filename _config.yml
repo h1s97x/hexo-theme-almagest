@@ -543,12 +543,16 @@ seo:
     # 百度统计追踪 ID
     tracking_id: ''
 
-  # Open Graph
+  # Open Graph / Twitter Card
   open_graph:
     enable: true
-    twitter_card: true
+    # Twitter Card 类型: summary | summary_large_image
+    twitter_card: summary_large_image
     twitter_id: ''
     twitter_site: ''
+    google_plus: ''
+    fb_admin: ''
+    fb_app_id: ''
 
   # 优先级设置
   priority:
