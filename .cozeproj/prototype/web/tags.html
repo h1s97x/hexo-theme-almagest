@@ -1,759 +1,1089 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
 
-  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
-  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
-  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        /* === 品牌色 (星空蓝金色) === */
+        --color-primary: #4a90d9;
+        --color-primary-container: #1a3a5c;
+        --color-on-primary: #ffffff;
+        --color-secondary: #8b5cf6;
+        --color-secondary-container: #2a1a48;
+        --color-on-secondary: #ffffff;
+        /* === 背景 / 表面 (深空色系) === */
+        --color-background: #0a0e17;
+        --color-surface-container-lowest: #0d1220;
+        --color-surface: #12162a;
+        --color-surface-container: #1a1f3a;
+        --color-surface-container-high: #232842;
+        --color-surface-container-highest: #2a3050;
+        /* === 文字 === */
+        --color-on-surface: #e8ecf4;
+        --color-on-surface-variant: #a0aec0;
+        /* === 功能色 === */
+        --color-success: #10b981;
+        --color-error: #ef4444;
+        --color-warning: #f59e0b;
+        /* === 边框 === */
+        --color-outline: #2d3748;
+        --color-outline-variant: #1e2433;
+        /* === 圆角 === */
+        --radius-sm: 0.25rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+        --radius-xl: 1rem;
+        --radius-2xl: 1.5rem;
+        --radius-full: 9999px;
+        /* === 阴影 === */
+        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --shadow-float: 0 10px 25px rgba(0, 0, 0, 0.4);
+        --shadow-dialog: 0 25px 50px rgba(0, 0, 0, 0.5);
+        /* === 字体 === */
+        --font-sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+      }
 
-  <style type="text/tailwindcss">
-    @theme {
-      /* === 品牌色 (星空蓝金色) === */
-      --color-primary:              #4a90d9;
-      --color-primary-container:    #1a3a5c;
-      --color-on-primary:           #ffffff;
-      --color-secondary:            #8b5cf6;
-      --color-secondary-container:  #2a1a48;
-      --color-on-secondary:         #ffffff;
-      /* === 背景 / 表面 (深空色系) === */
-      --color-background:           #0a0e17;
-      --color-surface-container-lowest:  #0d1220;
-      --color-surface:              #12162a;
-      --color-surface-container:   #1a1f3a;
-      --color-surface-container-high:  #232842;
-      --color-surface-container-highest: #2a3050;
-      /* === 文字 === */
-      --color-on-surface:           #e8ecf4;
-      --color-on-surface-variant:   #a0aec0;
-      /* === 功能色 === */
-      --color-success:  #10b981;
-      --color-error:    #ef4444;
-      --color-warning:  #f59e0b;
-      /* === 边框 === */
-      --color-outline:          #2d3748;
-      --color-outline-variant:  #1e2433;
-      /* === 圆角 === */
-      --radius-sm:   0.25rem;
-      --radius-md:   0.5rem;
-      --radius-lg:   0.75rem;
-      --radius-xl:   1rem;
-      --radius-2xl:  1.5rem;
-      --radius-full: 9999px;
-      /* === 阴影 === */
-      --shadow-card:   0 4px 12px rgba(0,0,0,0.3);
-      --shadow-float:  0 10px 25px rgba(0,0,0,0.4);
-      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.5);
-      /* === 字体 === */
-      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
-    }
-    
-    /* 星空背景效果 */
-    .starry-bg {
-      background: 
-        radial-gradient(ellipse at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(74, 144, 217, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(26, 26, 58, 1) 0%, rgba(10, 14, 23, 1) 100%);
-    }
-    
-    /* 星星动画 */
-    @keyframes twinkle {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-    
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 3s ease-in-out infinite;
-    }
-    
-    /* 毛玻璃效果 */
-    .glass {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
+      /* 星空背景效果 */
+      .starry-bg {
+        background:
+          radial-gradient(ellipse at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 20%, rgba(74, 144, 217, 0.1) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, rgba(26, 26, 58, 1) 0%, rgba(10, 14, 23, 1) 100%);
+      }
 
-    /* 标签云过渡效果 */
-    .tag-item {
-      transition: all 0.2s ease-out;
-    }
-    .tag-item:hover {
-      transform: translateY(-2px);
-    }
-
-    /* 文章列表过渡 */
-    .article-item {
-      transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    }
-    .article-item.hidden-item {
-      display: none;
-    }
-  </style>
-
-  <!-- 图片兜底 -->
-  <script>
-    document.addEventListener('error', function (e) {
-      const img = e.target;
-      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
-      img.dataset.fallback = '1';
-      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      const cat = img.getAttribute('data-category') || '其他';
-      const alt = img.getAttribute('alt') || '';
-      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
-      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
-      const icon = icons[cat] || '🖼';
-      const w = img.width || 400, h = img.height || 300;
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
-      img.src = 'data:image/svg+xml,' + svg;
-    }, true);
-  </script>
-</head>
-
-<body class="bg-background text-on-surface min-h-screen starry-bg relative overflow-x-hidden">
-
-  <!-- 顶部星星装饰 -->
-  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-    <div class="star w-1 h-1 top-[10%] left-[15%]" style="animation-delay: 0s;"></div>
-    <div class="star w-1.5 h-1.5 top-[20%] left-[80%]" style="animation-delay: 1s;"></div>
-    <div class="star w-1 h-1 top-[40%] left-[25%]" style="animation-delay: 2s;"></div>
-    <div class="star w-0.5 h-0.5 top-[60%] left-[70%]" style="animation-delay: 0.5s;"></div>
-    <div class="star w-1 h-1 top-[80%] left-[40%]" style="animation-delay: 1.5s;"></div>
-    <div class="star w-0.5 h-0.5 top-[30%] left-[90%]" style="animation-delay: 2.5s;"></div>
-    <div class="star w-1 h-1 top-[70%] left-[10%]" style="animation-delay: 0.8s;"></div>
-    <div class="star w-1.5 h-1.5 top-[50%] left-[55%]" style="animation-delay: 1.8s;"></div>
-  </div>
-
-  <!-- @nav:start 导航组件 -->
-  <header class="sticky top-0 z-50 glass bg-surface/80 border-b border-outline/30">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="home.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-        <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-        </svg>
-        <span class="font-bold text-lg text-on-surface">Almagest</span>
-      </a>
-      
-      <!-- 导航 -->
-      <nav class="flex items-center gap-1">
-        <a href="home.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">首页</a>
-        <a href="archive.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">归档</a>
-        <a href="categories.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">分类</a>
-        <a href="tags.html" class="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-md" aria-current="page">标签</a>
-        <a href="about.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">关于</a>
-      </nav>
-      
-      <!-- 操作按钮 -->
-      <div class="flex items-center gap-2">
-        <!-- 主题切换 -->
-        <button id="btn-toggle-theme" class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" aria-label="切换主题">
-          <i data-lucide="moon" class="w-5 h-5"></i>
-        </button>
-        <!-- 搜索 -->
-        <button id="btn-search" class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" aria-label="搜索">
-          <i data-lucide="search" class="w-5 h-5"></i>
-        </button>
-      </div>
-    </div>
-  </header>
-  <!-- @nav:end 导航组件 -->
-
-  <!-- @main-content:start -->
-  <main class="relative z-10 max-w-4xl mx-auto px-6 py-12">
-    
-    <!-- 页面标题区 -->
-    <header class="mb-10">
-      <div class="flex items-center gap-3 mb-2">
-        <i data-lucide="tags" class="w-7 h-7 text-primary"></i>
-        <h1 class="text-2xl font-bold text-on-surface">标签</h1>
-      </div>
-      <p class="text-sm text-on-surface-variant">共 <span id="tag-total-count" class="text-primary font-medium">28</span> 个标签，<span id="article-total-count" class="text-primary font-medium">96</span> 篇文章</p>
-    </header>
-
-    <!-- 标签云区域 -->
-    <section id="tag-cloud-section" class="bg-surface rounded-xl shadow-card p-6 mb-8">
-      <div class="flex items-center justify-between mb-5">
-        <h2 class="text-base font-semibold text-on-surface flex items-center gap-2">
-          <i data-lucide="cloud" class="w-4 h-4 text-secondary"></i>
-          标签云
-        </h2>
-        <button id="btn-reset-filter" class="hidden text-xs text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1">
-          <i data-lucide="x" class="w-3 h-3"></i>
-          清除筛选
-        </button>
-      </div>
-      
-      <!-- 标签云容器 -->
-      <div id="tag-cloud" class="flex flex-wrap gap-3">
-        <!-- 标签-前端 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-medium hover:bg-secondary/30 cursor-pointer tag-btn" data-tag="前端">
-          前端 <span class="ml-0.5 text-xs opacity-70">(15)</span>
-        </button>
-        <!-- 标签-JavaScript -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-primary/20 text-primary text-sm font-medium hover:bg-primary/30 cursor-pointer tag-btn" data-tag="JavaScript">
-          JavaScript <span class="ml-0.5 text-xs opacity-70">(12)</span>
-        </button>
-        <!-- 标签-React -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/20 text-success text-base font-semibold hover:bg-success/30 cursor-pointer tag-btn" data-tag="React">
-          React <span class="ml-0.5 text-xs opacity-70">(10)</span>
-        </button>
-        <!-- 标签-Node.js -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-primary/15 text-primary text-sm font-medium hover:bg-primary/25 cursor-pointer tag-btn" data-tag="Node.js">
-          Node.js <span class="ml-0.5 text-xs opacity-70">(8)</span>
-        </button>
-        <!-- 标签-TypeScript -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-secondary/15 text-secondary text-sm font-medium hover:bg-secondary/25 cursor-pointer tag-btn" data-tag="TypeScript">
-          TypeScript <span class="ml-0.5 text-xs opacity-70">(7)</span>
-        </button>
-        <!-- 标签-Vue.js -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/20 text-success text-sm font-medium hover:bg-success/30 cursor-pointer tag-btn" data-tag="Vue.js">
-          Vue.js <span class="ml-0.5 text-xs opacity-70">(6)</span>
-        </button>
-        <!-- 标签-CSS -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-warning/20 text-warning text-sm font-medium hover:bg-warning/30 cursor-pointer tag-btn" data-tag="CSS">
-          CSS <span class="ml-0.5 text-xs opacity-70">(5)</span>
-        </button>
-        <!-- 标签-Webpack -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 cursor-pointer tag-btn" data-tag="Webpack">
-          Webpack <span class="ml-0.5 text-xs opacity-70">(4)</span>
-        </button>
-        <!-- 标签-后端 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-medium hover:bg-secondary/30 cursor-pointer tag-btn" data-tag="后端">
-          后端 <span class="ml-0.5 text-xs opacity-70">(9)</span>
-        </button>
-        <!-- 标签-Python -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/15 text-success text-sm font-medium hover:bg-success/25 cursor-pointer tag-btn" data-tag="Python">
-          Python <span class="ml-0.5 text-xs opacity-70">(7)</span>
-        </button>
-        <!-- 标签-Django -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn" data-tag="Django">
-          Django <span class="ml-0.5 text-xs opacity-70">(3)</span>
-        </button>
-        <!-- 标签-数据库 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-warning/15 text-warning text-sm font-medium hover:bg-warning/25 cursor-pointer tag-btn" data-tag="数据库">
-          数据库 <span class="ml-0.5 text-xs opacity-70">(6)</span>
-        </button>
-        <!-- 标签-MongoDB -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn" data-tag="MongoDB">
-          MongoDB <span class="ml-0.5 text-xs opacity-70">(2)</span>
-        </button>
-        <!-- 标签-工具 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-on-surface-variant/20 text-on-surface-variant text-sm font-medium hover:bg-on-surface-variant/30 cursor-pointer tag-btn" data-tag="工具">
-          工具 <span class="ml-0.5 text-xs opacity-70">(11)</span>
-        </button>
-        <!-- 标签-Git -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-error/15 text-error text-xs font-medium hover:bg-error/25 cursor-pointer tag-btn" data-tag="Git">
-          Git <span class="ml-0.5 text-xs opacity-70">(4)</span>
-        </button>
-        <!-- 标签-Docker -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 cursor-pointer tag-btn" data-tag="Docker">
-          Docker <span class="ml-0.5 text-xs opacity-70">(3)</span>
-        </button>
-        <!-- 标签-性能优化 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-secondary/15 text-secondary text-sm font-medium hover:bg-secondary/25 cursor-pointer tag-btn" data-tag="性能优化">
-          性能优化 <span class="ml-0.5 text-xs opacity-70">(5)</span>
-        </button>
-        <!-- 标签-架构设计 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs font-medium hover:bg-secondary/20 cursor-pointer tag-btn" data-tag="架构设计">
-          架构设计 <span class="ml-0.5 text-xs opacity-70">(4)</span>
-        </button>
-        <!-- 标签-面试 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-warning/20 text-warning text-base font-semibold hover:bg-warning/30 cursor-pointer tag-btn" data-tag="面试">
-          面试 <span class="ml-0.5 text-xs opacity-70">(8)</span>
-        </button>
-        <!-- 标签-算法 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-warning/15 text-warning text-sm font-medium hover:bg-warning/25 cursor-pointer tag-btn" data-tag="算法">
-          算法 <span class="ml-0.5 text-xs opacity-70">(6)</span>
-        </button>
-        <!-- 标签-设计模式 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs font-medium hover:bg-secondary/20 cursor-pointer tag-btn" data-tag="设计模式">
-          设计模式 <span class="ml-0.5 text-xs opacity-70">(3)</span>
-        </button>
-        <!-- 标签-API -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-primary/15 text-primary text-xs font-medium hover:bg-primary/25 cursor-pointer tag-btn" data-tag="API">
-          API <span class="ml-0.5 text-xs opacity-70">(5)</span>
-        </button>
-        <!-- 标签-RESTful -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn" data-tag="RESTful">
-          RESTful <span class="ml-0.5 text-xs opacity-70">(2)</span>
-        </button>
-        <!-- 标签-GraphQL -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-secondary/15 text-secondary text-xs font-medium hover:bg-secondary/25 cursor-pointer tag-btn" data-tag="GraphQL">
-          GraphQL <span class="ml-0.5 text-xs opacity-70">(3)</span>
-        </button>
-        <!-- 标签-测试 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/15 text-success text-sm font-medium hover:bg-success/25 cursor-pointer tag-btn" data-tag="测试">
-          测试 <span class="ml-0.5 text-xs opacity-70">(4)</span>
-        </button>
-        <!-- 标签-Jest -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn" data-tag="Jest">
-          Jest <span class="ml-0.5 text-xs opacity-70">(2)</span>
-        </button>
-        <!-- 标签-安全 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-error/15 text-error text-xs font-medium hover:bg-error/25 cursor-pointer tag-btn" data-tag="安全">
-          安全 <span class="ml-0.5 text-xs opacity-70">(3)</span>
-        </button>
-        <!-- 标签-认证 -->
-        <button class="tag-item px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 cursor-pointer tag-btn" data-tag="认证">
-          认证 <span class="ml-0.5 text-xs opacity-70">(3)</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- 文章列表区域 -->
-    <section id="articles-section">
-      <div class="flex items-center justify-between mb-5">
-        <h2 class="text-base font-semibold text-on-surface flex items-center gap-2">
-          <i data-lucide="file-text" class="w-4 h-4 text-primary"></i>
-          <span id="list-title">全部文章</span>
-        </h2>
-        <span id="filtered-count" class="hidden text-xs text-on-surface-variant bg-surface-container px-2 py-1 rounded-md">
-          已筛选 <span class="text-primary font-medium">0</span> 篇
-        </span>
-      </div>
-
-      <div id="article-list" class="space-y-4">
-        <!-- 文章-列表-1: React核心概念 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="前端,React,JavaScript" data-article-id="1">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=1">深入理解 React 核心概念：虚拟 DOM 与 Diff 算法</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                探讨 React 中虚拟 DOM 的实现原理，以及 Diff 算法如何高效地比较新旧虚拟 DOM 树，帮助开发者理解 React 性能优化的底层机制。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="React">
-                  <i data-lucide="hash" class="w-3 h-3"></i>React
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors" data-tag="前端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>前端
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors" data-tag="JavaScript">
-                  <i data-lucide="hash" class="w-3 h-3"></i>JavaScript
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-12-15</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-2: TypeScript高级类型 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="TypeScript,前端,JavaScript" data-article-id="2">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=2">TypeScript 高级类型技巧：条件类型与映射类型</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                深入讲解 TypeScript 中的条件类型（Conditional Types）和映射类型（Mapped Types），让你编写更加灵活和可复用的类型定义。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="TypeScript">
-                  <i data-lucide="hash" class="w-3 h-3"></i>TypeScript
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors" data-tag="前端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>前端
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-12-10</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-3: Vue3组合式API -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="Vue.js,前端,JavaScript" data-article-id="3">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=3">Vue 3 组合式 API 实战指南</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                全面解析 Vue 3 的组合式 API（Composition API），包括 setup 语法糖、ref 与 reactive、computed 与 watch 等核心概念的用法。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success cursor-pointer hover:bg-success/25 transition-colors" data-tag="Vue.js">
-                  <i data-lucide="hash" class="w-3 h-3"></i>Vue.js
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors" data-tag="前端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>前端
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-12-05</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-4: Node.js后端开发 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="Node.js,后端,JavaScript" data-article-id="4">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=4">Node.js 后端开发：Express 框架精讲</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                详细介绍 Express 框架的核心概念，包括中间件机制、路由系统、请求处理和错误处理，助你快速构建高效的 Node.js 后端应用。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="Node.js">
-                  <i data-lucide="hash" class="w-3 h-3"></i>Node.js
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="后端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>后端
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-11-28</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-5: Python Django -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="Python,Django,后端" data-article-id="5">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=5">Python Django 快速入门：从零构建 Web 应用</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                Django 是 Python 最流行的 Web 框架之一，本教程带你从环境搭建开始，逐步构建一个完整的博客系统。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success cursor-pointer hover:bg-success/25 transition-colors" data-tag="Python">
-                  <i data-lucide="hash" class="w-3 h-3"></i>Python
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success cursor-pointer hover:bg-success/20 transition-colors" data-tag="Django">
-                  <i data-lucide="hash" class="w-3 h-3"></i>Django
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="后端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>后端
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-11-20</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-6: CSS布局技术 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="CSS,前端,性能优化" data-article-id="6">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=6">现代 CSS 布局技术：Grid 与 Flexbox 实战</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                CSS Grid 和 Flexbox 是现代页面布局的两大神器，本文通过实际案例对比两者的使用场景，让你轻松掌握布局技巧。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors" data-tag="CSS">
-                  <i data-lucide="hash" class="w-3 h-3"></i>CSS
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors" data-tag="前端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>前端
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="性能优化">
-                  <i data-lucide="hash" class="w-3 h-3"></i>性能优化
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-11-15</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-7: 前端面试题 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="前端,面试,JavaScript" data-article-id="7">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=7">2024 前端面试必看：高频 JavaScript 面试题汇总</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                整理了 50 道 JavaScript 高频面试题，涵盖作用域、闭包、原型链、异步编程等核心知识点，助你顺利通过面试。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors" data-tag="面试">
-                  <i data-lucide="hash" class="w-3 h-3"></i>面试
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors" data-tag="前端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>前端
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors" data-tag="JavaScript">
-                  <i data-lucide="hash" class="w-3 h-3"></i>JavaScript
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-11-10</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-8: Docker容器化 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="Docker,工具,后端" data-article-id="8">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=8">Docker 入门指南：容器化你的应用</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                Docker 是现代 DevOps 的核心技术之一，本文从基础概念讲起，带你实操构建镜像、编排容器、部署应用的完整流程。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-on-surface-variant/15 text-on-surface-variant cursor-pointer hover:bg-on-surface-variant/25 transition-colors" data-tag="工具">
-                  <i data-lucide="hash" class="w-3 h-3"></i>工具
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors" data-tag="Docker">
-                  <i data-lucide="hash" class="w-3 h-3"></i>Docker
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-11-05</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-9: MongoDB数据库 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="MongoDB,数据库,后端" data-article-id="9">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=9">MongoDB 实战：NoSQL 数据库设计与优化</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                深入讲解 MongoDB 的文档模型设计、索引优化和聚合管道，帮助你构建高效可扩展的数据层架构。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors" data-tag="数据库">
-                  <i data-lucide="hash" class="w-3 h-3"></i>数据库
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success cursor-pointer hover:bg-success/20 transition-colors" data-tag="MongoDB">
-                  <i data-lucide="hash" class="w-3 h-3"></i>MongoDB
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="后端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>后端
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-10-28</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-10: Git版本控制 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="Git,工具" data-article-id="10">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=10">Git 高级技巧：让你的代码管理更高效</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                掌握 Git 的高级用法，包括 Rebase、 Cherry-pick、Submodule、Git Flow 工作流等，让团队协作更加顺畅。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-on-surface-variant/15 text-on-surface-variant cursor-pointer hover:bg-on-surface-variant/25 transition-colors" data-tag="工具">
-                  <i data-lucide="hash" class="w-3 h-3"></i>工具
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-error/10 text-error cursor-pointer hover:bg-error/20 transition-colors" data-tag="Git">
-                  <i data-lucide="hash" class="w-3 h-3"></i>Git
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-10-20</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-11: Webpack构建优化 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="Webpack,前端,性能优化" data-article-id="11">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=11">Webpack 5 构建优化实战指南</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                深入分析 Webpack 5 的新特性和性能优化策略，包括持久化缓存、Tree Shaking、代码分割等，提升构建效率。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors" data-tag="前端">
-                  <i data-lucide="hash" class="w-3 h-3"></i>前端
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors" data-tag="Webpack">
-                  <i data-lucide="hash" class="w-3 h-3"></i>Webpack
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors" data-tag="性能优化">
-                  <i data-lucide="hash" class="w-3 h-3"></i>性能优化
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-10-15</time>
-            </div>
-          </div>
-        </article>
-
-        <!-- 文章-列表-12: 算法与数据结构 -->
-        <article class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer" data-tags="算法,面试" data-article-id="12">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors">
-                <a href="post.html?id=12">算法与数据结构：面试重点题型解析</a>
-              </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                系统梳理面试中常见的算法类型，包括数组、链表、树、图、动态规划等，配合 LeetCode 精选题目讲解思路。
-              </p>
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors" data-tag="算法">
-                  <i data-lucide="hash" class="w-3 h-3"></i>算法
-                </span>
-                <span class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors" data-tag="面试">
-                  <i data-lucide="hash" class="w-3 h-3"></i>面试
-                </span>
-              </div>
-            </div>
-            <div class="hidden sm:block shrink-0">
-              <time class="text-xs text-on-surface-variant">2024-10-08</time>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <!-- 空状态提示 -->
-      <div id="empty-state" class="hidden py-16 text-center">
-        <i data-lucide="inbox" class="w-12 h-12 text-on-surface-variant/50 mx-auto mb-4"></i>
-        <p class="text-on-surface-variant">没有找到匹配的文章</p>
-        <button id="btn-clear-filter" class="mt-4 text-primary text-sm hover:underline">清除筛选</button>
-      </div>
-    </section>
-
-  </main>
-  <!-- @main-content:end -->
-
-  <script>
-    $(function() {
-      // 标签筛选功能
-      let currentFilter = null;
-
-      // 标签云点击筛选
-      $('#tag-cloud').on('click', '.tag-btn', function() {
-        const tag = $(this).data('tag');
-        
-        // 切换激活状态
-        if (currentFilter === tag) {
-          // 取消筛选
-          resetFilter();
-        } else {
-          // 应用筛选
-          applyFilter(tag);
+      /* 星星动画 */
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 1;
         }
-      });
+        50% {
+          opacity: 0.3;
+        }
+      }
 
-      // 文章内的标签点击筛选
-      $('#article-list').on('click', '.tag-badge', function(e) {
-        e.stopPropagation();
-        const tag = $(this).data('tag');
-        applyFilter(tag);
-      });
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 3s ease-in-out infinite;
+      }
 
-      // 应用筛选
-      function applyFilter(tag) {
-        currentFilter = tag;
-        
-        // 更新标签云激活状态
-        $('.tag-btn').removeClass('ring-2 ring-primary ring-offset-2 ring-offset-background');
-        $('.tag-btn[data-tag="' + tag + '"]').addClass('ring-2 ring-primary ring-offset-2 ring-offset-background');
-        
-        // 筛选文章列表
-        let visibleCount = 0;
-        $('#article-list .article-item').each(function() {
-          const tags = $(this).data('tags').split(',');
-          if (tags.includes(tag)) {
-            $(this).removeClass('hidden-item');
-            visibleCount++;
+      /* 毛玻璃效果 */
+      .glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      /* 标签云过渡效果 */
+      .tag-item {
+        transition: all 0.2s ease-out;
+      }
+      .tag-item:hover {
+        transform: translateY(-2px);
+      }
+
+      /* 文章列表过渡 */
+      .article-item {
+        transition:
+          opacity 0.3s ease-out,
+          transform 0.3s ease-out;
+      }
+      .article-item.hidden-item {
+        display: none;
+      }
+    </style>
+
+    <!-- 图片兜底 -->
+    <script>
+      document.addEventListener(
+        'error',
+        function (e) {
+          const img = e.target;
+          if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+          img.dataset.fallback = '1';
+          const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const cat = img.getAttribute('data-category') || '其他';
+          const alt = img.getAttribute('alt') || '';
+          const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+          const icons = {
+            人物: '👤',
+            自然风景: '🏞',
+            动物: '🐾',
+            建筑城市: '🏙',
+            运动体育: '⚽',
+            交通工具: '🚗',
+            食物: '🍽',
+            服饰时尚: '👗',
+            商业科技: '💼',
+            游戏娱乐: '🎮',
+            艺术: '🎨',
+            其他: '🖼'
+          };
+          const icon = icons[cat] || '🖼';
+          const w = img.width || 400,
+            h = img.height || 300;
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+          img.src = 'data:image/svg+xml,' + svg;
+        },
+        true
+      );
+    </script>
+  </head>
+
+  <body class="bg-background text-on-surface min-h-screen starry-bg relative overflow-x-hidden">
+    <!-- 顶部星星装饰 -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div class="star w-1 h-1 top-[10%] left-[15%]" style="animation-delay: 0s"></div>
+      <div class="star w-1.5 h-1.5 top-[20%] left-[80%]" style="animation-delay: 1s"></div>
+      <div class="star w-1 h-1 top-[40%] left-[25%]" style="animation-delay: 2s"></div>
+      <div class="star w-0.5 h-0.5 top-[60%] left-[70%]" style="animation-delay: 0.5s"></div>
+      <div class="star w-1 h-1 top-[80%] left-[40%]" style="animation-delay: 1.5s"></div>
+      <div class="star w-0.5 h-0.5 top-[30%] left-[90%]" style="animation-delay: 2.5s"></div>
+      <div class="star w-1 h-1 top-[70%] left-[10%]" style="animation-delay: 0.8s"></div>
+      <div class="star w-1.5 h-1.5 top-[50%] left-[55%]" style="animation-delay: 1.8s"></div>
+    </div>
+
+    <!-- @nav:start 导航组件 -->
+    <header class="sticky top-0 z-50 glass bg-surface/80 border-b border-outline/30">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="home.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+            />
+          </svg>
+          <span class="font-bold text-lg text-on-surface">Almagest</span>
+        </a>
+
+        <!-- 导航 -->
+        <nav class="flex items-center gap-1">
+          <a
+            href="home.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >首页</a
+          >
+          <a
+            href="archive.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >归档</a
+          >
+          <a
+            href="categories.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >分类</a
+          >
+          <a
+            href="tags.html"
+            class="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-md"
+            aria-current="page"
+            >标签</a
+          >
+          <a
+            href="about.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >关于</a
+          >
+        </nav>
+
+        <!-- 操作按钮 -->
+        <div class="flex items-center gap-2">
+          <!-- 主题切换 -->
+          <button
+            id="btn-toggle-theme"
+            class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="切换主题"
+          >
+            <i data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+          <!-- 搜索 -->
+          <button
+            id="btn-search"
+            class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="搜索"
+          >
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+    <!-- @nav:end 导航组件 -->
+
+    <!-- @main-content:start -->
+    <main class="relative z-10 max-w-4xl mx-auto px-6 py-12">
+      <!-- 页面标题区 -->
+      <header class="mb-10">
+        <div class="flex items-center gap-3 mb-2">
+          <i data-lucide="tags" class="w-7 h-7 text-primary"></i>
+          <h1 class="text-2xl font-bold text-on-surface">标签</h1>
+        </div>
+        <p class="text-sm text-on-surface-variant">
+          共 <span id="tag-total-count" class="text-primary font-medium">28</span> 个标签，<span
+            id="article-total-count"
+            class="text-primary font-medium"
+            >96</span
+          >
+          篇文章
+        </p>
+      </header>
+
+      <!-- 标签云区域 -->
+      <section id="tag-cloud-section" class="bg-surface rounded-xl shadow-card p-6 mb-8">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-base font-semibold text-on-surface flex items-center gap-2">
+            <i data-lucide="cloud" class="w-4 h-4 text-secondary"></i>
+            标签云
+          </h2>
+          <button
+            id="btn-reset-filter"
+            class="hidden text-xs text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1"
+          >
+            <i data-lucide="x" class="w-3 h-3"></i>
+            清除筛选
+          </button>
+        </div>
+
+        <!-- 标签云容器 -->
+        <div id="tag-cloud" class="flex flex-wrap gap-3">
+          <!-- 标签-前端 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-medium hover:bg-secondary/30 cursor-pointer tag-btn"
+            data-tag="前端"
+          >
+            前端 <span class="ml-0.5 text-xs opacity-70">(15)</span>
+          </button>
+          <!-- 标签-JavaScript -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-primary/20 text-primary text-sm font-medium hover:bg-primary/30 cursor-pointer tag-btn"
+            data-tag="JavaScript"
+          >
+            JavaScript <span class="ml-0.5 text-xs opacity-70">(12)</span>
+          </button>
+          <!-- 标签-React -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/20 text-success text-base font-semibold hover:bg-success/30 cursor-pointer tag-btn"
+            data-tag="React"
+          >
+            React <span class="ml-0.5 text-xs opacity-70">(10)</span>
+          </button>
+          <!-- 标签-Node.js -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-primary/15 text-primary text-sm font-medium hover:bg-primary/25 cursor-pointer tag-btn"
+            data-tag="Node.js"
+          >
+            Node.js <span class="ml-0.5 text-xs opacity-70">(8)</span>
+          </button>
+          <!-- 标签-TypeScript -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-secondary/15 text-secondary text-sm font-medium hover:bg-secondary/25 cursor-pointer tag-btn"
+            data-tag="TypeScript"
+          >
+            TypeScript <span class="ml-0.5 text-xs opacity-70">(7)</span>
+          </button>
+          <!-- 标签-Vue.js -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/20 text-success text-sm font-medium hover:bg-success/30 cursor-pointer tag-btn"
+            data-tag="Vue.js"
+          >
+            Vue.js <span class="ml-0.5 text-xs opacity-70">(6)</span>
+          </button>
+          <!-- 标签-CSS -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-warning/20 text-warning text-sm font-medium hover:bg-warning/30 cursor-pointer tag-btn"
+            data-tag="CSS"
+          >
+            CSS <span class="ml-0.5 text-xs opacity-70">(5)</span>
+          </button>
+          <!-- 标签-Webpack -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 cursor-pointer tag-btn"
+            data-tag="Webpack"
+          >
+            Webpack <span class="ml-0.5 text-xs opacity-70">(4)</span>
+          </button>
+          <!-- 标签-后端 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-medium hover:bg-secondary/30 cursor-pointer tag-btn"
+            data-tag="后端"
+          >
+            后端 <span class="ml-0.5 text-xs opacity-70">(9)</span>
+          </button>
+          <!-- 标签-Python -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/15 text-success text-sm font-medium hover:bg-success/25 cursor-pointer tag-btn"
+            data-tag="Python"
+          >
+            Python <span class="ml-0.5 text-xs opacity-70">(7)</span>
+          </button>
+          <!-- 标签-Django -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn"
+            data-tag="Django"
+          >
+            Django <span class="ml-0.5 text-xs opacity-70">(3)</span>
+          </button>
+          <!-- 标签-数据库 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-warning/15 text-warning text-sm font-medium hover:bg-warning/25 cursor-pointer tag-btn"
+            data-tag="数据库"
+          >
+            数据库 <span class="ml-0.5 text-xs opacity-70">(6)</span>
+          </button>
+          <!-- 标签-MongoDB -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn"
+            data-tag="MongoDB"
+          >
+            MongoDB <span class="ml-0.5 text-xs opacity-70">(2)</span>
+          </button>
+          <!-- 标签-工具 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-on-surface-variant/20 text-on-surface-variant text-sm font-medium hover:bg-on-surface-variant/30 cursor-pointer tag-btn"
+            data-tag="工具"
+          >
+            工具 <span class="ml-0.5 text-xs opacity-70">(11)</span>
+          </button>
+          <!-- 标签-Git -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-error/15 text-error text-xs font-medium hover:bg-error/25 cursor-pointer tag-btn"
+            data-tag="Git"
+          >
+            Git <span class="ml-0.5 text-xs opacity-70">(4)</span>
+          </button>
+          <!-- 标签-Docker -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 cursor-pointer tag-btn"
+            data-tag="Docker"
+          >
+            Docker <span class="ml-0.5 text-xs opacity-70">(3)</span>
+          </button>
+          <!-- 标签-性能优化 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-secondary/15 text-secondary text-sm font-medium hover:bg-secondary/25 cursor-pointer tag-btn"
+            data-tag="性能优化"
+          >
+            性能优化 <span class="ml-0.5 text-xs opacity-70">(5)</span>
+          </button>
+          <!-- 标签-架构设计 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs font-medium hover:bg-secondary/20 cursor-pointer tag-btn"
+            data-tag="架构设计"
+          >
+            架构设计 <span class="ml-0.5 text-xs opacity-70">(4)</span>
+          </button>
+          <!-- 标签-面试 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-warning/20 text-warning text-base font-semibold hover:bg-warning/30 cursor-pointer tag-btn"
+            data-tag="面试"
+          >
+            面试 <span class="ml-0.5 text-xs opacity-70">(8)</span>
+          </button>
+          <!-- 标签-算法 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-warning/15 text-warning text-sm font-medium hover:bg-warning/25 cursor-pointer tag-btn"
+            data-tag="算法"
+          >
+            算法 <span class="ml-0.5 text-xs opacity-70">(6)</span>
+          </button>
+          <!-- 标签-设计模式 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs font-medium hover:bg-secondary/20 cursor-pointer tag-btn"
+            data-tag="设计模式"
+          >
+            设计模式 <span class="ml-0.5 text-xs opacity-70">(3)</span>
+          </button>
+          <!-- 标签-API -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-primary/15 text-primary text-xs font-medium hover:bg-primary/25 cursor-pointer tag-btn"
+            data-tag="API"
+          >
+            API <span class="ml-0.5 text-xs opacity-70">(5)</span>
+          </button>
+          <!-- 标签-RESTful -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn"
+            data-tag="RESTful"
+          >
+            RESTful <span class="ml-0.5 text-xs opacity-70">(2)</span>
+          </button>
+          <!-- 标签-GraphQL -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-secondary/15 text-secondary text-xs font-medium hover:bg-secondary/25 cursor-pointer tag-btn"
+            data-tag="GraphQL"
+          >
+            GraphQL <span class="ml-0.5 text-xs opacity-70">(3)</span>
+          </button>
+          <!-- 标签-测试 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/15 text-success text-sm font-medium hover:bg-success/25 cursor-pointer tag-btn"
+            data-tag="测试"
+          >
+            测试 <span class="ml-0.5 text-xs opacity-70">(4)</span>
+          </button>
+          <!-- 标签-Jest -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-success/10 text-success text-xs font-medium hover:bg-success/20 cursor-pointer tag-btn"
+            data-tag="Jest"
+          >
+            Jest <span class="ml-0.5 text-xs opacity-70">(2)</span>
+          </button>
+          <!-- 标签-安全 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-error/15 text-error text-xs font-medium hover:bg-error/25 cursor-pointer tag-btn"
+            data-tag="安全"
+          >
+            安全 <span class="ml-0.5 text-xs opacity-70">(3)</span>
+          </button>
+          <!-- 标签-认证 -->
+          <button
+            class="tag-item px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 cursor-pointer tag-btn"
+            data-tag="认证"
+          >
+            认证 <span class="ml-0.5 text-xs opacity-70">(3)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 文章列表区域 -->
+      <section id="articles-section">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-base font-semibold text-on-surface flex items-center gap-2">
+            <i data-lucide="file-text" class="w-4 h-4 text-primary"></i>
+            <span id="list-title">全部文章</span>
+          </h2>
+          <span
+            id="filtered-count"
+            class="hidden text-xs text-on-surface-variant bg-surface-container px-2 py-1 rounded-md"
+          >
+            已筛选 <span class="text-primary font-medium">0</span> 篇
+          </span>
+        </div>
+
+        <div id="article-list" class="space-y-4">
+          <!-- 文章-列表-1: React核心概念 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="前端,React,JavaScript"
+            data-article-id="1"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=1">深入理解 React 核心概念：虚拟 DOM 与 Diff 算法</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  探讨 React 中虚拟 DOM 的实现原理，以及 Diff 算法如何高效地比较新旧虚拟 DOM
+                  树，帮助开发者理解 React 性能优化的底层机制。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="React"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>React
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors"
+                    data-tag="前端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>前端
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                    data-tag="JavaScript"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>JavaScript
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-12-15</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-2: TypeScript高级类型 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="TypeScript,前端,JavaScript"
+            data-article-id="2"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=2">TypeScript 高级类型技巧：条件类型与映射类型</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  深入讲解 TypeScript 中的条件类型（Conditional Types）和映射类型（Mapped
+                  Types），让你编写更加灵活和可复用的类型定义。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="TypeScript"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>TypeScript
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors"
+                    data-tag="前端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>前端
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-12-10</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-3: Vue3组合式API -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="Vue.js,前端,JavaScript"
+            data-article-id="3"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=3">Vue 3 组合式 API 实战指南</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  全面解析 Vue 3 的组合式 API（Composition API），包括 setup 语法糖、ref 与
+                  reactive、computed 与 watch 等核心概念的用法。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success cursor-pointer hover:bg-success/25 transition-colors"
+                    data-tag="Vue.js"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>Vue.js
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors"
+                    data-tag="前端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>前端
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-12-05</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-4: Node.js后端开发 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="Node.js,后端,JavaScript"
+            data-article-id="4"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=4">Node.js 后端开发：Express 框架精讲</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  详细介绍 Express
+                  框架的核心概念，包括中间件机制、路由系统、请求处理和错误处理，助你快速构建高效的
+                  Node.js 后端应用。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="Node.js"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>Node.js
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="后端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>后端
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-11-28</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-5: Python Django -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="Python,Django,后端"
+            data-article-id="5"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=5">Python Django 快速入门：从零构建 Web 应用</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  Django 是 Python 最流行的 Web
+                  框架之一，本教程带你从环境搭建开始，逐步构建一个完整的博客系统。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success cursor-pointer hover:bg-success/25 transition-colors"
+                    data-tag="Python"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>Python
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success cursor-pointer hover:bg-success/20 transition-colors"
+                    data-tag="Django"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>Django
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="后端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>后端
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-11-20</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-6: CSS布局技术 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="CSS,前端,性能优化"
+            data-article-id="6"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=6">现代 CSS 布局技术：Grid 与 Flexbox 实战</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  CSS Grid 和 Flexbox
+                  是现代页面布局的两大神器，本文通过实际案例对比两者的使用场景，让你轻松掌握布局技巧。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors"
+                    data-tag="CSS"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>CSS
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors"
+                    data-tag="前端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>前端
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="性能优化"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>性能优化
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-11-15</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-7: 前端面试题 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="前端,面试,JavaScript"
+            data-article-id="7"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=7">2024 前端面试必看：高频 JavaScript 面试题汇总</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  整理了 50 道 JavaScript
+                  高频面试题，涵盖作用域、闭包、原型链、异步编程等核心知识点，助你顺利通过面试。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors"
+                    data-tag="面试"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>面试
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors"
+                    data-tag="前端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>前端
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                    data-tag="JavaScript"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>JavaScript
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-11-10</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-8: Docker容器化 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="Docker,工具,后端"
+            data-article-id="8"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=8">Docker 入门指南：容器化你的应用</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  Docker 是现代 DevOps
+                  的核心技术之一，本文从基础概念讲起，带你实操构建镜像、编排容器、部署应用的完整流程。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-on-surface-variant/15 text-on-surface-variant cursor-pointer hover:bg-on-surface-variant/25 transition-colors"
+                    data-tag="工具"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>工具
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                    data-tag="Docker"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>Docker
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-11-05</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-9: MongoDB数据库 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="MongoDB,数据库,后端"
+            data-article-id="9"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=9">MongoDB 实战：NoSQL 数据库设计与优化</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  深入讲解 MongoDB
+                  的文档模型设计、索引优化和聚合管道，帮助你构建高效可扩展的数据层架构。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors"
+                    data-tag="数据库"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>数据库
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success cursor-pointer hover:bg-success/20 transition-colors"
+                    data-tag="MongoDB"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>MongoDB
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="后端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>后端
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-10-28</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-10: Git版本控制 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="Git,工具"
+            data-article-id="10"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=10">Git 高级技巧：让你的代码管理更高效</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  掌握 Git 的高级用法，包括 Rebase、 Cherry-pick、Submodule、Git Flow
+                  工作流等，让团队协作更加顺畅。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-on-surface-variant/15 text-on-surface-variant cursor-pointer hover:bg-on-surface-variant/25 transition-colors"
+                    data-tag="工具"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>工具
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-error/10 text-error cursor-pointer hover:bg-error/20 transition-colors"
+                    data-tag="Git"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>Git
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-10-20</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-11: Webpack构建优化 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="Webpack,前端,性能优化"
+            data-article-id="11"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=11">Webpack 5 构建优化实战指南</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  深入分析 Webpack 5 的新特性和性能优化策略，包括持久化缓存、Tree
+                  Shaking、代码分割等，提升构建效率。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/15 text-primary cursor-pointer hover:bg-primary/25 transition-colors"
+                    data-tag="前端"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>前端
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                    data-tag="Webpack"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>Webpack
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-secondary/15 text-secondary cursor-pointer hover:bg-secondary/25 transition-colors"
+                    data-tag="性能优化"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>性能优化
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-10-15</time>
+              </div>
+            </div>
+          </article>
+
+          <!-- 文章-列表-12: 算法与数据结构 -->
+          <article
+            class="article-item bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer"
+            data-tags="算法,面试"
+            data-article-id="12"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-base font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
+                >
+                  <a href="post.html?id=12">算法与数据结构：面试重点题型解析</a>
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                  系统梳理面试中常见的算法类型，包括数组、链表、树、图、动态规划等，配合 LeetCode
+                  精选题目讲解思路。
+                </p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors"
+                    data-tag="算法"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>算法
+                  </span>
+                  <span
+                    class="tag-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-warning/15 text-warning cursor-pointer hover:bg-warning/25 transition-colors"
+                    data-tag="面试"
+                  >
+                    <i data-lucide="hash" class="w-3 h-3"></i>面试
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block shrink-0">
+                <time class="text-xs text-on-surface-variant">2024-10-08</time>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- 空状态提示 -->
+        <div id="empty-state" class="hidden py-16 text-center">
+          <i data-lucide="inbox" class="w-12 h-12 text-on-surface-variant/50 mx-auto mb-4"></i>
+          <p class="text-on-surface-variant">没有找到匹配的文章</p>
+          <button id="btn-clear-filter" class="mt-4 text-primary text-sm hover:underline">
+            清除筛选
+          </button>
+        </div>
+      </section>
+    </main>
+    <!-- @main-content:end -->
+
+    <script>
+      $(function () {
+        // 标签筛选功能
+        let currentFilter = null;
+
+        // 标签云点击筛选
+        $('#tag-cloud').on('click', '.tag-btn', function () {
+          const tag = $(this).data('tag');
+
+          // 切换激活状态
+          if (currentFilter === tag) {
+            // 取消筛选
+            resetFilter();
           } else {
-            $(this).addClass('hidden-item');
+            // 应用筛选
+            applyFilter(tag);
           }
         });
 
-        // 更新 UI
-        $('#list-title').text('标签：' + tag);
-        $('#filtered-count').removeClass('hidden').find('span').text(visibleCount);
-        $('#btn-reset-filter').removeClass('hidden');
-        
-        // 检查空状态
-        toggleEmptyState(visibleCount === 0);
-      }
+        // 文章内的标签点击筛选
+        $('#article-list').on('click', '.tag-badge', function (e) {
+          e.stopPropagation();
+          const tag = $(this).data('tag');
+          applyFilter(tag);
+        });
 
-      // 重置筛选
-      function resetFilter() {
-        currentFilter = null;
-        
-        // 清除标签云激活状态
-        $('.tag-btn').removeClass('ring-2 ring-primary ring-offset-2 ring-offset-background');
-        
-        // 显示所有文章
-        $('#article-list .article-item').removeClass('hidden-item');
-        
-        // 更新 UI
-        $('#list-title').text('全部文章');
-        $('#filtered-count').addClass('hidden');
-        $('#btn-reset-filter').addClass('hidden');
-        
-        // 隐藏空状态
-        toggleEmptyState(false);
-      }
+        // 应用筛选
+        function applyFilter(tag) {
+          currentFilter = tag;
 
-      // 切换空状态
-      function toggleEmptyState(show) {
-        if (show) {
-          $('#article-list').addClass('hidden');
-          $('#empty-state').removeClass('hidden');
-        } else {
-          $('#article-list').removeClass('hidden');
-          $('#empty-state').addClass('hidden');
+          // 更新标签云激活状态
+          $('.tag-btn').removeClass('ring-2 ring-primary ring-offset-2 ring-offset-background');
+          $('.tag-btn[data-tag="' + tag + '"]').addClass(
+            'ring-2 ring-primary ring-offset-2 ring-offset-background'
+          );
+
+          // 筛选文章列表
+          let visibleCount = 0;
+          $('#article-list .article-item').each(function () {
+            const tags = $(this).data('tags').split(',');
+            if (tags.includes(tag)) {
+              $(this).removeClass('hidden-item');
+              visibleCount++;
+            } else {
+              $(this).addClass('hidden-item');
+            }
+          });
+
+          // 更新 UI
+          $('#list-title').text('标签：' + tag);
+          $('#filtered-count').removeClass('hidden').find('span').text(visibleCount);
+          $('#btn-reset-filter').removeClass('hidden');
+
+          // 检查空状态
+          toggleEmptyState(visibleCount === 0);
         }
-      }
 
-      // 清除筛选按钮
-      $('#btn-reset-filter, #btn-clear-filter').on('click', function() {
-        resetFilter();
-      });
+        // 重置筛选
+        function resetFilter() {
+          currentFilter = null;
 
-      // 文章点击跳转
-      $('#article-list').on('click', '.article-item', function() {
-        const articleId = $(this).data('article-id');
-        window.location.href = 'post.html?id=' + articleId;
-      });
+          // 清除标签云激活状态
+          $('.tag-btn').removeClass('ring-2 ring-primary ring-offset-2 ring-offset-background');
 
-      // 搜索按钮交互
-      $('#btn-search').on('click', function() {
-        console.log('点击搜索：应打开搜索弹窗/搜索页面');
-      });
+          // 显示所有文章
+          $('#article-list .article-item').removeClass('hidden-item');
 
-      // 主题切换按钮
-      $('#btn-toggle-theme').on('click', function() {
-        console.log('点击主题切换：应切换亮色/暗色主题');
+          // 更新 UI
+          $('#list-title').text('全部文章');
+          $('#filtered-count').addClass('hidden');
+          $('#btn-reset-filter').addClass('hidden');
+
+          // 隐藏空状态
+          toggleEmptyState(false);
+        }
+
+        // 切换空状态
+        function toggleEmptyState(show) {
+          if (show) {
+            $('#article-list').addClass('hidden');
+            $('#empty-state').removeClass('hidden');
+          } else {
+            $('#article-list').removeClass('hidden');
+            $('#empty-state').addClass('hidden');
+          }
+        }
+
+        // 清除筛选按钮
+        $('#btn-reset-filter, #btn-clear-filter').on('click', function () {
+          resetFilter();
+        });
+
+        // 文章点击跳转
+        $('#article-list').on('click', '.article-item', function () {
+          const articleId = $(this).data('article-id');
+          window.location.href = 'post.html?id=' + articleId;
+        });
+
+        // 搜索按钮交互
+        $('#btn-search').on('click', function () {
+          console.log('点击搜索：应打开搜索弹窗/搜索页面');
+        });
+
+        // 主题切换按钮
+        $('#btn-toggle-theme').on('click', function () {
+          console.log('点击主题切换：应切换亮色/暗色主题');
+        });
       });
-    });
-  </script>
-  <script>lucide.createIcons();</script>
-</body>
+    </script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
 </html>

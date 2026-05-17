@@ -1,354 +1,486 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
 
-  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
-  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
-  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        /* === 品牌色 (星空蓝金色) === */
+        --color-primary: #4a90d9;
+        --color-primary-container: #1a3a5c;
+        --color-on-primary: #ffffff;
+        --color-secondary: #8b5cf6;
+        --color-secondary-container: #2a1a48;
+        --color-on-secondary: #ffffff;
+        /* === 背景 / 表面 (深空色系) === */
+        --color-background: #0a0e17;
+        --color-surface-container-lowest: #0d1220;
+        --color-surface: #12162a;
+        --color-surface-container: #1a1f3a;
+        --color-surface-container-high: #232842;
+        --color-surface-container-highest: #2a3050;
+        /* === 文字 === */
+        --color-on-surface: #e8ecf4;
+        --color-on-surface-variant: #a0aec0;
+        /* === 功能色 === */
+        --color-success: #10b981;
+        --color-error: #ef4444;
+        --color-warning: #f59e0b;
+        /* === 边框 === */
+        --color-outline: #2d3748;
+        --color-outline-variant: #1e2433;
+        /* === 圆角 === */
+        --radius-sm: 0.25rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+        --radius-xl: 1rem;
+        --radius-2xl: 1.5rem;
+        --radius-full: 9999px;
+        /* === 阴影 === */
+        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --shadow-float: 0 10px 25px rgba(0, 0, 0, 0.4);
+        --shadow-dialog: 0 25px 50px rgba(0, 0, 0, 0.5);
+        /* === 字体 === */
+        --font-sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+      }
 
-  <style type="text/tailwindcss">
-    @theme {
-      /* === 品牌色 (星空蓝金色) === */
-      --color-primary:              #4a90d9;
-      --color-primary-container:    #1a3a5c;
-      --color-on-primary:           #ffffff;
-      --color-secondary:            #8b5cf6;
-      --color-secondary-container:  #2a1a48;
-      --color-on-secondary:         #ffffff;
-      /* === 背景 / 表面 (深空色系) === */
-      --color-background:           #0a0e17;
-      --color-surface-container-lowest:  #0d1220;
-      --color-surface:              #12162a;
-      --color-surface-container:   #1a1f3a;
-      --color-surface-container-high:  #232842;
-      --color-surface-container-highest: #2a3050;
-      /* === 文字 === */
-      --color-on-surface:           #e8ecf4;
-      --color-on-surface-variant:   #a0aec0;
-      /* === 功能色 === */
-      --color-success:  #10b981;
-      --color-error:    #ef4444;
-      --color-warning:  #f59e0b;
-      /* === 边框 === */
-      --color-outline:          #2d3748;
-      --color-outline-variant:  #1e2433;
-      /* === 圆角 === */
-      --radius-sm:   0.25rem;
-      --radius-md:   0.5rem;
-      --radius-lg:   0.75rem;
-      --radius-xl:   1rem;
-      --radius-2xl:  1.5rem;
-      --radius-full: 9999px;
-      /* === 阴影 === */
-      --shadow-card:   0 4px 12px rgba(0,0,0,0.3);
-      --shadow-float:  0 10px 25px rgba(0,0,0,0.4);
-      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.5);
-      /* === 字体 === */
-      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
-    }
-    
-    /* 星空背景效果 */
-    .starry-bg {
-      background: 
-        radial-gradient(ellipse at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(74, 144, 217, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(26, 26, 58, 1) 0%, rgba(10, 14, 23, 1) 100%);
-    }
-    
-    /* 星星动画 */
-    @keyframes twinkle {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-    
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 3s ease-in-out infinite;
-    }
-    
-    /* 毛玻璃效果 */
-    .glass {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-  </style>
+      /* 星空背景效果 */
+      .starry-bg {
+        background:
+          radial-gradient(ellipse at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 20%, rgba(74, 144, 217, 0.1) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, rgba(26, 26, 58, 1) 0%, rgba(10, 14, 23, 1) 100%);
+      }
 
-  <!-- 图片兜底 -->
-  <script>
-    document.addEventListener('error', function (e) {
-      const img = e.target;
-      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
-      img.dataset.fallback = '1';
-      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      const cat = img.getAttribute('data-category') || '其他';
-      const alt = img.getAttribute('alt') || '';
-      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
-      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
-      const icon = icons[cat] || '🖼';
-      const w = img.width || 400, h = img.height || 300;
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
-      img.src = 'data:image/svg+xml,' + svg;
-    }, true);
-  </script>
-</head>
+      /* 星星动画 */
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
 
-<body class="bg-background text-on-surface min-h-screen starry-bg relative overflow-x-hidden">
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 3s ease-in-out infinite;
+      }
 
-  <!-- 顶部星星装饰 -->
-  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-    <div class="star w-1 h-1 top-[10%] left-[15%]" style="animation-delay: 0s;"></div>
-    <div class="star w-1.5 h-1.5 top-[20%] left-[80%]" style="animation-delay: 1s;"></div>
-    <div class="star w-1 h-1 top-[40%] left-[25%]" style="animation-delay: 2s;"></div>
-    <div class="star w-0.5 h-0.5 top-[60%] left-[70%]" style="animation-delay: 0.5s;"></div>
-    <div class="star w-1 h-1 top-[80%] left-[40%]" style="animation-delay: 1.5s;"></div>
-    <div class="star w-0.5 h-0.5 top-[30%] left-[90%]" style="animation-delay: 2.5s;"></div>
-    <div class="star w-1 h-1 top-[70%] left-[10%]" style="animation-delay: 0.8s;"></div>
-    <div class="star w-1.5 h-1.5 top-[50%] left-[55%]" style="animation-delay: 1.8s;"></div>
-  </div>
+      /* 毛玻璃效果 */
+      .glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    </style>
 
-  <!-- @nav:start 导航组件 -->
-  <header class="sticky top-0 z-50 glass bg-surface/80 border-b border-outline/30">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="home.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-        <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-        </svg>
-        <span class="font-bold text-lg text-on-surface">Almagest</span>
-      </a>
-      
-      <!-- 导航 -->
-      <nav class="flex items-center gap-1">
-        <a href="home.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">首页</a>
-        <a href="archive.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">归档</a>
-        <a href="categories.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">分类</a>
-        <a href="tags.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">标签</a>
-        <a href="about.html" class="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-md" aria-current="page">关于</a>
-      </nav>
-      
-      <!-- 操作按钮 -->
-      <div class="flex items-center gap-2">
-        <!-- 主题切换 -->
-        <button class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" aria-label="切换主题">
-          <i data-lucide="moon" class="w-5 h-5"></i>
-        </button>
-        <!-- 搜索 -->
-        <button class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" aria-label="搜索">
-          <i data-lucide="search" class="w-5 h-5"></i>
-        </button>
-      </div>
-    </div>
-  </header>
-  <!-- @nav:end 导航组件 -->
+    <!-- 图片兜底 -->
+    <script>
+      document.addEventListener(
+        'error',
+        function (e) {
+          const img = e.target;
+          if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+          img.dataset.fallback = '1';
+          const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const cat = img.getAttribute('data-category') || '其他';
+          const alt = img.getAttribute('alt') || '';
+          const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+          const icons = {
+            人物: '👤',
+            自然风景: '🏞',
+            动物: '🐾',
+            建筑城市: '🏙',
+            运动体育: '⚽',
+            交通工具: '🚗',
+            食物: '🍽',
+            服饰时尚: '👗',
+            商业科技: '💼',
+            游戏娱乐: '🎮',
+            艺术: '🎨',
+            其他: '🖼'
+          };
+          const icon = icons[cat] || '🖼';
+          const w = img.width || 400,
+            h = img.height || 300;
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+          img.src = 'data:image/svg+xml,' + svg;
+        },
+        true
+      );
+    </script>
+  </head>
 
-  <!-- @main-content:start -->
-  <main class="relative z-10 max-w-4xl mx-auto px-6 py-8">
-    
-    <!-- 页面标题 -->
-    <div class="text-center mb-10">
-      <h1 class="text-3xl font-bold text-on-surface mb-2">关于我</h1>
-      <p class="text-sm text-on-surface-variant">Stay hungry, stay foolish</p>
+  <body class="bg-background text-on-surface min-h-screen starry-bg relative overflow-x-hidden">
+    <!-- 顶部星星装饰 -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div class="star w-1 h-1 top-[10%] left-[15%]" style="animation-delay: 0s"></div>
+      <div class="star w-1.5 h-1.5 top-[20%] left-[80%]" style="animation-delay: 1s"></div>
+      <div class="star w-1 h-1 top-[40%] left-[25%]" style="animation-delay: 2s"></div>
+      <div class="star w-0.5 h-0.5 top-[60%] left-[70%]" style="animation-delay: 0.5s"></div>
+      <div class="star w-1 h-1 top-[80%] left-[40%]" style="animation-delay: 1.5s"></div>
+      <div class="star w-0.5 h-0.5 top-[30%] left-[90%]" style="animation-delay: 2.5s"></div>
+      <div class="star w-1 h-1 top-[70%] left-[10%]" style="animation-delay: 0.8s"></div>
+      <div class="star w-1.5 h-1.5 top-[50%] left-[55%]" style="animation-delay: 1.8s"></div>
     </div>
 
-    <!-- 博主信息卡片 -->
-    <div class="bg-surface rounded-xl shadow-card p-8 mb-8">
-      <div class="flex flex-col items-center text-center">
-        <!-- 头像 -->
-        <div class="w-28 h-28 rounded-full bg-primary/20 flex items-center justify-center mb-4 border-2 border-primary/30">
-          <span class="text-4xl font-bold text-primary">星</span>
-        </div>
-        
-        <!-- 名称 -->
-        <h2 class="text-xl font-bold text-on-surface mb-1">星河漫游者</h2>
-        <p class="text-sm text-on-surface-variant mb-4">全栈开发者 / 技术写作者</p>
-        
-        <!-- 个人简介 -->
-        <p class="text-sm text-on-surface leading-relaxed max-w-xl mb-6">
-          你好！我是一名热爱技术的全栈开发者，目前专注于前端工程化和云原生领域。
-          平时喜欢阅读技术书籍、研究开源项目，也会在博客分享一些学习心得和项目经验。
-          信奉「代码即艺术」，追求简洁优雅的解决方案。如果你也对这些话题感兴趣，
-          欢迎交流探讨！
-        </p>
-        
-        <!-- 社交媒体链接 -->
-        <div class="flex items-center gap-3">
-          <a href="https://github.com" target="_blank" id="link-github" class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
-            <i data-lucide="github" class="w-4 h-4"></i>
-            <span class="text-sm font-medium">GitHub</span>
-          </a>
-          <a href="mailto:star@almagest.dev" id="link-email" class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
-            <i data-lucide="mail" class="w-4 h-4"></i>
-            <span class="text-sm font-medium">邮箱</span>
-          </a>
-          <a href="#" id="link-rss" class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
-            <i data-lucide="rss" class="w-4 h-4"></i>
-            <span class="text-sm font-medium">RSS</span>
-          </a>
-        </div>
-      </div>
-    </div>
+    <!-- @nav:start 导航组件 -->
+    <header class="sticky top-0 z-50 glass bg-surface/80 border-b border-outline/30">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="home.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+            />
+          </svg>
+          <span class="font-bold text-lg text-on-surface">Almagest</span>
+        </a>
 
-    <!-- 技能与兴趣 -->
-    <div class="bg-surface rounded-xl shadow-card p-6 mb-8">
-      <h3 class="text-lg font-semibold text-on-surface mb-4 flex items-center gap-2">
-        <i data-lucide="sparkles" class="w-5 h-5 text-primary"></i>
-        技能与兴趣
-      </h3>
-      <div class="flex flex-wrap gap-2">
-        <!-- 技能标签-列表1 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/15 text-primary border border-primary/20">JavaScript / TypeScript</span>
-        <!-- 技能标签-列表2 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/15 text-secondary border border-secondary/20">React / Vue</span>
-        <!-- 技能标签-列表3 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/15 text-success border border-success/20">Node.js</span>
-        <!-- 技能标签-列表4 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-warning/15 text-warning border border-warning/20">Python</span>
-        <!-- 技能标签-列表5 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/15 text-primary border border-primary/20">Go</span>
-        <!-- 技能标签-列表6 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/15 text-secondary border border-secondary/20">Docker / Kubernetes</span>
-        <!-- 技能标签-列表7 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/15 text-success border border-success/20">CI/CD</span>
-        <!-- 技能标签-列表8 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-warning/15 text-warning border border-warning/20">AWS / 阿里云</span>
-        <!-- 技能标签-列表9 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/15 text-primary border border-primary/20">Tailwind CSS</span>
-        <!-- 技能标签-列表10 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/15 text-secondary border border-secondary/20">GraphQL</span>
-        <!-- 技能标签-列表11 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/15 text-success border border-success/20">PostgreSQL</span>
-        <!-- 技能标签-列表12 -->
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-warning/15 text-warning border border-warning/20">Redis</span>
-      </div>
-    </div>
+        <!-- 导航 -->
+        <nav class="flex items-center gap-1">
+          <a
+            href="home.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >首页</a
+          >
+          <a
+            href="archive.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >归档</a
+          >
+          <a
+            href="categories.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >分类</a
+          >
+          <a
+            href="tags.html"
+            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
+            >标签</a
+          >
+          <a
+            href="about.html"
+            class="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-md"
+            aria-current="page"
+            >关于</a
+          >
+        </nav>
 
-    <!-- 网站统计 -->
-    <div class="bg-surface rounded-xl shadow-card p-6 mb-8">
-      <h3 class="text-lg font-semibold text-on-surface mb-4 flex items-center gap-2">
-        <i data-lucide="bar-chart-2" class="w-5 h-5 text-primary"></i>
-        网站统计
-      </h3>
-      <div class="grid grid-cols-3 gap-4">
-        <!-- 统计项-文章数 -->
-        <div class="bg-surface-container rounded-lg p-4 text-center">
-          <div class="text-2xl font-bold text-primary mb-1">42</div>
-          <div class="text-xs text-on-surface-variant">文章</div>
-        </div>
-        <!-- 统计项-分类数 -->
-        <div class="bg-surface-container rounded-lg p-4 text-center">
-          <div class="text-2xl font-bold text-secondary mb-1">8</div>
-          <div class="text-xs text-on-surface-variant">分类</div>
-        </div>
-        <!-- 统计项-标签数 -->
-        <div class="bg-surface-container rounded-lg p-4 text-center">
-          <div class="text-2xl font-bold text-success mb-1">156</div>
-          <div class="text-xs text-on-surface-variant">标签</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 留言板 -->
-    <div class="bg-surface rounded-xl shadow-card p-6">
-      <h3 class="text-lg font-semibold text-on-surface mb-4 flex items-center gap-2">
-        <i data-lucide="message-circle" class="w-5 h-5 text-primary"></i>
-        留言板
-      </h3>
-      
-      <!-- 留言输入区 -->
-      <div class="mb-6">
-        <textarea id="comment-input" class="w-full bg-surface-container border-none rounded-md px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors resize-none" rows="3" placeholder="有什么想说的？留个言吧~"></textarea>
-        <div class="flex justify-end mt-3">
-          <button id="btn-submit-comment" class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2">
-            <i data-lucide="send" class="w-4 h-4"></i>
-            发布留言
+        <!-- 操作按钮 -->
+        <div class="flex items-center gap-2">
+          <!-- 主题切换 -->
+          <button
+            class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="切换主题"
+          >
+            <i data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+          <!-- 搜索 -->
+          <button
+            class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="搜索"
+          >
+            <i data-lucide="search" class="w-5 h-5"></i>
           </button>
         </div>
       </div>
+    </header>
+    <!-- @nav:end 导航组件 -->
 
-      <!-- 留言列表 -->
-      <div class="space-y-4" id="comment-list">
-        <!-- 留言项-列表1 -->
-        <div class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors">
-          <div class="w-10 h-10 shrink-0 rounded-full bg-secondary/20 flex items-center justify-center">
-            <span class="text-sm font-bold text-secondary">云</span>
+    <!-- @main-content:start -->
+    <main class="relative z-10 max-w-4xl mx-auto px-6 py-8">
+      <!-- 页面标题 -->
+      <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-on-surface mb-2">关于我</h1>
+        <p class="text-sm text-on-surface-variant">Stay hungry, stay foolish</p>
+      </div>
+
+      <!-- 博主信息卡片 -->
+      <div class="bg-surface rounded-xl shadow-card p-8 mb-8">
+        <div class="flex flex-col items-center text-center">
+          <!-- 头像 -->
+          <div
+            class="w-28 h-28 rounded-full bg-primary/20 flex items-center justify-center mb-4 border-2 border-primary/30"
+          >
+            <span class="text-4xl font-bold text-primary">星</span>
           </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-sm font-medium text-on-surface">云游四方</span>
-              <span class="text-xs text-on-surface-variant">2024-01-20</span>
-            </div>
-            <p class="text-sm text-on-surface-variant leading-relaxed">博主的技术文章写得真好，每次读完都有新收获！期待更多关于云原生的分享~</p>
-          </div>
-        </div>
-        <!-- 留言项-列表2 -->
-        <div class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors">
-          <div class="w-10 h-10 shrink-0 rounded-full bg-success/20 flex items-center justify-center">
-            <span class="text-sm font-bold text-success">林</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-sm font-medium text-on-surface">林中小屋</span>
-              <span class="text-xs text-on-surface-variant">2024-01-18</span>
-            </div>
-            <p class="text-sm text-on-surface-variant leading-relaxed">终于找到同好了！我也是喜欢折腾各种技术栈的打工人，互相学习呀~</p>
-          </div>
-        </div>
-        <!-- 留言项-列表3 -->
-        <div class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors">
-          <div class="w-10 h-10 shrink-0 rounded-full bg-warning/20 flex items-center justify-center">
-            <span class="text-sm font-bold text-warning">风</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-sm font-medium text-on-surface">风之子</span>
-              <span class="text-xs text-on-surface-variant">2024-01-15</span>
-            </div>
-            <p class="text-sm text-on-surface-variant leading-relaxed">文章排版很舒服，阅读体验很棒！网站加载速度也很快，点赞~</p>
-          </div>
-        </div>
-        <!-- 留言项-列表4 -->
-        <div class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors">
-          <div class="w-10 h-10 shrink-0 rounded-full bg-primary/20 flex items-center justify-center">
-            <span class="text-sm font-bold text-primary">晓</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-sm font-medium text-on-surface">晓风残月</span>
-              <span class="text-xs text-on-surface-variant">2024-01-12</span>
-            </div>
-            <p class="text-sm text-on-surface-variant leading-relaxed">关于 React 性能优化的那篇文章帮了我大忙，解决了困扰我很久的问题！</p>
+
+          <!-- 名称 -->
+          <h2 class="text-xl font-bold text-on-surface mb-1">星河漫游者</h2>
+          <p class="text-sm text-on-surface-variant mb-4">全栈开发者 / 技术写作者</p>
+
+          <!-- 个人简介 -->
+          <p class="text-sm text-on-surface leading-relaxed max-w-xl mb-6">
+            你好！我是一名热爱技术的全栈开发者，目前专注于前端工程化和云原生领域。
+            平时喜欢阅读技术书籍、研究开源项目，也会在博客分享一些学习心得和项目经验。
+            信奉「代码即艺术」，追求简洁优雅的解决方案。如果你也对这些话题感兴趣， 欢迎交流探讨！
+          </p>
+
+          <!-- 社交媒体链接 -->
+          <div class="flex items-center gap-3">
+            <a
+              href="https://github.com"
+              target="_blank"
+              id="link-github"
+              class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
+            >
+              <i data-lucide="github" class="w-4 h-4"></i>
+              <span class="text-sm font-medium">GitHub</span>
+            </a>
+            <a
+              href="mailto:star@almagest.dev"
+              id="link-email"
+              class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
+            >
+              <i data-lucide="mail" class="w-4 h-4"></i>
+              <span class="text-sm font-medium">邮箱</span>
+            </a>
+            <a
+              href="#"
+              id="link-rss"
+              class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
+            >
+              <i data-lucide="rss" class="w-4 h-4"></i>
+              <span class="text-sm font-medium">RSS</span>
+            </a>
           </div>
         </div>
       </div>
-    </div>
 
-  </main>
-  <!-- @main-content:end -->
+      <!-- 技能与兴趣 -->
+      <div class="bg-surface rounded-xl shadow-card p-6 mb-8">
+        <h3 class="text-lg font-semibold text-on-surface mb-4 flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-5 h-5 text-primary"></i>
+          技能与兴趣
+        </h3>
+        <div class="flex flex-wrap gap-2">
+          <!-- 技能标签-列表1 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/15 text-primary border border-primary/20"
+            >JavaScript / TypeScript</span
+          >
+          <!-- 技能标签-列表2 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/15 text-secondary border border-secondary/20"
+            >React / Vue</span
+          >
+          <!-- 技能标签-列表3 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/15 text-success border border-success/20"
+            >Node.js</span
+          >
+          <!-- 技能标签-列表4 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-warning/15 text-warning border border-warning/20"
+            >Python</span
+          >
+          <!-- 技能标签-列表5 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/15 text-primary border border-primary/20"
+            >Go</span
+          >
+          <!-- 技能标签-列表6 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/15 text-secondary border border-secondary/20"
+            >Docker / Kubernetes</span
+          >
+          <!-- 技能标签-列表7 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/15 text-success border border-success/20"
+            >CI/CD</span
+          >
+          <!-- 技能标签-列表8 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-warning/15 text-warning border border-warning/20"
+            >AWS / 阿里云</span
+          >
+          <!-- 技能标签-列表9 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/15 text-primary border border-primary/20"
+            >Tailwind CSS</span
+          >
+          <!-- 技能标签-列表10 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/15 text-secondary border border-secondary/20"
+            >GraphQL</span
+          >
+          <!-- 技能标签-列表11 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/15 text-success border border-success/20"
+            >PostgreSQL</span
+          >
+          <!-- 技能标签-列表12 -->
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-warning/15 text-warning border border-warning/20"
+            >Redis</span
+          >
+        </div>
+      </div>
 
-  <script>lucide.createIcons();</script>
-  <script>
-    $(function() {
-      // 留言提交功能 - 后续应实现：
-      // 1. 获取输入框内容进行非空校验
-      // 2. 调用留言接口提交数据
-      // 3. 成功后动态插入新留言到列表顶部，包含用户昵称(可默认"匿名用户")、发布时间、内容
-      // 4. 清空输入框并显示成功提示
-      // 5. 失败时显示错误提示
-      $('#btn-submit-comment').on('click', function() {
-        const content = $('#comment-input').val().trim();
-        if (!content) {
-          alert('请输入留言内容');
-          return;
-        }
-        console.log('提交留言:', content);
-        // TODO: 调用后端API提交留言
+      <!-- 网站统计 -->
+      <div class="bg-surface rounded-xl shadow-card p-6 mb-8">
+        <h3 class="text-lg font-semibold text-on-surface mb-4 flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="w-5 h-5 text-primary"></i>
+          网站统计
+        </h3>
+        <div class="grid grid-cols-3 gap-4">
+          <!-- 统计项-文章数 -->
+          <div class="bg-surface-container rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-primary mb-1">42</div>
+            <div class="text-xs text-on-surface-variant">文章</div>
+          </div>
+          <!-- 统计项-分类数 -->
+          <div class="bg-surface-container rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-secondary mb-1">8</div>
+            <div class="text-xs text-on-surface-variant">分类</div>
+          </div>
+          <!-- 统计项-标签数 -->
+          <div class="bg-surface-container rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-success mb-1">156</div>
+            <div class="text-xs text-on-surface-variant">标签</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 留言板 -->
+      <div class="bg-surface rounded-xl shadow-card p-6">
+        <h3 class="text-lg font-semibold text-on-surface mb-4 flex items-center gap-2">
+          <i data-lucide="message-circle" class="w-5 h-5 text-primary"></i>
+          留言板
+        </h3>
+
+        <!-- 留言输入区 -->
+        <div class="mb-6">
+          <textarea
+            id="comment-input"
+            class="w-full bg-surface-container border-none rounded-md px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors resize-none"
+            rows="3"
+            placeholder="有什么想说的？留个言吧~"
+          ></textarea>
+          <div class="flex justify-end mt-3">
+            <button
+              id="btn-submit-comment"
+              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2"
+            >
+              <i data-lucide="send" class="w-4 h-4"></i>
+              发布留言
+            </button>
+          </div>
+        </div>
+
+        <!-- 留言列表 -->
+        <div class="space-y-4" id="comment-list">
+          <!-- 留言项-列表1 -->
+          <div
+            class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors"
+          >
+            <div
+              class="w-10 h-10 shrink-0 rounded-full bg-secondary/20 flex items-center justify-center"
+            >
+              <span class="text-sm font-bold text-secondary">云</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-medium text-on-surface">云游四方</span>
+                <span class="text-xs text-on-surface-variant">2024-01-20</span>
+              </div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">
+                博主的技术文章写得真好，每次读完都有新收获！期待更多关于云原生的分享~
+              </p>
+            </div>
+          </div>
+          <!-- 留言项-列表2 -->
+          <div
+            class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors"
+          >
+            <div
+              class="w-10 h-10 shrink-0 rounded-full bg-success/20 flex items-center justify-center"
+            >
+              <span class="text-sm font-bold text-success">林</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-medium text-on-surface">林中小屋</span>
+                <span class="text-xs text-on-surface-variant">2024-01-18</span>
+              </div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">
+                终于找到同好了！我也是喜欢折腾各种技术栈的打工人，互相学习呀~
+              </p>
+            </div>
+          </div>
+          <!-- 留言项-列表3 -->
+          <div
+            class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors"
+          >
+            <div
+              class="w-10 h-10 shrink-0 rounded-full bg-warning/20 flex items-center justify-center"
+            >
+              <span class="text-sm font-bold text-warning">风</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-medium text-on-surface">风之子</span>
+                <span class="text-xs text-on-surface-variant">2024-01-15</span>
+              </div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">
+                文章排版很舒服，阅读体验很棒！网站加载速度也很快，点赞~
+              </p>
+            </div>
+          </div>
+          <!-- 留言项-列表4 -->
+          <div
+            class="flex gap-3 p-4 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors"
+          >
+            <div
+              class="w-10 h-10 shrink-0 rounded-full bg-primary/20 flex items-center justify-center"
+            >
+              <span class="text-sm font-bold text-primary">晓</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-medium text-on-surface">晓风残月</span>
+                <span class="text-xs text-on-surface-variant">2024-01-12</span>
+              </div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">
+                关于 React 性能优化的那篇文章帮了我大忙，解决了困扰我很久的问题！
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- @main-content:end -->
+
+    <script>
+      lucide.createIcons();
+    </script>
+    <script>
+      $(function () {
+        // 留言提交功能 - 后续应实现：
+        // 1. 获取输入框内容进行非空校验
+        // 2. 调用留言接口提交数据
+        // 3. 成功后动态插入新留言到列表顶部，包含用户昵称(可默认"匿名用户")、发布时间、内容
+        // 4. 清空输入框并显示成功提示
+        // 5. 失败时显示错误提示
+        $('#btn-submit-comment').on('click', function () {
+          const content = $('#comment-input').val().trim();
+          if (!content) {
+            alert('请输入留言内容');
+            return;
+          }
+          console.log('提交留言:', content);
+          // TODO: 调用后端API提交留言
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
