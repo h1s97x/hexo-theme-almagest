@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      /* === 品牌色 (星空蓝金色) === */
+      --color-primary:              #4a90d9;
+      --color-primary-container:    #1a3a5c;
+      --color-on-primary:           #ffffff;
+      --color-secondary:            #8b5cf6;
+      --color-secondary-container:  #2a1a48;
+      --color-on-secondary:         #ffffff;
+      /* === 背景 / 表面 (深空色系) === */
+      --color-background:           #0a0e17;
+      --color-surface-container-lowest:  #0d1220;
+      --color-surface:              #12162a;
+      --color-surface-container:   #1a1f3a;
+      --color-surface-container-high:  #232842;
+      --color-surface-container-highest: #2a3050;
+      /* === 文字 === */
+      --color-on-surface:           #e8ecf4;
+      --color-on-surface-variant:   #a0aec0;
+      /* === 功能色 === */
+      --color-success:  #10b981;
+      --color-error:    #ef4444;
+      --color-warning:  #f59e0b;
+      /* === 边框 === */
+      --color-outline:          #2d3748;
+      --color-outline-variant:  #1e2433;
+      /* === 圆角 === */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.5rem;
+      --radius-full: 9999px;
+      /* === 阴影 === */
+      --shadow-card:   0 4px 12px rgba(0,0,0,0.3);
+      --shadow-float:  0 10px 25px rgba(0,0,0,0.4);
+      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.5);
+      /* === 字体 === */
+      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+    }
+    
+    /* 星空背景效果 */
+    .starry-bg {
+      background: 
+        radial-gradient(ellipse at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(74, 144, 217, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(26, 26, 58, 1) 0%, rgba(10, 14, 23, 1) 100%);
+    }
+    
+    /* 星星动画 */
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    
+    /* 毛玻璃效果 */
+    .glass {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    
+    /* 分类卡片展开/折叠动画 */
+    .category-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, padding 0.3s ease-out;
+    }
+    
+    .category-content.expanded {
+      max-height: 1000px;
+    }
+    
+    .chevron-icon {
+      transition: transform 0.3s ease;
+    }
+    
+    .chevron-icon.rotated {
+      transform: rotate(180deg);
+    }
+  </style>
+
+  <!-- 图片兜底 -->
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface min-h-screen starry-bg relative overflow-x-hidden">
+
+  <!-- 顶部星星装饰 -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="star w-1 h-1 top-[10%] left-[15%]" style="animation-delay: 0s;"></div>
+    <div class="star w-1.5 h-1.5 top-[20%] left-[80%]" style="animation-delay: 1s;"></div>
+    <div class="star w-1 h-1 top-[40%] left-[25%]" style="animation-delay: 2s;"></div>
+    <div class="star w-0.5 h-0.5 top-[60%] left-[70%]" style="animation-delay: 0.5s;"></div>
+    <div class="star w-1 h-1 top-[80%] left-[40%]" style="animation-delay: 1.5s;"></div>
+    <div class="star w-0.5 h-0.5 top-[30%] left-[90%]" style="animation-delay: 2.5s;"></div>
+    <div class="star w-1 h-1 top-[70%] left-[10%]" style="animation-delay: 0.8s;"></div>
+    <div class="star w-1.5 h-1.5 top-[50%] left-[55%]" style="animation-delay: 1.8s;"></div>
+  </div>
+
+  <!-- @nav:start 导航组件 -->
+  <header class="sticky top-0 z-50 glass bg-surface/80 border-b border-outline/30">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="home.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+        </svg>
+        <span class="font-bold text-lg text-on-surface">Almagest</span>
+      </a>
+      
+      <!-- 导航 -->
+      <nav class="flex items-center gap-1">
+        <a href="home.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">首页</a>
+        <a href="archive.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">归档</a>
+        <a href="categories.html" class="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-md" aria-current="page">分类</a>
+        <a href="tags.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">标签</a>
+        <a href="about.html" class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">关于</a>
+      </nav>
+      
+      <!-- 操作按钮 -->
+      <div class="flex items-center gap-2">
+        <!-- 主题切换 -->
+        <button id="btn-toggle-theme" class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" aria-label="切换主题">
+          <i data-lucide="moon" class="w-5 h-5"></i>
+        </button>
+        <!-- 搜索 -->
+        <button id="btn-search" class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" aria-label="搜索">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end 导航组件 -->
+
+  <!-- @main-content:start -->
+  <main class="relative z-10 max-w-4xl mx-auto px-6 py-12">
+    
+    <!-- 页面标题 -->
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-on-surface mb-2">文章分类</h1>
+      <p class="text-on-surface-variant">探索不同主题的文章，找到你感兴趣的内容</p>
+    </div>
+    
+    <!-- 分类卡片网格 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="categories-grid">
+      
+      <!-- 分类-前端开发 -->
+      <div class="category-card bg-surface rounded-xl shadow-card overflow-hidden" data-category="frontend">
+        <div id="category-header-frontend" class="p-5 cursor-pointer hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-primary/15 flex items-center justify-center">
+                <i data-lucide="layout" class="w-5 h-5 text-primary"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-semibold text-on-surface">前端开发</h2>
+                <p class="text-sm text-on-surface-variant mt-0.5">React、Vue、TypeScript</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-primary/15 text-primary">12 篇</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-on-surface-variant chevron-icon"></i>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant mt-3">涵盖现代前端框架、JavaScript 生态、性能优化与工程化实践</p>
+        </div>
+        <div class="category-content">
+          <div class="px-5 pb-5">
+            <div class="border-t border-outline-variant/30 pt-4 space-y-2">
+              <!-- 文章列表-前端1 -->
+              <a href="post.html?id=1" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">深入理解 React Hooks 原理与最佳实践</span>
+              </a>
+              <!-- 文章列表-前端2 -->
+              <a href="post.html?id=2" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Vue 3 Composition API 实战指南</span>
+              </a>
+              <!-- 文章列表-前端3 -->
+              <a href="post.html?id=3" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">TypeScript 类型体操入门</span>
+              </a>
+              <!-- 文章列表-前端4 -->
+              <a href="post.html?id=4" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">前端性能优化十大策略</span>
+              </a>
+              <!-- 文章列表-前端5 -->
+              <a href="post.html?id=5" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Webpack 5 模块联邦实战</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 分类-后端开发 -->
+      <div class="category-card bg-surface rounded-xl shadow-card overflow-hidden" data-category="backend">
+        <div id="category-header-backend" class="p-5 cursor-pointer hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-secondary/15 flex items-center justify-center">
+                <i data-lucide="server" class="w-5 h-5 text-secondary"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-semibold text-on-surface">后端开发</h2>
+                <p class="text-sm text-on-surface-variant mt-0.5">Node.js、Python、Go</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-secondary/15 text-secondary">9 篇</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-on-surface-variant chevron-icon"></i>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant mt-3">服务端架构、数据库设计、API 开发与微服务实践</p>
+        </div>
+        <div class="category-content">
+          <div class="px-5 pb-5">
+            <div class="border-t border-outline-variant/30 pt-4 space-y-2">
+              <!-- 文章列表-后端1 -->
+              <a href="post.html?id=6" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Node.js 异步编程深入理解</span>
+              </a>
+              <!-- 文章列表-后端2 -->
+              <a href="post.html?id=7" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Python FastAPI 高性能 Web 开发</span>
+              </a>
+              <!-- 文章列表-后端3 -->
+              <a href="post.html?id=8" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Go 语言并发编程实战</span>
+              </a>
+              <!-- 文章列表-后端4 -->
+              <a href="post.html?id=9" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">PostgreSQL 高级查询优化</span>
+              </a>
+              <!-- 文章列表-后端5 -->
+              <a href="post.html?id=10" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">微服务架构设计模式</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 分类-运维DevOps -->
+      <div class="category-card bg-surface rounded-xl shadow-card overflow-hidden" data-category="devops">
+        <div id="category-header-devops" class="p-5 cursor-pointer hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-success/15 flex items-center justify-center">
+                <i data-lucide="container" class="w-5 h-5 text-success"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-semibold text-on-surface">运维 DevOps</h2>
+                <p class="text-sm text-on-surface-variant mt-0.5">Docker、K8s、CI/CD</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-success/15 text-success">7 篇</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-on-surface-variant chevron-icon"></i>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant mt-3">容器化部署、自动化运维与持续集成流水线</p>
+        </div>
+        <div class="category-content">
+          <div class="px-5 pb-5">
+            <div class="border-t border-outline-variant/30 pt-4 space-y-2">
+              <!-- 文章列表-运维1 -->
+              <a href="post.html?id=11" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Docker 从入门到实践</span>
+              </a>
+              <!-- 文章列表-运维2 -->
+              <a href="post.html?id=12" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Kubernetes 生产级集群部署</span>
+              </a>
+              <!-- 文章列表-运维3 -->
+              <a href="post.html?id=13" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">GitHub Actions 自动化部署</span>
+              </a>
+              <!-- 文章列表-运维4 -->
+              <a href="post.html?id=14" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Prometheus + Grafana 监控体系</span>
+              </a>
+              <!-- 文章列表-运维5 -->
+              <a href="post.html?id=15" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Ansible 自动化运维实战</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 分类-人工智能 -->
+      <div class="category-card bg-surface rounded-xl shadow-card overflow-hidden" data-category="ai">
+        <div id="category-header-ai" class="p-5 cursor-pointer hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-warning/15 flex items-center justify-center">
+                <i data-lucide="brain" class="w-5 h-5 text-warning"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-semibold text-on-surface">人工智能</h2>
+                <p class="text-sm text-on-surface-variant mt-0.5">机器学习、深度学习、LLM</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-warning/15 text-warning">8 篇</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-on-surface-variant chevron-icon"></i>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant mt-3">机器学习算法、大模型应用与 AI 工程实践</p>
+        </div>
+        <div class="category-content">
+          <div class="px-5 pb-5">
+            <div class="border-t border-outline-variant/30 pt-4 space-y-2">
+              <!-- 文章列表-AI1 -->
+              <a href="post.html?id=16" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">PyTorch 深度学习入门</span>
+              </a>
+              <!-- 文章列表-AI2 -->
+              <a href="post.html?id=17" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">LangChain 构建 LLM 应用</span>
+              </a>
+              <!-- 文章列表-AI3 -->
+              <a href="post.html?id=18" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">RAG 技术原理与实践</span>
+              </a>
+              <!-- 文章列表-AI4 -->
+              <a href="post.html?id=19" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">TensorFlow 模型部署</span>
+              </a>
+              <!-- 文章列表-AI5 -->
+              <a href="post.html?id=20" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">AI Agent 架构设计</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 分类-架构设计 -->
+      <div class="category-card bg-surface rounded-xl shadow-card overflow-hidden" data-category="architecture">
+        <div id="category-header-architecture" class="p-5 cursor-pointer hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-error/15 flex items-center justify-center">
+                <i data-lucide="layers" class="w-5 h-5 text-error"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-semibold text-on-surface">架构设计</h2>
+                <p class="text-sm text-on-surface-variant mt-0.5">系统设计、模式、案例</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-error/15 text-error">6 篇</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-on-surface-variant chevron-icon"></i>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant mt-3">软件架构模式、系统设计原则与最佳实践</p>
+        </div>
+        <div class="category-content">
+          <div class="px-5 pb-5">
+            <div class="border-t border-outline-variant/30 pt-4 space-y-2">
+              <!-- 文章列表-架构1 -->
+              <a href="post.html?id=21" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">DDD 领域驱动设计实践</span>
+              </a>
+              <!-- 文章列表-架构2 -->
+              <a href="post.html?id=22" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">CQRS 与 Event Sourcing</span>
+              </a>
+              <!-- 文章列表-架构3 -->
+              <a href="post.html?id=23" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">高并发系统设计原则</span>
+              </a>
+              <!-- 文章列表-架构4 -->
+              <a href="post.html?id=24" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">分布式事务解决方案</span>
+              </a>
+              <!-- 文章列表-架构5 -->
+              <a href="post.html?id=25" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">云原生架构设计指南</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 分类-工具效率 -->
+      <div class="category-card bg-surface rounded-xl shadow-card overflow-hidden" data-category="tools">
+        <div id="category-header-tools" class="p-5 cursor-pointer hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-primary/15 flex items-center justify-center">
+                <i data-lucide="wrench" class="w-5 h-5 text-primary"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-semibold text-on-surface">工具效率</h2>
+                <p class="text-sm text-on-surface-variant mt-0.5">IDE、插件、命令行</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-primary/15 text-primary">5 篇</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-on-surface-variant chevron-icon"></i>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant mt-3">提升开发效率的工具推荐与使用技巧</p>
+        </div>
+        <div class="category-content">
+          <div class="px-5 pb-5">
+            <div class="border-t border-outline-variant/30 pt-4 space-y-2">
+              <!-- 文章列表-工具1 -->
+              <a href="post.html?id=26" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">VS Code 必装插件推荐</span>
+              </a>
+              <!-- 文章列表-工具2 -->
+              <a href="post.html?id=27" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Zsh 与 Oh My Zsh 配置</span>
+              </a>
+              <!-- 文章列表-工具3 -->
+              <a href="post.html?id=28" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Git 高级用法与技巧</span>
+              </a>
+              <!-- 文章列表-工具4 -->
+              <a href="post.html?id=29" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">终端效率工具全家桶</span>
+              </a>
+              <!-- 文章列表-工具5 -->
+              <a href="post.html?id=30" class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4 text-on-surface-variant/60"></i>
+                <span class="text-sm text-on-surface hover:text-primary transition-colors">Docker Desktop vs OrbStack</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- 统计信息 -->
+    <div class="mt-10 flex items-center justify-center gap-8 text-center">
+      <div>
+        <div class="text-2xl font-bold text-primary">6</div>
+        <div class="text-xs text-on-surface-variant mt-1">分类总数</div>
+      </div>
+      <div class="w-px h-10 bg-outline/30"></div>
+      <div>
+        <div class="text-2xl font-bold text-secondary">47</div>
+        <div class="text-xs text-on-surface-variant mt-1">文章总数</div>
+      </div>
+    </div>
+    
+  </main>
+  <!-- @main-content:end -->
+
+  <script>
+    $(function() {
+      // 分类卡片展开/折叠交互
+      // 点击分类卡片头部时，展开或折叠该分类下的文章列表
+      // 同时旋转 chevron 图标
+      $('#categories-grid').on('click', '.category-card', function(e) {
+        // 确保点击的是卡片头部区域或内部元素
+        const $card = $(this);
+        const $content = $card.find('.category-content');
+        const $chevron = $card.find('.chevron-icon');
+        
+        // 切换展开/折叠状态
+        if ($content.hasClass('expanded')) {
+          // 折叠
+          $content.removeClass('expanded');
+          $chevron.removeClass('rotated');
+        } else {
+          // 展开
+          $content.addClass('expanded');
+          $chevron.addClass('rotated');
+        }
+      });
+      
+      // 阻止文章链接点击时触发卡片展开/折叠
+      $('#categories-grid').on('click', '.category-content a', function(e) {
+        e.stopPropagation();
+      });
+      
+      // 主题切换按钮
+      $('#btn-toggle-theme').on('click', function() {
+        console.log('主题切换功能待实现');
+      });
+      
+      // 搜索按钮
+      $('#btn-search').on('click', function() {
+        console.log('搜索功能待实现');
+      });
+    });
+    
+    lucide.createIcons();
+  </script>
+</body>
+</html>
