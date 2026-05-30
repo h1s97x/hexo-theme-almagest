@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almagest - 骨架屏</title>
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a24;
+      --border-primary: rgba(255, 255, 255, 0.08);
+      --text-tertiary: #5c5c6d;
+      --skeleton-base: #1a1a24;
+      --skeleton-highlight: #252532;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: var(--bg-primary);
+      min-height: 100vh;
+    }
+
+    /* Skeleton Animation */
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        var(--skeleton-base) 25%,
+        var(--skeleton-highlight) 50%,
+        var(--skeleton-base) 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    /* Header Skeleton */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(10, 10, 15, 0.9);
+      border-bottom: 1px solid var(--border-primary);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-logo {
+      width: 120px;
+      height: 24px;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    .header-nav-item {
+      width: 48px;
+      height: 16px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .header-action {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    /* Content Container */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 24px 60px;
+    }
+
+    /* Banner Skeleton */
+    .banner {
+      text-align: center;
+      padding: 40px 0 60px;
+    }
+
+    .banner-title {
+      width: 280px;
+      height: 40px;
+      margin: 0 auto 16px;
+    }
+
+    .banner-slogan {
+      width: 360px;
+      height: 20px;
+      margin: 0 auto 24px;
+    }
+
+    .banner-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .banner-stat {
+      width: 80px;
+      height: 16px;
+    }
+
+    /* Section Title Skeleton */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .section-title-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border-primary);
+    }
+
+    .section-title-text {
+      width: 80px;
+      height: 14px;
+    }
+
+    /* Article Card Skeleton */
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .article-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .article-cover {
+      width: 100%;
+      height: 200px;
+    }
+
+    .article-content {
+      padding: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .article-meta-item {
+      width: 60px;
+      height: 14px;
+    }
+
+    .article-title {
+      width: 70%;
+      height: 22px;
+      margin-bottom: 12px;
+    }
+
+    .article-excerpt {
+      width: 100%;
+      height: 14px;
+      margin-bottom: 8px;
+    }
+
+    .article-excerpt:last-of-type {
+      width: 85%;
+    }
+
+    .article-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .article-tags {
+      display: flex;
+      gap: 8px;
+    }
+
+    .article-tag {
+      width: 56px;
+      height: 24px;
+      border-radius: 4px;
+    }
+
+    .article-link {
+      width: 80px;
+      height: 14px;
+    }
+
+    /* Pagination Skeleton */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 48px;
+    }
+
+    .page-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .page-btn.active {
+      background: var(--accent-primary, #7c9cf0);
+      animation: none;
+    }
+
+    /* Footer Skeleton */
+    .footer {
+      margin-top: 80px;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border-primary);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .footer-link {
+      width: 48px;
+      height: 14px;
+    }
+
+    .footer-copyright {
+      width: 200px;
+      height: 13px;
+      margin: 0 auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-nav {
+        display: none;
+      }
+
+      .banner-title {
+        width: 200px;
+        height: 32px;
+      }
+
+      .banner-slogan {
+        width: 260px;
+        height: 18px;
+      }
+
+      .banner-stats {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .content {
+        padding: 80px 20px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Skeleton -->
+  <header class="header">
+    <div class="header-logo skeleton"></div>
+    <nav class="header-nav">
+      <div class="header-nav-item skeleton"></div>
+      <div class="header-nav-item skeleton"></div>
+      <div class="header-nav-item skeleton"></div>
+      <div class="header-nav-item skeleton"></div>
+      <div class="header-nav-item skeleton"></div>
+    </nav>
+    <div class="header-actions">
+      <div class="header-action skeleton"></div>
+      <div class="header-action skeleton"></div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Banner Skeleton -->
+    <div class="banner">
+      <div class="banner-title skeleton"></div>
+      <div class="banner-slogan skeleton"></div>
+      <div class="banner-stats">
+        <div class="banner-stat skeleton"></div>
+        <div class="banner-stat skeleton"></div>
+        <div class="banner-stat skeleton"></div>
+      </div>
+    </div>
+
+    <!-- Section Title -->
+    <div class="section-title">
+      <div class="section-title-line"></div>
+      <div class="section-title-text skeleton"></div>
+      <div class="section-title-line"></div>
+    </div>
+
+    <!-- Article List Skeleton -->
+    <div class="article-list">
+      <!-- Article Card 1 -->
+      <div class="article-card">
+        <div class="article-cover skeleton"></div>
+        <div class="article-content">
+          <div class="article-meta">
+            <div class="article-meta-item skeleton"></div>
+            <div class="article-meta-item skeleton"></div>
+          </div>
+          <div class="article-title skeleton"></div>
+          <div class="article-excerpt skeleton"></div>
+          <div class="article-excerpt skeleton"></div>
+          <div class="article-footer">
+            <div class="article-tags">
+              <div class="article-tag skeleton"></div>
+              <div class="article-tag skeleton"></div>
+            </div>
+            <div class="article-link skeleton"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Card 2 -->
+      <div class="article-card">
+        <div class="article-content">
+          <div class="article-meta">
+            <div class="article-meta-item skeleton"></div>
+            <div class="article-meta-item skeleton"></div>
+          </div>
+          <div class="article-title skeleton"></div>
+          <div class="article-excerpt skeleton"></div>
+          <div class="article-excerpt skeleton"></div>
+          <div class="article-footer">
+            <div class="article-tags">
+              <div class="article-tag skeleton"></div>
+            </div>
+            <div class="article-link skeleton"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Card 3 -->
+      <div class="article-card">
+        <div class="article-cover skeleton"></div>
+        <div class="article-content">
+          <div class="article-meta">
+            <div class="article-meta-item skeleton"></div>
+            <div class="article-meta-item skeleton"></div>
+          </div>
+          <div class="article-title skeleton"></div>
+          <div class="article-excerpt skeleton"></div>
+          <div class="article-excerpt skeleton"></div>
+          <div class="article-footer">
+            <div class="article-tags">
+              <div class="article-tag skeleton"></div>
+              <div class="article-tag skeleton"></div>
+            </div>
+            <div class="article-link skeleton"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination Skeleton -->
+    <div class="pagination">
+      <div class="page-btn skeleton"></div>
+      <div class="page-btn active"></div>
+      <div class="page-btn skeleton"></div>
+      <div class="page-btn skeleton"></div>
+      <div class="page-btn skeleton"></div>
+    </div>
+
+    <!-- Footer Skeleton -->
+    <footer class="footer">
+      <div class="footer-links">
+        <div class="footer-link skeleton"></div>
+        <div class="footer-link skeleton"></div>
+        <div class="footer-link skeleton"></div>
+      </div>
+      <div class="footer-copyright skeleton"></div>
+    </footer>
+  </div>
+</body>
+</html>
