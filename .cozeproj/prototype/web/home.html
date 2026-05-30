@@ -1,576 +1,890 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almagest - 探索宇宙的博客</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* ==================== CSS Variables ==================== */
+    :root {
+      /* Night Theme (Default) */
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a24;
 
-    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
-    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
-    <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+      --text-primary: #e8e8ed;
+      --text-secondary: #8b8b99;
+      --text-tertiary: #5c5c6d;
 
-    <style type="text/tailwindcss">
-      @theme {
-        /* === 品牌色 (星空蓝金色) === */
-        --color-primary: #4a90d9;
-        --color-primary-container: #1a3a5c;
-        --color-on-primary: #ffffff;
-        --color-secondary: #8b5cf6;
-        --color-secondary-container: #2a1a48;
-        --color-on-secondary: #ffffff;
-        /* === 背景 / 表面 (深空色系) === */
-        --color-background: #0a0e17;
-        --color-surface-container-lowest: #0d1220;
-        --color-surface: #12162a;
-        --color-surface-container: #1a1f3a;
-        --color-surface-container-high: #232842;
-        --color-surface-container-highest: #2a3050;
-        /* === 文字 === */
-        --color-on-surface: #e8ecf4;
-        --color-on-surface-variant: #a0aec0;
-        /* === 功能色 === */
-        --color-success: #10b981;
-        --color-error: #ef4444;
-        --color-warning: #f59e0b;
-        /* === 边框 === */
-        --color-outline: #2d3748;
-        --color-outline-variant: #1e2433;
-        /* === 圆角 === */
-        --radius-sm: 0.25rem;
-        --radius-md: 0.5rem;
-        --radius-lg: 0.75rem;
-        --radius-xl: 1rem;
-        --radius-2xl: 1.5rem;
-        --radius-full: 9999px;
-        /* === 阴影 === */
-        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
-        --shadow-float: 0 10px 25px rgba(0, 0, 0, 0.4);
-        --shadow-dialog: 0 25px 50px rgba(0, 0, 0, 0.5);
-        /* === 字体 === */
-        --font-sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+      --accent-primary: #7c9cf0;
+      --accent-secondary: #c9a0ff;
+      --accent-glow: rgba(124, 156, 240, 0.3);
+
+      --border-primary: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+
+      --font-sans: "Inter", "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+      --content-width: 800px;
+      --content-padding: 24px;
+
+      --transition-fast: 150ms ease-out;
+      --transition-normal: 250ms ease-out;
+      --transition-slow: 400ms ease-in-out;
+    }
+
+    /* Aurora Theme */
+    [data-theme="aurora"] {
+      --bg-primary: #fafafa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f5f5f7;
+
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #aeaeb2;
+
+      --accent-primary: #bf5af2;
+      --accent-secondary: #30d158;
+      --accent-glow: rgba(191, 90, 242, 0.15);
+
+      --border-primary: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.15);
+    }
+
+    /* Aurora Green Theme */
+    [data-theme="aurora-green"] {
+      --bg-primary: #0d1a14;
+      --bg-secondary: #132920;
+      --bg-tertiary: #1a382a;
+
+      --text-primary: #c8d9c5;
+      --text-secondary: #8fa888;
+      --text-tertiary: #5c7058;
+
+      --accent-primary: #32d74b;
+      --accent-secondary: #30d158;
+      --accent-glow: rgba(50, 215, 75, 0.2);
+
+      --border-primary: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Hiiragi Theme */
+    [data-theme="hiiragi"] {
+      --bg-primary: #fef9f3;
+      --bg-secondary: #fffbf7;
+      --bg-tertiary: #fff5eb;
+
+      --text-primary: #3d3a35;
+      --text-secondary: #8a847a;
+      --text-tertiary: #b8b2a9;
+
+      --accent-primary: #e07a3d;
+      --accent-secondary: #f4a261;
+      --accent-glow: rgba(224, 122, 61, 0.15);
+
+      --border-primary: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.15);
+    }
+
+    /* ==================== Reset & Base ==================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-primary);
+      background-color: var(--bg-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--accent-primary);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    a:hover {
+      color: var(--accent-secondary);
+    }
+
+    /* ==================== Stars Background ==================== */
+    #stars-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ==================== Layout ==================== */
+    .app-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==================== Header ==================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    [data-theme="aurora"] .header {
+      background: rgba(250, 250, 250, 0.8);
+    }
+
+    [data-theme="aurora-green"] .header {
+      background: rgba(13, 26, 20, 0.8);
+    }
+
+    [data-theme="hiiragi"] .header {
+      background: rgba(254, 249, 243, 0.8);
+    }
+
+    .header-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .logo svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: color var(--transition-fast);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--accent-primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .moon-phase {
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity var(--transition-fast);
+    }
+
+    .moon-phase:hover {
+      opacity: 1;
+    }
+
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+    }
+
+    .theme-toggle:hover {
+      background: var(--border-hover);
+      color: var(--accent-primary);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    /* ==================== Banner ==================== */
+    .banner {
+      padding: 140px var(--content-padding) 80px;
+      text-align: center;
+    }
+
+    .banner-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .banner-title {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .banner-slogan {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .banner-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+
+    .banner-stats span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==================== Main Content ==================== */
+    .main {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding) 80px;
+    }
+
+    /* ==================== Section Title ==================== */
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-primary);
+    }
+
+    /* ==================== Article List ==================== */
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .article-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all var(--transition-normal);
+    }
+
+    .article-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--accent-glow);
+    }
+
+    .article-cover {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .article-content {
+      padding: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .article-category {
+      color: var(--accent-primary);
+      font-weight: 500;
+    }
+
+    .article-title {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .article-title a {
+      color: inherit;
+    }
+
+    .article-title a:hover {
+      color: var(--accent-primary);
+    }
+
+    .article-excerpt {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .article-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .article-tags {
+      display: flex;
+      gap: 8px;
+    }
+
+    .article-tag {
+      padding: 4px 10px;
+      font-size: 12px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+    }
+
+    .article-tag:hover {
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+    }
+
+    .read-more {
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .read-more svg {
+      width: 14px;
+      height: 14px;
+      transition: transform var(--transition-fast);
+    }
+
+    .read-more:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* ==================== Pagination ==================== */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 48px;
+    }
+
+    .page-btn {
+      min-width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-primary);
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .page-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .page-btn.active {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: var(--bg-primary);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==================== Footer ==================== */
+    .footer {
+      padding: 40px var(--content-padding);
+      border-top: 1px solid var(--border-primary);
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .footer-link {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .footer-copyright {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* ==================== Responsive ==================== */
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
       }
 
-      /* 星空背景效果 */
-      .starry-bg {
-        background:
-          radial-gradient(ellipse at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-          radial-gradient(ellipse at 80% 20%, rgba(74, 144, 217, 0.1) 0%, transparent 50%),
-          radial-gradient(ellipse at 50% 50%, rgba(26, 26, 58, 1) 0%, rgba(10, 14, 23, 1) 100%);
+      .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      /* 星星动画 */
-      @keyframes twinkle {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
+      .banner {
+        padding: 120px 20px 60px;
       }
 
-      .star {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-        animation: twinkle 3s ease-in-out infinite;
+      .banner-title {
+        font-size: 32px;
       }
 
-      /* 毛玻璃效果 */
-      .glass {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+      .banner-slogan {
+        font-size: 16px;
       }
-    </style>
 
-    <!-- 图片兜底 -->
-    <script>
-      document.addEventListener(
-        'error',
-        function (e) {
-          const img = e.target;
-          if (img.tagName !== 'IMG' || img.dataset.fallback) return;
-          img.dataset.fallback = '1';
-          const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-          const cat = img.getAttribute('data-category') || '其他';
-          const alt = img.getAttribute('alt') || '';
-          const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
-          const icons = {
-            人物: '👤',
-            自然风景: '🏞',
-            动物: '🐾',
-            建筑城市: '🏙',
-            运动体育: '⚽',
-            交通工具: '🚗',
-            食物: '🍽',
-            服饰时尚: '👗',
-            商业科技: '💼',
-            游戏娱乐: '🎮',
-            艺术: '🎨',
-            其他: '🖼'
-          };
-          const icon = icons[cat] || '🖼';
-          const w = img.width || 400,
-            h = img.height || 300;
-          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
-          img.src = 'data:image/svg+xml,' + svg;
-        },
-        true
-      );
-    </script>
-  </head>
+      .banner-stats {
+        flex-direction: column;
+        gap: 8px;
+      }
 
-  <body class="bg-background text-on-surface min-h-screen starry-bg relative overflow-x-hidden">
-    <!-- 顶部星星装饰 -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      <div class="star w-1 h-1 top-[10%] left-[15%]" style="animation-delay: 0s"></div>
-      <div class="star w-1.5 h-1.5 top-[20%] left-[80%]" style="animation-delay: 1s"></div>
-      <div class="star w-1 h-1 top-[40%] left-[25%]" style="animation-delay: 2s"></div>
-      <div class="star w-0.5 h-0.5 top-[60%] left-[70%]" style="animation-delay: 0.5s"></div>
-      <div class="star w-1 h-1 top-[80%] left-[40%]" style="animation-delay: 1.5s"></div>
-      <div class="star w-0.5 h-0.5 top-[30%] left-[90%]" style="animation-delay: 2.5s"></div>
-      <div class="star w-1 h-1 top-[70%] left-[10%]" style="animation-delay: 0.8s"></div>
-      <div class="star w-1.5 h-1.5 top-[50%] left-[55%]" style="animation-delay: 1.8s"></div>
-    </div>
+      .main {
+        padding: 0 20px 60px;
+      }
 
-    <!-- @nav:start 导航组件 -->
-    <header class="sticky top-0 z-50 glass bg-surface/80 border-b border-outline/30">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <!-- Logo -->
-        <a href="home.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-            />
+      .article-content {
+        padding: 16px;
+      }
+
+      .article-title {
+        font-size: 18px;
+      }
+
+      .article-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+
+    /* ==================== Animations ==================== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .article-card {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .article-card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .article-card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    .article-card:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <!-- Stars Background Canvas -->
+  <canvas id="stars-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a10 10 0 0 1 0 20" fill="currentColor" opacity="0.3" />
+            <circle cx="12" cy="12" r="3" />
+            <circle cx="8" cy="8" r="1" fill="currentColor" />
+            <circle cx="16" cy="6" r="0.5" fill="currentColor" />
+            <circle cx="18" cy="14" r="1" fill="currentColor" />
+            <circle cx="6" cy="16" r="0.5" fill="currentColor" />
           </svg>
-          <span class="font-bold text-lg text-on-surface">Almagest</span>
+          Almagest
         </a>
 
-        <!-- 导航 -->
-        <nav class="flex items-center gap-1">
-          <a
-            href="home.html"
-            class="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-md"
-            aria-current="page"
-            >首页</a
-          >
-          <a
-            href="archive.html"
-            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
-            >归档</a
-          >
-          <a
-            href="categories.html"
-            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
-            >分类</a
-          >
-          <a
-            href="tags.html"
-            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
-            >标签</a
-          >
-          <a
-            href="about.html"
-            class="px-4 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors"
-            >关于</a
-          >
+        <nav class="nav">
+          <a href="/" class="nav-link active">首页</a>
+          <a href="/archives" class="nav-link">归档</a>
+          <a href="/categories" class="nav-link">分类</a>
+          <a href="/tags" class="nav-link">标签</a>
+          <a href="/about" class="nav-link">关于</a>
         </nav>
 
-        <!-- 操作按钮 -->
-        <div class="flex items-center gap-2">
-          <!-- 主题切换 -->
-          <button
-            id="btn-toggle-theme"
-            class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
-            aria-label="切换主题"
-          >
-            <i data-lucide="moon" class="w-5 h-5"></i>
+        <div class="header-actions">
+          <span class="moon-phase" title="当前月相">🌙</span>
+          <button class="theme-toggle" id="themeToggle" title="切换主题">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
           </button>
-          <!-- 搜索 -->
-          <button
-            id="btn-search"
-            class="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
-            aria-label="搜索"
-          >
-            <i data-lucide="search" class="w-5 h-5"></i>
+          <button class="menu-toggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
           </button>
         </div>
       </div>
     </header>
-    <!-- @nav:end 导航组件 -->
 
-    <!-- @main-content:start -->
-    <main class="relative z-10 max-w-6xl mx-auto px-6 py-8">
-      <!-- 页面标题区 -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-on-surface mb-2">欢迎来到 Almagest</h1>
-        <p class="text-on-surface-variant text-base">探索技术与创意的无限可能，记录成长的每一步</p>
-      </div>
-
-      <div class="flex gap-8">
-        <!-- 主内容区：文章列表 -->
-        <div class="flex-1 min-w-0">
-          <div id="article-list" class="space-y-6">
-            <!-- 文章卡片1 -->
-            <article
-              class="bg-surface rounded-lg shadow-card p-6 hover:shadow-float transition-all duration-300 cursor-pointer"
-            >
-              <a href="post.html?id=1" class="block">
-                <div class="flex items-center gap-3 mb-3">
-                  <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-secondary/15 text-secondary"
-                    >前端开发</span
-                  >
-                  <time class="text-xs text-on-surface-variant">2024年1月15日</time>
-                </div>
-                <h2
-                  class="text-xl font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
-                >
-                  深入理解现代前端框架的响应式原理
-                </h2>
-                <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
-                  本文探讨了现代前端框架中响应式系统的核心实现机制，从 Vue 的 Proxy 到 React 的
-                  Fiber 架构，帮助开发者更好地理解框架底层工作原理。
-                </p>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"
-                    >
-                      <span class="text-xs font-medium text-primary">初</span>
-                    </div>
-                    <span class="text-xs text-on-surface-variant">小初</span>
-                  </div>
-                  <span class="text-xs text-on-surface-variant flex items-center gap-1">
-                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> 1.2k 阅读
-                  </span>
-                </div>
-              </a>
-            </article>
-
-            <!-- 文章卡片2 -->
-            <article
-              class="bg-surface rounded-lg shadow-card p-6 hover:shadow-float transition-all duration-300 cursor-pointer"
-            >
-              <a href="post.html?id=2" class="block">
-                <div class="flex items-center gap-3 mb-3">
-                  <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-success/15 text-success"
-                    >后端技术</span
-                  >
-                  <time class="text-xs text-on-surface-variant">2024年1月12日</time>
-                </div>
-                <h2
-                  class="text-xl font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
-                >
-                  Go 语言并发编程实战：从入门到精通
-                </h2>
-                <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
-                  通过实际案例深入讲解 Go 语言的协程、通道、select
-                  等并发原语的使用技巧，以及常见并发场景的最佳实践和性能优化方法。
-                </p>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"
-                    >
-                      <span class="text-xs font-medium text-primary">初</span>
-                    </div>
-                    <span class="text-xs text-on-surface-variant">小初</span>
-                  </div>
-                  <span class="text-xs text-on-surface-variant flex items-center gap-1">
-                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> 986 阅读
-                  </span>
-                </div>
-              </a>
-            </article>
-
-            <!-- 文章卡片3 -->
-            <article
-              class="bg-surface rounded-lg shadow-card p-6 hover:shadow-float transition-all duration-300 cursor-pointer"
-            >
-              <a href="post.html?id=3" class="block">
-                <div class="flex items-center gap-3 mb-3">
-                  <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-warning/15 text-warning"
-                    >DevOps</span
-                  >
-                  <time class="text-xs text-on-surface-variant">2024年1月8日</time>
-                </div>
-                <h2
-                  class="text-xl font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
-                >
-                  Docker 容器化部署完全指南
-                </h2>
-                <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
-                  详细介绍 Docker 的核心概念、镜像构建最佳实践、网络配置以及 Docker Compose
-                  编排技巧，让你的应用交付更加标准化。
-                </p>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"
-                    >
-                      <span class="text-xs font-medium text-primary">初</span>
-                    </div>
-                    <span class="text-xs text-on-surface-variant">小初</span>
-                  </div>
-                  <span class="text-xs text-on-surface-variant flex items-center gap-1">
-                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> 756 阅读
-                  </span>
-                </div>
-              </a>
-            </article>
-
-            <!-- 文章卡片4 -->
-            <article
-              class="bg-surface rounded-lg shadow-card p-6 hover:shadow-float transition-all duration-300 cursor-pointer"
-            >
-              <a href="post.html?id=4" class="block">
-                <div class="flex items-center gap-3 mb-3">
-                  <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-error/15 text-error"
-                    >数据库</span
-                  >
-                  <time class="text-xs text-on-surface-variant">2024年1月5日</time>
-                </div>
-                <h2
-                  class="text-xl font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
-                >
-                  PostgreSQL 高级特性与性能调优实战
-                </h2>
-                <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
-                  深入解析 PostgreSQL
-                  的索引类型、查询优化、事务隔离级别以及高可用架构设计，帮助你构建高效可靠的数据存储层。
-                </p>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"
-                    >
-                      <span class="text-xs font-medium text-primary">初</span>
-                    </div>
-                    <span class="text-xs text-on-surface-variant">小初</span>
-                  </div>
-                  <span class="text-xs text-on-surface-variant flex items-center gap-1">
-                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> 623 阅读
-                  </span>
-                </div>
-              </a>
-            </article>
-
-            <!-- 文章卡片5 -->
-            <article
-              class="bg-surface rounded-lg shadow-card p-6 hover:shadow-float transition-all duration-300 cursor-pointer"
-            >
-              <a href="post.html?id=5" class="block">
-                <div class="flex items-center gap-3 mb-3">
-                  <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-secondary/15 text-secondary"
-                    >前端开发</span
-                  >
-                  <time class="text-xs text-on-surface-variant">2024年1月2日</time>
-                </div>
-                <h2
-                  class="text-xl font-semibold text-on-surface mb-2 hover:text-primary transition-colors"
-                >
-                  TypeScript 类型体操：从入门到进阶
-                </h2>
-                <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
-                  全面讲解 TypeScript
-                  高级类型技巧，包括条件类型、映射类型、模板字面量类型等，让你充分发挥 TypeScript
-                  的类型系统威力。
-                </p>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"
-                    >
-                      <span class="text-xs font-medium text-primary">初</span>
-                    </div>
-                    <span class="text-xs text-on-surface-variant">小初</span>
-                  </div>
-                  <span class="text-xs text-on-surface-variant flex items-center gap-1">
-                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> 1.1k 阅读
-                  </span>
-                </div>
-              </a>
-            </article>
-          </div>
-
-          <!-- 加载更多按钮 -->
-          <div class="mt-8 text-center">
-            <button
-              id="btn-load-more"
-              class="bg-surface-container text-on-surface px-6 py-3 rounded-md text-sm font-medium hover:bg-surface-container-high active:scale-[0.98] transition-all inline-flex items-center gap-2"
-            >
-              <i data-lucide="chevron-down" class="w-4 h-4"></i>加载更多
-            </button>
-          </div>
+    <!-- Banner -->
+    <section class="banner">
+      <div class="banner-inner">
+        <h1 class="banner-title">探索宇宙的边界</h1>
+        <p class="banner-slogan">记录技术与生活的点滴，见证星辰与代码的交汇</p>
+        <div class="banner-stats">
+          <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            48 篇文章
+          </span>
+          <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            12 个分类
+          </span>
+          <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="4" y1="9" x2="20" y2="9" />
+              <line x1="4" y1="15" x2="20" y2="15" />
+              <line x1="10" y1="3" x2="8" y2="21" />
+              <line x1="16" y1="3" x2="14" y2="21" />
+            </svg>
+            156 个标签
+          </span>
         </div>
-
-        <!-- 侧边栏 -->
-        <aside class="w-72 shrink-0 space-y-6">
-          <!-- 博主信息卡片 -->
-          <div class="bg-surface rounded-lg shadow-card p-5">
-            <div class="flex flex-col items-center text-center">
-              <div
-                class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-3"
-              >
-                <span class="text-2xl font-bold text-primary">初</span>
-              </div>
-              <h3 class="text-base font-semibold text-on-surface mb-1">小初</h3>
-              <p class="text-xs text-on-surface-variant mb-4">全栈开发者 | 技术写作者</p>
-              <div class="flex items-center gap-4 text-xs text-on-surface-variant">
-                <div class="text-center">
-                  <div class="text-base font-semibold text-on-surface">48</div>
-                  <div>文章</div>
-                </div>
-                <div class="w-px h-8 bg-outline-variant/30"></div>
-                <div class="text-center">
-                  <div class="text-base font-semibold text-on-surface">12</div>
-                  <div>分类</div>
-                </div>
-                <div class="w-px h-8 bg-outline-variant/30"></div>
-                <div class="text-center">
-                  <div class="text-base font-semibold text-on-surface">156</div>
-                  <div>标签</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 热门标签 -->
-          <div class="bg-surface rounded-lg shadow-card p-5">
-            <h3 class="text-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
-              <i data-lucide="tag" class="w-4 h-4 text-primary"></i>热门标签
-            </h3>
-            <div class="flex flex-wrap gap-2">
-              <a
-                href="tags.html?tag=react"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                >React</a
-              >
-              <a
-                href="tags.html?tag=vue"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-secondary/10 text-secondary hover:bg-secondary/20 transition-colors"
-                >Vue</a
-              >
-              <a
-                href="tags.html?tag=nodejs"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-success/10 text-success hover:bg-success/20 transition-colors"
-                >Node.js</a
-              >
-              <a
-                href="tags.html?tag=python"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-warning/10 text-warning hover:bg-warning/20 transition-colors"
-                >Python</a
-              >
-              <a
-                href="tags.html?tag=docker"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-error/10 text-error hover:bg-error/20 transition-colors"
-                >Docker</a
-              >
-              <a
-                href="tags.html?tag=kubernetes"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                >Kubernetes</a
-              >
-              <a
-                href="tags.html?tag=typescript"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-secondary/10 text-secondary hover:bg-secondary/20 transition-colors"
-                >TypeScript</a
-              >
-              <a
-                href="tags.html?tag=postgres"
-                class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-success/10 text-success hover:bg-success/20 transition-colors"
-                >PostgreSQL</a
-              >
-            </div>
-          </div>
-
-          <!-- 分类统计 -->
-          <div class="bg-surface rounded-lg shadow-card p-5">
-            <h3 class="text-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
-              <i data-lucide="folder" class="w-4 h-4 text-primary"></i>分类统计
-            </h3>
-            <div class="space-y-3">
-              <a
-                href="categories.html?cat=frontend"
-                class="flex items-center justify-between p-2 rounded hover:bg-surface-container transition-colors"
-              >
-                <span class="text-sm text-on-surface">前端开发</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary">18</span>
-              </a>
-              <a
-                href="categories.html?cat=backend"
-                class="flex items-center justify-between p-2 rounded hover:bg-surface-container transition-colors"
-              >
-                <span class="text-sm text-on-surface">后端技术</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-success/10 text-success">15</span>
-              </a>
-              <a
-                href="categories.html?cat=devops"
-                class="flex items-center justify-between p-2 rounded hover:bg-surface-container transition-colors"
-              >
-                <span class="text-sm text-on-surface">DevOps</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-warning/10 text-warning">8</span>
-              </a>
-              <a
-                href="categories.html?cat=database"
-                class="flex items-center justify-between p-2 rounded hover:bg-surface-container transition-colors"
-              >
-                <span class="text-sm text-on-surface">数据库</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-error/10 text-error">5</span>
-              </a>
-              <a
-                href="categories.html?cat=ai"
-                class="flex items-center justify-between p-2 rounded hover:bg-surface-container transition-colors"
-              >
-                <span class="text-sm text-on-surface">AI 与机器学习</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-secondary/10 text-secondary">2</span>
-              </a>
-            </div>
-          </div>
-        </aside>
       </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main">
+      <h2 class="section-title">最新文章</h2>
+
+      <div class="article-list">
+        <!-- Article 1 -->
+        <article class="article-card">
+          <img
+            src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=80"
+            alt="文章封面"
+            class="article-cover"
+          />
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-category">技术</span>
+              <span>2024-05-15</span>
+              <span>8 分钟</span>
+            </div>
+            <h3 class="article-title">
+              <a href="/posts/vue3-composition-api-deep-dive">Vue 3 Composition API 深入理解</a>
+            </h3>
+            <p class="article-excerpt">
+              探索 Vue 3 中 Composition API 的核心概念，包括 setup、ref、reactive、computed
+              等关键概念，以及如何组织大型应用的代码结构...
+            </p>
+            <div class="article-footer">
+              <div class="article-tags">
+                <span class="article-tag">Vue</span>
+                <span class="article-tag">JavaScript</span>
+              </div>
+              <a href="/posts/vue3-composition-api-deep-dive" class="read-more">
+                阅读全文
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 2 -->
+        <article class="article-card">
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-category">随想</span>
+              <span>2024-05-10</span>
+              <span>5 分钟</span>
+            </div>
+            <h3 class="article-title">
+              <a href="/posts/coding-and-stargazing">深夜coding与观星</a>
+            </h3>
+            <p class="article-excerpt">
+              当城市的喧嚣褪去，代码的逻辑与星空的秩序在深夜交汇。编程教会我耐心，观星教会我谦卑...
+            </p>
+            <div class="article-footer">
+              <div class="article-tags">
+                <span class="article-tag">生活</span>
+                <span class="article-tag">天文</span>
+              </div>
+              <a href="/posts/coding-and-stargazing" class="read-more">
+                阅读全文
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 3 -->
+        <article class="article-card">
+          <img
+            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80"
+            alt="文章封面"
+            class="article-cover"
+          />
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-category">技术</span>
+              <span>2024-05-05</span>
+              <span>12 分钟</span>
+            </div>
+            <h3 class="article-title">
+              <a href="/posts/docker-for-developers">Docker 容器化开发实战</a>
+            </h3>
+            <p class="article-excerpt">
+              从零开始学习 Docker，掌握容器化技术的基本概念和使用方法，打造一致的开发和部署环境...
+            </p>
+            <div class="article-footer">
+              <div class="article-tags">
+                <span class="article-tag">Docker</span>
+                <span class="article-tag">DevOps</span>
+              </div>
+              <a href="/posts/docker-for-developers" class="read-more">
+                阅读全文
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Pagination -->
+      <nav class="pagination">
+        <button class="page-btn" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </nav>
     </main>
-    <!-- @main-content:end -->
 
-    <script>
-      $(function () {
-        // 搜索按钮 - 点击后应展开搜索面板
-        $('#btn-search').on('click', function () {
-          console.log('展开搜索面板');
-        });
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-links">
+          <a href="https://github.com/h1s97x" class="footer-link" target="_blank">GitHub</a>
+          <a href="/atom.xml" class="footer-link">RSS</a>
+          <a href="/search" class="footer-link">搜索</a>
+        </div>
+        <p class="footer-copyright">
+          © 2024 Almagest Theme · 基于 Hexo · 精心打造
+        </p>
+      </div>
+    </footer>
+  </div>
 
-        // 主题切换按钮 - 点击后应切换亮/暗主题
-        $('#btn-toggle-theme').on('click', function () {
-          console.log('切换主题');
-        });
+  <!-- Stars Animation Script -->
+  <script>
+    // Canvas Stars Animation
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
 
-        // 加载更多按钮 - 点击后应加载更多文章
-        // 完整实现：
-        // 1. 显示加载状态（按钮内显示 loading spinner）
-        // 2. 调用分页接口获取下一页数据
-        // 3. 追加新文章到 #article-list
-        // 4. 若无更多数据，隐藏加载更多按钮
-        $('#btn-load-more').on('click', function () {
-          console.log('加载更多文章');
-        });
+    let stars = [];
+    const numStars = 100;
 
-        // 文章卡片点击 - 跳转到文章详情页
-        // 注意：文章列表使用事件委托处理卡片点击
-        $('#article-list').on('click', 'article', function () {
-          const $article = $(this);
-          const link = $article.find('a').attr('href');
-          if (link) {
-            window.location.href = link;
-          }
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 0.5,
+          opacity: Math.random() * 0.5 + 0.3,
+          twinkleSpeed: Math.random() * 0.02 + 0.01
         });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(star => {
+        // Twinkle effect
+        star.opacity += Math.sin(Date.now() * star.twinkleSpeed) * 0.01;
+        star.opacity = Math.max(0.2, Math.min(0.8, star.opacity));
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(124, 156, 240, ${star.opacity})`;
+        ctx.fill();
       });
-    </script>
-    <script>
-      lucide.createIcons();
-    </script>
-  </body>
+
+      requestAnimationFrame(drawStars);
+    }
+
+    resizeCanvas();
+    createStars();
+    drawStars();
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      createStars();
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themes = ['night', 'aurora', 'aurora-green', 'hiiragi'];
+    let currentThemeIndex = 0;
+
+    themeToggle.addEventListener('click', () => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      const theme = themes[currentThemeIndex];
+      document.body.setAttribute('data-theme', theme === 'night' ? '' : theme);
+
+      // Update moon phase
+      const moonPhases = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+      const phaseIndex = Math.floor(Date.now() / (1000 * 60 * 60 * 6)) % 8;
+      document.querySelector('.moon-phase').textContent = moonPhases[phaseIndex];
+    });
+  </script>
+</body>
 </html>
