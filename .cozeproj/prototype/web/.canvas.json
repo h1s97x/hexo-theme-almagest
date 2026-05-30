@@ -1,0 +1,76 @@
+{
+  "name": "Almagest Web Prototype",
+  "version": "2.0.0",
+  "description": "Hexo Theme Almagest 页面原型设计",
+  "pages": [
+    {
+      "name": "home",
+      "path": "home.html",
+      "title": "首页",
+      "description": "博客首页，包含 Banner 和文章列表"
+    },
+    {
+      "name": "post",
+      "path": "post.html",
+      "title": "文章页",
+      "description": "文章详情页"
+    },
+    {
+      "name": "archive",
+      "path": "archive.html",
+      "title": "归档页",
+      "description": "文章归档时间线"
+    },
+    {
+      "name": "categories",
+      "path": "categories.html",
+      "title": "分类页",
+      "description": "文章分类卡片"
+    },
+    {
+      "name": "tags",
+      "path": "tags.html",
+      "title": "标签页",
+      "description": "标签云页面"
+    },
+    {
+      "name": "about",
+      "path": "about.html",
+      "title": "关于页",
+      "description": "个人介绍页面"
+    }
+  ],
+  "themes": [
+    {
+      "id": "night",
+      "name": "星夜",
+      "primaryColor": "#7c9cf0",
+      "secondaryColor": "#c9a0ff"
+    },
+    {
+      "id": "aurora",
+      "name": "极光",
+      "primaryColor": "#bf5af2",
+      "secondaryColor": "#30d158"
+    },
+    {
+      "id": "aurora-green",
+      "name": "极光绿",
+      "primaryColor": "#32d74b",
+      "secondaryColor": "#30d158"
+    },
+    {
+      "id": "hiiragi",
+      "name": "日向",
+      "primaryColor": "#e07a3d",
+      "secondaryColor": "#f4a261"
+    }
+  ],
+  "layout": "centered",
+  "features": [
+    "particles",
+    "meteor",
+    "constellation",
+    "moon-phase"
+  ]
+}
