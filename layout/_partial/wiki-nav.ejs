@@ -1,11 +1,14 @@
+<%
+const config = theme;
+%>
 <div class="wiki-nav">
   <div class="wiki-nav-header">
     <h3><%= __('wiki.documentation') %></h3>
   </div>
   
-  <% if (config.theme.wiki && config.theme.wiki.projects) { %>
+  <% if (config.wiki && config.wiki.projects) { %>
     <div class="wiki-projects">
-      <% config.theme.wiki.projects.forEach(project => { %>
+      <% config.wiki.projects.forEach(project => { %>
         <div class="wiki-project">
           <div class="wiki-project-title">
             <a href="<%= project.path %>"><%= project.name %></a>
@@ -46,8 +49,8 @@
   <% } %>
   
   <div class="wiki-nav-footer">
-    <% if (config.theme.wiki && config.theme.wiki.edit_url) { %>
-      <a href="<%= config.theme.wiki.edit_url %>" class="wiki-edit-link" target="_blank">
+    <% if (config.wiki && config.wiki.edit_url) { %>
+      <a href="<%= config.wiki.edit_url %>" class="wiki-edit-link" target="_blank">
         <%= __('wiki.edit_on_github') %>
       </a>
     <% } %>

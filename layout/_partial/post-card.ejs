@@ -1,0 +1,49 @@
+<%
+// Post card partial
+// 用于首页 / 归档页的文章卡片。调用方需传入局部变量 post。
+const config = theme;
+// 兼容：既支持 partial 传入的 post，也支持直接用 page（TDZ 安全写法）
+// 当前唯一调用方 index.ejs 传入的是 page.posts 中的完整 post 对象（含 content）；
+// 兜底的 page 路径下 content 可能为空，下方 get_reading_time / get_excerpt 均已安全兜底。
+const cardPost = typeof post !== 'undefined' ? post : page;
+const show_excerpt = config.features?.show_excerpt !== false;
+const excerpt_length = config.article?.excerpt_length || 200;
+%>
+
+<article class="post-card">
+  <h2 class="post-title">
+    <a href="<%= url_for(cardPost.path) %>"><%= cardPost.title %></a>
+  </h2>
+
+  <div class="post-meta">
+    <span class="meta-item">
+      <time datetime="<%= date_xml(cardPost.date) %>">
+        <%= date(cardPost.date, config.date_format || 'YYYY-MM-DD') %>
+      </time>
+    </span>
+
+    <% if (cardPost.categories && cardPost.categories.length > 0) { %>
+      <span class="meta-item">
+        <% cardPost.categories.forEach((cat, idx) => { %>
+          <a href="<%= url_for(cat.path) %>"><%= cat.name %></a><% if (idx < cardPost.categories.length - 1) { %>, <% } %>
+        <% }); %>
+      </span>
+    <% } %>
+
+    <% if (config.features?.reading_time && cardPost.content) { %>
+      <span class="meta-item">
+        <%- get_reading_time(cardPost.content) %> min read
+      </span>
+    <% } %>
+  </div>
+
+  <% if (show_excerpt) { %>
+    <p class="post-excerpt">
+      <%- get_excerpt(cardPost, excerpt_length) %>
+    </p>
+  <% } %>
+
+  <a href="<%= url_for(cardPost.path) %>" class="post-read-more">
+    <%= __('read_more') || 'Read More' %> &rarr;
+  </a>
+</article>

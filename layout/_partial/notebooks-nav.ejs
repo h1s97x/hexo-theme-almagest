@@ -1,11 +1,14 @@
+<%
+const config = theme;
+%>
 <div class="notebooks-nav">
   <div class="notebooks-nav-header">
     <h3><%= __('notebooks.my_notebooks') %></h3>
   </div>
   
-  <% if (config.theme.notebooks && config.theme.notebooks.categories) { %>
+  <% if (config.notebooks && config.notebooks.categories) { %>
     <div class="notebooks-categories">
-      <% Object.entries(config.theme.notebooks.categories).forEach(([key, category]) => { %>
+      <% Object.entries(config.notebooks.categories).forEach(([key, category]) => { %>
         <div class="notebooks-category">
           <div class="notebooks-category-title">
             <a href="<%= category.path %>" 

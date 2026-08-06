@@ -1,0 +1,19 @@
+$:
+  push:
+    - name: smoke-test
+      docker:
+        image: node:20
+      stages:
+        - name: build-demo
+          script: |
+            set -e
+            bash test/ci-smoke-test.sh
+  pull_request:
+    - name: smoke-test
+      docker:
+        image: node:20
+      stages:
+        - name: build-demo
+          script: |
+            set -e
+            bash test/ci-smoke-test.sh

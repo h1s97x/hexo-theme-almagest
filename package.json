@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/username/hexo-theme-almagest.git"
+    "url": "git+https://cnb.cool/h1s97x/hexo-theme-almagest.git"
   },
   "keywords": [
     "hexo",
@@ -28,19 +28,20 @@
     "dark-mode",
     "astronomy"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "QAQ",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/username/hexo-theme-almagest/issues"
+    "url": "https://cnb.cool/h1s97x/hexo-theme-almagest/-/issues"
   },
-  "homepage": "https://github.com/username/hexo-theme-almagest",
+  "homepage": "https://cnb.cool/h1s97x/hexo-theme-almagest",
   "engines": {
     "node": ">=14.0.0",
     "hexo": ">=6.0.0"
   },
   "dependencies": {
     "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-stylus": "^3.0.1"
+    "hexo-renderer-stylus": "^3.0.1",
+    "moment": "^2.29.4"
   },
   "optionalDependencies": {
     "cheerio": "^1.1.0",

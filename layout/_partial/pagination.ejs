@@ -1,0 +1,28 @@
+<%
+// Pagination partial
+// 支持 page.prev / page.next 两种来源：
+// 1. Hexo 内置分页生成的 page（含 prev_page / next_page / prev / next）
+// 2. 自定义分页数据（page.page_prev / page.page_next）
+const prev = page.prev || page.prev_page || page.page_prev;
+const next = page.next || page.next_page || page.page_next;
+%>
+
+<% if (prev || next) { %>
+  <nav class="pagination" aria-label="<%= __('pagination') || 'Pagination' %>">
+    <% if (prev) { %>
+      <a href="<%= url_for(prev.path || prev) %>" class="pagination-link pagination-prev">
+        <span aria-hidden="true">&larr;</span> <%= __('prev') || 'Prev' %>
+      </a>
+    <% } %>
+
+    <span class="pagination-info">
+      <%= page.current || 1 %> / <%= page.total || 1 %>
+    </span>
+
+    <% if (next) { %>
+      <a href="<%= url_for(next.path || next) %>" class="pagination-link pagination-next">
+        <%= __('next') || 'Next' %> <span aria-hidden="true">&rarr;</span>
+      </a>
+    <% } %>
+  </nav>
+<% } %>

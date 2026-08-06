@@ -1,11 +1,14 @@
+<%
+const config = theme;
+%>
 <div class="topic-nav">
   <div class="topic-nav-header">
     <h3><%= __('topic.series') %></h3>
   </div>
   
-  <% if (config.theme.topics && config.theme.topics.length > 0) { %>
+  <% if (config.topics && config.topics.length > 0) { %>
     <div class="topic-list">
-      <% config.theme.topics.forEach(topic => { %>
+      <% config.topics.forEach(topic => { %>
         <div class="topic-item">
           <a href="<%= topic.path %>" 
              class="topic-item-link <%= topic.path === config.url + topic.path ? 'active' : '' %>">
@@ -37,8 +40,8 @@
   <% } %>
   
   <div class="topic-nav-footer">
-    <% if (config.theme.topics_archive_url) { %>
-      <a href="<%= config.theme.topics_archive_url %>" class="topic-archive-link">
+    <% if (config.topics_archive_url) { %>
+      <a href="<%= config.topics_archive_url %>" class="topic-archive-link">
         <%= __('topic.view_all') %>
       </a>
     <% } %>

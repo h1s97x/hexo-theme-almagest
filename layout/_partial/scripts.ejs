@@ -1,0 +1,34 @@
+<%
+// Scripts partial
+// 统一在这里引入主题前端 JS，保证所有走 layout.ejs 的页面都加载脚本
+const config = theme;
+const cdn_prefix = config.cdn_prefix || '';
+const version = config.version || '1.0.0';
+const asset = function(path) {
+  // 拼接 CDN 前缀 + 版本号（用于缓存刷新）
+  const base = cdn_prefix ? cdn_prefix.replace(/\/$/, '') : '';
+  return url_for(base + path + '?v=' + version);
+};
+%>
+
+<!-- Theme Scripts -->
+<script src="<%= asset('/js/theme.js') %>"></script>
+
+<% if (config.features?.search) { %>
+  <script src="<%= asset('/js/search.js') %>"></script>
+<% } %>
+
+<% if (config.image?.lazy_load) { %>
+  <script src="<%= asset('/js/lazy-load.js') %>"></script>
+<% } %>
+
+<% if (config.features?.code_copy) { %>
+  <script src="<%= asset('/js/code-copy.js') %>"></script>
+<% } %>
+
+<script src="<%= asset('/js/astronomy.js') %>"></script>
+
+<!-- Custom Inject: body_end -->
+<% if (config.inject?.body_end) { %>
+  <%- config.inject.body_end %>
+<% } %>

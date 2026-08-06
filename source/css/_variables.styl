@@ -113,6 +113,32 @@ $margin-sm = $spacing-sm
 $margin-md = $spacing-md
 $margin-lg = $spacing-lg
 $margin-xl = $spacing-xl
+$margin-2xl = $spacing-2xl
+$margin-3xl = $spacing-3xl
+$margin-4xl = $spacing-4xl
+
+// 兼容别名：部分样式文件使用 $space-* 命名
+// 注意：Stylus 变量按值传递，此处别名是赋值时的快照。
+// 别名「只读」，请修改上方源变量（$spacing-* / $*-color 等），
+// 不要直接改别名，否则两套命名会漂移导致样式不一致。
+$space-xs = $spacing-xs
+$space-sm = $spacing-sm
+$space-md = $spacing-md
+$space-lg = $spacing-lg
+$space-xl = $spacing-xl
+$space-2xl = $spacing-2xl
+$space-3xl = $spacing-3xl
+$space-4xl = $spacing-4xl
+
+// 颜色别名：$color-* 等价于 $*-color 命名（同样「只读」，请修改源变量）
+$color-primary = $primary-color
+$color-primary-light = $primary-light
+$color-primary-dark = $primary-dark
+$color-secondary = $secondary-color
+$color-success = $success-color
+$color-warning = $warning-color
+$color-danger = $danger-color
+$color-info = $info-color
 
 // Gap (for flexbox/grid)
 $gap-xs = $spacing-xs

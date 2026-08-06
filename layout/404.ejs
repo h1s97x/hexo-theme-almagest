@@ -1,5 +1,8 @@
+---
+layout: layout
+---
 <%
-// 404 错误页面布局
+// 404 错误页面内容片段（由 layout.ejs 统一包裹）
 const config = theme;
 %>
 
@@ -55,14 +58,12 @@ const config = theme;
       <% if (config.menu) { %>
         <li>
           <%= __('browse_menu') %>:
-          <% for (const [name, path] of Object.entries(config.menu)) { %>
-            <a href="<%= url_for(path) %>"><%= name %></a><% if (Object.entries(config.menu).indexOf([name, path]) < Object.entries(config.menu).length - 1) { %>, <% } %>
-          <% } %>
+          <% const menuEntries = Object.entries(config.menu); %>
+          <% menuEntries.forEach(([name, path], idx) => { %>
+            <a href="<%= url_for(path) %>"><%= name %></a><% if (idx < menuEntries.length - 1) { %>, <% } %>
+          <% }); %>
         </li>
       <% } %>
     </ul>
   </div>
 </div>
-
-</content>
-</invoke>

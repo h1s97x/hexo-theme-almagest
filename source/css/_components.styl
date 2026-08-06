@@ -1,0 +1,421 @@
+// ============================================================
+// Components
+// ============================================================
+
+// ============================================================
+// Buttons
+// ============================================================
+
+.btn
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  padding: $space-sm $space-lg
+  border-radius: $border-radius-md
+  border: 1px solid transparent
+  font-size: $font-size-base
+  font-weight: $font-weight-medium
+  line-height: $line-height-normal
+  cursor: pointer
+  text-decoration: none
+  transition: background-color $transition-base, color $transition-base, border-color $transition-base
+
+.btn-primary
+  background-color: $color-primary
+  color: #ffffff
+
+  &:hover
+    background-color: $color-primary-dark
+    color: #ffffff
+    text-decoration: none
+
+.btn-secondary
+  background-color: var(--color-bg-secondary)
+  color: var(--color-text)
+  border-color: var(--color-border)
+
+  &:hover
+    background-color: var(--color-hover-bg)
+    text-decoration: none
+
+// ============================================================
+// Tags
+// ============================================================
+
+.tag
+  display: inline-block
+  padding: 2px 10px
+  border-radius: $border-radius-full
+  background-color: var(--color-tag-bg)
+  color: var(--color-tag-text)
+  font-size: $font-size-sm
+  text-decoration: none
+  transition: opacity $transition-base
+
+  &:hover
+    opacity: 0.85
+    text-decoration: none
+
+// 标签云字号等级（tags.ejs / tags-widget.ejs 中的 tag-size-* 类）
+.tag-link
+  display: inline-block
+  padding: 2px 10px
+  border-radius: $border-radius-full
+  background-color: var(--color-tag-bg)
+  color: var(--color-tag-text)
+  text-decoration: none
+  transition: opacity $transition-base
+
+  &:hover
+    opacity: 0.85
+    text-decoration: none
+
+.tag-size-1
+  font-size: $font-size-xs
+
+.tag-size-2
+  font-size: $font-size-sm
+
+.tag-size-3
+  font-size: $font-size-base
+
+.tag-size-4
+  font-size: $font-size-lg
+
+.tag-size-5
+  font-size: $font-size-xl
+
+// ============================================================
+// Notes & Alerts
+// ============================================================
+
+.note
+.alert
+  padding: $space-md $space-lg
+  margin: $space-lg 0
+  border-radius: $border-radius-md
+  border-left: 4px solid
+  line-height: $line-height-relaxed
+
+.note-info
+.alert-info
+  background-color: rgba(23, 162, 184, 0.08)
+  border-left-color: $info-color
+
+.note-success
+.alert-success
+  background-color: rgba(40, 167, 69, 0.08)
+  border-left-color: $success-color
+
+.note-warning
+.alert-warning
+  background-color: rgba(255, 193, 7, 0.08)
+  border-left-color: $warning-color
+
+.note-danger
+.alert-danger
+  background-color: rgba(220, 53, 69, 0.08)
+  border-left-color: $danger-color
+
+// ============================================================
+// Pagination
+// ============================================================
+
+.pagination
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: $space-md
+  margin-top: $space-2xl
+  padding: $space-lg 0
+
+.pagination-link
+  display: inline-flex
+  align-items: center
+  gap: $space-sm
+  padding: $space-sm $space-md
+  border-radius: $border-radius-md
+  border: 1px solid var(--color-border)
+  color: var(--color-text)
+  text-decoration: none
+  transition: background-color $transition-base, border-color $transition-base
+
+  &:hover
+    background-color: var(--color-hover-bg)
+    text-decoration: none
+
+.pagination-info
+  color: var(--color-text-secondary)
+  font-size: $font-size-sm
+
+// ============================================================
+// Search
+// ============================================================
+
+.search-box
+  margin: $space-lg 0
+
+.search-form
+  display: flex
+  gap: $space-sm
+
+.search-input
+  flex: 1
+  padding: $space-sm $space-md
+  border: 1px solid var(--color-border)
+  border-radius: $border-radius-md
+  background-color: var(--color-input-bg)
+  color: var(--color-text)
+  font-size: $font-size-base
+
+  &:focus
+    outline: none
+    border-color: var(--color-input-focus)
+
+.search-button
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  width: 44px
+  height: 44px
+  border: 1px solid var(--color-border)
+  border-radius: $border-radius-md
+  background-color: var(--color-bg-secondary)
+  color: var(--color-text)
+  cursor: pointer
+
+.search-results
+  margin-top: $space-lg
+
+.search-result-item
+  padding: $space-md
+  margin-bottom: $space-md
+  border: 1px solid var(--color-border)
+  border-radius: $border-radius-md
+  background-color: var(--color-bg-secondary)
+
+  .result-title
+    margin: 0 0 $space-sm 0
+    font-size: $font-size-lg
+
+  .result-excerpt
+    margin: 0 0 $space-sm 0
+    color: var(--color-text-secondary)
+    font-size: $font-size-base
+
+  .result-link
+    font-size: $font-size-sm
+    color: var(--color-link)
+
+.no-results
+  padding: $space-2xl
+  text-align: center
+  color: var(--color-text-secondary)
+
+// ============================================================
+// Code Copy Button
+// ============================================================
+
+.code-copy-btn
+  position: absolute
+  top: $space-sm
+  right: $space-sm
+  padding: 4px 10px
+  border: none
+  border-radius: $border-radius-sm
+  background-color: var(--color-bg-secondary)
+  color: var(--color-text-secondary)
+  font-size: $font-size-xs
+  cursor: pointer
+  opacity: 0
+  transition: opacity $transition-base
+
+  &:hover
+    opacity: 1
+    color: var(--color-text)
+
+// ============================================================
+// Back to Top
+// ============================================================
+
+.back-to-top
+  position: fixed
+  bottom: $space-lg
+  right: $space-lg
+  width: 44px
+  height: 44px
+  border-radius: 50%
+  border: none
+  background-color: $color-primary
+  color: #ffffff
+  cursor: pointer
+  display: none
+  align-items: center
+  justify-content: center
+  box-shadow: $shadow-lg
+  z-index: $z-index-fixed
+
+  &.show
+    display: flex
+
+  &:hover
+    background-color: $color-primary-dark
+
+// ============================================================
+// Sidebar Widgets
+// ============================================================
+
+.widget
+  margin-bottom: $space-xl
+
+.widget-title
+  margin: 0 0 $space-md 0
+  font-size: $font-size-lg
+  color: var(--color-text)
+
+.widget-list
+  list-style: none
+  padding: 0
+  margin: 0
+
+  li
+    margin: $space-sm 0
+
+  a
+    color: var(--color-link)
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+.widget-tags-cloud
+  display: flex
+  flex-wrap: wrap
+  gap: $space-sm
+
+.tag-cloud-item
+  display: inline-block
+  padding: 2px 10px
+  border-radius: $border-radius-full
+  background-color: var(--color-tag-bg)
+  color: var(--color-tag-text)
+  font-size: $font-size-sm
+  text-decoration: none
+
+// ============================================================
+// Article & Post
+// ============================================================
+
+.article-header
+  margin-bottom: $space-xl
+
+.article-title
+  margin: 0 0 $space-md 0
+  font-size: $font-size-4xl
+  color: var(--color-text)
+
+.article-meta
+  display: flex
+  flex-wrap: wrap
+  gap: $space-lg
+  color: var(--color-text-secondary)
+  font-size: $font-size-sm
+
+.meta-item
+  display: inline-flex
+  align-items: center
+  gap: $space-xs
+
+.article-tags
+  display: flex
+  flex-wrap: wrap
+  gap: $space-sm
+  margin-top: $space-lg
+
+.article-content
+  line-height: $line-height-relaxed
+  color: var(--color-text)
+
+.article-footer
+  margin-top: $space-2xl
+  padding-top: $space-lg
+  border-top: 1px solid var(--color-border)
+  color: var(--color-text-secondary)
+  font-size: $font-size-sm
+
+// ============================================================
+// Archive
+// ============================================================
+
+.archive-year
+  margin-bottom: $space-2xl
+
+.year-title
+  margin: 0 0 $space-lg 0
+  color: var(--color-text)
+
+.year-count
+  color: var(--color-text-secondary)
+  font-size: $font-size-base
+
+.archive-item
+  display: flex
+  gap: $space-lg
+  padding: $space-sm 0
+  border-bottom: 1px solid var(--color-border-light)
+
+.archive-date
+  color: var(--color-text-secondary)
+  font-size: $font-size-sm
+  white-space: nowrap
+
+.archive-title
+  color: var(--color-text)
+  text-decoration: none
+  font-weight: $font-weight-medium
+
+  &:hover
+    color: var(--color-link)
+    text-decoration: underline
+
+.archive-categories
+  margin-top: 4px
+
+.category-tag
+  color: var(--color-link)
+  font-size: $font-size-sm
+  text-decoration: none
+
+// ============================================================
+// Breadcrumb
+// ============================================================
+
+.breadcrumb
+  margin: $space-md 0
+
+.breadcrumb-list
+  display: flex
+  flex-wrap: wrap
+  gap: $space-sm
+  list-style: none
+  padding: 0
+  margin: 0
+  font-size: $font-size-sm
+
+.breadcrumb-item
+  display: inline-flex
+  align-items: center
+  gap: $space-sm
+
+.breadcrumb-link
+  color: var(--color-link)
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+
+.breadcrumb-current
+  color: var(--color-text-secondary)
+
+.breadcrumb-separator
+  color: var(--color-text-tertiary)

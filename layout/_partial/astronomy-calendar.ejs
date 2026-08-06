@@ -1,3 +1,6 @@
+<%
+const config = theme;
+%>
 <div class="astronomy-calendar">
   <div class="calendar-header">
     <h3><%= __('astronomy.calendar') || 'Astronomy Calendar' %></h3>
@@ -20,11 +23,11 @@
     <!-- Days will be populated by JavaScript -->
   </div>
   
-  <% if (config.theme.astronomy && config.theme.astronomy.events && config.theme.astronomy.events.length > 0) { %>
+  <% if (config.astronomy && config.astronomy.events && config.astronomy.events.length > 0) { %>
     <div class="calendar-events">
       <h4><%= __('astronomy.upcoming_events') || 'Upcoming Events' %></h4>
       <div class="events-list">
-        <% config.theme.astronomy.events.slice(0, 5).forEach(event => { %>
+        <% config.astronomy.events.slice(0, 5).forEach(event => { %>
           <div class="event-item">
             <div class="event-name"><%= event.name %></div>
             <div class="event-time"><%= event.date %></div>

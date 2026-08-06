@@ -1,4 +1,4 @@
-# Hexo Theme Minimal Pro Configuration
+# Hexo Theme Almagest Configuration
 
 # ============================================================
 # 基础配置
@@ -11,7 +11,7 @@ title: "My Blog"
 subtitle: "A minimal and elegant theme"
 
 # 网站描述
-description: "Personal blog powered by Hexo and Minimal Pro Theme"
+description: "Personal blog powered by Hexo and Almagest Theme"
 
 # 作者名称
 author: "Your Name"
@@ -195,4 +195,4 @@ debug: false
 cdn_prefix: ""
 
 # 资源版本号 (用于缓存清除)
-version: "0.1.0"
+version: "1.0.0"
