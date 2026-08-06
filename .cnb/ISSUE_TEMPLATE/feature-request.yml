@@ -1,0 +1,38 @@
+name: ✨ 功能建议
+description: 提出新功能或改进建议
+title: '[Feature] '
+labels:
+  - feature request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你为 **Hexo Theme Almagest** 提供改进建议！请描述清楚你期望的功能与使用场景。
+  - type: textarea
+    attributes:
+      label: 功能描述
+      description: 请清晰描述你期望的功能
+      placeholder: 我希望主题支持...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 使用场景
+      description: 在什么场景下需要这个功能？解决了什么问题？
+      placeholder: 当我在写文章时，我需要...
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: 优先级
+      options:
+        - 高（严重影响使用）
+        - 中（有明确需求）
+        - 低（锦上添花）
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 参考实现
+      description: 是否有其他主题/项目实现了类似功能？可附链接
+      placeholder: 参考 https://example.com/...

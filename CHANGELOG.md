@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### Phase 4: 发布与生态
+
+**版本发布自动化**
+
+- 接入 CNB 云原生构建 `auto_tag` 事件：在仓库 Tag 列表页点击「自动生成 Tag」按钮，基于 Conventional Commits 自动计算版本号并创建 `vX.Y.Z` 标签（`cnbcool/git-auto-tag` 插件）
+- 接入 `tag_push` 发布流水线：推送 `v*` 标签后自动执行 质量检查（lint + 单测 + 冒烟）→ 生成 CHANGELOG（`cnbcool/changelog` 插件）→ 创建 CNB Release（`git:release` 内置任务，描述自动读取生成日志）→ 发布 npm 制品（`tencentcom/npm` 插件）
+- 发布到 CNB npm 制品库 `npm.cnb.cool/h1s97x/toolkit/-/packages/`，无需额外令牌（复用构建凭证）
+- 新增 `npm-publish.sh` 手动发布脚本（支持自定义 registry）
+
+**Demo 站点与部署**
+
+- 新增 `scripts/build-demo.sh`：一键构建 `doc/` 演示博客到 `.demo/public`（真实 Hexo 构建验证通过，25 个产物文件）
+- 新增 `.cnb/tag_deploy.yml`：配置 production 部署环境，支持在仓库「部署」入口一键部署到 EdgeOne Pages（`tencentcom/deploy-eopages` 插件，需配置 `EDGEONE_PAGES_API_TOKEN`）
+- `.gitignore` 新增 `.demo/` 构建产物目录
+
+**社区生态规范**
+
+- 新增 `.cnb/ISSUE_TEMPLATE/` Issue 模板：Bug 报告（版本/严重程度/复现步骤/期望与实际行为/环境）、功能建议（描述/场景/优先级/参考实现）、使用问题，及 config.yml 联系人配置
+- 新增 [CONTRIBUTING.md](CONTRIBUTING.md)：行为准则、贡献流程（Fork → 分支 → 开发验证 → PR）、代码规范、Conventional Commits 提交规范、分支命名约定、发布流程说明
+- 创建仓库标签体系：`bug` / `feature request` / `question` / `documentation` / `enhancement` / `release` / `ci`
+- README 补充「版本发布」「Demo 站点」「贡献」章节
+
 ### Fixed
 
 #### Phase 3.1: 懒加载链路评审整改

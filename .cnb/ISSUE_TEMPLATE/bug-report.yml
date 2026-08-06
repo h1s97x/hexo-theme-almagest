@@ -1,0 +1,69 @@
+name: 🐛 Bug 报告
+description: 提交主题的 Bug 或异常行为
+title: '[Bug] '
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你帮助改进 **Hexo Theme Almagest**！请尽量填写以下信息，帮助我们快速定位问题。
+
+        > 在提交前，请先搜索 [Issue 列表](https://cnb.cool/h1s97x/hexo-theme-almagest/-/issues) 确认是否已有人报告过相同问题。
+  - type: input
+    attributes:
+      label: 主题版本
+      description: 主题的版本号（可在 `package.json` 或主题根目录 `_config.yml` 中查看）
+      placeholder: 例如 1.0.0 或 git 提交号
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Hexo 版本
+      description: 站点使用的 Hexo 版本
+      placeholder: 例如 7.0.0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: 严重程度
+      options:
+        - 🔴 致命（构建失败 / 页面空白）
+        - 🟠 严重（功能不可用）
+        - 🟡 一般（体验问题）
+        - 🟢 轻微（样式细节）
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      render: text
+      label: 复现步骤
+      description: 一步步描述如何复现这个问题
+      placeholder: |
+        1. 安装主题并配置 `theme_config`
+        2. 执行 `hexo generate`
+        3. 打开首页，发现...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 期望行为
+      description: 你期望的正确行为是什么？
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      render: text
+      label: 实际行为
+      description: 实际发生了什么？请附上错误日志或截图
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      render: text
+      label: 环境信息
+      description: 操作系统、Node.js 版本、浏览器等
+      placeholder: |
+        - OS: macOS 14 / Windows 11 / Ubuntu 22.04
+        - Node.js: v20.x
+        - Browser: Chrome 126

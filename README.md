@@ -107,11 +107,43 @@ npm test             # 静态检查 + 单元测试 + CI 冒烟测试（真实 He
 - **图片懒加载**：默认开启，文章正文图片会自动添加 `loading="lazy"` 与 `data-src`，无需手动处理
 - **Google Fonts**：国内网络不可用时设置 `fonts.google_fonts: false`，或替换 `google_fonts_url` 为国内镜像
 
+## 版本发布
+
+项目已接入 **CNB 云原生构建自动发布**，流程如下：
+
+1. **自动打 Tag**：在仓库的 **Tag 列表页面**点击「自动生成 Tag」按钮，流水线基于
+   [Conventional Commits](https://www.conventionalcommits.org/zh-hans/) 自动计算下一个版本号并创建 `vX.Y.Z` 标签。
+2. **发布 Release**：推送 `v*` 标签后，流水线自动运行质量检查（lint + 单测 + 冒烟测试）、
+   生成 CHANGELOG，并创建 CNB Release（描述自动读取生成的 CHANGELOG）。
+3. **发布 npm 制品**：同时将主题打包发布到 CNB npm 制品库 `npm.cnb.cool/h1s97x/toolkit/-/packages/`。
+
+> 如需手动发布，可执行 `bash npm-publish.sh`（需配置 `CNB_TOKEN` 制品库令牌）。
+
+## Demo 站点
+
+`doc/` 目录包含演示博客源码，可通过以下命令构建静态站点：
+
+```bash
+bash scripts/build-demo.sh   # 输出到 .demo/public
+```
+
+配合仓库的「部署」入口（`.cnb/tag_deploy.yml`）可一键部署到 **EdgeOne Pages**（需配置 `EDGEONE_PAGES_API_TOKEN`）。
+
+## 贡献
+
+欢迎任何形式的贡献！请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 了解：
+
+- Bug 报告 / 功能建议 / 使用问题的 **Issue 模板**
+- 代码提交规范（Conventional Commits）与分支命名约定
+- 本地开发与验证流程
+- 版本发布与 npm 发布说明
+
 ## 文档
 
 - [快速参考卡](QUICK_REFERENCE.md)
 - [开发文档](DEVELOPMENT.md)
 - [Bug 修复与改进指南](BUG_FIX_AND_IMPROVEMENT_GUIDE.md)
+- [贡献指南](CONTRIBUTING.md)
 - [更新日志](CHANGELOG.md)
 - [演示博客源码](doc/)
 

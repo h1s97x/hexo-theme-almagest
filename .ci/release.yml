@@ -1,0 +1,72 @@
+# ============================================================
+# Hexo Theme Almagest - Release 发布自动化
+#
+# 事件触发（均为仓库级事件，需挂在 $ 兜底分支下）:
+#   1. auto_tag   - 在仓库 Tag 列表页点击「自动生成 Tag」按钮
+#                   基于 Conventional Commits 自动计算版本号并打 vX.Y.Z 标签
+#   2. tag_push   - 推送 v* 标签后触发:
+#                   a. 运行质量检查（lint + 单测 + 冒烟）
+#                   b. 生成 CHANGELOG（两个 tag 之间的变更）
+#                   c. 创建 CNB Release（描述自动读取 CHANGELOG）
+#                   d. 发布 npm 制品到 CNB 制品库
+#
+# 说明: 本文件为发布流水线参考片段，实际生效配置合并于根目录 .cnb.yml。
+# ============================================================
+
+$:
+  # 自动生成 Tag（在仓库 Tag 列表页点击「自动生成 Tag」按钮触发）
+  auto_tag:
+    - name: auto-tag
+      stages:
+        - name: auto-tag
+          image: cnbcool/git-auto-tag:latest
+          settings:
+            tagFormat: 'v\${version}'
+            branch: $CNB_BRANCH
+            repoUrlHttps: $CNB_REPO_URL_HTTPS
+            blockWhenFail: false
+          exports:
+            tag: NEW_TAG
+        - name: show generated tag
+          script: 'echo "生成的新版本号: ${NEW_TAG:-（无变更，不生成）}"'
+
+  # 推送 v* 标签后自动发布
+  tag_push:
+    - name: release-and-publish
+      docker:
+        image: node:20
+      stages:
+        - name: install-deps
+          script: |
+            set -e
+            npm install --no-audit --no-fund
+
+        - name: run-checks
+          script: |
+            set -e
+            npm run check
+            npm run test:unit
+            bash test/ci-smoke-test.sh
+
+        - name: generate-changelog
+          image: cnbcool/changelog:latest
+          settings:
+            tag: $CNB_BRANCH
+            target: CHANGELOG.generated.md
+
+        - name: create-release
+          type: git:release
+          options:
+            descriptionFromFile: CHANGELOG.generated.md
+          exports:
+            version: RELEASE_VERSION
+
+        - name: publish-npm
+          image: tencentcom/npm:latest
+          settings:
+            username: $CNB_TOKEN_USER_NAME
+            token: $CNB_TOKEN
+            email: $CNB_COMMITTER_EMAIL
+            registry: https://npm.cnb.cool/h1s97x/toolkit/-/packages/
+            folder: ./
+            fail_on_version_conflict: true

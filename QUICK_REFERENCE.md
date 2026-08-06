@@ -317,16 +317,33 @@ hexo-theme-almagest/
 hexo deploy
 ```
 
-### 部署到其他平台
+### 部署到 EdgeOne Pages（推荐）
 
-参考 Hexo 官方文档。
+仓库已接入 CNB 云原生构建部署能力：
+
+1. 在 EdgeOne 创建 Pages 项目 `hexo-theme-almagest-demo`
+2. 在密钥仓库 `h1s97x/secret-env` 的 `env.yml` 配置 `EDGEONE_PAGES_API_TOKEN`
+3. 在仓库 **「部署」入口** 选择 `production` 环境，流水线自动构建 `doc/` 演示博客并部署
+
+### 手动构建 Demo 站点
+
+```bash
+bash scripts/build-demo.sh   # 输出到 .demo/public
+```
+
+## 发布与版本管理
+
+- **自动打 Tag**：仓库 Tag 列表页点击「自动生成 Tag」，基于 Conventional Commits 计算版本号
+- **自动发布**：推送 `v*` 标签后自动生成 CHANGELOG + 创建 Release + 发布 npm 制品
+- **手动发布 npm**：`CNB_TOKEN=xxx bash npm-publish.sh`
 
 ## 获取帮助
 
 - 查看[文档](./doc/)
 - 查看[常见问题](./doc/source/posts/faq.md)
 - 查看[开发指南](./DEVELOPMENT.md)
-- 提交 GitHub Issue
+- 查看[贡献指南](./CONTRIBUTING.md)
+- 提交 [Issue](https://cnb.cool/h1s97x/hexo-theme-almagest/-/issues/new)
 
 ## 相关链接
 

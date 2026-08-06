@@ -64,6 +64,82 @@ main:
             set -e
             bash test/ci-smoke-test.sh
 $:
+  # 自动生成 Tag（在仓库 Tag 列表页点击「自动生成 Tag」按钮触发）
+  # 基于 Conventional Commits 自动计算版本号并创建 vX.Y.Z 标签
+  auto_tag:
+    - name: auto-tag
+      stages:
+        - name: auto-tag
+          image: cnbcool/git-auto-tag:latest
+          settings:
+            tagFormat: 'v\${version}'
+            branch: $CNB_BRANCH
+            repoUrlHttps: $CNB_REPO_URL_HTTPS
+            blockWhenFail: false
+          exports:
+            tag: NEW_TAG
+        - name: show generated tag
+          script: 'echo "生成的新版本号: ${NEW_TAG:-（无变更，不生成）}"'
+
+  # 推送 v* 标签后自动发布：质量检查 + 生成 CHANGELOG + 创建 Release + 发布 npm 制品
+  tag_push:
+    - name: release-and-publish
+      docker:
+        image: node:20
+      stages:
+        - name: install-deps
+          script: |
+            set -e
+            npm install --no-audit --no-fund
+
+        - name: run-checks
+          script: |
+            set -e
+            npm run check
+            npm run test:unit
+            bash test/ci-smoke-test.sh
+
+        - name: generate-changelog
+          image: cnbcool/changelog:latest
+          settings:
+            tag: $CNB_BRANCH
+            target: CHANGELOG.generated.md
+
+        - name: create-release
+          type: git:release
+          options:
+            descriptionFromFile: CHANGELOG.generated.md
+          exports:
+            version: RELEASE_VERSION
+
+        - name: publish-npm
+          image: tencentcom/npm:latest
+          settings:
+            username: $CNB_TOKEN_USER_NAME
+            token: $CNB_TOKEN
+            email: $CNB_COMMITTER_EMAIL
+            registry: https://npm.cnb.cool/h1s97x/toolkit/-/packages/
+            folder: ./
+            fail_on_version_conflict: true
+
+  # 部署 Demo 站点到 EdgeOne Pages（通过仓库「部署」入口触发，配置见 .cnb/tag_deploy.yml）
+  tag_deploy.production:
+    - name: deploy-demo-site
+      imports:
+        - https://cnb.cool/h1s97x/secret-env/-/blob/main/env.yml
+      stages:
+        - name: build-demo
+          script: |
+            set -e
+            bash scripts/build-demo.sh
+        - name: deploy-to-edgeone-pages
+          image: tencentcom/deploy-eopages:latest
+          settings:
+            project_name: hexo-theme-almagest-demo
+            api_token: $EDGEONE_PAGES_API_TOKEN
+            directory: .demo/public
+            environment: production
+
   issue.open:
     - name: auto-assign-issue-owner
       docker:

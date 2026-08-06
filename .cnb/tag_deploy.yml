@@ -1,0 +1,27 @@
+# ============================================================
+# Hexo Theme Almagest - Demo 站点部署环境配置
+#
+# 在仓库「Tag/Release」页面或「部署」入口选择对应环境即可触发部署。
+# 部署依赖 EdgeOne Pages API Token（通过密钥仓库 secret-env 注入）。
+#
+# 使用前提:
+#   1. 在 EdgeOne 创建 Pages 项目（project_name: hexo-theme-almagest-demo）
+#   2. 在密钥仓库 h1s97x/secret-env 的 env.yml 中配置:
+#        EDGEONE_PAGES_API_TOKEN: <你的 EdgeOne Pages API Token>
+# ============================================================
+environments:
+  - name: production
+    description: 部署 Hexo Theme Almagest Demo 站点到 EdgeOne Pages（生产环境）
+    title: 部署 Demo 站点
+    env:
+      project_name: hexo-theme-almagest-demo
+    permissions:
+      roles:
+        - owner
+        - master
+        - developer
+    deploy:
+      - name: 部署 Demo 站点
+        description: 构建 doc/ 演示博客并发布到 EdgeOne Pages
+        env:
+          environment: production

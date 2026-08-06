@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 文档
+    url: https://cnb.cool/h1s97x/hexo-theme-almagest
+    about: 阅读 README 与开发文档，获取安装与配置指引
+  - name: 🪐 主题灵感来源 Stellar
+    url: https://github.com/xaoxuu/hexo-theme-stellar
+    about: 本项目设计参考的主题

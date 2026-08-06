@@ -335,11 +335,11 @@ hexo clean
 <%- include _partial/head %>
 <body>
   <%- include _partial/header %>
-  
+
   <main class="main-content">
     <!-- 页面内容 -->
   </main>
-  
+
   <%- include _partial/footer %>
 </body>
 </html>
@@ -521,9 +521,23 @@ A: 创建新的脚本、样式和模板，遵循现有的代码结构和规范�
 
 ## 贡献指南
 
-1. Fork 项目
-2. 创建功能分支
-3. 提交更改
-4. 创建 Pull Request
+完整的贡献流程请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，简要流程：
+
+1. Fork 项目并克隆到本地
+2. 从 `upstream/main` 创建功能分支（`feat/`、`fix/`、`docs/` 等前缀）
+3. 开发并本地验证（`npm test` 全部通过）
+4. 按 [Conventional Commits](https://www.conventionalcommits.org/zh-hans/) 规范提交
+5. 推送分支并创建 Pull Request，在描述中关联 Issue 并说明验证结果
+
+## 发布流程
+
+项目已接入 CNB 云原生构建自动发布：
+
+1. **自动打 Tag**：在仓库 Tag 列表页点击「自动生成 Tag」，基于 Conventional Commits 自动计算版本号并创建 `vX.Y.Z`
+2. **自动发布**：推送 `v*` 标签后，流水线依次执行质量检查、生成 CHANGELOG、创建 CNB Release、发布 npm 制品
+3. **手动发布 npm**：`CNB_TOKEN=xxx bash npm-publish.sh`（默认发布到 CNB toolkit 制品库）
+4. **部署 Demo 站点**：在仓库「部署」入口选择 production 环境，自动构建并部署到 EdgeOne Pages
+
+流水线配置见 [.cnb.yml](.cnb.yml)（发布相关事件：`auto_tag` / `tag_push` / `tag_deploy.production`）。
 
 感谢您的贡献！

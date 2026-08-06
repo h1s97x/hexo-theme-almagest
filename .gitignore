@@ -38,6 +38,9 @@ db.json
 public/
 .deploy_git/
 
+# Demo 站点构建产物
+.demo/
+
 # Theme specific
 source/css/main.css
 source/css/main.css.map
