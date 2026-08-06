@@ -1,5 +1,7 @@
 # Hexo Theme Almagest
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 一个简洁而强大的 Hexo 主题，参考 [Stellar](https://github.com/xaoxuu/hexo-theme-stellar) 主题设计，主打"极简 + 天文主题"，同时更易于定制。
 
 A minimal yet powerful Hexo theme inspired by Stellar with enhanced customization.
@@ -107,4 +109,8 @@ npm test             # 静态检查 + CI 冒烟测试（真实 Hexo 构建验证
 
 ## License
 
-[MIT](LICENSE)
+本项目基于 [MIT 许可证](LICENSE) 开源，Copyright © 2026 [H1S97X (QAQ)](https://cnb.cool/h1s97x)。
+
+你可以自由地使用、复制、修改、合并、发布、分发、再许可及/或销售本软件的副本，但需在软件及所有副本中保留上述版权声明和本许可声明。软件按“原样”提供，不附带任何明示或默示的担保。详见 [LICENSE](LICENSE) 文件全文。
+
+> 主题设计参考自 [Stellar](https://github.com/xaoxuu/hexo-theme-stellar)，其许可证详见对应项目。
