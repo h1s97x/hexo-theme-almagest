@@ -1,7 +1,11 @@
 /**
  * Theme Toggle Script
  * Handles light/dark theme switching with localStorage persistence
- * and system preference detection
+ * and system preference detection.
+ *
+ * 注意：页面加载时的主题初始化（防 FOUC）由 layout 中内联的
+ * `_partial/theme-init.ejs` 完成，这里只负责「切换」与「系统偏好监听」，
+ * 避免两套初始化逻辑重复。
  */
 
 (function() {
@@ -11,44 +15,6 @@
   const THEME_ATTRIBUTE = 'data-theme';
   const LIGHT_THEME = 'light';
   const DARK_THEME = 'dark';
-
-  /**
-   * Initialize theme on page load
-   */
-  function initTheme() {
-    // Detect and apply theme
-    const theme = detectTheme();
-    applyTheme(theme);
-
-    // Setup event listeners
-    setupEventListeners();
-
-    // Listen for system preference changes
-    listenToSystemPreference();
-  }
-
-  /**
-   * Detect the theme to use based on:
-   * 1. Saved preference in localStorage
-   * 2. System preference (prefers-color-scheme)
-   * 3. Default to light theme
-   */
-  function detectTheme() {
-    // Check if user has saved preference
-    const savedTheme = localStorage.getItem(STORAGE_KEY);
-    if (savedTheme && (savedTheme === LIGHT_THEME || savedTheme === DARK_THEME)) {
-      return savedTheme;
-    }
-
-    // Check system preference
-    const systemPreference = getSystemPreference();
-    if (systemPreference) {
-      return systemPreference;
-    }
-
-    // Default to light theme
-    return LIGHT_THEME;
-  }
 
   /**
    * Get system preference using prefers-color-scheme media query
@@ -104,7 +70,6 @@
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch (e) {
-      // Handle localStorage errors gracefully
       // Silently fail if localStorage is not available
     }
   }
@@ -141,7 +106,7 @@
   /**
    * Setup event listeners for theme toggle button
    */
-  function setupEventListeners() {
+  function setupThemeToggle() {
     const themeToggleBtn = document.getElementById('theme-toggle');
     if (!themeToggleBtn) {
       return;
@@ -176,9 +141,11 @@
     const handleChange = function() {
       // Only apply system preference if user hasn't saved a preference
       if (!localStorage.getItem(STORAGE_KEY)) {
-        const theme = detectTheme();
-        applyTheme(theme);
-        dispatchThemeChangeEvent(theme);
+        const theme = getSystemPreference();
+        if (theme) {
+          applyTheme(theme);
+          dispatchThemeChangeEvent(theme);
+        }
       }
     };
 
@@ -192,6 +159,61 @@
       darkModeQuery.addListener(handleChange);
       lightModeQuery.addListener(handleChange);
     }
+  }
+
+  /**
+   * Mobile menu toggle
+   */
+  function setupMobileMenu() {
+    const toggleBtn =
+      document.getElementById('mobile-menu-btn') || document.getElementById('mobile-menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggleBtn || !menu) {
+      return;
+    }
+
+    toggleBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const expanded = menu.classList.toggle('open');
+      toggleBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+
+    // Close menu when clicking a link inside it
+    menu.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        menu.classList.remove('open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  /**
+   * Search button: navigate to /search/ page
+   */
+  function setupSearchButton() {
+    const searchBtns = document.querySelectorAll('#search-btn, #search-btn-404');
+    searchBtns.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = '/search/';
+      });
+    });
+  }
+
+  /**
+   * Initialize theme interactions
+   */
+  function initTheme() {
+    // Sync button state with current theme
+    updateThemeButtonState(getCurrentTheme());
+
+    // Setup event listeners
+    setupThemeToggle();
+    setupMobileMenu();
+    setupSearchButton();
+
+    // Listen for system preference changes
+    listenToSystemPreference();
   }
 
   /**
@@ -215,7 +237,7 @@
     }
   };
 
-  // Initialize theme when DOM is ready
+  // Initialize when DOM is ready (scripts are loaded with defer)
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initTheme);
   } else {

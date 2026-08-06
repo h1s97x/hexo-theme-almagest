@@ -31,7 +31,9 @@ hexo.extend.helper.register('get_excerpt', function(post, length) {
 
 // Get reading time helper
 hexo.extend.helper.register('get_reading_time', function(content) {
-  if (!content) return 0;
+  if (!content) {
+    return 0;
+  }
 
   // Remove HTML tags
   const text = String(content).replace(/<[^>]*>/g, '');

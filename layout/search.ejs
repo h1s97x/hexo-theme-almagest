@@ -23,11 +23,17 @@ const config = theme;
   </div>
 </div>
 
+<!-- 注入 i18n 文案，供 search.js 使用 -->
+<script>
+  window.__almagestSearchEmpty = <%- JSON.stringify(__('search_no_results')) %>;
+  window.__almagestSearchNoResults = <%- JSON.stringify(__('search_no_results')) %>;
+</script>
+
 <script type="application/json" data-search-data>
   <%- JSON.stringify(site.posts.map(post => ({
     title: post.title,
     url: post.path,
     content: post.content || post.excerpt || '',
     date: post.date
-  }))) %>
+  }))).replace(/<\/script>/g, '<\\/script>') %>
 </script>

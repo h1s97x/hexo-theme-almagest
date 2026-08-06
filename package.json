@@ -10,7 +10,8 @@
     "style:lint:fix": "stylelint source/css/**/*.styl --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "npm run lint && npm run style:lint",
+    "test": "npm run check && bash test/ci-smoke-test.sh",
     "prepare": "husky install"
   },
   "repository": {
@@ -52,6 +53,7 @@
     "eslint-config-prettier": "^9.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.0",
+    "postcss-styl": "^0.12.3",
     "prettier": "^3.0.3",
     "stylelint": "^14.16.0",
     "stylelint-config-prettier": "^9.0.5",

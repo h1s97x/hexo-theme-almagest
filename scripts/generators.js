@@ -41,8 +41,13 @@ hexo.extend.generator.register('tags', function(locals) {
   };
 });
 
-// Search index generator
+// Search index generator（受 theme.features.search 配置控制）
 hexo.extend.generator.register('search', function(locals) {
+  const themeConfig = hexo.theme.config || {};
+  if (themeConfig.features && themeConfig.features.search === false) {
+    return [];
+  }
+
   const searchData = [];
 
   locals.posts.forEach(post => {
@@ -62,8 +67,13 @@ hexo.extend.generator.register('search', function(locals) {
   };
 });
 
-// Search page generator（生成 /search/ 页面）
+// Search page generator（生成 /search/ 页面，受 theme.features.search 配置控制）
 hexo.extend.generator.register('search-page', function(locals) {
+  const themeConfig = hexo.theme.config || {};
+  if (themeConfig.features && themeConfig.features.search === false) {
+    return [];
+  }
+
   return {
     path: 'search/index.html',
     layout: 'search',

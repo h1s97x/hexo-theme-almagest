@@ -22,7 +22,9 @@ hexo.extend.filter.register('after_post_render', function(data) {
 
 // Excerpt filter
 hexo.extend.filter.register('excerpt', function(data) {
-  if (data.excerpt) return;
+  if (data.excerpt) {
+    return;
+  }
 
   // Generate excerpt from content
   const content = data.content.replace(/<[^>]*>/g, '');

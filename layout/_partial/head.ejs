@@ -1,6 +1,5 @@
 <%
 const config = theme;
-const site_config = config;
 %>
 
 <!-- Meta Tags -->
@@ -22,7 +21,7 @@ const site_config = config;
 
 <!-- Keywords -->
 <% if (page.tags && page.tags.length > 0) { %>
-  <meta name="keywords" content="<% page.tags.forEach((tag, idx) => { %><%= tag.name %><% if (idx < page.tags.length - 1) { %>, <% } %><% }); %>">
+  <meta name="keywords" content="<% page.tags.forEach(function(tag, idx) { %><%= tag.name %><% if (idx < page.tags.length - 1) { %>, <% } %><% }); %>">
 <% } %>
 
 <!-- Author -->
@@ -38,58 +37,22 @@ const site_config = config;
 <link rel="stylesheet" href="<%= url_for('/css/main.css') %>">
 
 <!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<% if (config.fonts?.google_fonts !== false) { %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="<%= config.fonts?.google_fonts_url || 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' %>" rel="stylesheet">
+<% } %>
 
 <!-- Code Highlight -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/atom-one-light.min.css">
+<% if (config.code_highlight?.enable !== false) { %>
+  <%
+    const code_theme = config.style?.code_theme || config.code_highlight?.theme || 'atom-one-light';
+    const hljs_cdn = config.code_highlight?.cdn || 'https://cdn.jsdelivr.net/npm/highlight.js@11.8.0';
+  %>
+  <link rel="stylesheet" href="<%= hljs_cdn %>/styles/<%= code_theme %>.min.css">
+<% } %>
 
-<!-- Theme Initialization Script (prevents FOUC) -->
-<script>
-  (function() {
-    const STORAGE_KEY = 'theme-preference';
-    const THEME_ATTRIBUTE = 'data-theme';
-    
-    function getSystemPreference() {
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-      }
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
-      }
-      return null;
-    }
-    
-    function initTheme() {
-      const html = document.documentElement;
-      
-      // Add no-transition class to prevent FOUC
-      html.classList.add('no-transition');
-      
-      const savedTheme = localStorage.getItem(STORAGE_KEY);
-      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-        html.setAttribute(THEME_ATTRIBUTE, savedTheme);
-      } else {
-        const systemPreference = getSystemPreference();
-        if (systemPreference) {
-          html.setAttribute(THEME_ATTRIBUTE, systemPreference);
-        } else {
-          html.setAttribute(THEME_ATTRIBUTE, 'light');
-        }
-      }
-      
-      // Remove no-transition class after a brief delay
-      setTimeout(function() {
-        html.classList.remove('no-transition');
-      }, 10);
-    }
-    
-    initTheme();
-  })();
-</script>
-
-<!-- Custom Inject -->
+<!-- Custom Inject: head -->
 <% if (config.inject?.head) { %>
   <%- config.inject.head %>
 <% } %>

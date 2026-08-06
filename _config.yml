@@ -1,47 +1,92 @@
-# Hexo Theme Almagest Configuration
+# ============================================================
+# Hexo Theme Almagest — 主题配置文件
+# ============================================================
+# 本文件是主题的默认配置。安装主题后，可在 Hexo 站点根目录的
+# `_config.yml` 中通过 `theme_config:` 覆盖任意配置项（无需复制整份文件），例如：
+#
+#   theme_config:
+#     title: "My Blog"
+#     style:
+#       primary_color: "#7c3aed"
+#     features:
+#       search: false
+#
+# 站点级 `theme_config:` 会与主题默认配置深度合并。
+# ============================================================
 
 # ============================================================
 # 基础配置
 # ============================================================
 
-# 主题名称
-title: "My Blog"
+# 站点名称（显示在导航栏 / 页脚 / 页面标题）
+title: 'My Blog'
 
-# 副标题
-subtitle: "A minimal and elegant theme"
+# 副标题（显示在首页）
+subtitle: 'A minimal and elegant theme'
 
-# 网站描述
-description: "Personal blog powered by Hexo and Almagest Theme"
+# 网站描述（用于 meta description 与侧边栏简介）
+description: 'Personal blog powered by Hexo and Almagest Theme'
 
-# 作者名称
-author: "Your Name"
+# 作者名称（用于 meta author 与页脚版权）
+author: 'Your Name'
 
-# 网站语言
+# 网站语言（对应 languages/ 下的语言包：en / zh-CN / zh-TW）
 language: en
+
+# 日期显示格式（用于文章卡片 / 详情页）
+date_format: 'YYYY-MM-DD'
 
 # ============================================================
 # 样式配置
 # ============================================================
 
 style:
-  # 主题色 (十六进制颜色码)
-  primary_color: "#0066cc"
-  
+  # 主题色（十六进制颜色码）
+  primary_color: '#0066cc'
+
   # 主题偏好: auto | light | dark
   # auto: 根据系统设置自动切换
   # light: 始终使用亮色主题
   # dark: 始终使用暗色主题
-  prefers_theme: "auto"
-  
+  prefers_theme: 'auto'
+
   # 启用平滑过渡
   smooth_transition: true
-  
+
   # 代码块主题: atom-one-light | atom-one-dark | github | monokai
-  code_theme: "atom-one-light"
+  code_theme: 'atom-one-light'
+
+# ============================================================
+# 代码高亮（highlight.js）
+# ============================================================
+# 主题内置基于 highlight.js 的高亮方案；如设为 false 则使用 Hexo 自带高亮，
+# 不加载任何外部 CDN 资源。
+
+code_highlight:
+  # 是否启用 highlight.js
+  enable: true
+
+  # highlight.js CDN 地址（可替换为国内镜像）
+  cdn: 'https://cdn.jsdelivr.net/npm/highlight.js@11.8.0'
+
+  # 高亮样式主题（与 style.code_theme 保持一致，二选一配置即可）
+  theme: 'atom-one-light'
+
+# ============================================================
+# 字体
+# ============================================================
+
+fonts:
+  # 是否加载 Google Fonts（国内网络不可用时建议设为 false）
+  google_fonts: true
+
+  # Google Fonts 加载地址（可替换为国内镜像，如 fonts.loli.net）
+  google_fonts_url: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
 
 # ============================================================
 # 导航菜单配置
 # ============================================================
+# 格式: 显示名称: 路径（支持多级子菜单，见注释示例）
 
 menu:
   Home: /
@@ -50,6 +95,16 @@ menu:
   Tags: /tags/
   About: /about/
 
+# 高级菜单示例（取消注释即可使用）：
+# menu:
+#   Home: /
+#   Archives: /archives/
+#   分类:
+#     - name: 前端
+#       path: /categories/front-end/
+#     - name: 后端
+#       path: /categories/back-end/
+
 # ============================================================
 # 侧边栏配置
 # ============================================================
@@ -57,10 +112,10 @@ menu:
 sidebar:
   # 是否启用侧边栏
   enable: true
-  
+
   # 侧边栏位置: left | right
   position: right
-  
+
   # 侧边栏宽度 (像素)
   width: 300
 
@@ -69,73 +124,77 @@ sidebar:
 # ============================================================
 
 features:
-  # 搜索功能
+  # 搜索功能（生成 /search/ 页面 + search.json）
   search: true
-  
-  # 评论系统
+
+  # 评论系统（配合 services.giscus 使用）
   comments: true
-  
+
   # 目录 (Table of Contents)
   toc: true
-  
+
   # 代码复制按钮
   code_copy: true
-  
+
   # 返回顶部按钮
   back_to_top: true
-  
+
   # 阅读时间估计
   reading_time: true
+
+  # 文章卡片是否显示摘要
+  show_excerpt: true
 
 # ============================================================
 # 社交链接
 # ============================================================
+# 留空字符串表示不显示对应图标
 
 social:
   # GitHub
-  github: ""
-  
-  # Twitter
-  twitter: ""
-  
+  github: ''
+
+  # Twitter / X
+  twitter: ''
+
   # 微博
-  weibo: ""
-  
+  weibo: ''
+
   # 知乎
-  zhihu: ""
-  
+  zhihu: ''
+
   # 邮箱
-  email: ""
+  email: ''
 
 # ============================================================
 # 第三方服务
 # ============================================================
 
 services:
-  # Giscus 评论系统
+  # Giscus 评论系统（需在 GitHub 安装 giscus app）
   giscus:
     enable: false
-    repo: ""
-    repo_id: ""
-    category: "Announcements"
-    category_id: ""
-    mapping: "pathname"
+    repo: ''
+    repo_id: ''
+    category: 'Announcements'
+    category_id: ''
+    mapping: 'pathname'
     reactions_enabled: true
     emit_metadata: false
-    input_position: "bottom"
-    theme: "light"
-    lang: "en"
-    loading: "lazy"
-  
+    input_position: 'bottom'
+    theme: 'light'
+    lang: 'en'
+    loading: 'lazy'
+
   # Google Analytics
   google_analytics:
     enable: false
-    tracking_id: ""
-  
+    tracking_id: ''
+
   # 百度统计
   baidu_analytics:
     enable: false
-    tracking_id: ""
+    tracking_id: ''
 
 # ============================================================
 # 分页配置
@@ -144,9 +203,9 @@ services:
 pagination:
   # 每页文章数
   per_page: 10
-  
+
   # 分页类型: pagination | infinite
-  type: "pagination"
+  type: 'pagination'
 
 # ============================================================
 # 文章配置
@@ -155,12 +214,20 @@ pagination:
 article:
   # 文章摘要长度 (字符数)
   excerpt_length: 200
-  
+
   # 是否显示文章更新时间
   show_updated: true
-  
+
   # 是否显示阅读时间
   show_reading_time: true
+
+# ============================================================
+# 独立页面配置
+# ============================================================
+
+page:
+  # 是否显示独立页面的更新时间
+  show_updated: true
 
 # ============================================================
 # 图片配置
@@ -169,20 +236,20 @@ article:
 image:
   # 启用图片懒加载
   lazy_load: true
-  
+
   # 图片占位符颜色
-  placeholder_color: "#f0f0f0"
+  placeholder_color: '#f0f0f0'
 
 # ============================================================
 # 自定义注入
 # ============================================================
 
-# 在 <head> 中注入自定义代码
+# 在 <head> 中注入自定义代码（如统计脚本、外链 CSS）
 inject:
-  head: ""
-  
+  head: ''
+
   # 在 </body> 前注入自定义代码
-  body_end: ""
+  body_end: ''
 
 # ============================================================
 # 高级配置
@@ -191,8 +258,8 @@ inject:
 # 启用调试模式
 debug: false
 
-# 自定义 CDN 前缀
-cdn_prefix: ""
+# 自定义 CDN 前缀（资源统一前缀，例如 https://cdn.example.com）
+cdn_prefix: ''
 
 # 资源版本号 (用于缓存清除)
-version: "1.0.0"
+version: '1.0.0'

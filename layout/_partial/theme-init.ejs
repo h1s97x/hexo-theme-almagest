@@ -1,0 +1,20 @@
+<%
+const config = theme;
+%>
+
+<!-- Theme Initialization (防止 FOUC，只做最小必要操作) -->
+<script>
+  (function() {
+    var STORAGE_KEY = 'theme-preference';
+    var ATTR = 'data-theme';
+    var saved = null;
+    try {
+      saved = localStorage.getItem(STORAGE_KEY);
+    } catch (e) { /* ignore */ }
+    var theme = saved;
+    if (theme !== 'light' && theme !== 'dark') {
+      theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute(ATTR, theme);
+  })();
+</script>

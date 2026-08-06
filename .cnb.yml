@@ -1,19 +1,43 @@
 $:
   push:
-    - name: smoke-test
+    - name: quality-and-smoke
       docker:
         image: node:20
       stages:
-        - name: build-demo
+        - name: install-deps
+          script: |
+            set -e
+            npm install --no-audit --no-fund
+        - name: lint-js
+          script: |
+            set -e
+            npm run lint
+        - name: stylelint
+          script: |
+            set -e
+            npm run style:lint
+        - name: smoke-test
           script: |
             set -e
             bash test/ci-smoke-test.sh
   pull_request:
-    - name: smoke-test
+    - name: quality-and-smoke
       docker:
         image: node:20
       stages:
-        - name: build-demo
+        - name: install-deps
+          script: |
+            set -e
+            npm install --no-audit --no-fund
+        - name: lint-js
+          script: |
+            set -e
+            npm run lint
+        - name: stylelint
+          script: |
+            set -e
+            npm run style:lint
+        - name: smoke-test
           script: |
             set -e
             bash test/ci-smoke-test.sh

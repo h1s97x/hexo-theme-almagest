@@ -44,21 +44,37 @@ hexo server
 
 ## 配置
 
-主题配置在主题根目录 `_config.yml` 中，或通过站点 `_config.yml` 的 `theme_config:` 覆盖。
+主题配置在主题根目录 `_config.yml`（**已带完整注释与默认值**），也可在站点根目录 `_config.yml` 中通过 `theme_config:` 覆盖任意配置项（站点级配置会与主题默认值**深度合并**）：
 
-常用配置项：
+```yaml
+# 站点 _config.yml
+theme: almagest
+theme_config:
+  title: 'My Blog'
+  style:
+    primary_color: '#7c3aed' # 覆盖主题色
+  features:
+    search: false # 关闭搜索
+  fonts:
+    google_fonts: false # 国内网络可关闭 Google Fonts
+```
+
+> 💡 无需复制整份主题 `_config.yml`，只需写你想覆盖的项。完整的配置项说明见主题根目录 `_config.yml` 内注释。
+
+常用配置项速览：
 
 ```yaml
 style:
-  primary_color: "#0066cc"     # 主题色
-  prefers_theme: "auto"        # auto | light | dark
+  primary_color: '#0066cc' # 主题色
+  prefers_theme: 'auto' # auto | light | dark
+  code_theme: 'atom-one-light' # 代码高亮主题
 
 features:
-  search: true                 # 搜索
-  toc: true                    # 目录
-  reading_time: true           # 阅读时间
-  code_copy: true              # 代码复制
-  back_to_top: true            # 返回顶部
+  search: true # 搜索
+  toc: true # 目录
+  reading_time: true # 阅读时间
+  code_copy: true # 代码复制
+  back_to_top: true # 返回顶部
 
 sidebar:
   enable: true
@@ -69,6 +85,16 @@ menu:
   Archives: /archives/
   Categories: /categories/
   Tags: /tags/
+```
+
+## 开发
+
+```bash
+npm install          # 安装依赖
+npm run lint         # JS 代码检查（eslint）
+npm run style:lint   # 样式检查（stylelint）
+npm run check        # 全部静态检查
+npm test             # 静态检查 + CI 冒烟测试（真实 Hexo 构建验证）
 ```
 
 ## 文档

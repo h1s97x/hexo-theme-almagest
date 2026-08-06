@@ -16,6 +16,7 @@ const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}
 <html lang="<%= page.lang || config.language || 'en' %>" <%= theme_attr %>>
 <head>
   <%- partial('_partial/head') %>
+  <%- partial('_partial/theme-init') %>
 </head>
 <body>
   <div id="app" class="app-container">
