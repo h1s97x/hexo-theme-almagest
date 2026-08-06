@@ -419,3 +419,37 @@
 
 .breadcrumb-separator
   color: var(--color-text-tertiary)
+
+// ============================================================
+// Lazy Load Images
+// ============================================================
+// 与 source/js/lazy-load.js 的 .loaded / .error class 配套：
+// - img[data-src]：加载前显示占位背景（颜色取 _config.yml image.placeholder_color）
+// - img.loaded：加载完成后淡入
+// - img.error：加载失败时用占位背景 + 提示图标，避免显示浏览器默认破图图标
+
+img[data-src]
+  background-color: var(--color-image-placeholder, #f0f0f0)
+
+img.loaded
+  animation: almagest-img-fade-in $transition-base
+
+img.error
+  position: relative
+  background-color: var(--color-image-placeholder, #f0f0f0)
+
+  &::after
+    content: '⚠'
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    font-size: $font-size-lg
+    color: var(--color-text-tertiary)
+
+@keyframes almagest-img-fade-in
+  from
+    opacity: 0
+
+  to
+    opacity: 1

@@ -116,6 +116,7 @@
         }
         return;
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error('Failed to parse inline search data:', e);
       }
     }
@@ -136,6 +137,7 @@
         }
       })
       .catch(function(err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to load search data:', err);
         if (done) {
           done();

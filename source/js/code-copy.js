@@ -41,6 +41,7 @@
             }, 2000);
           })
           .catch(() => {
+            // eslint-disable-next-line no-console
             console.error('Failed to copy code');
             copyButton.textContent = window.__almagestCopyFailedText || 'Failed';
 

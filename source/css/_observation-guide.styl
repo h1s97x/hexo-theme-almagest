@@ -1,0 +1,81 @@
+// ============================================================
+// Observation Guide Component
+// ============================================================
+// 观星指南组件（原内联在 observation-guide.ejs 的 <style> 中，
+// 阶段2 重构为独立组件样式，随 main.css 统一打包）。
+
+.observation-guide
+  background: rgba(255, 255, 255, 0.05)
+  border: 1px solid rgba(255, 255, 255, 0.1)
+  border-radius: 8px
+  padding: 1.5rem
+  backdrop-filter: blur(10px)
+
+.guide-header
+  margin-bottom: 1.5rem
+
+  h3
+    margin: 0 0 0.5rem 0
+    color: #fff
+
+.guide-location
+  font-size: 0.875rem
+  color: rgba(255, 255, 255, 0.6)
+  display: flex
+  align-items: center
+  gap: 0.5rem
+
+.guide-section
+  margin-bottom: 1.5rem
+
+  h4
+    color: rgba(255, 255, 255, 0.9)
+    margin: 0 0 0.75rem 0
+    font-size: 1rem
+
+.guide-content
+  color: rgba(255, 255, 255, 0.8)
+  line-height: 1.6
+
+  ul
+  ol
+    margin: 0.5rem 0
+    padding-left: 1.5rem
+
+  li
+    margin-bottom: 0.5rem
+
+  a
+    color: rgba(100, 200, 255, 0.9)
+    text-decoration: none
+
+    &:hover
+      color: rgba(100, 200, 255, 1)
+      text-decoration: underline
+
+.constellation-time
+  font-size: 0.875rem
+  color: rgba(255, 255, 255, 0.6)
+
+.guide-tips
+  background: rgba(255, 200, 100, 0.1)
+  border-left: 3px solid rgba(255, 200, 100, 0.5)
+  padding: 1rem
+  border-radius: 4px
+  margin-top: 1rem
+
+.tips-title
+  font-weight: 600
+  color: rgba(255, 200, 100, 0.9)
+  margin-bottom: 0.5rem
+
+.tips-content
+  color: rgba(255, 255, 255, 0.8)
+  font-size: 0.875rem
+
+@media (max-width: 768px)
+  .observation-guide
+    padding: 1rem
+
+  .guide-section
+    margin-bottom: 1rem

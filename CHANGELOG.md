@@ -7,7 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+#### Phase 3.1: 懒加载链路评审整改
+
+- **Critical**：`lazy-load.js` 不再因原生 lazy 支持而提前 return，最终渲染 HTML 始终保留 `src` + `data-src` + `loading="lazy"`，即使 JS 未执行图片也能显示（现代浏览器走原生 lazy，老浏览器由 IntersectionObserver 回填）
+- **Warning**：图片懒加载从 `after_post_render` 迁移到 `after_render:html`，不再污染 `post.content`，`search.json` / RSS 等下游消费者拿到的图片保留原始 `src`
+- **Warning**：新增 `img[data-src]` / `img.loaded` / `img.error` 样式，接通 `image.placeholder_color`，破图时显示占位背景而非浏览器默认图标
+- **Info**：`filters.js` 改用引号感知的 HTML 扫描器，兼容单引号 / 裸属性 `loading`、data URI 属性值含 `>` 的场景，且跳过 `<pre>` / `<script>` 内嵌示例
+- 单元测试新增 after_render:html 用例；CI 冒烟测试新增「最终渲染 HTML 必须包含 `src`」「search.json 不含 data-src」断言
+
 ### Added
+
+#### Phase 3: Quality & Performance
+
+**多语言全量收尾（三语对齐）**
+
+- 补齐 `breadcrumb` / `pagination` / `last_updated` / `copyright` / `copy_failed` 等缺失文案键
+- 补齐 `astronomy.*` 系列子键（日历、观星指南、天气、观测提示等 23 个）
+- 新增无障碍文案键：`toggle_theme` / `toggle_menu` / `back_to_top` / `previous_month` / `next_month`
+- 移除模板中硬编码英文：`min read` → `read_time_unit`、`All rights reserved`、`Powered by`、`Failed` 等
+- `en` / `zh-CN` / `zh-TW` 三个语言包实现 100% 键对齐（各 120 个键）
+
+**单元测试**
+
+- 新增零依赖轻量测试框架 `test/unit/framework.js`（Node >= 14 兼容）
+- 新增 helpers / generators / tags / filters 四个测试文件，共 31 个用例
+- 覆盖：helper 日期格式化与阅读时间估算、generator 搜索数据与配置开关、tag 渲染、图片懒加载 filter 等
+- `package.json` 新增 `test:unit`，`npm test` 变为 lint + stylelint + 单元测试 + 冒烟测试四段
+- `.cnb.yml` 新增 `unit-test` 阶段
+
+**样式/组件模块化重构**
+
+- 将 `astronomy-calendar.ejs` / `observation-guide.ejs` 内联 `<style>` 提取为独立组件样式文件
+  `_astronomy-calendar.styl` / `_observation-guide.styl`，随 `main.css` 统一打包
+- 移除模板内联样式，页面样式收敛到样式体系，便于主题换肤与维护
+
+**性能优化**
+
+- 图片懒加载链路打通：新增 `after_post_render` filter 自动为文章图片添加 `loading="lazy"` 与 `data-src`
+- `lazy-load.js` 重构：优先识别浏览器原生 lazy、支持失败回退、高 DPR 场景
+- `main.css` 与 `head.ejs` 静态资源统一走 `cdn_prefix + version`，便于 CDN 部署与缓存刷新
+- `_config.yml` 补充性能优化说明（stylus compress、Google Fonts 镜像、懒加载）
+
+**工程化与文档**
+
+- lint 达到 0 error / 0 warning（清理未使用参数与 console 合理告警）
+- 修复 QUICK_REFERENCE / DEVELOPMENT 中过时的 `github.com/your-username` 假链接
+- footer 仓库链接改为 CNB 真实地址
 
 #### Phase 2: Engineering Foundation
 

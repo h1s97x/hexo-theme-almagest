@@ -31,28 +31,31 @@ image:
 
 ### Using Lazy Loading
 
-In your Markdown, use the `data-src` attribute:
+Lazy loading is enabled by default; no manual attribute is needed. The theme
+injects lazy loading into the **final rendered HTML** (via `after_render:html`),
+so your Markdown source and `post.content` (and thus `search.json` / RSS)
+always keep the original `src`:
+
+```html
+<!-- Final rendered output: src kept + data-src + loading="lazy" -->
+<img src="/images/my-image.jpg" data-src="/images/my-image.jpg" alt="My Image" loading="lazy" />
+```
+
+You can also hand-write `data-src` in your Markdown/HTML; `lazy-load.js` will
+fill it into `src` for you:
 
 ```html
 <img data-src="/images/my-image.jpg" alt="My Image" />
 ```
 
-Or in HTML:
-
-```html
-<img 
-  data-src="/images/my-image.jpg" 
-  data-srcset="/images/my-image-small.jpg 480w, /images/my-image-large.jpg 1200w"
-  alt="My Image" 
-/>
-```
-
 ### How It Works
 
-1. Image is not loaded initially
-2. When image enters viewport, it's loaded
-3. `loaded` class is added when complete
-4. Smooth fade-in effect
+1. **Modern browsers** (native `loading="lazy"`): the browser controls load
+timing via `src`; images display even if JS is disabled or fails.
+2. **Old browsers** (no native lazy): `source/js/lazy-load.js` uses
+`IntersectionObserver` to fill `data-src` back into `src` on demand.
+3. `loaded` class is added when complete (fade-in); `error` is added on failure
+(placeholder background via `image.placeholder_color`).
 
 ## Responsive Images
 
@@ -243,8 +246,9 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
 ### Lazy Loading Not Working
 
 1. Verify `lazy_load: true` in `_config.yml`
-2. Check `data-src` attribute is set
-3. Verify browser supports Intersection Observer
+2. Check the final rendered HTML contains `src` (if it only has `data-src`, the
+   lazy-load script didn't run; check the browser console for errors)
+3. Verify browser supports Intersection Observer (for old browsers)
 4. Check browser console for errors
 5. Rebuild site: `hexo clean && hexo generate`
 

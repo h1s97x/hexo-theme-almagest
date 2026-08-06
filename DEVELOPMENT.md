@@ -81,7 +81,7 @@ hexo-theme-almagest/
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/your-username/hexo-theme-almagest.git
+git clone https://cnb.cool/h1s97x/hexo-theme-almagest.git
 cd hexo-theme-almagest
 ```
 

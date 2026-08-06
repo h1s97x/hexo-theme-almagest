@@ -49,11 +49,11 @@ const current_year = new Date().getFullYear();
     <!-- Footer Bottom -->
     <div class="footer-bottom">
       <p class="copyright">
-        &copy; <%= current_year %> <%= config.author %>. All rights reserved.
+        &copy; <%= current_year %> <%= config.author %>. <%= __('copyright') %>
       </p>
       <p class="powered-by">
-        Powered by <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a> &
-        <a href="https://github.com/h1s97x/hexo-theme-almagest" target="_blank" rel="noopener noreferrer">Almagest</a>
+        <%= __('powered_by') %> <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a> &
+        <a href="https://cnb.cool/h1s97x/hexo-theme-almagest" target="_blank" rel="noopener noreferrer">Almagest</a>
       </p>
     </div>
   </div>

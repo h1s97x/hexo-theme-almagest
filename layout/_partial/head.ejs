@@ -1,5 +1,11 @@
 <%
 const config = theme;
+const cdn_prefix = config.cdn_prefix || '';
+const version = config.version || '1.0.0';
+const asset = function(path) {
+  const base = cdn_prefix ? cdn_prefix.replace(/\/$/, '') : '';
+  return url_for(base + path + '?v=' + version);
+};
 %>
 
 <!-- Meta Tags -->
@@ -34,7 +40,12 @@ const config = theme;
 <link rel="icon" href="<%= url_for('/favicon.ico') %>">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="<%= url_for('/css/main.css') %>">
+<link rel="stylesheet" href="<%= asset('/css/main.css') %>">
+
+<!-- 图片占位色（_config.yml image.placeholder_color，供懒加载 img[data-src] / img.error 使用） -->
+<style>
+  :root { --color-image-placeholder: <%= config.image?.placeholder_color || '#f0f0f0' %>; }
+</style>
 
 <!-- Fonts -->
 <% if (config.fonts?.google_fonts !== false) { %>

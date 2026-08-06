@@ -5,7 +5,7 @@
 ### 安装主题
 
 ```bash
-git clone https://github.com/your-username/hexo-theme-almagest.git themes/almagest
+git clone https://cnb.cool/h1s97x/hexo-theme-almagest.git themes/almagest
 ```
 
 ### 配置主题
@@ -331,7 +331,7 @@ hexo deploy
 ## 相关链接
 
 - [Hexo 官方网站](https://hexo.io/)
-- [GitHub 仓库](https://github.com/your-username/hexo-theme-almagest)
+- [CNB 仓库](https://cnb.cool/h1s97x/hexo-theme-almagest)
 - [项目文档](./doc/)
 - [开发指南](./DEVELOPMENT.md)
 

@@ -234,10 +234,11 @@ page:
 # ============================================================
 
 image:
-  # 启用图片懒加载
+  # 启用图片懒加载（在最终渲染 HTML 中为文章图片添加 loading="lazy" + data-src；
+  # 始终保留 src，保证即使 JS 未执行图片也能正常显示）
   lazy_load: true
 
-  # 图片占位符颜色
+  # 图片占位符颜色（懒加载图片加载前/破图时的背景色）
   placeholder_color: '#f0f0f0'
 
 # ============================================================
@@ -259,7 +260,22 @@ inject:
 debug: false
 
 # 自定义 CDN 前缀（资源统一前缀，例如 https://cdn.example.com）
+# 启用后 main.css 与 theme.js 等静态资源都会走该前缀 + 版本号，便于 CDN 缓存刷新
 cdn_prefix: ''
 
 # 资源版本号 (用于缓存清除)
 version: '1.0.0'
+
+# ============================================================
+# 性能优化提示
+# ============================================================
+# 1. CSS 压缩：在站点根目录 _config.yml 添加以下配置即可对 main.css 做压缩：
+#
+#   stylus:
+#     compress: true
+#
+# 2. Google Fonts：国内网络不可用时建议将 fonts.google_fonts 设为 false，
+#    或把 fonts.google_fonts_url 替换为国内镜像（如 fonts.loli.net）。
+#
+# 3. 图片懒加载：默认开启（image.lazy_load: true），会自动为文章图片添加
+#    loading="lazy" 与 data-src，无需额外处理。

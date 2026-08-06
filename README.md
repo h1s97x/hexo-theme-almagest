@@ -96,8 +96,16 @@ npm install          # 安装依赖
 npm run lint         # JS 代码检查（eslint）
 npm run style:lint   # 样式检查（stylelint）
 npm run check        # 全部静态检查
-npm test             # 静态检查 + CI 冒烟测试（真实 Hexo 构建验证）
+npm run test:unit    # 单元测试（helpers/generators/tags/filters）
+npm test             # 静态检查 + 单元测试 + CI 冒烟测试（真实 Hexo 构建验证）
 ```
+
+## 性能优化
+
+- **CSS 压缩**：在站点根目录 `_config.yml` 添加 `stylus.compress: true` 即可压缩生成的 `main.css`
+- **CDN 部署**：配置 `theme_config.cdn_prefix` 后，`main.css` 与全部 JS 资源统一走该前缀 + 版本号（`?v=`），方便接入 CDN 并刷新缓存
+- **图片懒加载**：默认开启，文章正文图片会自动添加 `loading="lazy"` 与 `data-src`，无需手动处理
+- **Google Fonts**：国内网络不可用时设置 `fonts.google_fonts: false`，或替换 `google_fonts_url` 为国内镜像
 
 ## 文档
 

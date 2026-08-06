@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run style:lint",
-    "test": "npm run check && bash test/ci-smoke-test.sh",
+    "test:unit": "node test/unit/run.js",
+    "test": "npm run check && npm run test:unit && bash test/ci-smoke-test.sh",
     "prepare": "husky install"
   },
   "repository": {

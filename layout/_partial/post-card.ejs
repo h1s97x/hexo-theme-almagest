@@ -32,7 +32,7 @@ const excerpt_length = config.article?.excerpt_length || 200;
 
     <% if (config.features?.reading_time && cardPost.content) { %>
       <span class="meta-item">
-        <%- get_reading_time(cardPost.content) %> min read
+        <%- get_reading_time(cardPost.content) %> <%= __('read_time_unit') %>
       </span>
     <% } %>
   </div>

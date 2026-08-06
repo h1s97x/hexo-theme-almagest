@@ -10,13 +10,17 @@ about: About
 # Pagination
 prev: Previous
 next: Next
+pagination: Pagination
 
 # Post
 read_more: Read More
 updated: Updated
+last_updated: Last updated
 posted_on: Posted on
 in: in
 with_tags: with tags
+read_time_unit: min read
+read_time: '{{count}} min read'
 
 # Sidebar
 recent_posts: Recent Posts
@@ -27,12 +31,23 @@ comments: Comments
 
 # Table of Contents
 toc: Table of Contents
+breadcrumb: Breadcrumb
+
+# Accessibility
+toggle_theme: Toggle theme
+toggle_menu: Toggle menu
+back_to_top: Back to top
+previous_month: Previous month
+next_month: Next month
+copy_failed: Failed
 
 # Social
 social: Social Links
 
 # Footer
 powered_by: Powered by
+copyright: All rights reserved
+# Theme name in footer (branding)
 theme: Theme
 
 # Search
@@ -101,6 +116,28 @@ notebooks:
 
 # Astronomy Features
 astronomy:
+  calendar: Astronomy Calendar
+  sunday: Sun
+  monday: Mon
+  tuesday: Tue
+  wednesday: Wed
+  thursday: Thu
+  friday: Fri
+  saturday: Sat
+  upcoming_events: Upcoming Events
+  observation_guide: Observation Guide
+  visible_constellations: Visible Constellations
+  best_observation_time: Best Observation Time
+  start_time: Start Time
+  peak_time: Peak Time
+  end_time: End Time
+  observation_tips: Observation Tips
+  recommended_equipment: Recommended Equipment
+  weather_conditions: Weather Conditions
+  cloud_cover: Cloud Cover
+  humidity: Humidity
+  wind_speed: Wind Speed
+  light_pollution_tip: Light Pollution Tip
   symbol: Symbol
   dates: Dates
   event_type: Event Type

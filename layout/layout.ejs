@@ -53,7 +53,7 @@ const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}
     
     <!-- Back to Top Button -->
     <% if (config.features?.back_to_top) { %>
-      <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+      <button id="back-to-top" class="back-to-top" aria-label="<%= __('back_to_top') %>">
         <svg viewBox="0 0 24 24" width="24" height="24">
           <path d="M7 14l5-5 5 5z" fill="currentColor"/>
         </svg>

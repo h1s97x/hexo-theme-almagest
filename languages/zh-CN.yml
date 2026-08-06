@@ -10,13 +10,17 @@ about: 关于
 # 分页
 prev: 上一页
 next: 下一页
+pagination: 分页
 
 # 文章
 read_more: 阅读更多
 updated: 更新于
+last_updated: 最后更新于
 posted_on: 发布于
 in: 在
 with_tags: 标签为
+read_time_unit: 分钟阅读
+read_time: '{{count}} 分钟阅读'
 
 # 侧边栏
 recent_posts: 最近文章
@@ -27,12 +31,22 @@ comments: 评论
 
 # 目录
 toc: 目录
+breadcrumb: 面包屑导航
+
+# 无障碍
+back_to_top: 返回顶部
+toggle_theme: 切换主题
+toggle_menu: 切换菜单
+previous_month: 上个月
+next_month: 下个月
+copy_failed: 复制失败
 
 # 社交
 social: 社交链接
 
 # 页脚
 powered_by: 由以下技术驱动
+copyright: 版权所有
 theme: 主题
 
 # 搜索
@@ -101,6 +115,28 @@ notebooks:
 
 # 天文功能
 astronomy:
+  calendar: 天文日历
+  sunday: 周日
+  monday: 周一
+  tuesday: 周二
+  wednesday: 周三
+  thursday: 周四
+  friday: 周五
+  saturday: 周六
+  upcoming_events: 即将到来的天文事件
+  observation_guide: 观星指南
+  visible_constellations: 可见星座
+  best_observation_time: 最佳观测时间
+  start_time: 开始时间
+  peak_time: 高峰时间
+  end_time: 结束时间
+  observation_tips: 观测提示
+  recommended_equipment: 推荐装备
+  weather_conditions: 天气条件
+  cloud_cover: 云量
+  humidity: 湿度
+  wind_speed: 风速
+  light_pollution_tip: 光污染提示
   symbol: 符号
   dates: 日期
   event_type: 事件类型

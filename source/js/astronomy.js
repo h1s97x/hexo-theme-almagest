@@ -143,14 +143,14 @@ const Astronomy = {
   },
 
   // Check if day has events
-  hasEvent(year, month, day) {
+  hasEvent(_year, _month, _day) {
     // This would be populated from actual event data
     // For now, return false
     return false;
   },
 
   // Show events for a specific day
-  showDayEvents(year, month, day) {
+  showDayEvents(_year, _month, _day) {
     const eventsContainer = document.querySelector('.calendar-events');
     if (!eventsContainer) {
       return;
@@ -217,7 +217,7 @@ const Astronomy = {
   },
 
   // Calculate visible constellations for a location
-  getVisibleConstellations(latitude, longitude, date) {
+  getVisibleConstellations(_latitude, _longitude, date) {
     // This is a simplified implementation
     // In a real application, you would use astronomical calculations
     const constellation = this.getConstellationByDate(date);
@@ -225,7 +225,7 @@ const Astronomy = {
   },
 
   // Get observation tips for a location
-  getObservationTips(latitude, longitude, date) {
+  getObservationTips(latitude, _longitude, _date) {
     const tips = [];
 
     // Add tips based on location and date

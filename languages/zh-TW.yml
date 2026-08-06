@@ -10,13 +10,17 @@ about: 關於
 # 分頁
 prev: 上一頁
 next: 下一頁
+pagination: 分頁
 
 # 文章
 read_more: 閱讀更多
 updated: 更新於
+last_updated: 最後更新於
 posted_on: 發佈於
 in: 在
 with_tags: 標籤為
+read_time_unit: 分鐘閱讀
+read_time: '{{count}} 分鐘閱讀'
 
 # 側邊欄
 recent_posts: 最近文章
@@ -27,12 +31,22 @@ comments: 評論
 
 # 目錄
 toc: 目錄
+breadcrumb: 麵包屑導航
+
+# 無障礙
+back_to_top: 返回頂部
+toggle_theme: 切換主題
+toggle_menu: 切換菜單
+previous_month: 上個月
+next_month: 下個月
+copy_failed: 複製失敗
 
 # 社交
 social: 社交連結
 
 # 頁腳
 powered_by: 由以下技術驅動
+copyright: 版權所有
 theme: 主題
 
 # 搜尋
@@ -101,6 +115,28 @@ notebooks:
 
 # 天文功能
 astronomy:
+  calendar: 天文日曆
+  sunday: 週日
+  monday: 週一
+  tuesday: 週二
+  wednesday: 週三
+  thursday: 週四
+  friday: 週五
+  saturday: 週六
+  upcoming_events: 即將到來的天文事件
+  observation_guide: 觀星指南
+  visible_constellations: 可見星座
+  best_observation_time: 最佳觀測時間
+  start_time: 開始時間
+  peak_time: 高峰時間
+  end_time: 結束時間
+  observation_tips: 觀測提示
+  recommended_equipment: 推薦裝備
+  weather_conditions: 天氣條件
+  cloud_cover: 雲量
+  humidity: 濕度
+  wind_speed: 風速
+  light_pollution_tip: 光污染提示
   symbol: 符號
   dates: 日期
   event_type: 事件類型

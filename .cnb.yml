@@ -16,6 +16,10 @@ $:
           script: |
             set -e
             npm run style:lint
+        - name: unit-test
+          script: |
+            set -e
+            npm run test:unit
         - name: smoke-test
           script: |
             set -e
@@ -37,6 +41,10 @@ $:
           script: |
             set -e
             npm run style:lint
+        - name: unit-test
+          script: |
+            set -e
+            npm run test:unit
         - name: smoke-test
           script: |
             set -e
