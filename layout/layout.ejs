@@ -8,6 +8,11 @@ if (['post', 'page'].includes(page.layout)) {
   page_type = 'content';
 }
 
+// 侧边栏是否启用（决定 content-wrapper 的网格列布局）
+const sidebar_enabled = config.sidebar?.enable &&
+  (config.sidebar?.position === 'left' || config.sidebar?.position === 'right');
+const sidebar_class = sidebar_enabled ? 'with-sidebar' : 'no-sidebar';
+
 // 获取主题偏好
 const prefers_theme = config.style?.prefers_theme || 'auto';
 const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}"`;
@@ -29,7 +34,7 @@ const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}
         <!-- Breadcrumb -->
         <%- partial('_partial/breadcrumb') %>
         
-        <div class="content-wrapper <%= page_type %>">
+        <div class="content-wrapper <%= page_type %> <%= sidebar_class %>">
           <!-- Sidebar (Left) -->
           <% if (config.sidebar?.enable && config.sidebar?.position === 'left') { %>
             <%- partial('_partial/sidebar') %>

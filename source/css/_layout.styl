@@ -64,25 +64,17 @@ header
   @media (max-width: ($breakpoint-md - 1px))
     grid-template-columns 1fr
 
-  // Tablet and desktop layout - with sidebar
-  @media (min-width: $breakpoint-md)
-    grid-template-columns 1fr 280px
-
-    @media (min-width: $breakpoint-lg)
-      grid-template-columns 1fr 300px
-
+  // Tablet and desktop layout - two columns (sidebar)
   &.with-sidebar
-    @media (max-width: ($breakpoint-md - 1px))
-      grid-template-columns 1fr
-
     @media (min-width: $breakpoint-md)
       grid-template-columns 1fr 280px
 
       @media (min-width: $breakpoint-lg)
         grid-template-columns 1fr 300px
 
-    &.no-sidebar
-      grid-template-columns 1fr
+  // No sidebar: always single column
+  &.no-sidebar
+    grid-template-columns 1fr
 
 // ============================================================
 // Article Container
