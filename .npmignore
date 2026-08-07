@@ -1,4 +1,35 @@
+# ============================================================
+# npm 制品忽略规则
+#
+# 保留：用户安装主题运行所需的全部文件
+#   - _config.yml / languages/ / layout/ / scripts/ / source/
+#   - package.json / README.md / LICENSE / CHANGELOG.md
+# 排除：仅仓库开发 / 部署使用的文件（用户用不到，瘦身 npm 包）
+# ============================================================
+
+# ---- 开发 / 部署配置 ----
+.ci/
+.cnb/
+.cnb.yml
 .github/
+.husky/
+.editorconfig
+.eslintrc.json
+.prettierrc.json
+.stylelintrc.json
+
+# ---- 发布脚本（需在仓库内执行，不随包分发）----
 npm-publish.sh
+
+# ---- 文档与演示站点源码 ----
+doc/
+
+# ---- 测试 ----
+test/
+
+# ---- 开发 / 部署工具 ----
+tools/
+
+# ---- 依赖与其他 ----
 node_modules
 giscus.json

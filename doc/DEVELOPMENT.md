@@ -63,13 +63,14 @@ hexo-theme-almagest/
 │       ├── lazy-load.js
 │       ├── code-copy.js
 │       └── astronomy.js
-├── scripts/              # Hexo 脚本与工具
+├── scripts/              # Hexo 脚本（会被 Hexo 自动加载，仅放 JS）
 │   ├── events.js
 │   ├── generators.js
 │   ├── helpers.js
 │   ├── filters.js
-│   ├── tags.js
-│   └── build-demo.sh
+│   └── tags.js
+├── tools/                # 开发/部署工具（不会被 Hexo 加载）
+│   └── build-demo.sh     # Demo 站点构建脚本
 ├── languages/            # 多语言文件
 │   ├── zh-CN.yml
 │   ├── en.yml

@@ -7,7 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+**修复 Demo 构建脚本被 Hexo 误加载（阻断用户安装）**
+
+- 将 `scripts/build-demo.sh` 迁移至 `tools/build-demo.sh`：Hexo 会把主题 `scripts/` 目录下所有文件当作 JS 加载，`.sh` 脚本导致任意用户 `hexo generate` 时 `Script load failed: themes/almagest/scripts/build-demo.sh`（SyntaxError）——用 npm 或 submodule 安装主题均会踩到
+- 同步更新 `.cnb.yml`（部署流水线）、`README.md`、`doc/QUICK_REFERENCE.md`、`doc/DEVELOPMENT.md` 中的调用与结构说明
+
 ### Added
+
+**内置通用 `asset_code` 标签（收编自 Stellar 生态）**
+
+- 新增 `{% asset_code path/to/file [title] [lang:xx] [from:n] [to:n] %}` 标签：将站点 `source/` 目录下的源码文件以带行号、标题链接的代码块渲染进文章，语言未指定时按扩展名推断
+- 基于 Hexo 内置高亮器渲染（Hexo >= 7），旧版本自动降级为 `<pre><code>`
+- 为 `asset_code` 补充单元测试，并在 `package.json` 增加 `hexo-util` 运行时依赖
+
+**npm 包瘦身**
+
+- 扩充 `.npmignore`：排除 `.ci/` `.cnb/` `.cnb.yml` `.github/` `.husky/` `doc/` `test/` `tools/` 及各类开发/部署配置，制品从 108 个文件（376 kB）降至 66 个文件（221 kB），仅保留用户安装运行所需的主题文件
 
 #### Phase 5: 文档整理
 
@@ -30,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Demo 站点与部署**
 
-- 新增 `scripts/build-demo.sh`：一键构建 `doc/` 演示博客到 `.demo/public`（真实 Hexo 构建验证通过，25 个产物文件）
+- 新增 `tools/build-demo.sh`：一键构建 `doc/` 演示博客到 `.demo/public`（真实 Hexo 构建验证通过，25 个产物文件）
 - 新增 `.cnb/tag_deploy.yml`：配置 production 部署环境，支持在仓库「部署」入口一键部署到 EdgeOne Pages（`tencentcom/deploy-eopages` 插件，需配置 `EDGEONE_PAGES_API_TOKEN`）
 - `.gitignore` 新增 `.demo/` 构建产物目录
 

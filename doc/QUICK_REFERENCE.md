@@ -287,7 +287,9 @@ hexo-theme-almagest/
 ├── source/              # 静态资源
 │   ├── css/            # 样式文件
 │   └── js/             # JavaScript 文件
-├── scripts/            # Hexo 脚本与工具
+├── scripts/            # Hexo 脚本（会被 Hexo 自动加载，仅放 JS）
+├── tools/              # 开发/部署工具（不会被 Hexo 加载）
+│   └── build-demo.sh   # Demo 站点构建脚本
 ├── languages/          # 多语言文件
 ├── doc/                # 文档与演示博客源码
 ├── test/               # 单元测试与冒烟测试
@@ -333,7 +335,7 @@ hexo deploy
 ### 手动构建 Demo 站点
 
 ```bash
-bash scripts/build-demo.sh   # 输出到 .demo/public
+bash tools/build-demo.sh   # 输出到 .demo/public
 ```
 
 ## 发布与版本管理

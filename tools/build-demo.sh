@@ -3,7 +3,7 @@
 # Hexo Theme Almagest - Demo 站点构建脚本
 #
 # 用法:
-#   bash scripts/build-demo.sh [输出目录]
+#   bash tools/build-demo.sh [输出目录]
 #
 # 默认输出到 .demo/public，供 CNB 流水线部署 EdgeOne Pages / 静态托管使用。
 # ============================================================

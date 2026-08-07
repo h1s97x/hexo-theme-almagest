@@ -89,6 +89,23 @@ menu:
   Tags: /tags/
 ```
 
+## 内置标签
+
+主题内置少量通用标签，可直接在文章中使用：
+
+### `asset_code` — 嵌入源码文件
+
+将站点 `source/` 目录下的源码文件以带行号与标题链接的代码块渲染进文章：
+
+```
+{% asset_code path/to/file [title] [lang:xx] [from:n] [to:n] %}
+```
+
+- `path`：相对站点 `source/` 目录（也支持相对当前文章 source 目录的路径）
+- `title`：代码块标题，默认取文件名
+- `lang`：高亮语言，默认按文件扩展名推断
+- `from` / `to`：只截取文件的部分行区间渲染
+
 ## 开发
 
 ```bash
@@ -124,7 +141,7 @@ npm test             # 静态检查 + 单元测试 + CI 冒烟测试（真实 He
 `doc/` 目录包含演示博客源码，可通过以下命令构建静态站点：
 
 ```bash
-bash scripts/build-demo.sh   # 输出到 .demo/public
+bash tools/build-demo.sh   # 输出到 .demo/public
 ```
 
 配合仓库的「部署」入口（`.cnb/tag_deploy.yml`）可一键部署到 **EdgeOne Pages**（需配置 `EDGEONE_PAGES_API_TOKEN`）。

@@ -131,7 +131,7 @@ $:
         - name: build-demo
           script: |
             set -e
-            bash scripts/build-demo.sh
+            bash tools/build-demo.sh
         - name: deploy-to-edgeone-pages
           image: tencentcom/deploy-eopages:latest
           settings:
