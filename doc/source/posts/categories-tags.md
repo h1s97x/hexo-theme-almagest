@@ -206,6 +206,5 @@ For blogs with many posts:
 
 ## See Also
 
-- [Installation Guide](installation.md)
-- [Configuration Guide](configuration.md)
-- [Search Guide](search.md)
+- [Installation & Configuration FAQ](faq.html)
+- [Search Guide](search.html)

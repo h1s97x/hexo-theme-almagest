@@ -4,7 +4,7 @@ about: 咨询主题的安装、配置或使用问题
 labels: question
 ---
 
-<!-- ⚠️ 提交前请先阅读 README.md 与 QUICK_REFERENCE.md，确认没有现成答案 -->
+<!-- ⚠️ 提交前请先阅读 README.md 与 doc/QUICK_REFERENCE.md，确认没有现成答案 -->
 
 ## 问题描述
 

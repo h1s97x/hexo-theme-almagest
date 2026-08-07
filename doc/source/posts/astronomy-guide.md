@@ -23,7 +23,7 @@ Almagest 主题提供了丰富的天文功能，包括星座导航、天文事�
 在 `_config.yml` 中配置天文功能：
 
 ```yaml
-theme:
+theme_config:
   astronomy:
     enable: true
     background: static  # 'static' 或 'dynamic'
@@ -89,7 +89,7 @@ tags: [星座, 白羊座]
 在配置中添加天文事件：
 
 ```yaml
-theme:
+theme_config:
   astronomy:
     events:
       - name: "月全食"
@@ -252,7 +252,7 @@ console.log(tips); // 输出：观测建议列表
 ### 完整的天文功能配置
 
 ```yaml
-theme:
+theme_config:
   astronomy:
     enable: true
     background: static
@@ -292,7 +292,6 @@ A: 使用 JavaScript API 的 `getVisibleConstellations()` 方法，传入用户�
 
 ## 相关资源
 
-- [主题配置指南](../configuration/)
-- [自定义指南](../customization/)
-- [天文事件日历](../astronomy-calendar/)
-- [观测指南](../observation-guide/)
+- [主题配置指南](faq.html)
+- [天文事件日历](astronomy-calendar.html)
+- [观测指南](observation-guide.html)

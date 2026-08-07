@@ -25,7 +25,7 @@ hexo-theme-almagest/
 │       ├── head.ejs
 │       ├── header.ejs
 │       ├── footer.ejs
-│       ├── navbar.ejs
+│       ├── breadcrumb.ejs
 │       ├── sidebar.ejs
 │       ├── post-card.ejs
 │       ├── pagination.ejs
@@ -39,40 +39,51 @@ hexo-theme-almagest/
 │       ├── constellation-nav.ejs
 │       ├── astronomy-card.ejs
 │       ├── astronomy-calendar.ejs
-│       └── observation-guide.ejs
+│       ├── observation-guide.ejs
+│       ├── theme-init.ejs
+│       └── scripts.ejs
 ├── source/                # 静态资源
 │   ├── css/              # 样式文件
 │   │   ├── main.styl
 │   │   ├── _variables.styl
 │   │   ├── _base.styl
 │   │   ├── _layout.styl
+│   │   ├── _components.styl
+│   │   ├── _mixins.styl
 │   │   ├── _responsive.styl
 │   │   ├── _theme-light.styl
 │   │   ├── _theme-dark.styl
 │   │   ├── _code-highlight.styl
-│   │   └── _astronomy.styl
+│   │   ├── _astronomy.styl
+│   │   ├── _astronomy-calendar.styl
+│   │   └── _observation-guide.styl
 │   └── js/               # JavaScript 文件
-│       ├── main.js
 │       ├── theme.js
-│       ├── sidebar.js
 │       ├── search.js
 │       ├── lazy-load.js
 │       ├── code-copy.js
 │       └── astronomy.js
-├── scripts/              # Hexo 脚本
-│   ├── index.js
+├── scripts/              # Hexo 脚本与工具
 │   ├── events.js
 │   ├── generators.js
 │   ├── helpers.js
 │   ├── filters.js
-│   └── tags.js
+│   ├── tags.js
+│   └── build-demo.sh
 ├── languages/            # 多语言文件
 │   ├── zh-CN.yml
 │   ├── en.yml
 │   └── zh-TW.yml
+├── doc/                  # 文档与演示博客
+│   ├── README.md / CONTRIBUTING.md / DEVELOPMENT.md / QUICK_REFERENCE.md ...
+│   └── source/           # 演示博客源码
+├── test/                 # 单元测试与冒烟测试
+│   ├── unit/
+│   └── ci-smoke-test.sh
 ├── _config.yml           # 主题配置示例
 ├── package.json          # 项目配置
 ├── README.md             # 项目说明
+├── CHANGELOG.md          # 更新日志
 └── LICENSE               # MIT 许可证
 ```
 
@@ -93,11 +104,7 @@ npm install
 
 ### 3. 配置开发环境
 
-复制配置示例：
-
-```bash
-cp _config.example.yml _config.almagest.yml
-```
+主题配置无需复制示例文件：默认配置在主题根目录 `_config.yml`，站点侧可通过 `theme_config:` 覆盖（详见 [README](../README.md) 与演示博客中的 [配置指南](./source/posts/faq.md)）。
 
 ### 4. 启动开发服务器
 
@@ -538,6 +545,6 @@ A: 创建新的脚本、样式和模板，遵循现有的代码结构和规范�
 3. **手动发布 npm**：`CNB_TOKEN=xxx bash npm-publish.sh`（默认发布到 CNB toolkit 制品库）
 4. **部署 Demo 站点**：在仓库「部署」入口选择 production 环境，自动构建并部署到 EdgeOne Pages
 
-流水线配置见 [.cnb.yml](.cnb.yml)（发布相关事件：`auto_tag` / `tag_push` / `tag_deploy.production`）。
+流水线配置见 [.cnb.yml](../.cnb.yml)（发布相关事件：`auto_tag` / `tag_push` / `tag_deploy.production`）。
 
 感谢您的贡献！

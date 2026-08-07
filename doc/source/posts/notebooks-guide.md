@@ -23,7 +23,7 @@ Notebooks 系统提供了一个结构化的方式来组织和展示个人笔记�
 在 `_config.yml` 中配置 Notebooks 系统：
 
 ```yaml
-theme:
+theme_config:
   notebooks:
     enable: true
     categories:
@@ -216,7 +216,7 @@ const z = 15;
 ### 完整配置示例
 
 ```yaml
-theme:
+theme_config:
   notebooks:
     enable: true
     categories:
@@ -263,6 +263,6 @@ A: 笔记以 Markdown 格式存储，可以直接导出或转换为其他格式�
 
 ## 相关资源
 
-- [主题配置指南](../configuration/)
-- [Markdown 语法](../markdown/)
-- [自定义指南](../customization/)
+- [主题配置指南](faq.html)
+- [Markdown 语法](https://www.markdownguide.org/)
+- [自定义指南](faq.html)

@@ -23,7 +23,7 @@ Topic 系统提供了一个结构化的方式来组织和展示系列文章。�
 在 `_config.yml` 中配置 Topic 系统：
 
 ```yaml
-theme:
+theme_config:
   topics:
     - name: "JavaScript 学习路线"
       path: "/topics/javascript-learning/"
@@ -162,7 +162,7 @@ JavaScript 学习路线
 ### 完整配置示例
 
 ```yaml
-theme:
+theme_config:
   topics:
     - name: "JavaScript 学习路线"
       path: "/topics/javascript-learning/"
@@ -192,6 +192,6 @@ A: 在配置中设置 `count` 字段，系统会自动显示。
 
 ## 相关资源
 
-- [主题配置指南](../configuration/)
-- [文章编写指南](../writing/)
-- [自定义指南](../customization/)
+- [主题配置指南](faq.html)
+- [文章编写指南](best-practices.html)
+- [自定义指南](faq.html)

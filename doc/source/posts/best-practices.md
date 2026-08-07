@@ -352,7 +352,7 @@ schema:
 
 ## 相关资源
 
-- [内容创作指南](../writing/)
-- [SEO 优化指南](../seo/)
-- [性能优化指南](../performance/)
-- [自定义指南](../customization/)
+- [内容创作指南](best-practices.html)
+- [SEO 优化指南](best-practices.html)
+- [性能优化指南](best-practices.html)
+- [自定义指南](faq.html)

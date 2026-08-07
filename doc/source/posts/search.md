@@ -223,6 +223,5 @@ Combine search with tags for flexible navigation:
 
 ## See Also
 
-- [Categories and Tags Guide](categories-tags.md)
-- [Configuration Guide](configuration.md)
-- [Installation Guide](installation.md)
+- [Categories and Tags Guide](categories-tags.html)
+- [Installation & Configuration FAQ](faq.html)

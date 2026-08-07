@@ -23,7 +23,7 @@ Wiki 系统提供了一个结构化的方式来组织和展示文档。它支持
 在 `_config.yml` 中配置 Wiki 系统：
 
 ```yaml
-theme:
+theme_config:
   wiki:
     enable: true
     projects:
@@ -181,6 +181,6 @@ A: 在配置中设置 `enable: false` 或从配置中移除该项目。
 
 ## 相关资源
 
-- [主题配置指南](../configuration/)
-- [Markdown 语法](../markdown/)
-- [自定义指南](../customization/)
+- [主题配置指南](faq.html)
+- [Markdown 语法](https://www.markdownguide.org/)
+- [自定义指南](faq.html)

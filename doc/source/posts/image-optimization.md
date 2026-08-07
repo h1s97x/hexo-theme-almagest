@@ -323,6 +323,5 @@ npm install hexo-image-optimizer
 
 ## See Also
 
-- [Configuration Guide](configuration.md)
-- [Installation Guide](installation.md)
-- [Performance Best Practices](best-practices.md)
+- [Installation & Configuration FAQ](faq.html)
+- [Performance Best Practices](best-practices.html)

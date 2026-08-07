@@ -22,9 +22,9 @@ This is the demonstration blog for **Hexo Theme Almagest**, a minimal and elegan
 
 To get started with this theme, check out the documentation:
 
-- [Installation Guide](./posts/installation.md)
-- [Configuration Guide](./posts/configuration.md)
-- [Quick Start](./posts/getting-started.md)
+- [Installation Guide](./posts/faq.html)
+- [Configuration Guide](./posts/faq.html)
+- [Quick Start](./posts/faq.html)
 
 ## Theme Highlights
 

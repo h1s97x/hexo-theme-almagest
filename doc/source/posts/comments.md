@@ -264,7 +264,6 @@ Edit `layout/page.ejs`:
 
 ## See Also
 
-- [Configuration Guide](configuration.md)
-- [Installation Guide](installation.md)
+- [Installation & Configuration FAQ](faq.html)
 - [Giscus Documentation](https://giscus.app)
 - [GitHub Discussions](https://docs.github.com/en/discussions)

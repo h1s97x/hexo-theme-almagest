@@ -351,6 +351,5 @@ html[lang="ar"]
 
 ## See Also
 
-- [Configuration Guide](configuration.md)
-- [Installation Guide](installation.md)
+- [Installation & Configuration FAQ](faq.html)
 - [Hexo i18n Documentation](https://hexo.io/docs/internationalization)

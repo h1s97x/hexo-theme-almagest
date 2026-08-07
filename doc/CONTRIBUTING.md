@@ -113,6 +113,8 @@ bash test/ci-smoke-test.sh   # 构建冒烟测试
 
 完整的开发流程与项目结构说明见 [DEVELOPMENT.md](DEVELOPMENT.md)。
 
+> 文档（README / 快速参考 / 开发指南 / 贡献指南等）统一收录在 `doc/` 目录下。
+
 ## 代码规范
 
 | 工具      | 范围                   | 命令                 |
@@ -121,9 +123,9 @@ bash test/ci-smoke-test.sh   # 构建冒烟测试
 | Stylelint | `source/css/**/*.styl` | `npm run style:lint` |
 | Prettier  | 全部文件               | `npm run format`     |
 
-- 使用 **2 空格缩进**，遵循 [.editorconfig](.editorconfig)。
-- JavaScript 遵循 [.eslintrc.json](.eslintrc.json) 规则。
-- 样式遵循 [.stylelintrc.json](.stylelintrc.json) 规则。
+- 使用 **2 空格缩进**，遵循 [.editorconfig](../.editorconfig)。
+- JavaScript 遵循 [.eslintrc.json](../.eslintrc.json) 规则。
+- 样式遵循 [.stylelintrc.json](../.stylelintrc.json) 规则。
 - 提交前会通过 husky + lint-staged 自动执行格式化。
 
 ## 提交信息规范

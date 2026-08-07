@@ -314,7 +314,5 @@ A: 等待天气转晴。可以查看天气预报选择合适的观测日期。
 
 ## 相关资源
 
-- [天文功能使用指南](../astronomy-guide/)
-- [天文事件日历](../astronomy-calendar/)
-- [星座导航](../constellation-nav/)
-- [天文摄影入门](../astrophotography/)
+- [天文功能使用指南](astronomy-guide.html)
+- [天文事件日历](astronomy-calendar.html)

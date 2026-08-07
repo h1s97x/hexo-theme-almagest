@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Phase 5: 文档整理
+
+**文档目录重组**
+
+- 将散落在根目录的 `CONTRIBUTING.md` / `DEVELOPMENT.md` / `QUICK_REFERENCE.md` / `BUG_FIX_AND_IMPROVEMENT_GUIDE.md` 统一归入 `doc/` 目录，根目录仅保留 `README.md` 与 `CHANGELOG.md`
+- README / 各文档内部链接同步更新；更新 `doc/` 内文档间的相对引用
+- 演示博客（`doc/source/`）文档中的配置示例统一为 `theme_config:` 写法（移除过时的 `_config.example.yml` 复制步骤）
+- 修复演示博客文章间的失效链接（`.md` → Hexo 渲染后的 `.html`），指向仓库文档的链接改用 CNB 绝对 URL
+- 同步更新 DEVELOPMENT.md 项目结构树与 QUICK_REFERENCE.md 文件结构，使其与实际仓库一致
+
 #### Phase 4: 发布与生态
 
 **版本发布自动化**
@@ -27,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **社区生态规范**
 
 - 新增 `.cnb/ISSUE_TEMPLATE/` Issue 模板：Bug 报告（版本/严重程度/复现步骤/期望与实际行为/环境）、功能建议（描述/场景/优先级/参考实现）、使用问题，及 config.yml 联系人配置
-- 新增 [CONTRIBUTING.md](CONTRIBUTING.md)：行为准则、贡献流程（Fork → 分支 → 开发验证 → PR）、代码规范、Conventional Commits 提交规范、分支命名约定、发布流程说明
+- 新增 [CONTRIBUTING.md](doc/CONTRIBUTING.md)：行为准则、贡献流程（Fork → 分支 → 开发验证 → PR）、代码规范、Conventional Commits 提交规范、分支命名约定、发布流程说明
 - 创建仓库标签体系：`bug` / `feature request` / `question` / `documentation` / `enhancement` / `release` / `ci`
 - README 补充「版本发布」「Demo 站点」「贡献」章节
 

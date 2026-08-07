@@ -15,9 +15,8 @@ A: 按照以下步骤安装：
 
 1. 克隆主题仓库到 `themes/almagest` 目录
 2. 在 Hexo 的 `_config.yml` 中设置 `theme: almagest`
-3. 复制 `_config.example.yml` 为 `_config.almagest.yml`
-4. 根据需要修改配置
-5. 运行 `hexo generate` 生成静态文件
+3. 在站点 `_config.yml` 中通过 `theme_config:` 覆盖需要修改的配置项（默认配置已带完整注释）
+4. 运行 `hexo generate` 生成静态文件
 
 ### Q: 如何更新主题？
 
@@ -34,7 +33,7 @@ A: Almagest 主题支持 Hexo 6.0 及以上版本。
 
 ### Q: 如何自定义主题配置？
 
-A: 编辑 `_config.almagest.yml` 文件，修改相应的配置项。详见[配置指南](../configuration/)。
+A: 在站点 `_config.yml` 中通过 `theme_config:` 覆盖主题默认配置即可，无需复制整份主题配置。详见 [README](https://cnb.cool/h1s97x/hexo-theme-almagest/-/blob/main/README.md) 中的「配置」章节与下方 [配置指南](#安装和配置)。
 
 ## 功能相关
 
@@ -43,7 +42,7 @@ A: 编辑 `_config.almagest.yml` 文件，修改相应的配置项。详见[配�
 A: 在配置中启用 Giscus：
 
 ```yaml
-theme:
+theme_config:
   comments:
     enable: true
     provider: giscus
@@ -54,14 +53,14 @@ theme:
       category_id: your-category-id
 ```
 
-详见[评论系统配置](../comments/)。
+详见[评论系统配置](comments.html)。
 
 ### Q: 如何使用搜索功能？
 
 A: 搜索功能默认启用。在配置中可以调整搜索设置：
 
 ```yaml
-theme:
+theme_config:
   search:
     enable: true
     per_page: 10
@@ -72,7 +71,7 @@ theme:
 A: 在配置中添加菜单项：
 
 ```yaml
-theme:
+theme_config:
   menu:
     Home: /
     Archives: /archives/
@@ -89,7 +88,7 @@ A: 在 Hexo 的 `_config.yml` 中设置语言：
 language: zh-CN  # 或 en, zh-TW
 ```
 
-详见[多语言配置](../multilingual/)。
+详见[多语言配置](multilingual.html)。
 
 ## 主题和样式
 
@@ -102,7 +101,7 @@ A: 点击页面右上角的主题切换按钮。您的选择会被保存到本�
 A: 在配置中修改颜色变量：
 
 ```yaml
-theme:
+theme_config:
   style:
     primary_color: '#0066cc'
     secondary_color: '#666666'
@@ -118,7 +117,7 @@ A: 在 `source/css/` 目录下创建自定义样式文件，然后在主题配�
 A: 主题默认使用系统字体栈。您可以在配置中自定义字体：
 
 ```yaml
-theme:
+theme_config:
   fonts:
     body: 'Segoe UI, -apple-system, BlinkMacSystemFont'
     code: 'Monaco, Menlo, Ubuntu Mono'
@@ -184,19 +183,19 @@ cover: /images/cover.jpg
 
 ### Q: 如何使用 Wiki 系统？
 
-A: 详见[Wiki 系统使用指南](../wiki-guide/)。
+A: 详见[Wiki 系统使用指南](wiki-guide.html)。
 
 ### Q: 如何使用 Topic 系统？
 
-A: 详见[Topic 系统使用指南](../topic-guide/)。
+A: 详见[Topic 系统使用指南](topic-guide.html)。
 
 ### Q: 如何使用 Notebooks 系统？
 
-A: 详见[Notebooks 系统使用指南](../notebooks-guide/)。
+A: 详见[Notebooks 系统使用指南](notebooks-guide.html)。
 
 ### Q: 如何使用天文功能？
 
-A: 详见[天文功能使用指南](../astronomy-guide/)。
+A: 详见[天文功能使用指南](astronomy-guide.html)。
 
 ## 性能和优化
 
@@ -270,11 +269,11 @@ A:
 
 ### Q: 如何自定义主题？
 
-A: 详见[自定义指南](../customization/)。
+A: 详见[自定义指南](faq.html)。
 
 ### Q: 如何扩展主题功能？
 
-A: 详见[开发指南](../development/)。
+A: 详见[开发指南](https://cnb.cool/h1s97x/hexo-theme-almagest/-/blob/main/doc/DEVELOPMENT.md)。
 
 ### Q: 如何贡献代码？
 
@@ -299,7 +298,7 @@ A: 在 GitHub Issues 中创建新 Issue，提供：
 
 ### Q: 主题是否支持国际化？
 
-A: 是的，主题支持多语言。详见[多语言配置](../multilingual/)。
+A: 是的，主题支持多语言。详见[多语言配置](multilingual.html)。
 
 ### Q: 如何获取技术支持？
 
@@ -325,8 +324,7 @@ A:
 
 ## 相关资源
 
-- [安装指南](../installation/)
-- [配置指南](../configuration/)
-- [自定义指南](../customization/)
-- [开发指南](../development/)
-- [GitHub 仓库](https://github.com/your-username/hexo-theme-almagest)
+- [主题配置指南](#安装和配置)
+- [天文功能使用指南](astronomy-guide.html)
+- [开发指南](https://cnb.cool/h1s97x/hexo-theme-almagest/-/blob/main/doc/DEVELOPMENT.md)
+- [GitHub 仓库](https://github.com/h1s97x/hexo-theme-almagest)

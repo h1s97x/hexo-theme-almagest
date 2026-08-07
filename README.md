@@ -131,7 +131,7 @@ bash scripts/build-demo.sh   # 输出到 .demo/public
 
 ## 贡献
 
-欢迎任何形式的贡献！请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 了解：
+欢迎任何形式的贡献！请阅读 [CONTRIBUTING.md](doc/CONTRIBUTING.md) 了解：
 
 - Bug 报告 / 功能建议 / 使用问题的 **Issue 模板**
 - 代码提交规范（Conventional Commits）与分支命名约定
@@ -140,10 +140,12 @@ bash scripts/build-demo.sh   # 输出到 .demo/public
 
 ## 文档
 
-- [快速参考卡](QUICK_REFERENCE.md)
-- [开发文档](DEVELOPMENT.md)
-- [Bug 修复与改进指南](BUG_FIX_AND_IMPROVEMENT_GUIDE.md)
-- [贡献指南](CONTRIBUTING.md)
+完整的文档位于 `doc/` 目录：
+
+- [快速参考卡](doc/QUICK_REFERENCE.md)
+- [开发文档](doc/DEVELOPMENT.md)
+- [Bug 修复与改进指南](doc/BUG_FIX_AND_IMPROVEMENT_GUIDE.md)
+- [贡献指南](doc/CONTRIBUTING.md)
 - [更新日志](CHANGELOG.md)
 - [演示博客源码](doc/)
 

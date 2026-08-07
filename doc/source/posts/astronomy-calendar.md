@@ -25,7 +25,7 @@ tags: [日历, 事件, 天文]
 在 `_config.yml` 中配置天文事件：
 
 ```yaml
-theme:
+theme_config:
   astronomy:
     enable: true
     events:
@@ -163,7 +163,7 @@ layout: page
 ### 完整的事件配置
 
 ```yaml
-theme:
+theme_config:
   astronomy:
     enable: true
     events:
@@ -279,7 +279,6 @@ A: 从配置中移除该事件，或设置 `visibility: "hidden"`。
 
 ## 相关资源
 
-- [天文功能使用指南](../astronomy-guide/)
-- [观测指南](../observation-guide/)
-- [星座导航](../constellation-nav/)
-- [主题配置指南](../configuration/)
+- [天文功能使用指南](astronomy-guide.html)
+- [观测指南](observation-guide.html)
+- [主题配置指南](faq.html)

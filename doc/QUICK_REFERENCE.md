@@ -287,9 +287,12 @@ hexo-theme-almagest/
 ├── source/              # 静态资源
 │   ├── css/            # 样式文件
 │   └── js/             # JavaScript 文件
-├── scripts/            # Hexo 脚本
+├── scripts/            # Hexo 脚本与工具
 ├── languages/          # 多语言文件
-├── _config.yml         # 配置示例
+├── doc/                # 文档与演示博客源码
+├── test/               # 单元测试与冒烟测试
+├── _config.yml         # 主题配置示例
+├── README.md           # 项目说明
 └── package.json        # 项目配置
 ```
 
@@ -317,6 +320,8 @@ hexo-theme-almagest/
 hexo deploy
 ```
 
+> 需在站点 `_config.yml` 中配置 `deploy` 类型与目标仓库，并保证 `hexo-deployer-git` 已安装。
+
 ### 部署到 EdgeOne Pages（推荐）
 
 仓库已接入 CNB 云原生构建部署能力：
@@ -339,8 +344,8 @@ bash scripts/build-demo.sh   # 输出到 .demo/public
 
 ## 获取帮助
 
-- 查看[文档](./doc/)
-- 查看[常见问题](./doc/source/posts/faq.md)
+- 查看[演示博客文档](./source/)
+- 查看[常见问题](./source/posts/faq.md)
 - 查看[开发指南](./DEVELOPMENT.md)
 - 查看[贡献指南](./CONTRIBUTING.md)
 - 提交 [Issue](https://cnb.cool/h1s97x/hexo-theme-almagest/-/issues/new)
@@ -349,9 +354,9 @@ bash scripts/build-demo.sh   # 输出到 .demo/public
 
 - [Hexo 官方网站](https://hexo.io/)
 - [CNB 仓库](https://cnb.cool/h1s97x/hexo-theme-almagest)
-- [项目文档](./doc/)
+- [项目文档](../README.md)
 - [开发指南](./DEVELOPMENT.md)
 
 ---
 
-**最后更新**: 2024-01-01
+**最后更新**: 2025-01-01

@@ -411,7 +411,7 @@ Hard    P0 (Critical) P3 (Low)
 
 ## Documentation
 
-### Key Documents
+> 说明：以下为文档体系的建议清单，实际以仓库 `doc/` 目录中的文档为准。
 
 1. **BUGFIX_REPORT.md**
    - Bug fixing process
@@ -442,6 +442,8 @@ Hard    P0 (Critical) P3 (Low)
    - Response templates
    - Best practices
    - Handling difficult situations
+
+以上文档属于社区运营建议清单，尚未在本仓库创建，可在需要时按需补充。
 
 ## Communication
 
@@ -547,13 +549,8 @@ I'll discuss this with the team and get back to you.
 
 ## Resources
 
-- [BUGFIX_REPORT.md](BUGFIX_REPORT.md)
-- [IMPROVEMENTS_LOG.md](IMPROVEMENTS_LOG.md)
-- [COMMUNITY_ISSUES_RESOLVED.md](COMMUNITY_ISSUES_RESOLVED.md)
-- [IMPROVEMENT_TRACKING_TEMPLATE.md](IMPROVEMENT_TRACKING_TEMPLATE.md)
-- [COMMUNITY_FEEDBACK.md](COMMUNITY_FEEDBACK.md)
-- [FEEDBACK_RESPONSE_GUIDE.md](.github/FEEDBACK_RESPONSE_GUIDE.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
+- [DEVELOPMENT.md](DEVELOPMENT.md)
 
 ## Questions?
 
