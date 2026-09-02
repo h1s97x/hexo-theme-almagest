@@ -2,7 +2,7 @@ main:
   push:
     - name: quality-and-smoke
       docker:
-        image: node:20
+        image: node:22
       stages:
         - name: install-deps
           script: |
@@ -24,6 +24,12 @@ main:
           script: |
             set -e
             bash test/ci-smoke-test.sh
+        - name: smoke-test-hexo8
+          env:
+            HEXO_SPEC: hexo@^8
+          script: |
+            set -e
+            bash test/ci-smoke-test.sh
     - name: sync-to-github
       # 敏感信息（GITHUB_USERNAME / GITHUB_TOKEN）存放在密钥仓库 secret-env，通过 imports 引用
       imports:
@@ -41,7 +47,7 @@ main:
   pull_request:
     - name: quality-and-smoke
       docker:
-        image: node:20
+        image: node:22
       stages:
         - name: install-deps
           script: |
@@ -60,6 +66,12 @@ main:
             set -e
             npm run test:unit
         - name: smoke-test
+          script: |
+            set -e
+            bash test/ci-smoke-test.sh
+        - name: smoke-test-hexo8
+          env:
+            HEXO_SPEC: hexo@^8
           script: |
             set -e
             bash test/ci-smoke-test.sh
@@ -85,7 +97,7 @@ $:
   tag_push:
     - name: release-and-publish
       docker:
-        image: node:20
+        image: node:22
       stages:
         - name: install-deps
           script: |
@@ -98,6 +110,7 @@ $:
             npm run check
             npm run test:unit
             bash test/ci-smoke-test.sh
+            HEXO_SPEC=hexo@^8 bash test/ci-smoke-test.sh
 
         - name: generate-changelog
           image: cnbcool/changelog:latest

@@ -6,12 +6,16 @@
 #   bash tools/build-demo.sh [输出目录]
 #
 # 默认输出到 .demo/public，供 CNB 流水线部署 EdgeOne Pages / 静态托管使用。
+#
+# 环境变量:
+#   HEXO_SPEC  指定 Hexo 版本（默认 hexo@^7，可设为 hexo@^8）
 # ============================================================
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEMO_DIR="${ROOT}/.demo"
 OUTPUT_DIR="${1:-${DEMO_DIR}/public}"
+HEXO_SPEC="${HEXO_SPEC:-hexo@^7}"
 
 echo "==> 构建 Hexo Theme Almagest Demo 站点"
 echo "    Demo 源码: ${ROOT}/doc"
@@ -39,11 +43,11 @@ npm init -y --scope=almagest-demo >/dev/null 2>&1 || \
 node -e "
 const fs = require('fs');
 const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-p.hexo = { version: '7.0.0' };
+p.hexo = { version: require('hexo/package.json').version };
 fs.writeFileSync('package.json', JSON.stringify(p, null, 2));
 "
 echo "==> 安装 Hexo 与依赖（首次较慢）"
-npm install hexo@^7 hexo-renderer-ejs hexo-renderer-stylus hexo-renderer-marked \
+npm install "$HEXO_SPEC" hexo-renderer-ejs hexo-renderer-stylus hexo-renderer-marked \
   hexo-generator-index hexo-generator-archive hexo-generator-category hexo-generator-tag \
   --no-audit --no-fund --loglevel=error
 

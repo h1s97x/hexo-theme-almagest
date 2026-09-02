@@ -3,26 +3,33 @@
 #
 # 在临时目录搭建最小 Hexo 站点，安装主题并执行 hexo generate，
 # 断言构建成功且关键产物非空（index.html / main.css / search.json / 文章页）。
+#
+# 用法：
+#   bash test/ci-smoke-test.sh              # 默认验证 Hexo 7
+#   HEXO_SPEC=hexo@^8 bash test/ci-smoke-test.sh   # 验证 Hexo 8
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEMO_DIR="$(mktemp -d)"
 trap 'rm -rf "$DEMO_DIR"' EXIT
 
-echo "==> 初始化临时 Hexo 站点: $DEMO_DIR"
+# 允许 CI 通过环境变量切换 Hexo 主版本，构建兼容矩阵
+HEXO_SPEC="${HEXO_SPEC:-hexo@^7}"
+
+echo "==> 初始化临时 Hexo 站点: $DEMO_DIR (Hexo: $HEXO_SPEC)"
 cd "$DEMO_DIR"
 npm init -y >/dev/null 2>&1
 
 echo "==> 安装 Hexo 与渲染器"
-npm install hexo@^7 hexo-renderer-ejs hexo-renderer-stylus hexo-renderer-marked \
+npm install "$HEXO_SPEC" hexo-renderer-ejs hexo-renderer-stylus hexo-renderer-marked \
   hexo-generator-index hexo-generator-archive hexo-generator-category hexo-generator-tag \
   --no-audit --no-fund --loglevel=error >/dev/null
 
-# 让 hexo-cli 识别项目（package.json 需含 hexo 字段）
+# 让 hexo-cli 识别项目（package.json 需含 hexo 字段；版本取实际安装值）
 node -e "
 const fs = require('fs');
 const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-p.hexo = { version: '7.0.0' };
+p.hexo = { version: require('hexo/package.json').version };
 fs.writeFileSync('package.json', JSON.stringify(p, null, 2));
 "
 

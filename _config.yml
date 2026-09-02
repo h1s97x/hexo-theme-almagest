@@ -66,8 +66,9 @@ code_highlight:
   # 是否启用 highlight.js
   enable: true
 
-  # highlight.js CDN 地址（可替换为国内镜像）
-  cdn: 'https://cdn.jsdelivr.net/npm/highlight.js@11.8.0'
+  # highlight.js CDN 地址（国内网络可替换为镜像，如
+  # https://cdn.staticfile.org/highlight.js/11.12.0 或 https://cdn.bootcdn.net/ajax/libs/highlight.js/11.12.0）
+  cdn: 'https://cdn.jsdelivr.net/npm/highlight.js@11.12.0'
 
   # 高亮样式主题（与 style.code_theme 保持一致，二选一配置即可）
   theme: 'atom-one-light'
