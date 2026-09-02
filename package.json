@@ -1,6 +1,6 @@
 {
   "name": "hexo-theme-almagest",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "一个简洁而强大的 Hexo 主题，参考 Stellar 主题但更易于定制。A minimal yet powerful Hexo theme inspired by Stellar with enhanced customization.",
   "main": "package.json",
   "scripts": {

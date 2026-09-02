@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+暂无未发布内容。
+
+## [1.1.0] - 2026-09-02
+
+本次发布包含自 v1.0.0 以来累积的文档整理、Bug 修复、新标签支持，
+以及一轮完整的技术栈升级。
+
 ### Changed
 
 **技术栈升级（工具链 + 运行时依赖）**
