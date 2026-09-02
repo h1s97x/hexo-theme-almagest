@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+**技术栈升级（工具链 + 运行时依赖）**
+
+升级前项目整体落后 2~3 个大版本，其中 ESLint 与 Stylelint 的两项**破坏性变更**会直接打断 CI，故统一升级并配套改造。
+
+**破坏性升级（不升会挂）**
+
+- **ESLint 8 → 10**：ESLint 10 已**彻底移除 `.eslintrc`**（9.x 标记废弃，10.x 删除），旧 `.eslintrc.json` 会让 `npm run lint` 直接失败。新增 `eslint.config.js`（flat config）并删除 `.eslintrc.json`；`no-unused-vars` 的 `caughtErrors` 显式设回 `none`，保留旧语义（ESLint 9 起默认值改为 `all`，会把空 `catch (e)` 误报为 unused var）
+- **Stylelint 14 → 17**：Stylelint 15 起移除了 `indentation` / `quotes` / `no-eol-whitespace` 等全部 stylistic 规则，旧配置中 15 条规则已不存在。清理失效规则，并关闭 `declaration-property-value-no-unknown` / `media-query-no-invalid` / `media-feature-range-notation` / `nesting-selector-no-missing-scoping-root` 四条与 Stylus 变量（`$transition-base`、`$breakpoint-md` 等）冲突的新规则
+
+**依赖调整**
+
+- 移除 **`moment`**（官方已停产）：唯一使用者是 `format_date` helper，而该 helper 在 32 个模板中零调用（模板统一用 Hexo 内置 `date()` / `date_xml()`）。同时删除该 helper 及其单元测试
+- 移除 **`cheerio`** 与 **`probe-image-size`**：两者均为重型包且在代码中零引用（图片懒加载实际由 `filters.js` 手写扫描器实现），删除以加快安装
+- 移除 **`stylelint-config-prettier`**：Stylelint 15 起已无与 Prettier 冲突的规则，该包已冗余
+- `hexo-util` 3 → 4（要求 Node >= 18），`engines.node` 相应由 `>=14` 提升到 `>=18`
+- 工具链同步升级：`husky` 8 → 9（`prepare` 脚本由 `husky install` 改为 `husky`，`pre-commit` 移除 `husky.sh` 样板行）、`lint-staged` 15 → 17、`prettier` 3.0 → 3.9、`eslint-config-prettier` 9 → 10、`stylelint-config-standard` 29 → 40
+
+**样式修复**
+
+- 修复两处真实废弃属性：`clip: rect(0,0,0,0)` → `clip-path: inset(50%)`、 `page-break-inside` → `break-inside`
+
+**工程化改进**
+
+- **消除 Prettier 与 ESLint 的规则冲突**：旧配置中 10 条格式化规则（indent / quotes / semi / brace-style / comma-dangle / keyword-spacing / space-infix-ops / space-before-function-paren / no-trailing-spaces / linebreak-style）与 Prettier 重复且互相覆盖，会造成"lint 修完 prettier 又改回去"的死循环。现明确职责划分：**ESLint 只管代码质量（4 条规则），Prettier 只管代码格式**
+- **修复 lint-staged 阻断提交**：Prettier 不支持 `.styl` 语法（`inferredParser: null`），显式传入会报 `No parser could be inferred`，而 lint-staged 对 `.styl` 调用了 `prettier --write`。新增 `.prettierignore` 排除 `source/css/`，样式格式统一由 Stylelint 负责
+- `npm run lint` 覆盖范围由 `source/js/**/*.js` 扩展到全量 JS（`scripts/`、`test/`、`eslint.config.js`），lint-staged 同步覆盖 `scripts/` 与 `test/`
+- CI 镜像 `node:20` → `node:22`（`lint-staged@17` 要求 Node >= 22.22.1）
+- 冒烟测试支持 `HEXO_SPEC` 环境变量切换 Hexo 主版本，CI 新增 `smoke-test-hexo8` 阶段构建 **Hexo 7 / 8 兼容矩阵**（均已验证通过）；`tools/build-demo.sh` 同样支持该变量
+- `code_highlight.cdn` 的 highlight.js 由 11.8.0 升至 11.12.0，并补充国内镜像替换说明
+
 ### Fixed
 
 **修复 Demo 构建脚本被 Hexo 误加载（阻断用户安装）**

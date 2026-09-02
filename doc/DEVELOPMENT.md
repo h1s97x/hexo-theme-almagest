@@ -83,6 +83,10 @@ hexo-theme-almagest/
 │   └── ci-smoke-test.sh
 ├── _config.yml           # 主题配置示例
 ├── package.json          # 项目配置
+├── eslint.config.js      # ESLint flat config（ESLint 9+ 格式）
+├── .stylelintrc.json     # Stylelint 配置
+├── .prettierrc.json      # Prettier 配置
+├── .prettierignore       # Prettier 忽略规则（排除 Stylus 等）
 ├── README.md             # 项目说明
 ├── CHANGELOG.md          # 更新日志
 └── LICENSE               # MIT 许可证
@@ -303,7 +307,7 @@ git push origin feat/feature-name
 ### 代码检查
 
 ```bash
-# ESLint 检查
+# ESLint 检查（覆盖 source/js、scripts、test 与 eslint.config.js 本身）
 npm run lint
 
 # ESLint 自动修复

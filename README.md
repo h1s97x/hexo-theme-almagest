@@ -110,12 +110,26 @@ menu:
 
 ```bash
 npm install          # 安装依赖
-npm run lint         # JS 代码检查（eslint）
+npm run lint         # JS 代码检查（eslint，覆盖 source/js、scripts、test）
 npm run style:lint   # 样式检查（stylelint）
 npm run check        # 全部静态检查
 npm run test:unit    # 单元测试（helpers/generators/tags/filters）
 npm test             # 静态检查 + 单元测试 + CI 冒烟测试（真实 Hexo 构建验证）
 ```
+
+冒烟测试支持通过 `HEXO_SPEC` 切换 Hexo 主版本，用于验证版本兼容性：
+
+```bash
+bash test/ci-smoke-test.sh                     # 默认 Hexo 7
+HEXO_SPEC='hexo@^8' bash test/ci-smoke-test.sh # 验证 Hexo 8
+```
+
+> **Node.js 要求**
+>
+> - 使用主题（执行 `hexo generate`）：**Node >= 18**
+> - 开发主题（执行 lint / 测试）：**Node >= 22.22.1**，因开发工具链（主要是 `lint-staged@17`）要求更高
+>
+> 代码规范上，**ESLint 只负责代码质量、Prettier 只负责代码格式**，两者不重叠。样式文件（`.styl`）Prettier 不支持，统一交由 Stylelint 处理（见 `.prettierignore`）。
 
 ## 性能优化
 

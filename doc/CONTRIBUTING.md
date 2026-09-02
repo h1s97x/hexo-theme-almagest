@@ -102,13 +102,18 @@ git push origin feat/my-new-feature
 
 ## 开发环境
 
-项目需要 **Node.js >= 14**，推荐使用 Node 20+。
+项目对 Node.js 有两类不同的要求，请注意区分：
+
+| 场景                            | Node.js 要求 | 说明                                                      |
+| ------------------------------- | ------------ | --------------------------------------------------------- |
+| **使用主题**（`hexo generate`） | `>= 18`      | 由 `engines.node` 声明，取决于 `hexo-util@4` 等运行时依赖 |
+| **开发主题**（跑 lint / 测试）  | `>= 22.22.1` | 取决于开发工具链（主要是 `lint-staged@17`）               |
 
 ```bash
 npm install
 npm run check          # lint 检查
 npm run test:unit      # 单元测试
-bash test/ci-smoke-test.sh   # 构建冒烟测试
+bash test/ci-smoke-test.sh   # 构建冒烟测试（默认 Hexo 7）
 ```
 
 完整的开发流程与项目结构说明见 [DEVELOPMENT.md](DEVELOPMENT.md)。
@@ -119,13 +124,15 @@ bash test/ci-smoke-test.sh   # 构建冒烟测试
 
 | 工具      | 范围                   | 命令                 |
 | --------- | ---------------------- | -------------------- |
-| ESLint    | `source/js/**/*.js`    | `npm run lint`       |
+| ESLint    | 全部 `*.js`            | `npm run lint`       |
 | Stylelint | `source/css/**/*.styl` | `npm run style:lint` |
 | Prettier  | 全部文件               | `npm run format`     |
 
 - 使用 **2 空格缩进**，遵循 [.editorconfig](../.editorconfig)。
-- JavaScript 遵循 [.eslintrc.json](../.eslintrc.json) 规则。
+- JavaScript 遵循 [eslint.config.js](../eslint.config.js) 规则（ESLint 9+ 的 **flat config** 格式，`.eslintrc.json` 已在 ESLint 10 被移除）。
 - 样式遵循 [.stylelintrc.json](../.stylelintrc.json) 规则。
+- Prettier 会跳过 [.prettierignore](../.prettierignore) 中声明的文件 —— 其中 `source/css/` 因 Prettier 不支持 Stylus 语法而排除，样式格式统一由 Stylelint 负责。
+- **ESLint 只管代码质量，Prettier 只管代码格式**，两者职责不重叠，不会互相覆盖。
 - 提交前会通过 husky + lint-staged 自动执行格式化。
 
 ## 提交信息规范
