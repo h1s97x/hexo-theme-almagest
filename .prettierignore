@@ -1,0 +1,12 @@
+# Stylus 由 stylelint 负责格式化：Prettier 不支持 .styl 语法，
+# 显式传入 .styl 路径时会报 "No parser could be inferred" 并失败，
+# 因此必须在此排除，否则 lint-staged 会阻断 commit。
+source/css/
+
+# 依赖与构建产物
+node_modules/
+public/
+.demo/
+
+# 由 npm 生成，不应被格式化
+package-lock.json

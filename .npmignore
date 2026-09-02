@@ -8,13 +8,12 @@
 # ============================================================
 
 # ---- 开发 / 部署配置 ----
-.ci/
 .cnb/
 .cnb.yml
 .github/
 .husky/
 .editorconfig
-.eslintrc.json
+eslint.config.js
 .prettierrc.json
 .stylelintrc.json
 

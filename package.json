@@ -13,7 +13,7 @@
     "check": "npm run lint && npm run style:lint",
     "test:unit": "node test/unit/run.js",
     "test": "npm run check && npm run test:unit && bash test/ci-smoke-test.sh",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -50,10 +50,10 @@
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.12.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.4.1",
     "postcss-styl": "^0.12.3",
-    "prettier": "^3.0.3",
+    "prettier": "^3.9.6",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0"
   },
@@ -62,9 +62,16 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "source/css/**/*.styl": [
-      "stylelint --fix",
+    "scripts/**/*.js": [
+      "eslint --fix",
       "prettier --write"
+    ],
+    "test/**/*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "source/css/**/*.styl": [
+      "stylelint --fix"
     ],
     "*.md": [
       "prettier --write"
