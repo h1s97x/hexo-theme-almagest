@@ -47,22 +47,25 @@ small
   font-size $font-size-sm
 
 // Header & Navigation
+// 注意：以下选择器必须与下方 @media (min-width: ...) 中的增强规则保持
+// 相同的特异性（均为顶层单类选择器），否则桌面端的恢复样式无法覆盖
+// 此处的移动端样式（媒体查询不改变特异性）。
 .site-header
   padding $space-md 0
 
-  .header-container
-    padding 0 $space-md
-    gap $space-md
+.header-container
+  padding 0 $space-md
+  gap $space-md
 
-  .logo-text
-    font-size $font-size-xl
+.logo-text
+  font-size $font-size-xl
 
-  .site-nav
-    display none
-    margin 0
+.site-nav
+  display none
+  margin 0
 
-  .header-actions
-    gap $space-sm
+.header-actions
+  gap $space-sm
 
 .action-btn
   width 44px
@@ -211,13 +214,13 @@ input, textarea, select
     height 20px
 
 // Footer
-footer
+.site-footer
   padding $space-lg $space-md
 
 .footer-content
   gap $space-md
 
-.footer-links
+.social-links
   gap $space-md
   font-size $font-size-sm
 
@@ -416,10 +419,13 @@ img
     min-height 44px
 
   // Footer
-  footer
+  .site-footer
     padding $space-2xl $space-lg
 
-  .footer-links
+  .footer-content
+    grid-template-columns repeat(2, 1fr)
+
+  .social-links
     gap $space-lg
     font-size $font-size-sm
 
@@ -585,10 +591,10 @@ img
     min-height 44px
 
   // Footer
-  footer
+  .site-footer
     padding $space-3xl $space-2xl
 
-  .footer-links
+  .social-links
     gap $space-2xl
     font-size $font-size-base
 

@@ -17,14 +17,130 @@
 // ============================================================
 // Header
 // ============================================================
+// 此处定义跨尺寸的布局骨架（flex 排列、按钮外观、图标互斥等）。
+// 各断点下的尺寸微调见 _responsive.styl（mobile-first，顶层为移动端）。
+// 注意：_responsive.styl 中的对应选择器必须与此保持相同特异性，
+// 否则断点增强样式无法覆盖（媒体查询不改变特异性）。
+// ============================================================
 
-header
+.site-header
   background-color var(--color-bg)
   border-bottom 1px solid var(--color-border)
   position sticky
   top 0
   z-index $z-index-sticky
   transition background-color $transition-base, border-color $transition-base
+
+.header-container
+  display flex
+  align-items center
+  justify-content space-between
+  width 100%
+  max-width $container-width-2xl
+  margin 0 auto
+  gap $space-md
+
+.logo
+  flex-shrink 0
+
+.logo-link
+  display inline-flex
+  align-items center
+  text-decoration none
+  color var(--color-text)
+  transition color $transition-base
+
+  &:hover
+    color var(--color-link)
+
+.logo-text
+  font-size $font-size-xl
+  font-weight $font-weight-bold
+  color var(--color-text)
+  white-space nowrap
+  transition color $transition-base
+
+.site-nav
+  display flex
+  align-items center
+  gap $space-lg
+
+.nav-link
+  position relative
+  font-size $font-size-base
+  color var(--color-text-secondary)
+  text-decoration none
+  padding $space-xs 0
+  white-space nowrap
+  transition color $transition-base
+
+  &:hover
+    color var(--color-link)
+
+.header-actions
+  display flex
+  align-items center
+  gap $space-sm
+  flex-shrink 0
+
+.action-btn
+  display inline-flex
+  align-items center
+  justify-content center
+  width 40px
+  height 40px
+  padding 0
+  border none
+  border-radius $border-radius-md
+  background-color transparent
+  color var(--color-text-secondary)
+  cursor pointer
+  text-decoration none
+  transition background-color $transition-base, color $transition-base
+
+  svg
+    width 20px
+    height 20px
+
+  &:hover
+    background-color var(--color-hover-bg)
+    color var(--color-text)
+
+  &:focus-visible
+    outline 2px solid var(--color-link)
+    outline-offset 2px
+
+// 明暗图标互斥：亮色显示太阳（点击切暗色），暗色显示月亮（点击切亮色）
+.theme-toggle-btn
+  .moon-icon
+    display none
+
+[data-theme='dark'] .theme-toggle-btn
+  .sun-icon
+    display none
+
+  .moon-icon
+    display block
+
+.mobile-menu
+  background-color var(--color-bg)
+  border-bottom 1px solid var(--color-border)
+
+.mobile-nav
+  display flex
+  flex-direction column
+  width 100%
+  max-width $container-width-2xl
+  margin 0 auto
+
+.mobile-nav-link
+  color var(--color-text-secondary)
+  text-decoration none
+  transition color $transition-base, background-color $transition-base
+
+  &:hover
+    color var(--color-link)
+    background-color var(--color-hover-bg)
 
 // ============================================================
 // Main Content
@@ -93,8 +209,13 @@ header
 // - Desktop (> 1024px): Visible
 // ============================================================
 
+// 侧边栏本身是透明的布局容器，只负责纵向排列与间距；
+// 卡片观感（背景/圆角/内边距）下放到每个 .widget 自身，
+// 参考 hexo-theme-stellar 的 .widget-wrapper/.widget-body 分层方式。
 .sidebar
-  background-color var(--color-bg)
+  display flex
+  flex-direction column
+  gap $space-lg
 
   // Hidden on mobile
   @media (max-width: ($breakpoint-md - 1px))
@@ -172,12 +293,98 @@ header
 // Footer
 // ============================================================
 
-footer
+// 与 Header 同理：此处定义跨尺寸布局骨架，断点微调见 _responsive.styl。
+// _responsive.styl 中对应选择器已同步为 .site-footer（同为单类选择器），
+// 否则此处较高的特异性会让断点 padding 失效。
+
+.site-footer
   background-color var(--color-bg-secondary)
   border-top 1px solid var(--color-border)
   padding $space-2xl 0
   margin-top $space-3xl
   transition background-color $transition-base, border-color $transition-base
+
+.footer-container
+  width 100%
+  max-width $container-width-2xl
+  margin 0 auto
+  padding 0 $space-lg
+
+.footer-content
+  display grid
+  grid-template-columns 1fr
+  gap $space-xl
+  padding-bottom $space-xl
+
+.footer-section
+  min-width 0
+
+.footer-title
+  font-size $font-size-lg
+  font-weight $font-weight-semibold
+  color var(--color-text)
+  margin-bottom $space-sm
+
+.footer-description
+  font-size $font-size-sm
+  color var(--color-text-secondary)
+  line-height $line-height-relaxed
+  margin-bottom 0
+
+.social-links
+  display flex
+  align-items center
+  gap $space-sm
+  flex-wrap wrap
+
+.social-link
+  display inline-flex
+  align-items center
+  justify-content center
+  width 40px
+  height 40px
+  border-radius $border-radius-md
+  color var(--color-text-secondary)
+  text-decoration none
+  transition background-color $transition-base, color $transition-base
+
+  svg
+    width 20px
+    height 20px
+
+  &:hover
+    background-color var(--color-hover-bg)
+    color var(--color-text)
+
+  &:focus-visible
+    outline 2px solid var(--color-link)
+    outline-offset 2px
+
+.footer-bottom
+  display flex
+  flex-direction column
+  align-items center
+  gap $space-xs
+  padding-top $space-lg
+  border-top 1px solid var(--color-border)
+  text-align center
+
+.copyright
+  font-size $font-size-sm
+  color var(--color-text-secondary)
+  margin-bottom 0
+
+.powered-by
+  font-size $font-size-sm
+  color var(--color-text-tertiary)
+  margin-bottom 0
+
+  a
+    color var(--color-link)
+    text-decoration none
+
+    &:hover
+      text-decoration underline
 
 // ============================================================
 // Back to Top Button
