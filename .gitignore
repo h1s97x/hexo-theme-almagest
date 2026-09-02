@@ -41,6 +41,9 @@ public/
 # Demo 站点构建产物
 .demo/
 
+# 环境回收站（删除文件时可能被自动创建于仓库根目录）
+.Trash-*/
+
 # Theme specific
 source/css/main.css
 source/css/main.css.map
