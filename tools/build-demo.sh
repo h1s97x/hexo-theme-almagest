@@ -40,16 +40,20 @@ cd "$DEMO_DIR"
 # .demo 目录名不是合法 npm 包名，需显式指定 name
 npm init -y --scope=almagest-demo >/dev/null 2>&1 || \
   node -e "require('fs').writeFileSync('package.json', JSON.stringify({name:'almagest-demo',version:'1.0.0'}, null, 2))"
+
+echo "==> 安装 Hexo 与依赖（首次较慢）"
+npm install "$HEXO_SPEC" hexo-renderer-ejs hexo-renderer-stylus hexo-renderer-marked \
+  hexo-generator-index hexo-generator-archive hexo-generator-category hexo-generator-tag \
+  --no-audit --no-fund --loglevel=error
+
+# 让 hexo-cli 识别项目（package.json 需含 hexo 字段；版本取实际安装值，
+# 必须在 npm install 之后执行，否则 require('hexo/package.json') 找不到模块）
 node -e "
 const fs = require('fs');
 const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 p.hexo = { version: require('hexo/package.json').version };
 fs.writeFileSync('package.json', JSON.stringify(p, null, 2));
 "
-echo "==> 安装 Hexo 与依赖（首次较慢）"
-npm install "$HEXO_SPEC" hexo-renderer-ejs hexo-renderer-stylus hexo-renderer-marked \
-  hexo-generator-index hexo-generator-archive hexo-generator-category hexo-generator-tag \
-  --no-audit --no-fund --loglevel=error
 
 # 4. 构建
 echo "==> hexo generate"
