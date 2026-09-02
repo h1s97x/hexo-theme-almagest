@@ -51,6 +51,3 @@ Browse through the demo content to see what this theme can do:
 ---
 
 **Happy blogging with Hexo Theme Almagest!**
-
-
-

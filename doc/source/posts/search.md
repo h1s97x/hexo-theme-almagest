@@ -35,7 +35,7 @@ Edit `_config.yml`:
 
 ```yaml
 features:
-  search: true  # Set to false to disable
+  search: true # Set to false to disable
 ```
 
 ## Search Configuration
@@ -64,6 +64,7 @@ Edit `source/js/search.js` to customize:
 ### Result Display
 
 Each search result shows:
+
 - **Title**: Post title (clickable link)
 - **Excerpt**: Relevant excerpt from the post
 - **URL**: Post URL
@@ -72,6 +73,7 @@ Each search result shows:
 ### Result Ranking
 
 Results are ranked by:
+
 1. Title matches (higher weight)
 2. Content matches (lower weight)
 3. Relevance score
@@ -117,7 +119,7 @@ Edit `source/js/search.js`, find the `displayResults` function:
 ```javascript
 results.slice(0, 20).forEach(result => {
   // Change 20 to your desired number
-})
+});
 ```
 
 ### Customizing Search Box
@@ -129,11 +131,13 @@ Edit `layout/_partial/search-box.ejs` to customize the search form.
 ### Search Index Size
 
 The search index size depends on:
+
 - Number of posts
 - Average post length
 - Content complexity
 
 Typical index sizes:
+
 - 100 posts: ~50KB
 - 500 posts: ~250KB
 - 1000 posts: ~500KB
@@ -186,9 +190,9 @@ search: false
 To customize what gets indexed, edit `scripts/generators.js`:
 
 ```javascript
-hexo.extend.generator.register('search', function(locals) {
+hexo.extend.generator.register('search', function (locals) {
   const searchData = [];
-  
+
   locals.posts.forEach(post => {
     if (post.published !== false && post.search !== false) {
       searchData.push({
@@ -199,7 +203,7 @@ hexo.extend.generator.register('search', function(locals) {
       });
     }
   });
-  
+
   return {
     path: 'search.json',
     content: JSON.stringify(searchData)
@@ -212,12 +216,14 @@ hexo.extend.generator.register('search', function(locals) {
 ### Search + Categories
 
 Combine search with categories for better content discovery:
+
 1. Use search for keyword-based discovery
 2. Use categories for topic-based browsing
 
 ### Search + Tags
 
 Combine search with tags for flexible navigation:
+
 1. Use search for specific queries
 2. Use tags for related content
 

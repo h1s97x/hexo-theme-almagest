@@ -54,17 +54,17 @@ Edit `_config.yml`:
 services:
   giscus:
     enable: true
-    repo: "your-username/your-repo"
-    repo_id: "your-repo-id"
-    category: "Announcements"
-    category_id: "your-category-id"
-    mapping: "pathname"
+    repo: 'your-username/your-repo'
+    repo_id: 'your-repo-id'
+    category: 'Announcements'
+    category_id: 'your-category-id'
+    mapping: 'pathname'
     reactions_enabled: true
     emit_metadata: false
-    input_position: "bottom"
-    theme: "light"
-    lang: "en"
-    loading: "lazy"
+    input_position: 'bottom'
+    theme: 'light'
+    lang: 'en'
+    loading: 'lazy'
 ```
 
 ### Step 5: Rebuild Site
@@ -78,35 +78,35 @@ hexo generate
 
 ### Basic Settings
 
-| Option | Description | Example |
-|--------|-------------|---------|
-| `enable` | Enable/disable comments | `true` |
-| `repo` | Repository in format owner/name | `user/blog` |
-| `repo_id` | Repository ID from Giscus | `R_kgDOA...` |
-| `category` | Discussion category | `Announcements` |
-| `category_id` | Category ID from Giscus | `DIC_kwDOA...` |
+| Option        | Description                     | Example         |
+| ------------- | ------------------------------- | --------------- |
+| `enable`      | Enable/disable comments         | `true`          |
+| `repo`        | Repository in format owner/name | `user/blog`     |
+| `repo_id`     | Repository ID from Giscus       | `R_kgDOA...`    |
+| `category`    | Discussion category             | `Announcements` |
+| `category_id` | Category ID from Giscus         | `DIC_kwDOA...`  |
 
 ### Mapping Options
 
-| Mapping | Description |
-|---------|-------------|
+| Mapping    | Description                     |
+| ---------- | ------------------------------- |
 | `pathname` | Use page pathname (recommended) |
-| `url` | Use full page URL |
-| `title` | Use page title |
-| `og:title` | Use Open Graph title |
-| `specific` | Use specific term |
-| `number` | Use specific number |
+| `url`      | Use full page URL               |
+| `title`    | Use page title                  |
+| `og:title` | Use Open Graph title            |
+| `specific` | Use specific term               |
+| `number`   | Use specific number             |
 
 ### Display Options
 
-| Option | Description | Values |
-|--------|-------------|--------|
-| `reactions_enabled` | Show emoji reactions | `true`/`false` |
-| `emit_metadata` | Emit metadata | `true`/`false` |
-| `input_position` | Comment box position | `top`/`bottom` |
-| `theme` | Color theme | `light`/`dark`/`preferred_color_scheme` |
-| `lang` | Language | `en`/`zh-CN`/`zh-TW`/etc |
-| `loading` | Loading behavior | `lazy`/`eager` |
+| Option              | Description          | Values                                  |
+| ------------------- | -------------------- | --------------------------------------- |
+| `reactions_enabled` | Show emoji reactions | `true`/`false`                          |
+| `emit_metadata`     | Emit metadata        | `true`/`false`                          |
+| `input_position`    | Comment box position | `top`/`bottom`                          |
+| `theme`             | Color theme          | `light`/`dark`/`preferred_color_scheme` |
+| `lang`              | Language             | `en`/`zh-CN`/`zh-TW`/etc                |
+| `loading`           | Loading behavior     | `lazy`/`eager`                          |
 
 ## Enabling/Disabling Comments
 
@@ -117,7 +117,7 @@ Edit `_config.yml`:
 ```yaml
 services:
   giscus:
-    enable: false  # Disable for entire site
+    enable: false # Disable for entire site
 ```
 
 ### Per Post
@@ -157,7 +157,7 @@ To match your site theme, update `_config.yml`:
 ```yaml
 services:
   giscus:
-    theme: "preferred_color_scheme"  # Matches site theme
+    theme: 'preferred_color_scheme' # Matches site theme
 ```
 
 ## Troubleshooting
@@ -224,8 +224,8 @@ For custom mapping, use:
 ```yaml
 services:
   giscus:
-    mapping: "specific"
-    term: "my-custom-term"
+    mapping: 'specific'
+    term: 'my-custom-term'
 ```
 
 ### Multiple Categories

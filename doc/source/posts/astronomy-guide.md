@@ -26,21 +26,21 @@ Almagest 主题提供了丰富的天文功能，包括星座导航、天文事�
 theme_config:
   astronomy:
     enable: true
-    background: static  # 'static' 或 'dynamic'
+    background: static # 'static' 或 'dynamic'
     constellations:
-      - name: "白羊座"
-        symbol: "♈"
-        date_start: "03-21"
-        date_end: "04-19"
-        description: "白羊座是黄道十二星座之一..."
-        image: "/images/constellations/aries.svg"
+      - name: '白羊座'
+        symbol: '♈'
+        date_start: '03-21'
+        date_end: '04-19'
+        description: '白羊座是黄道十二星座之一...'
+        image: '/images/constellations/aries.svg'
     events:
-      - name: "四象限仪流星雨"
-        type: "meteor_shower"
-        date: "2024-01-04"
-        visibility: "全球可见"
-        description: "四象限仪流星雨是每年最活跃的流星雨之一..."
-        image: "/images/events/quadrantids.svg"
+      - name: '四象限仪流星雨'
+        type: 'meteor_shower'
+        date: '2024-01-04'
+        visibility: '全球可见'
+        description: '四象限仪流星雨是每年最活跃的流星雨之一...'
+        image: '/images/events/quadrantids.svg'
 ```
 
 ## 星座导航
@@ -92,16 +92,16 @@ tags: [星座, 白羊座]
 theme_config:
   astronomy:
     events:
-      - name: "月全食"
-        type: "lunar_eclipse"
-        date: "2024-03-25"
-        visibility: "亚洲、欧洲、非洲"
-        description: "这是 2024 年的第一次月全食..."
-      - name: "流星雨"
-        type: "meteor_shower"
-        date: "2024-08-12"
-        visibility: "全球可见"
-        description: "英仙座流星雨是每年最活跃的流星雨..."
+      - name: '月全食'
+        type: 'lunar_eclipse'
+        date: '2024-03-25'
+        visibility: '亚洲、欧洲、非洲'
+        description: '这是 2024 年的第一次月全食...'
+      - name: '流星雨'
+        type: 'meteor_shower'
+        date: '2024-08-12'
+        visibility: '全球可见'
+        description: '英仙座流星雨是每年最活跃的流星雨...'
 ```
 
 ### 2. 在页面中显示日历
@@ -257,20 +257,20 @@ theme_config:
     enable: true
     background: static
     constellations:
-      - name: "白羊座"
-        symbol: "♈"
-        icon: "🐑"
-        date_start: "03-21"
-        date_end: "04-19"
-        description: "白羊座是黄道十二星座之一..."
-        image: "/images/constellations/aries.svg"
+      - name: '白羊座'
+        symbol: '♈'
+        icon: '🐑'
+        date_start: '03-21'
+        date_end: '04-19'
+        description: '白羊座是黄道十二星座之一...'
+        image: '/images/constellations/aries.svg'
     events:
-      - name: "四象限仪流星雨"
-        type: "meteor_shower"
-        date: "2024-01-04"
-        visibility: "全球可见"
-        description: "四象限仪流星雨是每年最活跃的流星雨之一..."
-        image: "/images/events/quadrantids.svg"
+      - name: '四象限仪流星雨'
+        type: 'meteor_shower'
+        date: '2024-01-04'
+        visibility: '全球可见'
+        description: '四象限仪流星雨是每年最活跃的流星雨之一...'
+        image: '/images/events/quadrantids.svg'
 ```
 
 ## 常见问题

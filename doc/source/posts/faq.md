@@ -85,7 +85,7 @@ theme_config:
 A: 在 Hexo 的 `_config.yml` 中设置语言：
 
 ```yaml
-language: zh-CN  # 或 en, zh-TW
+language: zh-CN # 或 en, zh-TW
 ```
 
 详见[多语言配置](multilingual.html)。
@@ -211,7 +211,7 @@ A: 以下是一些优化建议：
 
 ### Q: 如何减少页面加载时间？
 
-A: 
+A:
 
 1. 优化图片大小
 2. 减少 HTTP 请求
@@ -220,7 +220,7 @@ A:
 
 ### Q: 如何改进 SEO？
 
-A: 
+A:
 
 1. 添加合适的标题和描述
 2. 使用清晰的 URL 结构
@@ -232,7 +232,7 @@ A:
 
 ### Q: 主题无法正确加载？
 
-A: 
+A:
 
 1. 检查 Hexo 版本是否满足要求
 2. 清除缓存：`hexo clean`
@@ -241,7 +241,7 @@ A:
 
 ### Q: 样式显示不正确？
 
-A: 
+A:
 
 1. 清除浏览器缓存
 2. 检查 CSS 文件是否正确加载
@@ -250,7 +250,7 @@ A:
 
 ### Q: 搜索功能不工作？
 
-A: 
+A:
 
 1. 检查搜索是否在配置中启用
 2. 运行 `hexo generate` 重新生成搜索索引
@@ -258,7 +258,7 @@ A:
 
 ### Q: 评论无法显示？
 
-A: 
+A:
 
 1. 检查 Giscus 配置是否正确
 2. 检查 GitHub 仓库是否公开
@@ -277,7 +277,7 @@ A: 详见[开发指南](https://cnb.cool/h1s97x/hexo-theme-almagest/-/blob/main/
 
 ### Q: 如何贡献代码？
 
-A: 
+A:
 
 1. Fork 项目仓库
 2. 创建功能分支
@@ -302,7 +302,7 @@ A: 是的，主题支持多语言。详见[多语言配置](multilingual.html)�
 
 ### Q: 如何获取技术支持？
 
-A: 
+A:
 
 1. 查看文档和 FAQ
 2. 在 GitHub Issues 中搜索相关问题
@@ -315,7 +315,7 @@ A: 是的，Almagest 主题是开源的，使用 MIT 许可证。
 
 ### Q: 如何参与项目开发？
 
-A: 
+A:
 
 1. Star 项目表示支持
 2. 提交 Issue 报告问题

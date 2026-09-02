@@ -69,7 +69,7 @@ cover: /images/cover.jpg
 
 \`\`\`javascript
 function hello() {
-  console.log('Hello, World!');
+console.log('Hello, World!');
 }
 \`\`\`
 
@@ -77,7 +77,7 @@ function hello() {
 
 \`\`\`python
 def hello():
-    print('Hello, World!')
+print('Hello, World!')
 \`\`\`
 ```
 
@@ -109,6 +109,7 @@ def hello():
 - 避免过多的分类
 
 示例分类：
+
 - 技术
 - 生活
 - 思考
@@ -122,6 +123,7 @@ def hello():
 - 定期审查和合并相似标签
 
 示例标签：
+
 - JavaScript
 - React
 - Web 开发
