@@ -4,8 +4,8 @@
   "description": "一个简洁而强大的 Hexo 主题，参考 Stellar 主题但更易于定制。A minimal yet powerful Hexo theme inspired by Stellar with enhanced customization.",
   "main": "package.json",
   "scripts": {
-    "lint": "eslint source/js/**/*.js",
-    "lint:fix": "eslint source/js/**/*.js --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "style:lint": "stylelint source/css/**/*.styl",
     "style:lint:fix": "stylelint source/css/**/*.styl --fix",
     "format": "prettier --write .",
@@ -51,8 +51,10 @@
     "probe-image-size": "^7.2.3"
   },
   "devDependencies": {
-    "eslint": "^8.50.0",
-    "eslint-config-prettier": "^9.0.0",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.12.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.0",
     "postcss-styl": "^0.12.3",
