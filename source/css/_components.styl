@@ -56,7 +56,9 @@
     opacity: 0.85
     text-decoration: none
 
-// 标签云字号等级（tags.ejs / tags-widget.ejs 中的 tag-size-* 类）
+// 标签云字号等级（tags.ejs 标签页的 .tag-link 与 sidebar.ejs 侧边栏
+// 的 .tag-cloud-item 共用这套 tag-size-* 类：标签页用满 1~5 档，
+// 侧边栏只用 1~3 档）
 .tag-link
   display: inline-block
   padding: 2px 10px
@@ -264,43 +266,123 @@
 // ============================================================
 // Sidebar Widgets
 // ============================================================
+// 设计参考 hexo-theme-stellar 的分层方式（layout/_partial/widgets/）：
+//   - 卡片观感（背景 / 圆角 / 内边距）由 .widget 容器统一提供，
+//     对应 Stellar 的 .widget-wrapper / .widget-body
+//   - 内部内容只用「文字色 + 间距」表达，不再各自叠加色块、边框或背景
+// 这样做遵循"克制视觉元素、突出有效信息"，避免每个元素各自为政导致杂乱。
+// ============================================================
 
+// widget 卡片：背景 + 圆角 + 内边距（对应 Stellar 的 .widget-body）
+// 纵向间距交给 .sidebar 的 gap 处理，故此处不设 margin
 .widget
-  margin-bottom: $space-xl
+  margin-bottom 0
+  padding $space-md $space-lg
+  border-radius $border-radius-lg
+  background-color var(--color-bg-secondary)
+  transition background-color $transition-base
 
+// widget 标题：弱化为分组标识，不再使用分隔线抢视觉重心
 .widget-title
-  margin: 0 0 $space-md 0
-  font-size: $font-size-lg
-  color: var(--color-text)
+  margin 0 0 $space-sm 0
+  font-size $font-size-xs
+  font-weight $font-weight-semibold
+  text-transform uppercase
+  letter-spacing 0.08em
+  color var(--color-text-tertiary)
 
+// About 描述文本
+.widget-content
+  color var(--color-text-secondary)
+  font-size $font-size-sm
+  line-height $line-height-relaxed
+
+  p
+    margin 0
+
+// 通用 widget 列表
 .widget-list
-  list-style: none
-  padding: 0
-  margin: 0
+  list-style none
+  padding 0
+  margin 0
 
-  li
-    margin: $space-sm 0
+  > li
+    margin 0
 
   a
-    color: var(--color-link)
-    text-decoration: none
+    color var(--color-text-secondary)
+    text-decoration none
+    transition color $transition-base
 
     &:hover
-      text-decoration: underline
+      color var(--color-link)
 
+// 最近文章：单行省略，行间用紧凑间距
+.widget-list--recent
+  > li + li
+    margin-top $space-xs
+
+  a
+    display block
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
+    font-size $font-size-sm
+    line-height 1.75
+
+// 分类列表：名称 + 计数，hover 仅做文字加深（去掉整行高亮与徽章变色）
+.widget-list--categories
+  > li + li
+    margin-top $space-xs
+
+  a
+    display flex
+    align-items baseline
+    justify-content space-between
+    gap $space-sm
+    font-size $font-size-sm
+    line-height 1.75
+
+    &:hover
+      color var(--color-link)
+
+      .category-count
+        color var(--color-link)
+
+.category-name
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+// 计数：纯文字三级色（对应 Stellar 的 .sub-text），不使用徽章背景
+.category-count
+  flex-shrink 0
+  font-size $font-size-xs
+  color var(--color-text-tertiary)
+  transition color $transition-base
+
+// 标签云：纯文字（对应 Stellar 的 widgets/tagcloud.styl ——
+// 无色块 / 无边框 / 无圆角背景），仅用文字色表达，hover 变强调色。
 .widget-tags-cloud
-  display: flex
-  flex-wrap: wrap
-  gap: $space-sm
+  display flex
+  flex-wrap wrap
+  gap $space-xs $space-sm
+  line-height 1.75
 
 .tag-cloud-item
-  display: inline-block
-  padding: 2px 10px
-  border-radius: $border-radius-full
-  background-color: var(--color-tag-bg)
-  color: var(--color-tag-text)
-  font-size: $font-size-sm
-  text-decoration: none
+  display inline-block
+  color var(--color-text-secondary)
+  font-size $font-size-sm
+  text-decoration none
+  overflow-wrap break-word
+  transition color $transition-base
+
+  &:hover
+    color var(--color-link)
+
+// 热度分档：直接复用上方全局的 .tag-size-1/2/3（xs / sm / base），
+// 不再于此处重复定义（否则会覆盖标签页 /tags/ 使用的同一批类名）。
+// 侧边栏只用 1~3 档（见 sidebar.ejs），标签页 tag-link 会用满 1~5 档。
 
 // ============================================================
 // Article & Post
