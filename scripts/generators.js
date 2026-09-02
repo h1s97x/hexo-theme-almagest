@@ -9,7 +9,7 @@
 'use strict';
 
 // Archive generator
-hexo.extend.generator.register('archive', function(locals) {
+hexo.extend.generator.register('archive', function (locals) {
   return {
     path: 'archives/index.html',
     layout: 'archive',
@@ -20,7 +20,7 @@ hexo.extend.generator.register('archive', function(locals) {
 });
 
 // Categories generator
-hexo.extend.generator.register('categories', function(locals) {
+hexo.extend.generator.register('categories', function (locals) {
   return {
     path: 'categories/index.html',
     layout: 'categories',
@@ -31,7 +31,7 @@ hexo.extend.generator.register('categories', function(locals) {
 });
 
 // Tags generator
-hexo.extend.generator.register('tags', function(locals) {
+hexo.extend.generator.register('tags', function (locals) {
   return {
     path: 'tags/index.html',
     layout: 'tags',
@@ -42,7 +42,7 @@ hexo.extend.generator.register('tags', function(locals) {
 });
 
 // Search index generator（受 theme.features.search 配置控制）
-hexo.extend.generator.register('search', function(locals) {
+hexo.extend.generator.register('search', function (locals) {
   const themeConfig = hexo.theme.config || {};
   if (themeConfig.features && themeConfig.features.search === false) {
     return [];
@@ -68,7 +68,7 @@ hexo.extend.generator.register('search', function(locals) {
 });
 
 // Search page generator（生成 /search/ 页面，受 theme.features.search 配置控制）
-hexo.extend.generator.register('search-page', function(locals) {
+hexo.extend.generator.register('search-page', function () {
   const themeConfig = hexo.theme.config || {};
   if (themeConfig.features && themeConfig.features.search === false) {
     return [];

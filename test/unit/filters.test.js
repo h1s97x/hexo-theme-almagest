@@ -76,10 +76,10 @@ test('after_render:html: 图片保留 src 并补 data-src 与 loading="lazy"', (
 
 test('after_render:html: 单引号/裸属性 loading 不被重复注入', () => {
   themeConfig = { image: { lazy_load: true } };
-  const single = afterRenderHtml(`<p><img src="/a.jpg" loading='lazy' alt="a"></p>`);
+  const single = afterRenderHtml('<p><img src="/a.jpg" loading=\'lazy\' alt="a"></p>');
   assert.ok((single.match(/loading/g) || []).length === 1, '单引号 loading 不应重复注入');
 
-  const bare = afterRenderHtml(`<p><img src="/a.jpg" loading alt="a"></p>`);
+  const bare = afterRenderHtml('<p><img src="/a.jpg" loading alt="a"></p>');
   assert.ok((bare.match(/loading/g) || []).length === 1, '裸 loading 不应重复注入');
 });
 

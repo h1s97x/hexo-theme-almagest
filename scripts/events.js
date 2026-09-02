@@ -9,16 +9,16 @@
 'use strict';
 
 // Before generate
-hexo.on('generateBefore', function() {
+hexo.on('generateBefore', function () {
   console.log('Almagest: Generating...');
 });
 
 // After generate
-hexo.on('generateAfter', function() {
+hexo.on('generateAfter', function () {
   console.log('Almagest: Generation complete');
 });
 
 // Ready
-hexo.on('ready', function() {
+hexo.on('ready', function () {
   console.log('Almagest: Theme ready');
 });

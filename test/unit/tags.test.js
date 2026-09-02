@@ -99,10 +99,7 @@ test('button: 默认值', () => {
 
 test('button: 自定义文本/链接/类型', () => {
   const out = registered.button.fn(['Go', 'https://example.com', 'success']);
-  assert.strictEqual(
-    out,
-    '<a href="https://example.com" class="btn btn-success">Go</a>'
-  );
+  assert.strictEqual(out, '<a href="https://example.com" class="btn btn-success">Go</a>');
 });
 
 // ---- asset_code ----
@@ -138,7 +135,7 @@ test('asset_code: 支持 title / lang / from / to 参数', () => {
 test('asset_code: 找不到资源时返回空串并告警', () => {
   const warns = [];
   const originalWarn = global.hexo.log.warn;
-  global.hexo.log.warn = (msg) => warns.push(msg);
+  global.hexo.log.warn = msg => warns.push(msg);
   const ctx = { source: '_posts/hello.md' };
   const out = registered.asset_code.fn.call(ctx, ['missing.js']);
   assert.strictEqual(out, '');

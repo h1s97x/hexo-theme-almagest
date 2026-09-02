@@ -8,13 +8,8 @@
 
 'use strict';
 
-// Format date helper
-hexo.extend.helper.register('format_date', function(date, format) {
-  return require('moment')(date).format(format || 'YYYY-MM-DD');
-});
-
 // Get excerpt helper
-hexo.extend.helper.register('get_excerpt', function(post, length) {
+hexo.extend.helper.register('get_excerpt', function (post, length) {
   const excerpt_length = length || 200;
   let excerpt = post.excerpt || post.content || '';
 
@@ -30,7 +25,7 @@ hexo.extend.helper.register('get_excerpt', function(post, length) {
 });
 
 // Get reading time helper
-hexo.extend.helper.register('get_reading_time', function(content) {
+hexo.extend.helper.register('get_reading_time', function (content) {
   if (!content) {
     return 0;
   }
@@ -46,16 +41,16 @@ hexo.extend.helper.register('get_reading_time', function(content) {
 });
 
 // Check if post is featured
-hexo.extend.helper.register('is_featured', function(post) {
+hexo.extend.helper.register('is_featured', function (post) {
   return post.featured === true;
 });
 
 // Get post categories
-hexo.extend.helper.register('get_categories', function(post) {
+hexo.extend.helper.register('get_categories', function (post) {
   return post.categories || [];
 });
 
 // Get post tags
-hexo.extend.helper.register('get_tags', function(post) {
+hexo.extend.helper.register('get_tags', function (post) {
   return post.tags || [];
 });

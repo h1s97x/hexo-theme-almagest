@@ -24,26 +24,15 @@ global.hexo = {
 // 加载被测模块（直接执行注册代码）
 require(path.join(__dirname, '../../scripts/helpers.js'));
 
-test('helpers: 注册了 6 个 helper', () => {
+test('helpers: 注册了 5 个 helper', () => {
   const names = Object.keys(registered).sort();
   assert.deepStrictEqual(names, [
-    'format_date',
     'get_categories',
     'get_excerpt',
     'get_reading_time',
     'get_tags',
     'is_featured'
   ]);
-});
-
-test('format_date: 默认 YYYY-MM-DD', () => {
-  const d = new Date('2024-01-05T00:00:00Z');
-  assert.strictEqual(registered.format_date(d), '2024-01-05');
-});
-
-test('format_date: 支持自定义格式', () => {
-  const d = new Date('2024-01-05T00:00:00Z');
-  assert.strictEqual(registered.format_date(d, 'YYYY/MM/DD'), '2024/01/05');
 });
 
 test('get_reading_time: 空内容返回 0', () => {

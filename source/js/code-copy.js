@@ -3,7 +3,7 @@
  * Adds copy button to code blocks.
  */
 
-(function() {
+(function () {
   'use strict';
 
   function initCodeCopy() {
@@ -24,7 +24,7 @@
       copyButton.setAttribute('aria-label', window.__almagestCopyText || 'Copy code');
 
       // Add copy functionality
-      copyButton.addEventListener('click', function() {
+      copyButton.addEventListener('click', function () {
         const code = codeBlock.textContent;
 
         copyText(code)
@@ -67,7 +67,7 @@
     }
 
     // Fallback: execCommand
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       try {
         const textarea = document.createElement('textarea');
         textarea.value = text;

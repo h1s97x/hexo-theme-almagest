@@ -9,7 +9,7 @@
 'use strict';
 
 // Before post render
-hexo.extend.filter.register('before_post_render', function(data) {
+hexo.extend.filter.register('before_post_render', function (data) {
   return data;
 });
 
@@ -132,12 +132,12 @@ function lazyLoadHtml(html) {
             inDouble = false;
           }
         } else if (inSingle) {
-          if (ch === '\'') {
+          if (ch === "'") {
             inSingle = false;
           }
         } else if (ch === '"') {
           inDouble = true;
-        } else if (ch === '\'') {
+        } else if (ch === "'") {
           inSingle = true;
         } else if (ch === '>') {
           break;
@@ -184,7 +184,7 @@ function lazyLoadHtml(html) {
 }
 
 // After render (html)
-hexo.extend.filter.register('after_render:html', function(str) {
+hexo.extend.filter.register('after_render:html', function (str) {
   const themeConfig = hexo.theme.config || {};
   if (themeConfig.image && themeConfig.image.lazy_load === false) {
     return str;
@@ -198,7 +198,7 @@ hexo.extend.filter.register('after_render:html', function(str) {
 });
 
 // Excerpt filter
-hexo.extend.filter.register('excerpt', function(data) {
+hexo.extend.filter.register('excerpt', function (data) {
   if (data.excerpt) {
     return;
   }

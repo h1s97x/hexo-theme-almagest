@@ -21,7 +21,6 @@ console.log('Running unit tests...\n');
 
 for (const file of files) {
   console.log('[' + file + ']');
-  // eslint-disable-next-line global-require
   require(path.join(dir, file));
   console.log('');
 }

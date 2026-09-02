@@ -7,7 +7,7 @@
  * 2. 外部 `search.json`（由 search generator 生成，供直接 fetch）
  */
 
-(function() {
+(function () {
   'use strict';
 
   let searchData = [];
@@ -21,7 +21,7 @@
     return String(text || '')
       .toLowerCase()
       .split(/\s+/)
-      .filter(function(w) {
+      .filter(function (w) {
         return w.length > 0;
       });
   }
@@ -31,9 +31,9 @@
    */
   function buildSearchIndex() {
     searchIndex = {};
-    searchData.forEach(function(item, index) {
+    searchData.forEach(function (item, index) {
       // 标题拆词建索引（命中标题的词在 performSearch 中加权更高）
-      tokenize(item.title).forEach(function(word) {
+      tokenize(item.title).forEach(function (word) {
         if (!searchIndex[word]) {
           searchIndex[word] = [];
         }
@@ -43,7 +43,7 @@
       });
 
       // 正文拆词建索引
-      tokenize(item.content).forEach(function(word) {
+      tokenize(item.content).forEach(function (word) {
         if (!searchIndex[word]) {
           searchIndex[word] = [];
         }
@@ -67,7 +67,7 @@
     }
 
     // 加载搜索数据
-    loadSearchData(function() {
+    loadSearchData(function () {
       // 数据就绪后，若 URL 带 ?q= 参数则自动执行一次搜索（支持从导航栏跳转带关键词）
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
@@ -78,7 +78,7 @@
     });
 
     // 处理搜索表单提交
-    searchForm.addEventListener('submit', function(e) {
+    searchForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const query = searchInput.value.trim();
       if (query) {
@@ -87,7 +87,7 @@
     });
 
     // 实时搜索
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
       const query = this.value.trim();
       if (query.length > 0) {
         performSearch(query, searchResults);
@@ -123,20 +123,20 @@
 
     // 2) 回退到外部 search.json
     fetch('/search.json')
-      .then(function(res) {
+      .then(function (res) {
         if (!res.ok) {
           throw new Error('HTTP ' + res.status);
         }
         return res.json();
       })
-      .then(function(data) {
+      .then(function (data) {
         searchData = Array.isArray(data) ? data : [];
         buildSearchIndex();
         if (done) {
           done();
         }
       })
-      .catch(function(err) {
+      .catch(function (err) {
         // eslint-disable-next-line no-console
         console.error('Failed to load search data:', err);
         if (done) {
@@ -157,25 +157,25 @@
     const results = new Set();
 
     // 用倒排索引找到候选文档
-    queryWords.forEach(function(word) {
+    queryWords.forEach(function (word) {
       if (searchIndex[word]) {
-        searchIndex[word].forEach(function(index) {
+        searchIndex[word].forEach(function (index) {
           results.add(index);
         });
       }
     });
 
     // 若索引没有命中（如中文整句），回退到全量线性扫描
-    const docs = Array.from(results).map(function(index) {
+    const docs = Array.from(results).map(function (index) {
       return searchData[index];
     });
 
     const allDocs = Array.from(searchData);
     const linearHits = [];
-    allDocs.forEach(function(item, index) {
+    allDocs.forEach(function (item, index) {
       const haystack = (item.title + ' ' + item.content).toLowerCase();
       let matched = false;
-      queryWords.forEach(function(word) {
+      queryWords.forEach(function (word) {
         if (haystack.indexOf(word) !== -1) {
           matched = true;
         }
@@ -184,16 +184,16 @@
         linearHits.push(index);
       }
     });
-    linearHits.forEach(function(index) {
+    linearHits.forEach(function (index) {
       results.add(index);
       docs.push(searchData[index]);
     });
 
     // 打分排序：标题命中加权更高
     const scoredResults = docs
-      .map(function(item) {
+      .map(function (item) {
         let score = 0;
-        queryWords.forEach(function(word) {
+        queryWords.forEach(function (word) {
           if (item.title.toLowerCase().indexOf(word) !== -1) {
             score += 10;
           }
@@ -203,7 +203,7 @@
         });
         return { item: item, score: score };
       })
-      .sort(function(a, b) {
+      .sort(function (a, b) {
         return b.score - a.score;
       });
 
@@ -224,7 +224,7 @@
     }
 
     let html = '<div class="search-results-list">';
-    results.slice(0, 20).forEach(function(result) {
+    results.slice(0, 20).forEach(function (result) {
       const item = result.item;
       const excerpt = getExcerpt(item.content, query, 150);
 
@@ -285,19 +285,19 @@
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      '\'': '&#039;'
+      "'": '&#039;'
     };
-    return String(text).replace(/[&<>"']/g, function(m) {
+    return String(text).replace(/[&<>"']/g, function (m) {
       return map[m];
     });
   }
 
   // 暴露给模板/其他脚本设置文案
   window.__almagestSearch = {
-    setEmptyText: function(text) {
+    setEmptyText: function (text) {
       window.__almagestSearchEmpty = text;
     },
-    setNoResultsText: function(text) {
+    setNoResultsText: function (text) {
       window.__almagestSearchNoResults = text;
     }
   };

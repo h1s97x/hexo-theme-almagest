@@ -14,7 +14,7 @@
  * - 兼容用户手写 `<img data-src="...">`（无 src）的场景：统一回填 src。
  */
 
-(function() {
+(function () {
   'use strict';
 
   const LOADED_CLASS = 'loaded';
@@ -50,7 +50,7 @@
 
     img.addEventListener(
       'load',
-      function() {
+      function () {
         img.classList.add(LOADED_CLASS);
         img.classList.remove(ERROR_CLASS);
       },
@@ -59,7 +59,7 @@
 
     img.addEventListener(
       'error',
-      function() {
+      function () {
         img.classList.remove(LOADED_CLASS);
         img.classList.add(ERROR_CLASS);
         // 去掉 data-src 兜底，避免刷新时反复触发加载 / 破图
@@ -76,7 +76,7 @@
    * 立即加载全部懒加载图片（极老浏览器无 IntersectionObserver 的兜底）。
    */
   function loadAllImages() {
-    document.querySelectorAll('img[data-src]').forEach(function(img) {
+    document.querySelectorAll('img[data-src]').forEach(function (img) {
       ensureSrc(img);
     });
   }
@@ -107,7 +107,7 @@
     // 老浏览器（无原生 lazy）+ IO：对 data-src-only 图片做真正的按需加载。
     // 已有 src 的图片在解析时即会加载（浏览器不认识 loading="lazy"），
     // 这里只处理尚未有 src、等待 data-src 回填的图片。
-    const pending = Array.prototype.filter.call(images, function(img) {
+    const pending = Array.prototype.filter.call(images, function (img) {
       return !img.getAttribute('src');
     });
 
@@ -116,8 +116,8 @@
     }
 
     const imageObserver = new IntersectionObserver(
-      function(entries) {
-        entries.forEach(function(entry) {
+      function (entries) {
+        entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             const img = entry.target;
             ensureSrc(img);
@@ -128,7 +128,7 @@
       { rootMargin: '50px 0px' }
     );
 
-    pending.forEach(function(img) {
+    pending.forEach(function (img) {
       imageObserver.observe(img);
     });
   }
