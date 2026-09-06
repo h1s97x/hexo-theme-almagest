@@ -206,7 +206,7 @@ search: false
 
 ### Custom Search Index
 
-To customize what gets indexed, edit `scripts/generators.js`:
+To customize what gets indexed, edit `scripts/generators/index.js` (the text extraction itself lives in the reusable `scripts/lib/text.js`):
 
 ```javascript
 hexo.extend.generator.register('search', function (locals) {

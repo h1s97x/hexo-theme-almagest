@@ -63,12 +63,18 @@ hexo-theme-almagest/
 │       ├── lazy-load.js
 │       ├── code-copy.js
 │       └── astronomy.js
-├── scripts/              # Hexo 脚本（会被 Hexo 自动加载，仅放 JS）
-│   ├── events.js
-│   ├── generators.js
-│   ├── helpers.js
-│   ├── filters.js
-│   └── tags.js
+├── scripts/              # Hexo 脚本（Hexo 递归加载，仅放 JS）
+│   ├── config/           # 配置校验（注册层）
+│   ├── events/           # 生命周期事件（注册层）
+│   ├── filters/          # 内容过滤器（注册层）
+│   ├── generators/       # 页面生成器（注册层）
+│   ├── helpers/          # 模板 helper（注册层）
+│   ├── tags/             # 标签插件（注册层）
+│   └── lib/              # 纯函数层：无 hexo 依赖、可单元测试
+│       ├── config.js     # 配置项校验
+│       ├── text.js       # 文本/摘要/索引处理
+│       ├── html.js       # HTML 字符串处理（懒加载注入）
+│       └── asset.js      # asset_code 参数解析
 ├── tools/                # 开发/部署工具（不会被 Hexo 加载）
 │   └── build-demo.sh     # Demo 站点构建脚本
 ├── languages/            # 多语言文件
