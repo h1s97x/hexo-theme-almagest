@@ -3,7 +3,7 @@
  * Implements lazy loading for images.
  *
  * 阶段3 整改（评审修复）：
- * - 最终渲染 HTML 保留 `src`（scripts/filters.js 的 after_render:html 输出
+ * - 最终渲染 HTML 保留 `src`（scripts/filters 的 after_render:html 输出
  *   `src` + `data-src` + `loading="lazy"`），因此：
  *   1) 现代浏览器：原生 `loading="lazy"` 负责加载时机，即使本脚本未执行
  *      图片也能正常显示（评审 Critical 修复）。

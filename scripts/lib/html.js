@@ -1,25 +1,14 @@
 /**
- * Hexo Filters
- * Content filters and transformations
+ * HTML 字符串处理函数集合（可测试层）
  *
- * 注意：Hexo 的主题脚本机制是「直接执行代码」，
- * 因此这里直接使用全局 `hexo` 注册过滤器，不能使用 module.exports 导出函数。
+ * 与 `lib/text.js` 一样属于 **lib 层**：不引用全局 `hexo`、无副作用。
+ *
+ * 主要承载「图片懒加载」的 HTML 注入逻辑。放在渲染层
+ * （`after_render:html`）而不是 `after_post_render` 处理，是为了不污染
+ * `post.content`——search.json / RSS 等下游消费者拿到的仍是原始 `src`。
  */
 
 'use strict';
-
-// Before post render
-hexo.extend.filter.register('before_post_render', function (data) {
-  return data;
-});
-
-// ---------------------------------------------------------------------------
-// 图片懒加载（渲染层注入）
-//
-// 在 `after_render:html` 阶段处理最终 HTML 字符串，而不是 `after_post_render`：
-// 这样不会污染 `post.content`，search.json / RSS 等下游消费者拿到的仍是原始
-// `src`，图片可以正常显示（评审 Warning 修复）。
-// ---------------------------------------------------------------------------
 
 /**
  * 判断属性区是否已存在某属性（兼容任意引号风格 / 裸属性）。
@@ -47,7 +36,7 @@ function getAttrMatch(attrs, name) {
 /**
  * 处理单个 <img> 标签：保留 src 并补 data-src + loading="lazy"。
  *
- * 为什么保留 src（评审 Critical 整改）：
+ * 为什么保留 src：
  * - 最终渲染 HTML 始终包含 src，即使 lazy-load.js 因 CDN 故障 / JS 错误未执行，
  *   图片也能正常显示（现代浏览器走原生 loading="lazy"，无需 JS）。
  * - data-src 作为 polyfill / 错误兜底标记保留：lazy-load.js 据此识别懒加载图片，
@@ -87,9 +76,10 @@ function processImgTag(tag) {
 
 /**
  * 对 HTML 字符串做引号感知扫描，逐个处理 <img> 标签。
- * - 属性值（如 data URI）内含 '>' 不会被提前截断（评审 Info 修复）。
+ * - 属性值（如 data URI）内含 '>' 不会被提前截断
  * - <script>/<style>/<pre>/<textarea> 内的内容原样跳过，
  *   避免误改 search.ejs 内嵌 JSON / 代码示例中的图片标签。
+ *
  * @param {string} html
  * @returns {string}
  */
@@ -183,29 +173,9 @@ function lazyLoadHtml(html) {
   return result;
 }
 
-// After render (html)
-hexo.extend.filter.register('after_render:html', function (str) {
-  const themeConfig = hexo.theme.config || {};
-  if (themeConfig.image && themeConfig.image.lazy_load === false) {
-    return str;
-  }
-
-  if (typeof str !== 'string' || str.indexOf('<img') === -1) {
-    return str;
-  }
-
-  return lazyLoadHtml(str);
-});
-
-// Excerpt filter
-hexo.extend.filter.register('excerpt', function (data) {
-  if (data.excerpt) {
-    return;
-  }
-
-  // Generate excerpt from content
-  const content = data.content.replace(/<[^>]*>/g, '');
-  data.excerpt = content.substring(0, 200) + '...';
-
-  return data;
-});
+module.exports = {
+  hasAttr,
+  getAttrMatch,
+  processImgTag,
+  lazyLoadHtml
+};

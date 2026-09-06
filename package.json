@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run style:lint",
-    "test:unit": "node test/unit/run.js",
+    "test:unit": "node --test test/unit/*.test.js test/unit/lib/*.test.js",
+    "test:cov": "node --test --experimental-test-coverage test/unit/*.test.js test/unit/lib/*.test.js",
     "test": "npm run check && npm run test:unit && bash test/ci-smoke-test.sh",
     "prepare": "husky"
   },

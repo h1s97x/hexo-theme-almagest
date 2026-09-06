@@ -4,44 +4,18 @@
  *
  * 注意：Hexo 的主题脚本机制是「直接执行代码」，
  * 因此这里直接使用全局 `hexo` 注册生成器，不能使用 module.exports 导出函数。
+ *
+ * 本文件是 **注册层**：索引正文的生成逻辑位于 `scripts/lib/text.js`。
  */
 
 'use strict';
+
+const { toIndexText } = require('../lib/text');
 
 // 单篇文章进入搜索索引的正文长度上限（字符数，缺省值）
 // 旧实现直接把 post.content（含 HTML 标签、代码块、图片）整篇塞进 search.json，
 // 索引体积随整站正文字数线性膨胀，且被 search.ejs 内嵌进页面 HTML，首访即下载全站正文。
 const DEFAULT_INDEX_LENGTH = 1500;
-
-/**
- * 把文章 HTML 转为搜索用的纯文本：
- * - 丢弃 <script> / <style> 整段内容（脚本与样式不该被搜到）
- * - 剥离其余标签（<pre> 保留文本，代码块内容仍可搜索）
- * - 还原常见实体、压缩空白
- * - 按 maxLength 截断
- * @param {string} html
- * @param {number} maxLength
- * @returns {string}
- */
-function toIndexText(html, maxLength) {
-  let text = String(html || '')
-    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&(?:#39|apos);/g, "'")
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  if (maxLength > 0 && text.length > maxLength) {
-    text = text.slice(0, maxLength);
-  }
-
-  return text;
-}
 
 // Archive generator
 hexo.extend.generator.register('archive', function (locals) {

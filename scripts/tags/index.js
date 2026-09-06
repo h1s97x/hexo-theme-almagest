@@ -4,9 +4,18 @@
  *
  * 注意：Hexo 的主题脚本机制是「直接执行代码」，
  * 因此这里直接使用全局 `hexo` 注册 tag，不能使用 module.exports 导出函数。
+ *
+ * 本文件是 **注册层**：参数解析与内容截取位于 `scripts/lib/asset.js`。
  */
 
 'use strict';
+
+const path = require('path');
+const fs = require('fs');
+const hexoUtil = require('hexo-util');
+
+const { escapeHtml } = require('../lib/text');
+const { parseAssetCodeArgs, sliceLines, countLines, inferLang } = require('../lib/asset');
 
 // Note tag
 hexo.extend.tag.register(
@@ -48,54 +57,6 @@ hexo.extend.tag.register('button', function (args) {
 //   - 使用 Hexo 内置高亮器渲染（Hexo >= 7 的 syntax_highlighter 机制），
 //     无法使用高亮器的环境（如 Hexo 6）降级为 <pre><code>
 // ---------------------------------------------------------------------------
-
-const path = require('path');
-const hexoUtil = require('hexo-util');
-const fs = require('fs');
-
-/**
- * 转义 HTML 特殊字符（降级渲染 <pre><code> 时使用）
- * @param {string} str
- * @returns {string}
- */
-function escapeHtml(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-/**
- * 解析 tag 参数：
- *  - 位置参数依次映射到 path / title
- *  - 形如 `lang:js` / `from:10` / `to:20` 的键值对按名解析
- * @param {string[]} args
- * @returns {{ path: string, title: string, lang: string, from: number, to: number }}
- */
-function parseAssetCodeArgs(args) {
-  const out = { path: '', title: '', lang: '', from: 0, to: -1 };
-  const posKeys = ['path', 'title'];
-  let pos = 0;
-  for (const arg of args || []) {
-    if (!arg) {
-      continue;
-    }
-    const idx = arg.indexOf(':');
-    if (idx > 0 && ['lang', 'from', 'to'].includes(arg.slice(0, idx))) {
-      const key = arg.slice(0, idx);
-      const value = arg.slice(idx + 1);
-      if (key === 'from' || key === 'to') {
-        out[key] = parseInt(value, 10) || 0;
-      } else {
-        out[key] = value;
-      }
-    } else if (posKeys[pos]) {
-      out[posKeys[pos]] = arg;
-      pos++;
-    } else {
-      out.title = arg;
-    }
-  }
-  return out;
-}
-
 hexo.extend.tag.register('asset_code', function (args) {
   const { path: relPath, title, lang, from, to } = parseAssetCodeArgs(args);
 
@@ -119,12 +80,10 @@ hexo.extend.tag.register('asset_code', function (args) {
   }
 
   // 读取源码内容，按 from/to 截取行区间
-  const codeLines = fs.readFileSync(doc.source, 'utf8').split('\n');
-  const start = from > 0 ? from - 1 : 0;
-  const end = to >= 0 ? to : codeLines.length;
-  const code = codeLines.slice(start, end).join('\n').trim();
+  const source = fs.readFileSync(doc.source, 'utf8');
+  const code = sliceLines(source, from, to);
 
-  const fileLang = lang || path.extname(relPath).substring(1);
+  const fileLang = lang || inferLang(relPath);
   const fileTitle = title || path.basename(relPath);
   const caption = `<span><a href="${hexoUtil.url_for.call(hexo, doc.path)}">${fileTitle}</a></span>`;
 
@@ -138,7 +97,7 @@ hexo.extend.tag.register('asset_code', function (args) {
         {
           lang: fileLang,
           caption,
-          lines_length: codeLines.length
+          lines_length: countLines(source)
         }
       ]
     });
