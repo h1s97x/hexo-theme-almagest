@@ -77,6 +77,10 @@ features:
   reading_time: true # 阅读时间
   code_copy: true # 代码复制
   back_to_top: true # 返回顶部
+  starfield: true # 星空背景（关闭可省去一个 JS 请求）
+
+search:
+  index_length: 1500 # 每篇文章进入索引的正文长度（决定 search.json 体积）
 
 sidebar:
   enable: true
@@ -133,6 +137,9 @@ HEXO_SPEC='hexo@^8' bash test/ci-smoke-test.sh # 验证 Hexo 8
 
 ## 性能优化
 
+- **搜索索引瘦身**：`search.json` 只保存每篇文章正文的纯文本片段（剥离 HTML、按 `search.index_length` 截断），且搜索页**按需 fetch** 索引，不再把全站正文内嵌进页面。索引体积 ≈ `文章数 × index_length`，文章多时可调小该值
+- **搜索无卡顿**：倒排索引 + CJK bigram 分词 + 150ms 输入防抖 + 结果缓存，中文整句与子串都能命中，不再每次按键全量扫描
+- **星空背景可关闭**：`features.starfield: false` 即不加载 `astronomy.js`；开启时星点用单个 canvas 绘制，并遵循系统「减少动态效果」偏好
 - **CSS 压缩**：在站点根目录 `_config.yml` 添加 `stylus.compress: true` 即可压缩生成的 `main.css`
 - **CDN 部署**：配置 `theme_config.cdn_prefix` 后，`main.css` 与全部 JS 资源统一走该前缀 + 版本号（`?v=`），方便接入 CDN 并刷新缓存
 - **图片懒加载**：默认开启，文章正文图片会自动添加 `loading="lazy"` 与 `data-src`，无需手动处理

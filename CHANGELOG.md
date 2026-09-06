@@ -7,7 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-暂无未发布内容。
+### Changed
+
+**搜索索引瘦身（性能）**
+
+- `scripts/generators.js`：搜索索引不再输出整篇 `post.content`（含 HTML 标签 / 代码块 / 图片），改为输出剥离标签、压缩空白后的纯文本 `text` 字段，并按 `search.index_length`（默认 **1500** 字符）截断。索引体积由「整站正文字数」收敛为「文章数 × index_length」
+- `layout/search.ejs`：删除内嵌全站正文的 `<script data-search-data>`，改为注入 `window.__almagestSearchUrl`（经 `url_for`，子目录部署路径正确），搜索页进入后按需 `fetch` 索引，首屏不再下载全站正文
+
+### Fixed
+
+**搜索检索性能（性能）**
+
+- `source/js/search.js`：旧实现每次按键都对全部文档做一次线性扫描，且每次重新拼接 `title + content` 再 `toLowerCase`；现改为：
+  - 建索引时预计算小写副本，倒排索引按词命中
+  - CJK 串额外切 bigram（"天文望远镜" → 天文 / 文望 / 望远 / 远镜），中文子串无需全量扫描即可命中
+  - 仅当倒排索引完全未命中时才退化为一次全量扫描（使用预计算文本）
+  - 输入防抖 150ms、同一查询结果缓存、提交搜索时取消防抖
+
+**星空背景（性能 / 可访问性）**
+
+- `source/js/astronomy.js`：100 个 `<div class="star">` 改为单个 `<canvas class="starfield-canvas">` 绘制（按视口面积与 DPR 上限 2 计算星点数，resize 防抖重绘），DOM 节点由 100 降为 1；系统开启「减少动态效果」时不叠加闪烁动画
+- 修复 `.constellation-item` 点击处理：`preventDefault()` 后用可能为 `null` 的 `href` 赋值会跳转到 `/null`，现交由锚点默认行为处理
+
+### Added
+
+- 新增 `features.starfield`（默认 `true`）：关闭后不再加载 `astronomy.js`
+- 新增 `search.index_length`（默认 `1500`）：控制每篇文章进入索引的正文长度
+- 单元测试新增 3 个用例（HTML 剥离与空白压缩、丢弃 script/style 保留 pre 文本、按 index_length 截断）；CI 冒烟测试断言随索引结构调整为「正文被索引 / 无 data-src / 无 HTML 标签」
+- 文档同步：`README.md`、`doc/QUICK_REFERENCE.md`、`doc/source/_posts/search.md` 补充新配置项与索引体积估算
 
 ## [1.1.0] - 2026-09-02
 

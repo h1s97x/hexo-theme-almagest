@@ -98,6 +98,11 @@ theme_config:
     comments: true
     toc: true
     code_copy: true
+    starfield: true # 星空背景（关掉可省去一个 JS 请求）
+
+  # 搜索索引：只保存每篇文章正文的纯文本片段，体积 ≈ 文章数 × index_length
+  search:
+    index_length: 1500
 
   services:
     giscus:
