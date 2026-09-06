@@ -29,11 +29,10 @@ const config = theme;
   window.__almagestSearchNoResults = <%- JSON.stringify(__('search_no_results')) %>;
 </script>
 
-<script type="application/json" data-search-data>
-  <%- JSON.stringify(site.posts.map(post => ({
-    title: post.title,
-    url: post.path,
-    content: post.content || post.excerpt || '',
-    date: post.date
-  }))).replace(/<\/script>/g, '<\\/script>') %>
+<!-- 搜索索引地址（由 search generator 生成）。
+     不再把全站正文内嵌进页面：搜索脚本按需 fetch 本地址，
+     索引体积只与「文章数 × search.index_length」相关。
+     url_for 保证站点部署在子目录（root: /blog/）时路径依然正确。 -->
+<script>
+  window.__almagestSearchUrl = <%- JSON.stringify(url_for('/search.json')) %>;
 </script>

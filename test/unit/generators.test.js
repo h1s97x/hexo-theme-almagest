@@ -89,7 +89,54 @@ test('search: 生成 search.json 数据', () => {
   const data = JSON.parse(out.data);
   assert.strictEqual(data.length, 1);
   assert.strictEqual(data[0].title, 'Hello');
-  assert.ok(data[0].content.includes('body text'));
+  assert.strictEqual(data[0].text, 'body text');
+});
+
+test('search: 索引正文剥离 HTML 标签并压缩空白', () => {
+  themeConfig = {};
+  const posts = [
+    {
+      title: 'HTML Post',
+      path: '2024/01/01/html/',
+      content:
+        '<p>Hello   <strong>world</strong></p>\n\n<p>second &amp; paragraph</p><img src="/a.jpg" alt="x">',
+      published: true,
+      date: new Date('2024-01-01')
+    }
+  ];
+  const data = JSON.parse(registered.search(makeLocals(posts)).data);
+  assert.strictEqual(data[0].text, 'Hello world second & paragraph');
+});
+
+test('search: 丢弃 script / style 内容，保留 pre 文本', () => {
+  themeConfig = {};
+  const posts = [
+    {
+      title: 'Code Post',
+      path: '2024/01/01/code/',
+      content:
+        '<style>.a{color:red}</style><script>var tracking = 1;</script><pre><code>keepme</code></pre>',
+      published: true,
+      date: new Date('2024-01-01')
+    }
+  ];
+  const data = JSON.parse(registered.search(makeLocals(posts)).data);
+  assert.strictEqual(data[0].text, 'keepme');
+});
+
+test('search: 正文按 search.index_length 截断', () => {
+  themeConfig = { search: { index_length: 10 } };
+  const posts = [
+    {
+      title: 'Long Post',
+      path: '2024/01/01/long/',
+      content: 'abcdefghijklmnopqrstuvwxyz',
+      published: true,
+      date: new Date('2024-01-01')
+    }
+  ];
+  const data = JSON.parse(registered.search(makeLocals(posts)).data);
+  assert.strictEqual(data[0].text, 'abcdefghij');
 });
 
 test('search: 受 features.search=false 控制', () => {

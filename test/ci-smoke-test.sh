@@ -87,9 +87,13 @@ grep -q "loading=\"lazy\"" public/2024/01/01/ci-hello/index.html || { echo "FAIL
 # 评审 Critical 断言：最终渲染 HTML 必须同时包含 src（data-src 由 lazy-load.js 回填），
 # 否则支持原生 lazy 的现代浏览器下图片永远无法加载。
 grep -Eq "src=\"/images/ci-test.jpg\"|src='/images/ci-test.jpg'" public/2024/01/01/ci-hello/index.html || { echo "FAIL: 文章页图片缺少 src（懒加载会破图）"; exit 1; }
-# 评审 Warning 断言：post.content 不被污染，search.json 中的图片保留原始 src（JSON 转义为 \"）。
-grep -q 'src=\\"/images/ci-test.jpg\\"' public/search.json || { echo "FAIL: search.json 图片缺少 src（post.content 被污染）"; exit 1; }
-# post.content 未污染：search.json 不应出现 data-src。
+# 评审 Warning 断言：post.content 不被懒加载 filter 污染。
+# 搜索索引现为剥离标签后的纯文本（只保留正文文字），因此断言改为：
+#   1) 正文必须被索引到（内容未丢）
+#   2) 不得出现 data-src（未被 after_render:html 改写）
+#   3) 不得出现 HTML 标签（否则索引体积会随整站正文膨胀）
+grep -q 'Hello Almagest smoke test.' public/search.json || { echo "FAIL: search.json 未索引正文（内容丢失）"; exit 1; }
 if grep -q 'data-src' public/search.json; then echo "FAIL: search.json 出现 data-src（post.content 被污染）"; exit 1; fi
+if grep -q '<img' public/search.json; then echo "FAIL: search.json 出现 HTML 标签（索引未剥离标签）"; exit 1; fi
 
 echo "==> 冒烟测试通过"
