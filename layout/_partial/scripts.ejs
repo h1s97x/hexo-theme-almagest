@@ -33,7 +33,9 @@ const asset = function(path) {
   <script src="<%= asset('/js/code-copy.js') %>" defer></script>
 <% } %>
 
-<script src="<%= asset('/js/astronomy.js') %>" defer></script>
+<% if (config.features?.starfield !== false) { %>
+  <script src="<%= asset('/js/astronomy.js') %>" defer></script>
+<% } %>
 
 <!-- Custom Inject: body_end -->
 <% if (config.inject?.body_end) { %>

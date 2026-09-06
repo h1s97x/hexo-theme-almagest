@@ -3,6 +3,11 @@
  * Handles astronomy-related features and interactions
  */
 
+// 星空绘制参数：每 N 平方 CSS 像素一颗星，并限制上下限（避免超大屏无限增长）
+const STAR_AREA_PER_STAR = 9000;
+const MIN_STARS = 60;
+const MAX_STARS = 220;
+
 const Astronomy = {
   // Initialize astronomy features
   init() {
@@ -12,41 +17,83 @@ const Astronomy = {
     this.initCalendar();
   },
 
-  // Initialize starry background animation
+  /**
+   * 用户是否要求减少动效（系统「减少动态效果」偏好）
+   * @returns {boolean}
+   */
+  prefersReducedMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  },
+
+  // Initialize starry background（canvas 单节点绘制，代替上百个 DOM 星点）
   initStarryBackground() {
     const background = document.querySelector('.starry-background');
     if (!background) {
       return;
     }
 
-    // Create animated stars
-    const starCount = 100;
-    const container = document.createElement('div');
-    container.className = 'stars-container';
+    const canvas = document.createElement('canvas');
+    canvas.className = 'starfield-canvas';
+    background.appendChild(canvas);
 
-    for (let i = 0; i < starCount; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.left = Math.random() * 100 + '%';
-      star.style.top = Math.random() * 100 + '%';
-      star.style.opacity = Math.random() * 0.7 + 0.3;
-      star.style.animationDelay = Math.random() * 3 + 's';
-      container.appendChild(star);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      return;
     }
 
-    background.appendChild(container);
+    // 未开启「减少动效」时才叠加整体明暗呼吸动画：
+    // 单个合成层的 opacity 动画，成本远低于上百个节点各自做动画
+    if (!this.prefersReducedMotion()) {
+      canvas.classList.add('twinkle');
+    }
+
+    let resizeTimer = null;
+
+    function draw() {
+      // 限制 DPR，避免高分屏下画布像素量成倍膨胀
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = background.clientWidth || window.innerWidth;
+      const height = background.clientHeight || window.innerHeight;
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+
+      const starCount = Math.min(
+        MAX_STARS,
+        Math.max(MIN_STARS, Math.round((width * height) / STAR_AREA_PER_STAR))
+      );
+
+      for (let i = 0; i < starCount; i++) {
+        const radius = Math.random() * 1.1 + 0.3;
+        const alpha = Math.random() * 0.6 + 0.25;
+
+        ctx.beginPath();
+        ctx.arc(Math.random() * width, Math.random() * height, radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha.toFixed(2) + ')';
+        ctx.fill();
+      }
+    }
+
+    draw();
+
+    // 视窗变化时重绘（防抖，避免 resize 期间反复绘制）
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(draw, 200);
+    });
   },
 
   // Initialize constellation navigation
   initConstellationNav() {
     const items = document.querySelectorAll('.constellation-item');
     items.forEach(item => {
-      item.addEventListener('click', e => {
-        e.preventDefault();
-        const path = item.getAttribute('href');
-        window.location.href = path;
-      });
-
+      // 不再用 JS 接管点击：锚点本身的 href 跳转即可，
+      // 旧实现 preventDefault() 后用可能为 null 的 href 赋值，会跳转到 /null
       item.addEventListener('mouseenter', () => {
         item.classList.add('hover');
       });
