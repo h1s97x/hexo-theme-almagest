@@ -9,9 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+**`scripts/` 分层改造：`lib` 纯函数层 + 注册层分离（重构）**
+
+参考 Stellar `scripts/lib/` 与 Fluid `scripts/utils/` 的分层方式，把「业务逻辑」与「Hexo 注册」拆开：
+
+- `scripts/*.js` 五个扁平文件 → `scripts/{config,events,filters,generators,helpers,tags}/index.js` 六个注册层目录（Hexo 递归加载 `scripts/**/*.js`，目录化不影响加载）
+- 新增 `scripts/lib/`：只放不依赖全局 `hexo`、无副作用的纯函数，可被单元测试直接 require
+  - `lib/text.js`：摘要 / 搜索正文纯文本化 / 阅读时长
+  - `lib/html.js`：图片懒加载的 HTML 注入
+  - `lib/asset.js`：`asset_code` 参数解析与行区间截取
+  - `lib/config.js`：主题配置校验规则
+- 注册层只负责把 lib 桥接成 Hexo 的 filter / generator / helper / tag
+
+**单元测试迁移到 Node 内置 `node --test`（重构）**
+
+- 删除自研框架 `test/unit/framework.js` 与入口 `test/unit/run.js`，改用 `node:test` + `node:assert/strict`；每个测试文件独立进程，不再需要手动隔离 `global.hexo`
+- 测试目录镜像源码结构：`test/unit/lib/{text,html,asset,config}.test.js`（纯函数）+ 注册层用例
+- `npm run test:unit` → `node --test`；新增 `npm run test:cov` 输出覆盖率（`scripts/lib/` 覆盖率 > 95%）
+- 用例数由 40 增至 **91**
+
 **搜索索引瘦身（性能）**
 
-- `scripts/generators.js`：搜索索引不再输出整篇 `post.content`（含 HTML 标签 / 代码块 / 图片），改为输出剥离标签、压缩空白后的纯文本 `text` 字段，并按 `search.index_length`（默认 **1500** 字符）截断。索引体积由「整站正文字数」收敛为「文章数 × index_length」
+- `scripts/generators`（原 `scripts/generators.js`）：搜索索引不再输出整篇 `post.content`（含 HTML 标签 / 代码块 / 图片），改为输出剥离标签、压缩空白后的纯文本 `text` 字段，并按 `search.index_length`（默认 **1500** 字符）截断。索引体积由「整站正文字数」收敛为「文章数 × index_length」
 - `layout/search.ejs`：删除内嵌全站正文的 `<script data-search-data>`，改为注入 `window.__almagestSearchUrl`（经 `url_for`，子目录部署路径正确），搜索页进入后按需 `fetch` 索引，首屏不再下载全站正文
 
 ### Fixed
