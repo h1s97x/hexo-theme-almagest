@@ -16,6 +16,8 @@
 | `tags.png` | 标签云总览 |
 | `archives.png` | 归档页 |
 | `about.png` | 独立页面 |
+| `categories.png` | 分类总览页（全部分类及计数） |
+| `search.png` | 搜索页（本地检索界面） |
 | `mobile-home.png` | 移动端 · 首页 |
 | `mobile-menu.png` | 移动端 · 汉堡菜单展开 |
 | `mobile-article.png` | 移动端 · 文章页 |
