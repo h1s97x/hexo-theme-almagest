@@ -33,6 +33,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `scripts/generators`（原 `scripts/generators.js`）：搜索索引不再输出整篇 `post.content`（含 HTML 标签 / 代码块 / 图片），改为输出剥离标签、压缩空白后的纯文本 `text` 字段，并按 `search.index_length`（默认 **1500** 字符）截断。索引体积由「整站正文字数」收敛为「文章数 × index_length」
 - `layout/search.ejs`：删除内嵌全站正文的 `<script data-search-data>`，改为注入 `window.__almagestSearchUrl`（经 `url_for`，子目录部署路径正确），搜索页进入后按需 `fetch` 索引，首屏不再下载全站正文
 
+**视觉体系迁移为「深空 + 星蓝紫辉光」（重构）**
+
+强调色由单一 `#0066cc` 换为三色渐变带，暗色底由灰黑换为深空：
+
+| 语义 | 亮色 | 暗色 |
+|---|---|---|
+| 主强调 | `#4f46e5` 靛蓝 | `#67e8f9` 星蓝 |
+| 渐变 | `#0891b2 → #4f46e5 → #7c3aed` | `#67e8f9 → #818cf8 → #c084fc` |
+| 底色 | `#fbfcfe` 月白 | `#05070f` 深空 |
+| 次级底 / 悬停底 | `#f4f6fb` / `#e9edf6` | `#0b0f1d` / `#131829` |
+
+- 新增设计令牌：深空阴影 `$shadow-deep-{sm,md,lg}`、星辉外发光 `$glow-{primary,primary-soft,violet}`、玻璃态 `$glass-{bg,border}`、星野渐变 `$grad-{primary,primary-soft,text,surface}`
+- 玻璃态改造：`.site-header` / `.site-footer` / `.post-card` / `.widget` / `.astronomy-card` / `.astronomy-calendar` / `.observation-guide` 统一为半透明底 + `backdrop-filter: blur(18px)` + 边框高光
+- 渐变文字：`.logo-text` / `.article-title` 走 `--grad-text`（`background-clip: text`）；`.nav-link` hover 出渐变下划线；`.post-card::before` 顶部渐变细线
+- `_base.styl` 双轨收敛：原 34 处 `$light-*` 变量与 13 个 `html[data-theme='dark'] body` 覆写块统一为 `var(--color-*)` 单轨，删除各冗余覆写块；同时修掉一处非法 CSS `rgba(var(--color-link), 0.1)`（`rgba()` 不接受 hex 变量，改用 `var(--glow-soft)`）
+- 天文三文件去重：`_astronomy-calendar.styl` 与 `_observation-guide.styl` 原先与 `_astronomy.styl` **整块重复**（同批选择器写两遍），现各只保留独有选择器
+- 重复定义清理：`.back-to-top`（`_layout` vs `_components`）与 `.code-copy-btn`（`_components` vs `_code-highlight`）各保留唯一权威定义，消除导入顺序互相覆盖导致的高宽不一致
+- 层级规划显式化：`html 底色(0) < html::before 星云 < .starry-background 星空(1) < .app-container 内容(2)`；`.app-container` / `.main-content` / `.article-container` 背景改透明，否则内容层会盖住 canvas 星空
+- 亮色主题可读性修复：天文组件原硬编码 `#fff` 文字 + `rgba(255,255,255,.05)` 底，在亮色下**白字白底不可读**，现全部改走 `var(--color-*)`
+
+**星空引擎重写（视觉 / 性能）**
+
+- 静态星点 → **相位闪烁**：每颗星独立分配 `base / amp / spd / ph`，以 `sin(t·spd + ph)` 驱动 alpha，星点各自呼吸而非整片同步明灭
+- 新增**流星**：随机间隔 6–16s 生成，`createLinearGradient` 绘制拖尾（前 20% 渐显 / 后 40% 渐隐）
+- 引入 5 色调色板（冷白为主，掺暖白与蓝紫），避免整片星空同一色
+- `requestAnimationFrame` 主循环 + `visibilitychange` 停帧（切后台不再空转）
+- resize 防抖 160ms 并重建星点
+
 ### Fixed
 
 **搜索检索性能（性能）**
@@ -48,12 +76,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `source/js/astronomy.js`：100 个 `<div class="star">` 改为单个 `<canvas class="starfield-canvas">` 绘制（按视口面积与 DPR 上限 2 计算星点数，resize 防抖重绘），DOM 节点由 100 降为 1；系统开启「减少动态效果」时不叠加闪烁动画
 - 修复 `.constellation-item` 点击处理：`preventDefault()` 后用可能为 `null` 的 `href` 赋值会跳转到 `/null`，现交由锚点默认行为处理
 
+**星空背景始终不显示（修复）**
+
+本地跑真实站点后发现，星空模块此前处于**完全未生效**状态，由两处叠加故障造成：
+
+- `layout/layout.ejs` 缺少 `.starry-background` 节点，`querySelector` 恒为 `null`，canvas 从未被挂载 → 已在 `<body>` 内补上（受 `features.starfield` 控制）
+- `.starry-background` 的 `z-index: -1` 使其被 `body` 底色完全覆盖 → 改为 `1`，并把 `.app-container` 提到 `2`
+- `resize()` 用 `position: fixed` 元素的 `clientHeight` 取高度，实际拿到的是**文档总高度**（实测 4303px 而非 900px），画布被纵向拉伸 → 改用 `window.innerWidth / innerHeight`
+
+**代码块与目录（修复）**
+
+- **代码块无语法高亮**：`head.ejs` 只引入了 highlight.js 的**样式表**，而 `scripts.ejs` 从未引入**运行库** —— 样式表本身不做任何高亮。已补 `highlight.min.js`，并在 `DOMContentLoaded` 后调用 `hljs.highlightElement()`
+- **代码块无复制按钮**：`code-copy.js` 的选择器是 `pre code`，但 Hexo 默认的 `syntax_highlighter: highlight.js` 会输出 `<figure class="highlight"><table><td class="gutter">` 结构，**永不匹配且静默失败**
+- **文章目录不显示**：`post.ejs` / `page.ejs` 的守卫为 `config.features?.toc && page.toc`，而 `page.toc` 在 Hexo 7 下**恒为 `undefined`**（`toc()` helper 本身工作正常，能产出完整目录 HTML）
+- **`code_highlight.cdn` 默认值不可用**：原值指向 npm 包的 `lib/common.min.js`，那是 **Node 专用入口**（约 2.5KB，内部调用 `require()`），浏览器加载后抛 `require is not defined`，`window.hljs` 始终为 `undefined`。已改为浏览器构建产物 `@highlightjs/cdn-assets`
+
+**分类页与标签页标题错误（修复）**
+
+`hexo-generator-category` 与 `hexo-generator-tag` 的 layout 优先级分别为 `['category', 'archive', 'index']` 与 `['tag', 'archive', 'index']`，而主题未提供 `category.ejs` / `tag.ejs` → 两者**全部回落到 `archive.ejs`**，标题被写死为「归档 · 浏览所有文章」，进入某个分类后看不出自己在哪。
+
+现在 `archive.ejs` 依据 generator 注入的 `page.category` / `page.tag` 区分页面类型。**刻意不新增两个模板** —— 那会把下方的年份分组逻辑整块复制三份，正是本次需要清理的重复模式。
+
+顺带发现语言包中早已备好 `categories_desc` / `tags_desc` 两条文案却从未被引用，本次一并启用。
+
+**移动端菜单无响应（修复）**
+
+`theme.js` 用 `classList.toggle('open')` 切换，而 CSS 定义的选择器是 `.mobile-menu.active`，类名不一致导致点击后无反应。现 CSS 同时支持两者，JS 侧补上点击外部关闭、Esc 关闭、窗口放大到桌面断点自动收起。
+
+**天文日历（修复）**
+
+- 月份标签空白：`.current-month` 从未被 JS 写入
+- 翻页无效：`previousMonth()` / `nextMonth()` 是空实现，点击后只是重绘当月，看起来像卡住。现引入 `_calView {year, month}` 视图状态并正确处理跨年
+
 ### Added
 
 - 新增 `features.starfield`（默认 `true`）：关闭后不再加载 `astronomy.js`
 - 新增 `search.index_length`（默认 `1500`）：控制每篇文章进入索引的正文长度
 - 单元测试新增 3 个用例（HTML 剥离与空白压缩、丢弃 script/style 保留 pre 文本、按 index_length 截断）；CI 冒烟测试断言随索引结构调整为「正文被索引 / 无 data-src / 无 HTML 标签」
 - 文档同步：`README.md`、`doc/QUICK_REFERENCE.md`、`doc/source/_posts/search.md` 补充新配置项与索引体积估算
+- 新增 `screenshots/`：15 张明暗双主题实机验收截图（含分类页 / 标签页 / 代码高亮 / 移动端），附 `screenshots/README.md` 索引与复现说明
 
 ## [1.1.0] - 2026-09-02
 
