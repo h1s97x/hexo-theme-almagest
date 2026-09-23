@@ -1,116 +1,33 @@
 // ============================================================
-// Astronomy Calendar Component
+// Astronomy Calendar Component —— 补充样式
 // ============================================================
-// 天文事件日历（原内联在 astronomy-calendar.ejs 的 <style> 中，
-// 阶段2 重构为独立组件样式，随 main.css 统一打包）。
+// 说明：`.astronomy-calendar` / `.calendar-header` / `.calendar-nav` /
+// `.calendar-grid` / `.calendar-day*` / `.calendar-events` / `.event-*`
+// 的基础样式已在 `_astronomy.styl` 中定义并走主题变量。
+// 本文件仅保留「此处独有」的额外选择器，避免同名规则重复定义
+// 造成两处样式漂移（原实现为整块复制，已去重）。
+// 加载顺序在 `_astronomy.styl` 之后，故此处可对基础样式做补充。
 
-.astronomy-calendar
-  background: rgba(255, 255, 255, 0.05)
-  border: 1px solid rgba(255, 255, 255, 0.1)
-  border-radius: 8px
-  padding: 1.5rem
-  backdrop-filter: blur(10px)
-
-.calendar-header
-  display: flex
-  justify-content: space-between
-  align-items: center
-  margin-bottom: 1.5rem
-
-  h3
-    margin: 0
-    color: #fff
-
-.calendar-nav
-  display: flex
-  gap: 0.5rem
-  align-items: center
-
-  button
-    background: rgba(255, 255, 255, 0.1)
-    border: 1px solid rgba(255, 255, 255, 0.2)
-    color: #fff
-    padding: 0.5rem 1rem
-    border-radius: 4px
-    cursor: pointer
-    transition: all 0.2s ease
-
-    &:hover
-      background: rgba(255, 255, 255, 0.2)
-
+// 月份标签（JS 会填充 .current-month）
 .current-month
-  color: rgba(255, 255, 255, 0.8)
+  color: var(--color-text-secondary)
   min-width: 150px
   text-align: center
+  font-weight: $font-weight-medium
 
-.calendar-grid
-  display: grid
-  grid-template-columns: repeat(7, 1fr)
-  gap: 0.5rem
-  margin-bottom: 1.5rem
-
-.calendar-day-header
-  text-align: center
-  font-weight: 600
-  color: rgba(255, 255, 255, 0.7)
-  padding: 0.5rem
-  font-size: 0.875rem
-
-.calendar-day
-  aspect-ratio: 1
-  display: flex
-  align-items: center
-  justify-content: center
-  background: rgba(255, 255, 255, 0.05)
-  border: 1px solid rgba(255, 255, 255, 0.1)
-  border-radius: 4px
-  cursor: pointer
-  transition: all 0.2s ease
-  color: rgba(255, 255, 255, 0.8)
-  font-size: 0.875rem
-
-  &:hover
-    background: rgba(255, 255, 255, 0.1)
-    border-color: rgba(255, 255, 255, 0.3)
-
-  &.has-event
-    background: rgba(100, 200, 255, 0.2)
-    border-color: rgba(100, 200, 255, 0.5)
-    font-weight: 600
-
-  &.today
-    background: rgba(255, 150, 100, 0.2)
-    border-color: rgba(255, 150, 100, 0.5)
-
+// 日历下方事件区：标题 + 竖排列表
 .calendar-events
-  padding-top: 1.5rem
-  border-top: 1px solid rgba(255, 255, 255, 0.1)
-
   h4
-    margin: 0 0 1rem 0
-    color: #fff
+    margin: 0 0 $space-md 0
+    color: var(--color-text)
 
 .events-list
   display: flex
   flex-direction: column
-  gap: 0.75rem
+  gap: $space-md
 
-.event-item
-  padding: 0.75rem
-  background: rgba(100, 200, 255, 0.1)
-  border-left: 3px solid rgba(100, 200, 255, 0.5)
-  border-radius: 4px
-
-.event-name
-  font-weight: 600
-  color: #fff
-  margin-bottom: 0.25rem
-
-.event-time
-  font-size: 0.875rem
-  color: rgba(255, 255, 255, 0.6)
-
+// 可见度标签（如 "肉眼可见" / "需望远镜"）
 .event-visibility
-  font-size: 0.75rem
-  color: rgba(255, 255, 255, 0.5)
-  margin-top: 0.25rem
+  font-size: $font-size-xs
+  color: var(--color-text-tertiary)
+  margin-top: $space-xs

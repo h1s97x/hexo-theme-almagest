@@ -1,81 +1,38 @@
 // ============================================================
-// Observation Guide Component
+// Observation Guide Component —— 补充样式
 // ============================================================
-// 观星指南组件（原内联在 observation-guide.ejs 的 <style> 中，
-// 阶段2 重构为独立组件样式，随 main.css 统一打包）。
+// 说明：`.observation-guide` / `.guide-header` / `.guide-section` /
+// `.guide-content` / `.guide-tips` 的基础样式已在 `_astronomy.styl` 中
+// 定义并走主题变量。本文件仅保留「此处独有」的额外选择器，
+// 避免同名规则重复定义造成两处样式漂移（原实现为整块复制，已去重）。
+// 加载顺序在 `_astronomy.styl` 之后，故此处可对基础样式做补充。
 
-.observation-guide
-  background: rgba(255, 255, 255, 0.05)
-  border: 1px solid rgba(255, 255, 255, 0.1)
-  border-radius: 8px
-  padding: 1.5rem
-  backdrop-filter: blur(10px)
-
-.guide-header
-  margin-bottom: 1.5rem
-
-  h3
-    margin: 0 0 0.5rem 0
-    color: #fff
-
+// 位置行：图标 + 地名（flex 对齐）
 .guide-location
-  font-size: 0.875rem
-  color: rgba(255, 255, 255, 0.6)
   display: flex
   align-items: center
-  gap: 0.5rem
+  gap: $space-sm
+  font-size: $font-size-sm
+  color: var(--color-text-tertiary)
 
-.guide-section
-  margin-bottom: 1.5rem
+// 观测时段（如 "20:00 - 23:00 最佳"）
+.constellation-time
+  font-size: $font-size-sm
+  color: var(--color-text-tertiary)
 
-  h4
-    color: rgba(255, 255, 255, 0.9)
-    margin: 0 0 0.75rem 0
-    font-size: 1rem
-
+// 正文内链接
 .guide-content
-  color: rgba(255, 255, 255, 0.8)
-  line-height: 1.6
-
-  ul
-  ol
-    margin: 0.5rem 0
-    padding-left: 1.5rem
-
-  li
-    margin-bottom: 0.5rem
-
   a
-    color: rgba(100, 200, 255, 0.9)
+    color: var(--color-link)
     text-decoration: none
 
     &:hover
-      color: rgba(100, 200, 255, 1)
+      color: var(--color-link-hover)
       text-decoration: underline
 
-.constellation-time
-  font-size: 0.875rem
-  color: rgba(255, 255, 255, 0.6)
-
-.guide-tips
-  background: rgba(255, 200, 100, 0.1)
-  border-left: 3px solid rgba(255, 200, 100, 0.5)
-  padding: 1rem
-  border-radius: 4px
-  margin-top: 1rem
-
-.tips-title
-  font-weight: 600
-  color: rgba(255, 200, 100, 0.9)
-  margin-bottom: 0.5rem
-
-.tips-content
-  color: rgba(255, 255, 255, 0.8)
-  font-size: 0.875rem
-
-@media (max-width: 768px)
+@media (max-width: $breakpoint-md)
   .observation-guide
-    padding: 1rem
+    padding: $space-md
 
   .guide-section
-    margin-bottom: 1rem
+    margin-bottom: $space-md

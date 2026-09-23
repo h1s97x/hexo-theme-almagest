@@ -89,6 +89,10 @@ small
   overflow hidden
   transition max-height $transition-base
 
+  // `theme.js` 用 classList.toggle('open') 控制展开，
+  // 而此处的选择器是 .active —— 两者不一致导致汉堡菜单点不开。
+  // 现同时支持两个类名：.open 与 JS 对齐，.active 保留兼容旧模板/第三方扩展。
+  &.open
   &.active
     max-height 500px
 
@@ -533,7 +537,8 @@ img
     margin-bottom $space-lg
 
     &:hover
-      transform translateY(-2px)
+      transform translateY(-3px)
+      box-shadow var(--shadow-card-hover), var(--glow-soft)
 
   .post-title
     font-size $font-size-2xl

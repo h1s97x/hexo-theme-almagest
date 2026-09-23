@@ -217,51 +217,17 @@
 // ============================================================
 // Code Copy Button
 // ============================================================
-
-.code-copy-btn
-  position: absolute
-  top: $space-sm
-  right: $space-sm
-  padding: 4px 10px
-  border: none
-  border-radius: $border-radius-sm
-  background-color: var(--color-bg-secondary)
-  color: var(--color-text-secondary)
-  font-size: $font-size-xs
-  cursor: pointer
-  opacity: 0
-  transition: opacity $transition-base
-
-  &:hover
-    opacity: 1
-    color: var(--color-text)
+// 注：`.code-copy-btn` 的权威定义在 `_code-highlight.styl`（随代码块样式就近维护）。
+// 此处原先重复定义了一份，因导入顺序在前而被覆盖，造成 padding / 圆角 /
+// 配色三处漂移，已删除重复块。
 
 // ============================================================
 // Back to Top
 // ============================================================
-
-.back-to-top
-  position: fixed
-  bottom: $space-lg
-  right: $space-lg
-  width: 44px
-  height: 44px
-  border-radius: 50%
-  border: none
-  background-color: $color-primary
-  color: #ffffff
-  cursor: pointer
-  display: none
-  align-items: center
-  justify-content: center
-  box-shadow: $shadow-lg
-  z-index: $z-index-fixed
-
-  &.show
-    display: flex
-
-  &:hover
-    background-color: $color-primary-dark
+// 注：`.back-to-top` 的权威定义在 `_layout.styl`（48×48 + 渐变星辉）。
+// 此处原先重复定义了一份 44×44 的版本，因导入顺序靠后而覆盖前者，
+// 造成尺寸与配色两处漂移，已删除重复块，统一由 `_layout.styl` 提供。
+// 移动端尺寸微调见 `_responsive.styl`。
 
 // ============================================================
 // Sidebar Widgets
@@ -273,23 +239,45 @@
 // 这样做遵循"克制视觉元素、突出有效信息"，避免每个元素各自为政导致杂乱。
 // ============================================================
 
-// widget 卡片：背景 + 圆角 + 内边距（对应 Stellar 的 .widget-body）
+// widget 卡片：玻璃态 + 圆角 + 内边距（对应 Stellar 的 .widget-body）
 // 纵向间距交给 .sidebar 的 gap 处理，故此处不设 margin
 .widget
+  position relative
   margin-bottom 0
   padding $space-md $space-lg
   border-radius $border-radius-lg
-  background-color var(--color-bg-secondary)
-  transition background-color $transition-base
+  background-color var(--color-glass-bg)
+  border 1px solid var(--color-glass-border)
+  backdrop-filter blur(var(--color-glass-blur))
+  -webkit-backdrop-filter blur(var(--color-glass-blur))
+  box-shadow var(--shadow-card)
+  transition background-color $transition-base, border-color $transition-base, box-shadow $transition-base
 
-// widget 标题：弱化为分组标识，不再使用分隔线抢视觉重心
+  &:hover
+    border-color var(--color-tag-border)
+    box-shadow var(--shadow-card), var(--glow-soft)
+
+// widget 标题：分组标识 + 左侧一小段渐变色条点亮
 .widget-title
+  position relative
   margin 0 0 $space-sm 0
+  padding-left $space-sm
   font-size $font-size-xs
   font-weight $font-weight-semibold
   text-transform uppercase
   letter-spacing 0.08em
   color var(--color-text-tertiary)
+
+  &::before
+    content ''
+    position absolute
+    left 0
+    top 50%
+    transform translateY(-50%)
+    width 3px
+    height 12px
+    border-radius $border-radius-full
+    background-image var(--grad-primary)
 
 // About 描述文本
 .widget-content
@@ -394,6 +382,11 @@
 .article-title
   margin: 0 0 $space-md 0
   font-size: $font-size-4xl
+  line-height: $line-height-tight
+  background-image: var(--grad-text)
+  -webkit-background-clip: text
+  background-clip: text
+  -webkit-text-fill-color: transparent
   color: var(--color-text)
 
 .article-meta

@@ -48,20 +48,20 @@ p code
   user-select none
   border-right 1px solid var(--color-border)
 
-// Code copy button
+// Code copy button（权威定义，其余文件不再重复）
 .code-copy-btn
   position absolute
   top $space-sm
   right $space-sm
-  padding $space-sm $space-md
+  padding $space-xs $space-sm
   background-color var(--color-hover-bg)
-  color var(--color-text)
-  border none
+  color var(--color-text-secondary)
+  border 1px solid transparent
   border-radius $border-radius-md
   cursor pointer
   font-size $font-size-xs
   opacity 0
-  smooth-transition()
+  transition opacity $transition-base, background-color $transition-base, color $transition-base, border-color $transition-base, box-shadow $transition-base
 
   z-index 10
 
@@ -70,11 +70,13 @@ pre:hover .code-copy-btn
 
 .code-copy-btn:hover
   background-color $color-primary
-  color white
+  color #05070f
+  border-color transparent
+  box-shadow $glow-primary-soft
 
 .code-copy-btn.copied
   background-color $color-success
-  color white
+  color #05070f
 
 // Syntax highlighting colors
 .hljs-keyword
