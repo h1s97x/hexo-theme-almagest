@@ -12,9 +12,9 @@ const MAX_STARS = 220;
 const STAR_COLORS = ['255,255,255', '207,228,255', '184,200,255', '255,233,196', '213,200,255'];
 
 // 流星参数
-const METEOR_MIN_INTERVAL = 6000;   // 最短间隔 ms
-const METEOR_MAX_INTERVAL = 16000;  // 最长间隔 ms
-const METEOR_DURATION = 900;        // 单颗流行存活时长 ms
+const METEOR_MIN_INTERVAL = 6000; // 最短间隔 ms
+const METEOR_MAX_INTERVAL = 16000; // 最长间隔 ms
+const METEOR_DURATION = 900; // 单颗流行存活时长 ms
 
 const Astronomy = {
   // Initialize astronomy features
@@ -65,7 +65,6 @@ const Astronomy = {
     let rafId = null;
     let resizeTimer = null;
     let meteorTimer = null;
-    let lastMeteorAt = 0;
 
     // ---------- 星点构建 ----------
 
@@ -120,10 +119,10 @@ const Astronomy = {
       if (reduceMotion) {
         return;
       }
-      const delay = METEOR_MIN_INTERVAL + Math.random() * (METEOR_MAX_INTERVAL - METEOR_MIN_INTERVAL);
+      const delay =
+        METEOR_MIN_INTERVAL + Math.random() * (METEOR_MAX_INTERVAL - METEOR_MIN_INTERVAL);
       meteorTimer = setTimeout(function () {
         spawnMeteor();
-        lastMeteorAt = performance.now();
         scheduleMeteor();
       }, delay);
     }
@@ -134,10 +133,14 @@ const Astronomy = {
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
         // 正弦相位闪烁：alpha 在 [base-amp, base+amp] 间平滑往返
-        const t = now / 1000 * s.spd + s.ph;
+        const t = (now / 1000) * s.spd + s.ph;
         let alpha = s.base + Math.sin(t) * s.amp;
-        if (alpha < 0.05) alpha = 0.05;
-        if (alpha > 1) alpha = 1;
+        if (alpha < 0.05) {
+          alpha = 0.05;
+        }
+        if (alpha > 1) {
+          alpha = 1;
+        }
 
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
@@ -157,7 +160,7 @@ const Astronomy = {
         }
 
         // 用「已飞过的距离」推进位置
-        const traveled = age * m.dx / 16.7;
+        const traveled = (age * m.dx) / 16.7;
         const x = m.x + traveled;
         const y = m.y + traveled * (m.dy / m.dx);
         const tailX = x - m.len;
@@ -166,9 +169,14 @@ const Astronomy = {
         // 淡入淡出：前 20% 渐显，后 40% 渐隐
         const p = age / m.life;
         let fade = 1;
-        if (p < 0.2) fade = p / 0.2;
-        else if (p > 0.6) fade = (1 - p) / 0.4;
-        if (fade < 0) fade = 0;
+        if (p < 0.2) {
+          fade = p / 0.2;
+        } else if (p > 0.6) {
+          fade = (1 - p) / 0.4;
+        }
+        if (fade < 0) {
+          fade = 0;
+        }
 
         const grad = ctx.createLinearGradient(tailX, tailY, x, y);
         grad.addColorStop(0, 'rgba(103,232,249,0)');
@@ -329,10 +337,12 @@ const Astronomy = {
       return;
     }
 
-    const view = this._calView || (function () {
-      const t = new Date();
-      return { year: t.getFullYear(), month: t.getMonth() };
-    })();
+    const view =
+      this._calView ||
+      (function () {
+        const t = new Date();
+        return { year: t.getFullYear(), month: t.getMonth() };
+      })();
     this._calView = view;
 
     const { year, month } = view;

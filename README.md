@@ -124,8 +124,8 @@ npm test             # 静态检查 + 单元测试 + CI 冒烟测试（真实 He
 冒烟测试支持通过 `HEXO_SPEC` 切换 Hexo 主版本，用于验证版本兼容性：
 
 ```bash
-bash test/ci-smoke-test.sh                     # 默认 Hexo 7
-HEXO_SPEC='hexo@^8' bash test/ci-smoke-test.sh # 验证 Hexo 8
+bash tests/smoke.sh                     # 默认 Hexo 7
+HEXO_SPEC='hexo@^8' bash tests/smoke.sh # 验证 Hexo 8
 ```
 
 > **Node.js 要求**
@@ -157,19 +157,9 @@ HEXO_SPEC='hexo@^8' bash test/ci-smoke-test.sh # 验证 Hexo 8
 
 > 如需手动发布，可执行 `bash npm-publish.sh`（需配置 `CNB_TOKEN` 制品库令牌）。
 
-## Demo 站点
-
-`doc/` 目录包含演示博客源码，可通过以下命令构建静态站点：
-
-```bash
-bash tools/build-demo.sh   # 输出到 .demo/public
-```
-
-配合仓库的「部署」入口（`.cnb/tag_deploy.yml`）可一键部署到 **EdgeOne Pages**（需配置 `EDGEONE_PAGES_API_TOKEN`）。
-
 ## 贡献
 
-欢迎任何形式的贡献！请阅读 [CONTRIBUTING.md](doc/CONTRIBUTING.md) 了解：
+欢迎任何形式的贡献！请阅读 [CONTRIBUTING.md](docs/CONTRIBUTING.md) 了解：
 
 - Bug 报告 / 功能建议 / 使用问题的 **Issue 模板**
 - 代码提交规范（Conventional Commits）与分支命名约定
@@ -178,14 +168,18 @@ bash tools/build-demo.sh   # 输出到 .demo/public
 
 ## 文档
 
-完整的文档位于 `doc/` 目录：
+本仓库仅包含**主题本体**（`languages/`、`layout/`、`scripts/`、`source/` 与主题配置 `_config.yml`）。
 
-- [快速参考卡](doc/QUICK_REFERENCE.md)
-- [开发文档](doc/DEVELOPMENT.md)
-- [Bug 修复与改进指南](doc/BUG_FIX_AND_IMPROVEMENT_GUIDE.md)
-- [贡献指南](doc/CONTRIBUTING.md)
-- [更新日志](CHANGELOG.md)
-- [演示博客源码](doc/)
+**给使用者**
+
+- [README.md](README.md) —— 安装、快速开始、完整配置项、内置标签（即本文件）
+- [更新日志](CHANGELOG.md) —— 版本变更记录
+
+**给贡献者** —— [`docs/`](docs/)：
+
+- [开发文档](docs/DEVELOPMENT.md) —— 项目结构、代码规范、提交规范
+- [贡献指南](docs/CONTRIBUTING.md) —— 行为准则、贡献流程、PR 规范
+- [Bug 修复与改进指南](docs/BUG_FIX_AND_IMPROVEMENT_GUIDE.md) —— triage 与发布流程
 
 ## License
 

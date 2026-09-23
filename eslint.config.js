@@ -16,7 +16,7 @@
  * 按运行环境分为三组：
  *   - eslint.config.js : 本配置文件（CommonJS + node 全局）
  *   - source/js/**     : 浏览器端 IIFE 脚本（无 require，无 hexo 全局）
- *   - scripts/**, test/**: CommonJS，可访问 Hexo 全局对象
+ *   - scripts/**, tests/**: CommonJS，可访问 Hexo 全局对象
  */
 
 'use strict';
@@ -73,7 +73,7 @@ module.exports = [
 
   // Hexo 主题脚本 / 单元测试：CommonJS，可访问全局 hexo
   {
-    files: ['scripts/**/*.js', 'test/**/*.js'],
+    files: ['scripts/**/*.js', 'tests/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'commonjs',

@@ -5,7 +5,15 @@
     "no-descending-specificity": null,
     "selector-pseudo-element-no-unknown": null,
     "at-rule-no-unknown": null,
-    "property-no-vendor-prefix": true,
+    "property-no-vendor-prefix": [
+      true,
+      {
+        "ignoreProperties": [
+          "-webkit-backdrop-filter",
+          "-webkit-background-clip"
+        ]
+      }
+    ],
     "value-no-vendor-prefix": true,
     "import-notation": null,
     "color-function-notation": null,

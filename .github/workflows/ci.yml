@@ -1,0 +1,77 @@
+name: CI
+
+# 质量门禁：lint + stylelint + 单元测试 + 真实构建冒烟测试
+#
+# 职责划分：质量检查在本 workflow；发布链路（打 Tag / Release / npm 制品）在 .cnb.yml。
+#
+# 注意：GitHub 侧是 CNB 的强制同步镜像（.cnb.yml 的 sync-to-github，force: true），
+# 因此 GitHub 上收到的 push 来自同步机器人，触发时机在「同步之后」，
+# 无法起到「PR 阶段拦截」的作用。要改变这一点需要反转主仓方向。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# 同一分支的旧运行自动取消，避免连续 push 堆积
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ────────────────────────────────────────────────
+  # 任务 1：静态检查 + 单元测试（约 1 分钟）
+  # ────────────────────────────────────────────────
+  quality:
+    name: Lint & unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # ⚠️ 本仓库的 package-lock.json 被 .gitignore 排除且未跟踪，
+      #    因此这里只能用 npm install —— 用 npm ci 会直接失败。
+      #    同理不能启用 setup-node 的 cache: npm（该选项依赖 lock 文件）。
+      #    如需启用缓存与 npm ci，应先把 package-lock.json 纳入版本控制。
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Stylelint
+        run: npm run style:lint
+
+      - name: Unit tests
+        run: npm run test:unit
+
+  # ────────────────────────────────────────────────
+  # 任务 2：冒烟测试（Hexo 7 / 8 兼容矩阵）
+  # 该脚本会在临时目录自建一个最小 Hexo 站点并完整构建，
+  # 断言 11 项产物特征（外壳、懒加载、search.json 未污染等）。
+  # ────────────────────────────────────────────────
+  smoke:
+    name: Smoke test (Hexo ${{ matrix.hexo }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        hexo: ['^7', '^8']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # 冒烟脚本自行在临时目录安装 Hexo 与渲染器，
+      # 因此本任务无需预先安装仓库依赖。
+      - name: Build & assert artifacts
+        run: bash tests/smoke.sh
+        env:
+          HEXO_SPEC: hexo@${{ matrix.hexo }}

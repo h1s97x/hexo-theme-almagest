@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+**测试目录重构为 `tests/`，注册层共用一份 mock（重构）**
+
+- `test/` → `tests/`，11 个文件 1018 行 → 6 个文件。测试按层合并：
+  - `tests/unit/lib.test.js` —— 纯函数层（原 `lib/` 下 4 个文件）
+  - `tests/unit/scripts.test.js` —— 注册层（原 5 个文件）
+  - `tests/setup.js` —— **新增**，共享的 hexo mock（此前 5 个测试文件各写一份形状不同的 mock，是主要重复来源）
+  - `tests/smoke.sh` —— 原 `test/ci-smoke-test.sh` 改名
+  - `tests/README.md` —— **新增**，说明覆盖范围、两层分工与加用例方式
+- 用例数 91 → 64（多个断言合并进同一 `it`），**断言总数保持 159 条，零覆盖丢失**
+- 同步更新 `package.json`（`test:unit` / `test:cov` / 新增 `test:smoke`）、`.npmignore`、`eslint.config.js` 的 files glob，以及 README 与 `docs/` 下的全部引用
+
+**CI 职责分离：GitHub Actions 管质量检查，CNB 管发布（重构）**
+
+- **新增 `.github/workflows/ci.yml`**：`quality`（lint + stylelint + 单元测试）与 `smoke`（Hexo 7 / 8 兼容矩阵）两个 job
+- `.cnb.yml` 移除全部质量检查阶段（`main.push` 的 `quality-and-smoke`、整个 `pull_request` 块、`tag_push` 的 `run-checks`），只保留发布链路：镜像同步、`auto_tag`、`tag_push`（Release + npm 制品）、`issue.open`
+- 背景：GitHub 侧是 CNB 的强制同步镜像（`sync-to-github` 的 `force: true`），GitHub Actions 的触发时机在同步**之后**，无法承担 PR 阶段拦截
+
+**仓库精简为主题本体：移除 `examples/` / `tools/` / `screenshots/`（重构）**
+
+- 删除 `examples/`（使用者文档源码 + 示例站点）与 `tools/build-demo.sh`，仓库只保留主题本体（`languages/` `layout/` `scripts/` `source/` 与 `_config.yml`）
+- 删除 `screenshots/`；同步移除 `.cnb.yml` 中的 `tag_deploy.production` 部署流水线（Demo 站点链路整体下线）
+- `.cnb/ISSUE_TEMPLATE/` 迁移至 `.github/ISSUE_TEMPLATE/`；删除 `.cnb/release.yml`（与 `.cnb.yml` 重复的参考片段）与 `.cnb/tag_deploy.yml`（Demo 部署环境配置）
+- `.npmignore`、`README.md`、`doc/CONTRIBUTING.md`、`doc/DEVELOPMENT.md` 同步清理相关引用
+
 **`scripts/` 分层改造：`lib` 纯函数层 + 注册层分离（重构）**
 
 参考 Stellar `scripts/lib/` 与 Fluid `scripts/utils/` 的分层方式，把「业务逻辑」与「Hexo 注册」拆开：
@@ -37,12 +61,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 强调色由单一 `#0066cc` 换为三色渐变带，暗色底由灰黑换为深空：
 
-| 语义 | 亮色 | 暗色 |
-|---|---|---|
-| 主强调 | `#4f46e5` 靛蓝 | `#67e8f9` 星蓝 |
-| 渐变 | `#0891b2 → #4f46e5 → #7c3aed` | `#67e8f9 → #818cf8 → #c084fc` |
-| 底色 | `#fbfcfe` 月白 | `#05070f` 深空 |
-| 次级底 / 悬停底 | `#f4f6fb` / `#e9edf6` | `#0b0f1d` / `#131829` |
+| 语义            | 亮色                          | 暗色                          |
+| --------------- | ----------------------------- | ----------------------------- |
+| 主强调          | `#4f46e5` 靛蓝                | `#67e8f9` 星蓝                |
+| 渐变            | `#0891b2 → #4f46e5 → #7c3aed` | `#67e8f9 → #818cf8 → #c084fc` |
+| 底色            | `#fbfcfe` 月白                | `#05070f` 深空                |
+| 次级底 / 悬停底 | `#f4f6fb` / `#e9edf6`         | `#0b0f1d` / `#131829`         |
 
 - 新增设计令牌：深空阴影 `$shadow-deep-{sm,md,lg}`、星辉外发光 `$glow-{primary,primary-soft,violet}`、玻璃态 `$glass-{bg,border}`、星野渐变 `$grad-{primary,primary-soft,text,surface}`
 - 玻璃态改造：`.site-header` / `.site-footer` / `.post-card` / `.widget` / `.astronomy-card` / `.astronomy-calendar` / `.observation-guide` 统一为半透明底 + `backdrop-filter: blur(18px)` + 边框高光
@@ -62,6 +86,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - resize 防抖 160ms 并重建星点
 
 ### Fixed
+
+**CI 质量门禁修复：`npm run lint` / `npm run style:lint` 由红转绿（修复）**
+
+- `source/js/astronomy.js`：补齐 5 处 `if` 语句花括号、移除只写不读的 `lastMeteorAt` 变量（`curly` / `no-unused-vars`）
+- `.stylelintrc.json`：`property-no-vendor-prefix` 放行 `-webkit-backdrop-filter` 与 `-webkit-background-clip`——这两个前缀是 Safari 兼容的必需写法，不能按规则删除
+- `source/css/_code-highlight.styl` / `_layout.styl`：移除声明前的多余空行（`declaration-empty-line-before`）
 
 **搜索检索性能（性能）**
 
