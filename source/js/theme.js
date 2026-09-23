@@ -185,6 +185,35 @@
         toggleBtn.setAttribute('aria-expanded', 'false');
       });
     });
+
+    // Click outside closes the menu（点击空白处收起，符合移动端习惯）
+    document.addEventListener('click', function (e) {
+      if (!menu.classList.contains('open')) {
+        return;
+      }
+      if (menu.contains(e.target) || toggleBtn.contains(e.target)) {
+        return;
+      }
+      menu.classList.remove('open');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    });
+
+    // Esc 键收起
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !menu.classList.contains('open')) {
+        return;
+      }
+      menu.classList.remove('open');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    });
+
+    // 视窗放大到桌面断点时，清掉展开态，避免样式残留
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 768 && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
   }
 
   /**

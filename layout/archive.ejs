@@ -2,14 +2,34 @@
 layout: layout
 ---
 <%
-// 归档页面内容片段（由 layout.ejs 统一包裹）
+// 列表页内容片段（由 layout.ejs 统一包裹）
+//
+// 本模板同时服务三种列表页：
+//   归档  /archives/            —— page.category 与 page.tag 都不存在
+//   分类  /categories/<name>/   —— hexo-generator-category 注入 page.category
+//   标签  /tags/<name>/         —— hexo-generator-tag 注入 page.tag
+//
+// 为什么三者共用一个模板：两个 generator 的 layout 优先级分别是
+//   ['category', 'archive', 'index'] 与 ['tag', 'archive', 'index']，
+// 而主题未提供 category.ejs / tag.ejs，因此必然回落到本文件。
+// 若不在此处区分页面类型，分类页与标签页会统一显示「归档 · 浏览所有文章」。
+//
+// 注：此处刻意不为分类/标签另建两个模板 —— 那会把下方的年份分组逻辑
+// 整块复制三份，正是本主题此前需要清理的重复模式。
 const config = theme;
+
+const isCategory = Boolean(page.category);
+const isTag = Boolean(page.tag);
+const pageTitle = isCategory ? page.category : (isTag ? page.tag : __('archive'));
+const pageSubtitle = isCategory
+  ? __('categories_desc')
+  : (isTag ? __('tags_desc') : __('archive_description'));
 %>
 
 <!-- Page Header -->
 <div class="page-header">
-  <h1 class="page-title"><%= __('archive') %></h1>
-  <p class="page-subtitle"><%= __('archive_description') %></p>
+  <h1 class="page-title"><%= pageTitle %></h1>
+  <p class="page-subtitle"><%= pageSubtitle %></p>
 </div>
 
 <!-- Archive Container -->

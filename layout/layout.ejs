@@ -24,6 +24,13 @@ const theme_attr = prefers_theme === 'auto' ? '' : `data-theme="${prefers_theme}
   <%- partial('_partial/theme-init') %>
 </head>
 <body>
+  <!-- Starry Background（由 source/js/astronomy.js 在其中绘制 canvas 星空）
+       注：此前该节点缺失，导致 astronomy.js 的 initStarryBackground()
+       永远查不到元素而直接 return，星空实际从未渲染。 -->
+  <% if (config.features?.starfield !== false) { %>
+    <div class="starry-background" aria-hidden="true"></div>
+  <% } %>
+
   <div id="app" class="app-container">
     <!-- Header -->
     <%- partial('_partial/header') %>

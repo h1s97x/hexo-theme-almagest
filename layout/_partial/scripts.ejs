@@ -33,6 +33,41 @@ const asset = function(path) {
   <script src="<%= asset('/js/code-copy.js') %>" defer></script>
 <% } %>
 
+<!--
+  highlight.js 运行库
+  ============================================================
+  注意 1：head.ejs 只引入了 highlight.js 的「样式表」，样式表本身不做任何高亮。
+          若此处不引入运行库，代码块将始终是纯文本（无语法着色）。
+
+  注意 2：必须使用「浏览器构建产物」，不能用 npm 包的 lib/*.js。
+          - npm/highlight.js@x/lib/common.min.js  → 仅 ~2.5KB，内部调用 require()，
+            这是给 Node 用的入口，浏览器里会抛 "require is not defined"，
+            加载后 window.hljs 仍是 undefined。
+          - npm/@highlightjs/cdn-assets@x/highlight.min.js → ~129KB，浏览器可用。
+          cdn 配置项应为「包根地址」，本模板负责拼 /highlight.min.js 与 /styles/。
+  注意 3：使用 defer，保证与 code-copy.js 一样在 DOM 解析后按序执行；
+          高亮在 DOMContentLoaded 后统一触发。
+-->
+<% if (config.code_highlight?.enable !== false) { %>
+  <%
+    const hljs_ver = '11.12.0';
+    const hljs_base = config.code_highlight?.cdn || ('https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@' + hljs_ver);
+  %>
+  <script src="<%= hljs_base %>/highlight.min.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof window.hljs === 'undefined') {
+        // 运行库未加载（离线 / CDN 不可达）时静默降级：代码仍是可读纯文本
+        return;
+      }
+      document.querySelectorAll('pre code').forEach(function (block) {
+        if (block.dataset.highlighted === 'yes') return;
+        window.hljs.highlightElement(block);
+      });
+    });
+  </script>
+<% } %>
+
 <% if (config.features?.starfield !== false) { %>
   <script src="<%= asset('/js/astronomy.js') %>" defer></script>
 <% } %>
