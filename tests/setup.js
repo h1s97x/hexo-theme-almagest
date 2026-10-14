@@ -45,6 +45,29 @@ const assets = {
   'posts/hello/data.txt': { path: 'posts/hello/data.txt', source: FIXTURE }
 };
 
+/** hexo.locals 的最小 mock（_data 覆盖合并用） */
+const localsStore = {};
+const localsMock = {
+  get(key) {
+    return localsStore[key];
+  },
+  set(key, value) {
+    localsStore[key] = value;
+  }
+};
+
+/** hexo.theme 的稳定 stub：config 属性代理 state.themeConfig，
+ *  支持 `hexo.theme.config = merged` 写回（_data 覆盖合并的消费方式） */
+const themeStub = {};
+Object.defineProperty(themeStub, 'config', {
+  get() {
+    return state.themeConfig;
+  },
+  set(value) {
+    state.themeConfig = value;
+  }
+});
+
 function bucket(map, name) {
   if (!map[name]) {
     map[name] = [];
@@ -111,12 +134,14 @@ global.hexo = {
   },
 
   get theme() {
-    return { config: state.themeConfig };
+    return themeStub;
   },
 
   get config() {
     return state.siteConfig;
   },
+
+  locals: localsMock,
 
   log: {
     info(msg) {
@@ -161,6 +186,13 @@ function fireReady() {
   });
 }
 
+/** 触发 generateBefore 事件（配置守卫在此挂载，见 scripts/config/index.js） */
+function fireGenerateBefore() {
+  bucket(registry.events, 'generateBefore').forEach(function (fn) {
+    fn();
+  });
+}
+
 /** 串起某个事件上的所有 filter，模拟 Hexo 的 filter 链 */
 function runFilter(name, input) {
   return bucket(registry.filters, name).reduce(function (acc, fn) {
@@ -173,4 +205,4 @@ function clearWarns() {
   state.logs.warn.length = 0;
 }
 
-module.exports = { registry, state, load, fireReady, runFilter, clearWarns };
+module.exports = { registry, state, load, fireReady, fireGenerateBefore, runFilter, clearWarns };

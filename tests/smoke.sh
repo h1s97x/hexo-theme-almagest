@@ -43,6 +43,9 @@ rm -rf themes/almagest/node_modules themes/almagest/.git
 # 视图处理器按同名视图注册，覆盖主题自身的 post/categories/tags 等模板，
 # 导致构建失败。复制成主题时必须剔除。
 rm -rf themes/almagest/reference-themes
+# .demo/ 是本地演示站点（含 node_modules 与完整站点源码），不属于主题本体，
+# 且体积大，复制进去只会拖慢冒烟测试。
+rm -rf themes/almagest/.demo
 
 echo "==> 写入站点配置"
 cat > _config.yml <<'YAML'
@@ -75,6 +78,10 @@ tags: [ci]
 Hello Almagest smoke test.
 
 ![alt text](/images/ci-test.jpg)
+
+```js
+console.log('smoke');
+```
 MD
 
 echo "==> hexo generate"
@@ -103,6 +110,14 @@ grep -q "data-src" "$POST" || fail "文章图片未启用懒加载（缺 data-sr
 grep -q 'loading="lazy"' "$POST" || fail "文章图片缺少 loading=lazy"
 grep -Eq "src=\"/images/ci-test.jpg\"|src='/images/ci-test.jpg'" "$POST" \
   || fail "文章页图片缺少 src（懒加载会破图）"
+
+# --- 代码块结构：主题 highlight.js 方案要求 <pre><code> ---
+# Hexo 内置高亮默认开启，会把代码块包成 <figure class="highlight"><table>…
+# （无 <code> 子元素），导致 hljs 高亮与 code-copy.js 的 'pre code' 选择器
+# 全部静默失效。主题应在 ready 阶段关闭站点内置高亮（见
+# scripts/config/index.js 的 disableBuiltinHighlight）。
+grep -Eq '<pre><code' "$POST" \
+  || fail "代码块不是 <pre><code> 结构（Hexo 内置高亮未关闭，高亮/复制按钮会失效）"
 
 # --- search.json 不被懒加载污染 ---
 # 懒加载挂在 after_render:html（渲染层）而非 after_post_render，

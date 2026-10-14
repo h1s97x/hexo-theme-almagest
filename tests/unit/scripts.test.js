@@ -13,7 +13,15 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 
-const { registry, state, load, fireReady, runFilter, clearWarns } = require('../setup');
+const {
+  registry,
+  state,
+  load,
+  fireReady,
+  fireGenerateBefore,
+  runFilter,
+  clearWarns
+} = require('../setup');
 
 // 装了 mock 之后再加载被测脚本
 const configModule = load('scripts/config/index.js');
@@ -63,8 +71,51 @@ describe('注册点契约', () => {
     ]);
   });
 
-  it('配置校验在 ready 事件上注册', () => {
-    assert.equal(registry.events.ready.length, 1);
+  it('disableBuiltinHighlight 主题方案启用时清空 syntax_highlighter', () => {
+    const saved = state.siteConfig.syntax_highlighter;
+    state.themeConfig = { code_highlight: { enable: true } };
+    state.siteConfig.syntax_highlighter = 'highlight.js';
+    assert.equal(
+      configModule.disableBuiltinHighlight({
+        config: state.siteConfig,
+        theme: { config: state.themeConfig }
+      }),
+      true
+    );
+    assert.equal(state.siteConfig.syntax_highlighter, '', '高亮器被清空');
+    state.siteConfig.syntax_highlighter = saved;
+    state.themeConfig = {};
+  });
+
+  it('disableBuiltinHighlight 主题方案关闭或站点已空时不动配置', () => {
+    const saved = state.siteConfig.syntax_highlighter;
+    state.themeConfig = { code_highlight: { enable: false } };
+    state.siteConfig.syntax_highlighter = 'highlight.js';
+    assert.equal(
+      configModule.disableBuiltinHighlight({
+        config: state.siteConfig,
+        theme: { config: state.themeConfig }
+      }),
+      false
+    );
+    assert.equal(state.siteConfig.syntax_highlighter, 'highlight.js');
+
+    state.themeConfig = { code_highlight: { enable: true } };
+    state.siteConfig.syntax_highlighter = '';
+    assert.equal(
+      configModule.disableBuiltinHighlight({
+        config: state.siteConfig,
+        theme: { config: state.themeConfig }
+      }),
+      false
+    );
+    state.siteConfig.syntax_highlighter = saved;
+    state.themeConfig = {};
+  });
+
+  it('配置守卫在 generateBefore 事件上注册（ready 时主题配置尚未加载）', () => {
+    assert.equal(registry.events.generateBefore.length, 2, 'config 守卫 + events 日志');
+    assert.equal(registry.events.ready.length, 1, 'ready 只剩日志');
   });
 
   it('懒加载挂在渲染层而非 after_post_render（回归保护）', () => {
@@ -98,23 +149,36 @@ describe('scripts/config', () => {
     assert.equal(configModule.syncVersion(global.hexo), false);
   });
 
-  it('ready 时把配置问题写进日志，且不抛错', () => {
+  it('generateBefore 时把配置问题写进日志，且不抛错', () => {
     clearWarns();
     state.themeConfig = { prefer_theme: 'dark' }; // 拼错：应为 prefers_theme
     state.siteConfig.theme_config = undefined;
-    fireReady();
+    fireGenerateBefore();
 
     const output = state.logs.warn.join('\n');
     assert.ok(output.includes('prefer_theme'), '应提示未知配置项');
     assert.ok(output.includes('配置问题'), '应输出问题汇总');
   });
 
-  it('配置合法时 ready 不输出告警', () => {
+  it('配置合法时 generateBefore 不输出告警', () => {
     clearWarns();
     state.themeConfig = { title: 'ok', version: pkg.version };
     state.siteConfig.theme_config = undefined;
-    fireReady();
+    fireGenerateBefore();
     assert.deepEqual(state.logs.warn, []);
+  });
+
+  it('generateBefore 先合并 _data 覆盖，再执行版本同步', () => {
+    clearWarns();
+    state.themeConfig = { version: '0.0.1' };
+    state.siteConfig.theme_config = undefined;
+    hexo.locals.set('data', { almagest: { version: '2.5.0' } });
+    fireGenerateBefore();
+    // _data 覆盖先生效（0.0.1 → 2.5.0），版本已与 package.json 不同但同步逻辑
+    // 以「站点未显式覆盖 version」为前提对齐到 pkg.version
+    assert.equal(state.themeConfig.version, pkg.version, '_data 合并后被版本同步对齐');
+    assert.ok(state.logs.info.join('\n').includes('已合并站点覆盖'), '应记录 _data 合并');
+    hexo.locals.set('data', {});
   });
 });
 

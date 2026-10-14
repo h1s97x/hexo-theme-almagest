@@ -14,9 +14,17 @@
     "test:unit": "node --test tests/unit/*.test.js",
     "test:cov": "node --test --experimental-test-coverage tests/unit/*.test.js",
     "test:smoke": "bash tests/smoke.sh",
-    "test": "npm run check && npm run test:unit && npm run test:smoke",
-    "prepare": "husky"
+    "test": "npm run check && npm run test:unit && npm run test:smoke"
   },
+  "files": [
+    "layout",
+    "source",
+    "scripts",
+    "languages",
+    "_config.yml",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://cnb.cool/h1s97x/hexo-theme-almagest.git"

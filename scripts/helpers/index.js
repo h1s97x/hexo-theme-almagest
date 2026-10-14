@@ -18,7 +18,19 @@ const { buildFrontendConfig, stringifyConfig } = require('../lib/config-export')
 // 主题版本号：以 package.json 为唯一事实来源。
 // 模板里的 `config.version || theme_version()` 兜底曾硬编码 '1.0.0'，
 // 与真实版本（1.1.0）不一致，会导致资源 `?v=` 缓存刷新失效。
-const THEME_VERSION = require('../../package.json').version;
+//
+// ⚠️ 必须 try/catch：主题副本缺少 package.json 时（部分拷贝 / 精简 zip 分发），
+// 直接 require 会抛错导致整个注册层加载失败——所有 helper 丢失、
+// 每个页面渲染崩坏（产出 0 字节文件）。与 scripts/config/index.js 的
+// pkgVersion 兜底保持同一模式。取不到时退化为空串，由模板的
+// `config.version ||` 链继续兜底。
+const THEME_VERSION = (function () {
+  try {
+    return require('../../package.json').version || '';
+  } catch (err) {
+    return '';
+  }
+})();
 
 // Get excerpt helper
 hexo.extend.helper.register('get_excerpt', function (post, length) {

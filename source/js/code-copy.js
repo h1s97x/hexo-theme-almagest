@@ -16,11 +16,22 @@
   }
 
   function initCodeCopy() {
-    const codeBlocks = document.querySelectorAll('pre code');
+    // 兼容两种代码块结构：
+    // 1. 主题 highlight.js 方案（默认，Hexo 内置高亮已被主题关闭）：
+    //    <pre><code class="language-js">
+    // 2. Hexo 内置高亮（code_highlight.enable: false 时）：
+    //    <figure class="highlight"><table><tr><td class="gutter"><pre>行号</pre>
+    //    </td><td class="code"><pre>代码</pre></td></tr></table></figure>
+    //    （关闭行号时为 <figure class="highlight"><pre>，即直接子级 pre）
+    // 只取「装代码」的那个 pre：gutter 里是行号，不能作为复制来源。
+    const targets = document.querySelectorAll(
+      'pre code, figure.highlight td.code pre, figure.highlight > pre'
+    );
     const texts = config();
 
-    codeBlocks.forEach(codeBlock => {
-      const pre = codeBlock.parentElement;
+    targets.forEach(target => {
+      // pre code 结构取父级 pre；其余结构 target 本身就是 pre
+      const pre = target.tagName === 'PRE' ? target : target.parentElement;
 
       // Skip if already has a copy button
       if (pre.querySelector('.code-copy-btn')) {
@@ -35,7 +46,7 @@
 
       // Add copy functionality
       copyButton.addEventListener('click', function () {
-        const code = codeBlock.textContent;
+        const code = target.textContent;
 
         copyText(code)
           .then(() => {
