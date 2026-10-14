@@ -1,10 +1,6 @@
-# 质量检查（lint / stylelint / 单元测试 / 冒烟测试）由 GitHub Actions 承担，见 .github/workflows/ci.yml
-# 本文件只负责「发布」链路：镜像同步、打 Tag、发 Release、发 npm 制品、Issue 指派
-
 main:
   push:
     - name: sync-to-github
-      # 敏感信息（GITHUB_USERNAME / GITHUB_TOKEN）存放在密钥仓库 secret-env，通过 imports 引用
       imports:
         - https://cnb.cool/h1s97x/secret-env/-/blob/main/env.yml
       stages:
@@ -61,56 +57,3 @@ $:
             registry: https://npm.cnb.cool/h1s97x/toolkit/-/packages/
             folder: ./
             fail_on_version_conflict: true
-
-  issue.open:
-    - name: auto-assign-issue-owner
-      docker:
-        image: python:3.12-slim
-      env:
-        ISSUE_ASSIGNEE: h1s97x
-      stages:
-        - name: assign issue to owner
-          script: |
-            set -e
-            python3 - <<'PYEOF'
-            import json
-            import os
-            import urllib.request
-
-            repo = os.environ["CNB_REPO_SLUG"]
-            number = os.environ["CNB_ISSUE_IID"]
-            owner = os.environ["ISSUE_ASSIGNEE"]
-            token = os.environ["CNB_TOKEN"]
-            api = os.environ.get("CNB_API_ENDPOINT", "https://api.cnb.cool").rstrip("/")
-            base = f"{api}/{repo}/-/issues/{number}/assignees"
-
-            def request(path, method="GET", data=None):
-                headers = {
-                    "Authorization": f"Bearer {token}",
-                    "Accept": "application/json",
-                }
-                body = None
-                if data is not None:
-                    body = json.dumps(data).encode()
-                    headers["Content-Type"] = "application/json"
-                req = urllib.request.Request(path, data=body, method=method, headers=headers)
-                with urllib.request.urlopen(req) as resp:
-                    return resp.status, resp.read().decode()
-
-            # 1. 查询当前处理人，已分配则跳过
-            try:
-                _, raw = request(base)
-                assignees = json.loads(raw) if raw else []
-                names = [a.get("username") for a in assignees] if isinstance(assignees, list) else []
-                if owner in names:
-                    print(f"[skip] issue already assigned to {owner}")
-                    raise SystemExit(0)
-            except SystemExit:
-                raise
-            except Exception as e:
-                print(f"[warn] query assignees failed: {e}")
-
-            # 2. 添加处理人
-            status, _ = request(base, method="POST", data={"assignees": [owner]})
-            print(f"[ok] assigned {owner} to issue #{number}, status={status}")
-            PYEOF
