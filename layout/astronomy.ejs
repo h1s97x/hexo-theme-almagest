@@ -1,0 +1,26 @@
+---
+layout: layout
+---
+<!-- 天文组件展示布局：演示主题内置的 4 个天文组件，使用方也可自行 include 这些 _partial -->
+<div class="page-header">
+  <h1 class="page-title"><%= page.title %></h1>
+  <% if (page.subtitle) { %><p class="page-subtitle"><%= page.subtitle %></p><% } %>
+</div>
+
+<%- partial('_partial/astronomy-card', { card: {
+  type: 'event',
+  icon: '☄️',
+  title: '英仙座流星雨',
+  event_type: '流星雨',
+  date: '2026-08-12 21:30',
+  visibility: '全国可见，建议远离光污染',
+  description: '母体为斯威夫特-塔特尔彗星，极大时 ZHR 可达 100，火球比例高。',
+  image: '/images/meteor.svg',
+  link: '/2026/08/01/perseid-meteor-shower/'
+} }) %>
+
+<%- partial('_partial/astronomy-calendar') %>
+
+<%- partial('_partial/observation-guide') %>
+
+<%- partial('_partial/constellation-nav') %>
