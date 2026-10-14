@@ -34,6 +34,16 @@
   let dataReady = false;
   let debounceTimer = null;
 
+  // 统一配置（scripts.ejs 注入的 window.__almagestConfig）。
+  // texts 引用配置对象，window.__almagestSearch.setXxxText 可在运行时覆盖文案。
+  const texts = (function () {
+    try {
+      return Object.assign({}, window.__almagestConfig && window.__almagestConfig.search);
+    } catch (e) {
+      return {};
+    }
+  })();
+
   /**
    * 把已小写的文本切成词，长度 > 2 的 CJK 串额外产出所有 bigram。
    * @param {string} lowerText 必须是已转换小写且已 trim 的文本
@@ -148,7 +158,7 @@
         if (query) {
           performSearch(query, searchResults);
         } else if (searchResults) {
-          showMessage(searchResults, window.__almagestSearchEmpty || 'Enter search terms');
+          showMessage(searchResults, texts.empty || 'Enter search terms');
         }
       }, DEBOUNCE_MS);
     });
@@ -166,7 +176,7 @@
       return;
     }
 
-    const url = window.__almagestSearchUrl || '/search.json';
+    const url = texts.url || '/search.json';
 
     // 极老浏览器无 fetch：降级为空数据集，页面其余部分不受影响
     if (typeof fetch !== 'function') {
@@ -287,7 +297,7 @@
    * @param {string} text
    */
   function showMessage(container, text) {
-    container.innerHTML = '<div class="no-results"><p>' + text + '</p></div>';
+    container.innerHTML = '<div class="no-results"><p>' + escapeHtml(text) + '</p></div>';
   }
 
   /**
@@ -295,10 +305,7 @@
    */
   function displayResults(results, container, query) {
     if (results.length === 0) {
-      showMessage(
-        container,
-        window.__almagestSearchNoResults || 'No results found for "' + escapeHtml(query) + '"'
-      );
+      showMessage(container, texts.noResults || 'No results found for "' + escapeHtml(query) + '"');
       return;
     }
 
@@ -306,16 +313,17 @@
     results.slice(0, MAX_RESULTS).forEach(function (result) {
       const item = result.item;
       const excerpt = getExcerpt(item.text, query, EXCERPT_LENGTH);
+      const safeUrl = escapeHtml(item.url || '');
 
       html += '<div class="search-result-item">';
       html +=
         '<h3 class="result-title"><a href="' +
-        item.url +
+        safeUrl +
         '">' +
         highlightQuery(item.title, query) +
         '</a></h3>';
       html += '<p class="result-excerpt">' + highlightQuery(excerpt, query) + '</p>';
-      html += '<a href="' + item.url + '" class="result-link">' + item.url + '</a>';
+      html += '<a href="' + safeUrl + '" class="result-link">' + safeUrl + '</a>';
       html += '</div>';
     });
     html += '</div>';
@@ -345,17 +353,6 @@
   }
 
   /**
-   * 高亮查询词
-   */
-  function highlightQuery(text, query) {
-    if (!query || !text) {
-      return text || '';
-    }
-    const regex = new RegExp('(' + query.split(/\s+/).join('|') + ')', 'gi');
-    return String(text).replace(regex, '<mark>$1</mark>');
-  }
-
-  /**
    * 转义 HTML
    */
   function escapeHtml(text) {
@@ -371,16 +368,46 @@
     });
   }
 
-  // 暴露给模板/其他脚本设置文案
+  /**
+   * 转义正则元字符。
+   * 用户输入 `.` `*` `(` `[` 等字符时，不转义会产生意外匹配范围甚至抛异常。
+   */
+  function escapeRegExp(text) {
+    return String(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  /**
+   * 高亮查询词。
+   * 先转义文本自身（文章标题/摘要可能含 < &），再对转义后的文本做高亮替换，
+   * 避免把用户内容当 HTML 直插 innerHTML。
+   */
+  function highlightQuery(text, query) {
+    const safe = escapeHtml(text || '');
+    if (!query) {
+      return safe;
+    }
+    const pattern = query.split(/\s+/).filter(Boolean).map(escapeRegExp).join('|');
+    if (!pattern) {
+      return safe;
+    }
+    return safe.replace(new RegExp('(' + pattern + ')', 'gi'), '<mark>$1</mark>');
+  }
+
+  // 暴露给模板/其他脚本设置文案（运行时覆盖统一配置里的值）
   window.__almagestSearch = {
     setEmptyText: function (text) {
-      window.__almagestSearchEmpty = text;
+      texts.empty = text;
     },
     setNoResultsText: function (text) {
-      window.__almagestSearchNoResults = text;
+      texts.noResults = text;
     }
   };
 
-  // Initialize on DOM ready
-  document.addEventListener('DOMContentLoaded', initSearch);
+  // Initialize on DOM ready（与其他脚本一致的双重保险：
+  // defer 脚本执行时 DOMContentLoaded 可能已派发过）
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSearch);
+  } else {
+    initSearch();
+  }
 })();

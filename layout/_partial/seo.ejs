@@ -1,0 +1,97 @@
+<%
+// SEO 输出：canonical + robots + Open Graph + Twitter Card + JSON-LD
+//
+// 注意：与其他 partial 一致，首行把 config 绑定为主题配置。
+// 曾经漏了这行，导致 seo.* 配置（og_image / twitter_card / json_ld.enable）
+// 全部读到站点 config（不存在这些键）而被静默忽略。
+const config = theme;
+
+// 页面类型判定顺序：优先 page.type（主题 generator 注入，见 scripts/generators），
+// 回退 Hexo 内置 is_* helper（基于当前渲染上下文）。
+// 注意 is_home() 在归档类页面也可能为真（__index 标记），因此 archive/category/tag 必须排在 home 之前。
+let seoType = page.type || '';
+if (!seoType) {
+  if (is_post()) {
+    seoType = 'post';
+  } else if (is_page()) {
+    seoType = 'page';
+  } else if (is_tag()) {
+    seoType = 'tag';
+  } else if (is_category()) {
+    seoType = 'category';
+  } else if (is_archive()) {
+    seoType = 'archive';
+  } else if (is_home()) {
+    seoType = 'home';
+  } else {
+    seoType = 'other';
+  }
+}
+
+const seoConfig = config.seo || {};
+const seoTitle = page.title ? page.title + ' - ' + config.title : config.title;
+const seoDescription = page.description || page.excerpt || config.description || '';
+const seoImage = String(page.image || seoConfig.og_image || '').trim();
+const seoCanonical = alm_canonical(page);
+const seoRobots = alm_robots(seoType);
+// 分享图允许配绝对地址；站内相对路径走 url_for 补全 root
+const seoImageUrl = seoImage
+  ? /^(https?:)?\/\//.test(seoImage)
+    ? seoImage
+    : url_for(seoImage)
+  : '';
+const seoIsArticle = seoType === 'post';
+%>
+
+<% if (seoRobots) { %>
+  <meta name="robots" content="<%= seoRobots %>">
+<% } %>
+
+<% if (seoCanonical) { %>
+  <link rel="canonical" href="<%= seoCanonical %>">
+<% } %>
+
+<!-- Open Graph -->
+<meta property="og:type" content="<%= seoIsArticle ? 'article' : 'website' %>">
+<meta property="og:title" content="<%= seoTitle %>">
+<meta property="og:description" content="<%= seoDescription %>">
+<meta property="og:site_name" content="<%= config.title %>">
+<meta property="og:locale" content="<%= page.lang || config.language || 'en' %>">
+<% if (seoCanonical) { %>
+  <meta property="og:url" content="<%= seoCanonical %>">
+<% } %>
+<% if (seoImageUrl) { %>
+  <meta property="og:image" content="<%= seoImageUrl %>">
+<% } %>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="<%= seoImageUrl ? (seoConfig.twitter_card || 'summary_large_image') : 'summary' %>">
+<meta name="twitter:title" content="<%= seoTitle %>">
+<meta name="twitter:description" content="<%= seoDescription %>">
+<% if (seoImageUrl) { %>
+  <meta name="twitter:image" content="<%= seoImageUrl %>">
+<% } %>
+
+<!-- JSON-LD 结构化数据（22 个参考主题中无一实现，本主题的差异化点） -->
+<% if (seoConfig.json_ld?.enable !== false) { %>
+  <%
+    const seoLd = alm_json_ld({
+      type: seoType,
+      title: page.title || config.title,
+      description: seoDescription,
+      url: seoCanonical,
+      image: seoImageUrl,
+      author: config.author || '',
+      siteName: config.title || '',
+      language: config.language || 'en',
+      datePublished: page.date ? page.date.toISOString() : '',
+      dateModified: page.updated ? page.updated.toISOString() : '',
+      keywords: page.tags && page.tags.length ? page.tags.map(t => t.name).join(', ') : ''
+    });
+  %>
+  <% if (seoLd) { %>
+    <script type="application/ld+json">
+      <%- seoLd %>
+    </script>
+  <% } %>
+<% } %>

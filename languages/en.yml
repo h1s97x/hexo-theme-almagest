@@ -19,7 +19,6 @@ last_updated: Last updated
 posted_on: Posted on
 in: in
 with_tags: with tags
-read_time_unit: min read
 read_time: '{{count}} min read'
 
 # Sidebar
@@ -54,6 +53,7 @@ theme: Theme
 search: Search
 search_results: Search Results
 search_no_results: No results found
+search_empty: Enter search terms
 search_placeholder: Search articles...
 search_desc: Search website content
 
@@ -125,6 +125,7 @@ astronomy:
   friday: Fri
   saturday: Sat
   upcoming_events: Upcoming Events
+  no_events: No events for this day
   observation_guide: Observation Guide
   visible_constellations: Visible Constellations
   best_observation_time: Best Observation Time

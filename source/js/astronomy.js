@@ -395,15 +395,35 @@ const Astronomy = {
     }
   },
 
+  // 读取注入的天文事件数据（模板序列化自 config.astronomy.events）
+  getEvents() {
+    const raw = window.__almagestAstronomyEvents;
+    return Array.isArray(raw) ? raw : [];
+  },
+
+  // 把事件日期归一化成 { y, m, d }（m 为 0 起始，与 Date 一致）。
+  // 容忍 'YYYY-MM-DD' / 'YYYY/M/D' / 'YYYY-MM-DD HH:mm' 等写法，无法解析时返回 null。
+  parseEventDate(date) {
+    if (!date || typeof date !== 'string') {
+      return null;
+    }
+    const m = date.trim().match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+    if (!m) {
+      return null;
+    }
+    return { y: Number(m[1]), m: Number(m[2]) - 1, d: Number(m[3]) };
+  },
+
   // Check if day has events
-  hasEvent(_year, _month, _day) {
-    // 事件数据尚未接入，占位返回 false。
-    // 接入真实数据后，此处按 (year, month, day) 查询即可点亮 .has-event。
-    return false;
+  hasEvent(year, month, day) {
+    return this.getEvents().some(event => {
+      const parsed = this.parseEventDate(event.date);
+      return parsed && parsed.y === year && parsed.m === month && parsed.d === day;
+    });
   },
 
   // Show events for a specific day
-  showDayEvents(_year, _month, _day) {
+  showDayEvents(year, month, day) {
     const eventsContainer = document.querySelector('.calendar-events');
     if (!eventsContainer) {
       return;
@@ -412,10 +432,56 @@ const Astronomy = {
     // Clear existing events
     eventsContainer.innerHTML = '';
 
-    // 事件数据尚未接入，占位提示。
-    const noEventsMsg = document.createElement('p');
-    noEventsMsg.textContent = window.__almagestNoEventsText || 'No events for this day';
-    eventsContainer.appendChild(noEventsMsg);
+    const dayEvents = this.getEvents().filter(event => {
+      const parsed = this.parseEventDate(event.date);
+      return parsed && parsed.y === year && parsed.m === month && parsed.d === day;
+    });
+
+    if (dayEvents.length === 0) {
+      const noEventsMsg = document.createElement('p');
+      // 「无事件」文案来自统一配置 window.__almagestConfig.astronomy.noEvents
+      let noEventsText = 'No events for this day';
+      try {
+        const cfg = window.__almagestConfig;
+        if (cfg && cfg.astronomy && cfg.astronomy.noEvents) {
+          noEventsText = cfg.astronomy.noEvents;
+        }
+      } catch (e) {
+        /* 隐私模式等场景回落默认文案 */
+      }
+      noEventsMsg.textContent = noEventsText;
+      eventsContainer.appendChild(noEventsMsg);
+      return;
+    }
+
+    const list = document.createElement('div');
+    list.className = 'day-events-list';
+    dayEvents.forEach(event => {
+      const item = document.createElement('div');
+      item.className = 'event-item';
+
+      const name = document.createElement('div');
+      name.className = 'event-name';
+      name.textContent = event.name || '';
+      item.appendChild(name);
+
+      if (event.time) {
+        const time = document.createElement('div');
+        time.className = 'event-time';
+        time.textContent = event.time;
+        item.appendChild(time);
+      }
+
+      if (event.visibility) {
+        const visibility = document.createElement('div');
+        visibility.className = 'event-visibility';
+        visibility.textContent = event.visibility;
+        item.appendChild(visibility);
+      }
+
+      list.appendChild(item);
+    });
+    eventsContainer.appendChild(list);
   },
 
   // Navigate to previous month（真实翻页并重绘）

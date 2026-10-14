@@ -1,5 +1,8 @@
 <%
 const config = theme;
+// 下方 forEach 的回调参数名也叫 page（项目页面），会遮蔽当前页局部变量，
+// 因此先取出当前页路径再进循环
+const currentPath = page.path;
 %>
 <div class="wiki-nav">
   <div class="wiki-nav-header">
@@ -18,8 +21,8 @@ const config = theme;
             <ul class="wiki-project-pages">
               <% project.pages.forEach(page => { %>
                 <li class="wiki-page-item">
-                  <a href="<%= page.path %>" 
-                     class="<%= page.path === config.url + page.path ? 'active' : '' %>">
+                  <a href="<%= page.path %>"
+                     class="<%= is_nav_active(currentPath, page.path) ? 'active' : '' %>">
                     <%= page.title %>
                   </a>
                   
@@ -27,8 +30,8 @@ const config = theme;
                     <ul class="wiki-page-children">
                       <% page.children.forEach(child => { %>
                         <li>
-                          <a href="<%= child.path %>" 
-                             class="<%= child.path === config.url + child.path ? 'active' : '' %>">
+                          <a href="<%= child.path %>"
+                             class="<%= is_nav_active(currentPath, child.path) ? 'active' : '' %>">
                             <%= child.title %>
                           </a>
                         </li>

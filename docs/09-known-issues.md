@@ -4,6 +4,11 @@
 > 所有条目均经实际验证（grep / 读源码 / 跑构建），不是推测。
 > **改代码前请先读这份文档**，避免在错误前提下工作。
 
+> **2026-10-14 修复批次**：A1 / A2 / A3 / B1 / B3 / C1 / C3 / C4 / C6 / C7 / C8 / C9 / C10
+> 已全部修复并通过验证（70 个单元测试 + Hexo 7/8 双版本冒烟 + 产物级断言）。
+> 各条目正文保留原始调查记录（作为「为什么」的依据），**状态见文末修复记录与汇总表**。
+> B2 / C2 / C5 为文档类事项，已在对应文档中澄清。
+
 ## 分级说明
 
 | 级别           | 含义                                         |
@@ -303,24 +308,45 @@ read_time: '{{count}} min read'
 
 ## 汇总表
 
-| 编号 | 问题                                                 | 级别 | 影响面                        |
-| ---- | ---------------------------------------------------- | ---- | ----------------------------- |
-| A1   | `config` 遮蔽导致导航 active 失效 + `undefined` 链接 | A    | wiki / topic / notebooks 三页 |
-| A2   | 返回顶部按钮永不出现                                 | A    | 全站                          |
-| A3   | 天文日历事件数据未接入 + 提示文案未 i18n             | A    | 天文日历                      |
-| B1   | 4 个天文组件模板是孤儿                               | B    | 天文组件                      |
-| B2   | 3 个 helper 零调用                                   | B    | 使用者 API                    |
-| B3   | `breadcrumb.ejs` 可能永不渲染                        | B    | 面包屑                        |
-| C1   | 强调色双轨不一致（三处颜色互不相同）                 | C    | 全站配色                      |
-| C2   | `docs/DEVELOPMENT.md` 文件树漂移                     | C    | 文档                          |
-| C3   | `version` 兜底值 `1.0.0` ≠ 实际 `1.1.0`              | C    | 缓存刷新                      |
-| C4   | `index.ejs` 死变量 `per_page`                        | C    | —                             |
-| C5   | generator 路径与官方插件重叠                         | C    | 归档/分类/标签页              |
-| C6   | `search.js` 缺 `readyState` 兜底                     | C    | 搜索初始化                    |
-| C7   | `highlightQuery` 未转义正则元字符                    | C    | 搜索高亮                      |
-| C8   | 搜索结果部分输出未转义                               | C    | 搜索渲染                      |
-| C9   | 「空输入」与「无结果」同文案                         | C    | 搜索体验                      |
-| C10  | `read_time` 占位模板未被使用                         | C    | 多语言                        |
+| 编号 | 问题                                                 | 级别 | 影响面                        | 状态            |
+| ---- | ---------------------------------------------------- | ---- | ----------------------------- | --------------- |
+| A1   | `config` 遮蔽导致导航 active 失效 + `undefined` 链接 | A    | wiki / topic / notebooks 三页 | ✅ 已修复       |
+| A2   | 返回顶部按钮永不出现                                 | A    | 全站                          | ✅ 已修复       |
+| A3   | 天文日历事件数据未接入 + 提示文案未 i18n             | A    | 天文日历                      | ✅ 已修复       |
+| B1   | 4 个天文组件模板是孤儿                               | B    | 天文组件                      | ✅ 已在文档澄清 |
+| B2   | 3 个 helper 零调用                                   | B    | 使用者 API                    | ✅ 已在文档澄清 |
+| B3   | `breadcrumb.ejs` 可能永不渲染                        | B    | 面包屑                        | ✅ 已修复       |
+| C1   | 强调色双轨不一致（三处颜色互不相同）                 | C    | 全站配色                      | ✅ 已修复       |
+| C2   | `docs/DEVELOPMENT.md` 文件树漂移                     | C    | 文档                          | ✅ 已修复       |
+| C3   | `version` 兜底值 `1.0.0` ≠ 实际 `1.1.0`              | C    | 缓存刷新                      | ✅ 已修复       |
+| C4   | `index.ejs` 死变量 `per_page`                        | C    | —                             | ✅ 已修复       |
+| C5   | generator 路径与官方插件重叠                         | C    | 归档/分类/标签页              | ✅ 已定论并文档 |
+| C6   | `search.js` 缺 `readyState` 兜底                     | C    | 搜索初始化                    | ✅ 已修复       |
+| C7   | `highlightQuery` 未转义正则元字符                    | C    | 搜索高亮                      | ✅ 已修复       |
+| C8   | 搜索结果部分输出未转义                               | C    | 搜索渲染                      | ✅ 已修复       |
+| C9   | 「空输入」与「无结果」同文案                         | C    | 搜索体验                      | ✅ 已修复       |
+| C10  | `read_time` 占位模板未被使用                         | C    | 多语言                        | ✅ 已修复       |
+
+## 修复记录（2026-10-14）
+
+| 编号 | 修复方式                                                                                                                                                                              |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A1   | 新增 `scripts/lib/path.js`（`normalizePath` / `isNavActive`）+ helper `is_nav_active`；三个导航 partial 改用它，「新建笔记」按钮改 `url_for()`；补 8 个单测                           |
+| A2   | `theme.js` 新增 `setupBackToTop()`：rAF 节流滚动监听切 `.show`，点击回顶并遵循 `prefers-reduced-motion`                                                                               |
+| A3   | 模板注入 `window.__almagestAstronomyEvents` + i18n 化「无事件」文案（三语言补 `astronomy.no_events`）；`astronomy.js` 按日期匹配点亮/展示；`_config.yml` 补 `astronomy.events` 配置节 |
+| B1   | `docs/02-layout.md` 第 7 节明确 4 个组件为「组件库成员」及 include 方式、数据来源                                                                                                     |
+| B2   | `docs/03-scripts.md` 注明 3 个 helper 是预留给使用者的模板 API 并给示例                                                                                                               |
+| B3   | 三个 generator 的 `data` 补 `type` 字段；`breadcrumb.ejs` 改 `page.type \|\| page.layout` 兜底，category/tag 分支防空值                                                               |
+| C1   | 亮色 `--color-accent` 统一为 `#4f46e5`；`.btn-primary` / `.back-to-top` / `.code-copy-btn:hover` 改运行时变量；`.hljs-link` 改 `var(--color-link)`；`style.primary_color` 对齐        |
+| C2   | 删除 `DEVELOPMENT.md` 文件树中不存在的两个 widget 文件                                                                                                                                |
+| C3   | 新增 helper `theme_version()` 读 `package.json`，`head.ejs` / `scripts.ejs` 兜底改用它；产物实测 `main.css?v=1.1.0`                                                                   |
+| C4   | 删除 `index.ejs` 死变量 `per_page`                                                                                                                                                    |
+| C5   | 定论：保留主题自有 generator，`data.type` 兼做面包屑数据源；写入 `docs/03-scripts.md`                                                                                                 |
+| C6   | `search.js` 初始化改 `readyState` 双重保险，与其他 4 个脚本一致                                                                                                                       |
+| C7   | 新增 `escapeRegExp()`，`highlightQuery` 对每个分词转义元字符                                                                                                                          |
+| C8   | `highlightQuery` 先转义文本再高亮；结果 `url` 走 `escapeHtml`；`showMessage` 文案转义                                                                                                 |
+| C9   | 三语言补 `search_empty` 键，`search.ejs` 空输入/无结果分开注入                                                                                                                        |
+| C10  | 模板改用 `__('read_time').replace('{{count}}', n)`，删除多余的 `read_time_unit` 键                                                                                                    |
 
 ## 建议的修复优先级
 

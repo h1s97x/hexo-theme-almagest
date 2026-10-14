@@ -19,7 +19,6 @@ last_updated: 最後更新於
 posted_on: 發佈於
 in: 在
 with_tags: 標籤為
-read_time_unit: 分鐘閱讀
 read_time: '{{count}} 分鐘閱讀'
 
 # 側邊欄
@@ -53,6 +52,7 @@ theme: 主題
 search: 搜尋
 search_results: 搜尋結果
 search_no_results: 未找到結果
+search_empty: 請輸入關鍵字
 search_placeholder: 搜尋文章...
 search_desc: 搜尋網站內容
 
@@ -124,6 +124,7 @@ astronomy:
   friday: 週五
   saturday: 週六
   upcoming_events: 即將到來的天文事件
+  no_events: 這一天沒有天文事件
   observation_guide: 觀星指南
   visible_constellations: 可見星座
   best_observation_time: 最佳觀測時間

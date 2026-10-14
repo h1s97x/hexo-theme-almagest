@@ -124,14 +124,16 @@ npm test             # 静态检查 + 单元测试 + CI 冒烟测试（真实 He
 冒烟测试支持通过 `HEXO_SPEC` 切换 Hexo 主版本，用于验证版本兼容性：
 
 ```bash
-bash tests/smoke.sh                     # 默认 Hexo 7
-HEXO_SPEC='hexo@^8' bash tests/smoke.sh # 验证 Hexo 8
+bash tests/smoke.sh                      # 默认 Hexo 8（兼容声明版本）
+HEXO_SPEC='hexo@^7' bash tests/smoke.sh  # 兼容性观测：Hexo 7（不承诺支持）
 ```
 
-> **Node.js 要求**
+> **兼容性要求**
 >
-> - 使用主题（执行 `hexo generate`）：**Node >= 18**
+> - Hexo：**>= 8.0.0**（`engines` 已声明；CI 冒烟测试覆盖 Hexo 8，7.x 不再承诺支持）
+> - 使用主题（执行 `hexo generate`）：**Node >= 20**
 > - 开发主题（执行 lint / 测试）：**Node >= 22.22.1**，因开发工具链（主要是 `lint-staged@17`）要求更高
+> - 浏览器：Chrome / Edge 100+、Firefox 100+、Safari 15.4+，不支持 IE；现代 CSS 特性均带 `@supports` 降级
 >
 > 代码规范上，**ESLint 只负责代码质量、Prettier 只负责代码格式**，两者不重叠。样式文件（`.styl`）Prettier 不支持，统一交由 Stylelint 处理（见 `.prettierignore`）。
 

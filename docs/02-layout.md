@@ -88,9 +88,9 @@ const sidebar_enabled = ...  // ③ 决定 .with-sidebar / .no-sidebar 与 data-
 - 在模板内 `config.xxx` 一律指**主题配置**
 - 站点配置的 `config.url` / `config.root` / `config.permalink` 全部变成 `undefined`
 
-**这是本主题 2 处真实缺陷的根因**（`*-nav.ejs` 里用 `config.url` / `config.root` 拼路径），见 [09 · 已知缺陷](09-known-issues.md#1-config-被遮蔽导致导航-active-态永不生效)。
+**历史上这是 2 处真实缺陷的根因**（`*-nav.ejs` 里用 `config.url` / `config.root` 拼路径，导致导航 active 态永不生效、`undefinednotebooks/new` 链接）。**已修复**：三个导航 partial 改用 `is_nav_active(page.path, item.path)` helper（内部做路径归一化），「新建笔记」按钮改用 `url_for('/notebooks/new')`。
 
-要访问站点配置请用 `site.config` 或用未遮蔽的原始变量。
+教训仍然有效：**在主题模板里永远不要用 `config.url` / `config.root` 拼站点路径**，统一用 `url_for()`；要访问站点配置请用 `site.config` 或未遮蔽的原始变量。
 
 ### ⚠️ 陷阱 ②：`layout: layout` front-matter 的不对称
 
@@ -253,7 +253,8 @@ tags.ejs       ──► （无 partial）
 | `topics` / `topics_archive_url`             | 专题侧栏                                       | `topic-nav.ejs`                               |
 | `notebooks.categories`                      | 笔记簿侧栏                                     | `notebooks-nav.ejs`                           |
 
-> ⚠️ `_config.yml` 里**没有** `astronomy` / `wiki` / `topic(s)` / `notebooks` 这几个分组，
+> ⚠️ `_config.yml` 里**没有** `wiki` / `topic(s)` / `notebooks` 这三个分组
+> （`astronomy` 分组已随天文日历事件接入补上，见下），
 > 但 `scripts/lib/config.js` 的白名单承认它们。要用这些功能需自行在站点 `_config.yml` 的
 > `theme_config:` 下定义。
 
@@ -266,15 +267,20 @@ tags.ejs       ──► （无 partial）
 | `observation-guide.ejs`  | 观星指南（位置 / 可见星座 / 最佳时间 / 建议 / 设备 / 天气 / 光污染 / 相关文章）          | 纯 `page.*` 前置字段            | **无**       |
 | `constellation-nav.ejs`  | 十二星座导航（12 项硬编码 + i18n 名称）                                                  | 代码内硬编码                    | **无**       |
 
-**它们当前无法通过配置启用**——`features.starfield` 只控制 `.starry-background` 节点与 `astronomy.js`，不影响这 4 个模板。
-
-要用它们必须在自己的页面里显式 include：
+**它们当前无法通过配置启用**——`features.starfield` 只控制 `.starry-background` 节点与 `astronomy.js`，不影响这 4 个模板。它们是**组件库成员**，供使用者在自己的页面里显式 include：
 
 ```ejs
-<%- partial('_partial/astronomy-card', { card: { type: 'event', title: '...', ... } }) %>
+<%- partial('_partial/astronomy-calendar') %>
 ```
 
-**注意**：对应的运行时行为（`initAstronomyCards` / `initConstellationNav` / `initCalendar`）在 `astronomy.js` 里都实现了并且会执行（只要 `features.starfield !== false`）。但**日历的事件数据未接入**——`hasEvent()` 恒返回 `false`，详见 [09 · 已知缺陷](09-known-issues.md)。
+**天文日历的事件数据已接入**（曾经的 `hasEvent()` 恒 false 缺陷已修复）：
+
+- 数据源是主题配置 `astronomy.events`（数组，字段 `name` / `date` / `time` / `visibility`），
+  模板会把它序列化成 `window.__almagestAstronomyEvents` 传给前端
+- `astronomy.js` 按 `(年, 月, 日)` 匹配点亮 `.has-event`，点击日期展示当天事件
+- 「这一天没有天文事件」提示走 i18n（`astronomy.no_events`），中文站点不再露英文
+
+**注意**：对应的运行时行为（`initAstronomyCards` / `initConstellationNav` / `initCalendar`）在 `astronomy.js` 里都实现了并且会执行（只要 `features.starfield !== false`）。不 include 对应模板时，这些逻辑找不到 DOM 目标会静默跳过。
 
 ## 8. 两个特殊机制
 
@@ -299,14 +305,19 @@ tags.ejs       ──► （无 partial）
 
 **两级策略**：服务端只在 `style.prefers_theme !== 'auto'` 时输出 `data-theme`；`auto` 时输出空，由这段脚本按 `localStorage → prefers-color-scheme` 决定。**最终以 localStorage / 系统为准**，服务端属性会被脚本覆盖。
 
-### `_partial/breadcrumb.ejs` — 可能永不显示
+### `_partial/breadcrumb.ejs` — 页面类型判定
 
-它的分支全部基于 `page.type`（`post` / `page` / `archive` / `category` / `tag`），但：
+它的分支基于页面类型（`post` / `page` / `archive` / `category` / `tag`）。
 
-- 主题自带的 `scripts/generators/index.js` **只注入 `layout` 与 `data`，不注入 `type`**
-- `page.type` 是否存在取决于官方 `hexo-generator-archive / category / tag` 是否装了
+**曾经的缺陷**：主题自带的 `scripts/generators/index.js` 只注入 `layout` 与 `data`、不注入 `type`，
+官方 `hexo-generator-archive / category / tag` 未安装时 `page.type` 不存在，
+`breadcrumbs.length` 恒为 1 → 整个面包屑不输出。
 
-这些官方 generator 未启用时，`breadcrumbs.length` 恒为 1，`<% if (breadcrumbs.length > 1) %>` 不成立 → **整个面包屑不输出**。
+**已修复**（双保险）：
+
+1. 主题的 archive / categories / tags 三个 generator 的 `data` 里补了 `type` 字段
+2. 模板侧改为 `page.type || page.layout` 兜底（Hexo 对文章为 `post`、对页面为 `page`），
+   category / tag 分支在拿不到具体名称时只渲染到列表页，不会输出 `undefined`
 
 ---
 

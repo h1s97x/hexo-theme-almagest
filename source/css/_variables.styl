@@ -29,6 +29,14 @@ $dark-divider = #141a2b
 
 // Accent Colors (used in both themes)
 // 星蓝 -> 星紫 强调体系，取自星野志的深空调色板
+//
+// ⚠️ 双轨制规则（C1 修复后）：
+// - 编译期变量（$primary-color 等）：只允许用于**装饰性**元素
+//   （渐变、玻璃态、星辉发光等两主题通用的视觉氛围）。
+// - **主题感知表面**（按钮、链接、active 态、复制按钮等需要随明暗切换的
+//   交互元素）一律改用运行时 CSS 变量：`var(--color-button-primary-bg)`、
+//   `var(--color-link)` 等，由 `_theme-light.styl` / `_theme-dark.styl` 提供。
+//   否则亮色主题会出现「浅青底白字」这类对比度缺陷，且与靛蓝链接色并存。
 $primary-color = #67e8f9
 $primary-light = #8ef0fb
 $primary-dark = #38bdf8

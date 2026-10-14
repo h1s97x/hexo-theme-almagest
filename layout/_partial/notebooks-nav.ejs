@@ -11,8 +11,8 @@ const config = theme;
       <% Object.entries(config.notebooks.categories).forEach(([key, category]) => { %>
         <div class="notebooks-category">
           <div class="notebooks-category-title">
-            <a href="<%= category.path %>" 
-               class="<%= category.path === config.url + category.path ? 'active' : '' %>">
+            <a href="<%= category.path %>"
+               class="<%= is_nav_active(page.path, category.path) ? 'active' : '' %>">
               <span class="notebooks-category-icon">
                 <% if (category.icon) { %>
                   <%- category.icon %>
@@ -31,8 +31,8 @@ const config = theme;
             <ul class="notebooks-list">
               <% category.notebooks.forEach(notebook => { %>
                 <li class="notebooks-item">
-                  <a href="<%= notebook.path %>" 
-                     class="<%= notebook.path === config.url + notebook.path ? 'active' : '' %>">
+                  <a href="<%= notebook.path %>"
+                     class="<%= is_nav_active(page.path, notebook.path) ? 'active' : '' %>">
                     <%= notebook.title %>
                   </a>
                   <% if (notebook.count) { %>
@@ -52,7 +52,7 @@ const config = theme;
   <% } %>
   
   <div class="notebooks-nav-footer">
-    <a href="<%= config.root %>notebooks/new" class="notebooks-new-btn">
+    <a href="<%= url_for('/notebooks/new') %>" class="notebooks-new-btn">
       <%= __('notebooks.new_notebook') %>
     </a>
   </div>

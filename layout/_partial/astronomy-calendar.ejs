@@ -1,6 +1,14 @@
 <%
 const config = theme;
 %>
+
+<!-- 天文事件数据注入：config.astronomy.events 是服务端配置，前端拿不到，
+     在这里序列化成 window.__almagestAstronomyEvents 供 astronomy.js 查询。
+     「无事件」提示文案统一来自 scripts.ejs 注入的 window.__almagestConfig。 -->
+<script>
+  window.__almagestAstronomyEvents = <%- JSON.stringify((config.astronomy && config.astronomy.events) || []) %>;
+</script>
+
 <div class="astronomy-calendar">
   <div class="calendar-header">
     <h3><%= __('astronomy.calendar') || 'Astronomy Calendar' %></h3>

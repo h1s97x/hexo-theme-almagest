@@ -31,8 +31,6 @@ hexo-theme-almagest/
 │       ├── pagination.ejs
 │       ├── comments.ejs
 │       ├── search-box.ejs
-│       ├── categories-widget.ejs
-│       ├── tags-widget.ejs
 │       ├── wiki-nav.ejs
 │       ├── topic-nav.ejs
 │       ├── notebooks-nav.ejs

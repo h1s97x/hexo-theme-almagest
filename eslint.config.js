@@ -40,7 +40,16 @@ module.exports = [
   {
     // 环境回收站：删除文件时可能被自动创建于仓库根目录，其中的源码副本
     // 不匹配 source/js/** 规则，会因缺少浏览器全局变量而大量误报
-    ignores: ['node_modules/**', 'public/**', '.demo/**', 'coverage/**', '.Trash-*/**']
+    // reference-themes/：学习参考用的第三方主题克隆（已 gitignore），
+    // 各仓库自带 eslint 配置，引入的依赖未在本项目安装，必须整体排除
+    ignores: [
+      'node_modules/**',
+      'public/**',
+      '.demo/**',
+      'coverage/**',
+      '.Trash-*/**',
+      'reference-themes/**'
+    ]
   },
   js.configs.recommended,
   prettier,

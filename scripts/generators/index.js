@@ -18,11 +18,14 @@ const { toIndexText } = require('../lib/text');
 const DEFAULT_INDEX_LENGTH = 1500;
 
 // Archive generator
+// 注意 data.type：breadcrumb.ejs 靠 page.type 分支渲染，
+// 不注入时面包屑会因匹配不到任何分支而整个不输出。
 hexo.extend.generator.register('archive', function (locals) {
   return {
     path: 'archives/index.html',
     layout: 'archive',
     data: {
+      type: 'archive',
       posts: locals.posts
     }
   };
@@ -34,6 +37,7 @@ hexo.extend.generator.register('categories', function (locals) {
     path: 'categories/index.html',
     layout: 'categories',
     data: {
+      type: 'category',
       categories: locals.categories
     }
   };
@@ -45,6 +49,7 @@ hexo.extend.generator.register('tags', function (locals) {
     path: 'tags/index.html',
     layout: 'tags',
     data: {
+      type: 'tag',
       tags: locals.tags
     }
   };
@@ -82,7 +87,6 @@ hexo.extend.generator.register('search', function (locals) {
   };
 });
 
-// Search page generator（生成 /search/ 页面，受 theme.features.search 配置控制）
 hexo.extend.generator.register('search-page', function () {
   const themeConfig = hexo.theme.config || {};
   if (themeConfig.features && themeConfig.features.search === false) {

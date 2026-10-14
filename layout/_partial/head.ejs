@@ -1,7 +1,7 @@
 <%
 const config = theme;
 const cdn_prefix = config.cdn_prefix || '';
-const version = config.version || '1.0.0';
+const version = config.version || theme_version();
 const asset = function(path) {
   const base = cdn_prefix ? cdn_prefix.replace(/\/$/, '') : '';
   return url_for(base + path + '?v=' + version);
@@ -33,6 +33,9 @@ const asset = function(path) {
 <!-- Author -->
 <meta name="author" content="<%= config.author %>">
 
+<!-- SEO: canonical / robots / Open Graph / Twitter Card / JSON-LD -->
+<%- partial('_partial/seo') %>
+
 <!-- Theme Color -->
 <meta name="theme-color" content="<%= config.style?.primary_color || '#0066cc' %>">
 
@@ -41,7 +44,6 @@ const asset = function(path) {
 
 <!-- Stylesheets -->
 <link rel="stylesheet" href="<%= asset('/css/main.css') %>">
-
 <!-- 图片占位色（_config.yml image.placeholder_color，供懒加载 img[data-src] / img.error 使用） -->
 <style>
   :root { --color-image-placeholder: <%= config.image?.placeholder_color || '#f0f0f0' %>; }

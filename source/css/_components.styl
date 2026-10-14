@@ -21,8 +21,10 @@
   transition: background-color $transition-base, color $transition-base, border-color $transition-base
 
 .btn-primary
-  background-color: $color-primary
-  color: #ffffff
+  // 主题感知表面统一走运行时变量：亮色 = 靛蓝底白字，暗色 = 星蓝底深字。
+  // 曾经这里用编译期 $color-primary（浅青），亮色下白字对比度不足。
+  background-color: var(--color-button-primary-bg)
+  color: var(--color-button-primary-text)
 
   &:hover
     background-color: $color-primary-dark

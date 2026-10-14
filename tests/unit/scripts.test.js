@@ -41,11 +41,17 @@ describe('注册点契约', () => {
       'tags'
     ]);
     assert.deepEqual(Object.keys(registry.helpers).sort(), [
+      'alm_canonical',
+      'alm_export_config',
+      'alm_json_ld',
+      'alm_robots',
       'get_categories',
       'get_excerpt',
       'get_reading_time',
       'get_tags',
-      'is_featured'
+      'is_featured',
+      'is_nav_active',
+      'theme_version'
     ]);
     assert.deepEqual(Object.keys(registry.tags).sort(), ['alert', 'asset_code', 'button', 'note']);
     assert.deepEqual(Object.keys(registry.filters).sort(), [
@@ -289,6 +295,88 @@ describe('scripts/helpers', () => {
     assert.deepEqual(helpers.get_categories({}), []);
     assert.deepEqual(helpers.get_tags({ tags: ['t'] }), ['t']);
     assert.deepEqual(helpers.get_tags({}), []);
+  });
+
+  it('is_nav_active 容忍 URL / 尾斜杠 / .html / index.html 差异', () => {
+    assert.equal(helpers.is_nav_active('wiki/foo/index.html', '/wiki/foo/'), true);
+    assert.equal(helpers.is_nav_active('wiki/foo.html', 'wiki/foo'), true);
+    assert.equal(
+      helpers.is_nav_active('wiki/foo/index.html', 'https://example.com/wiki/foo/'),
+      true,
+      '导航项配完整 URL 也能匹配'
+    );
+    assert.equal(helpers.is_nav_active('wiki/foo/index.html', '/wiki/bar/'), false);
+    assert.equal(helpers.is_nav_active('', '/wiki/foo/'), false, '空路径不匹配');
+    assert.equal(helpers.is_nav_active('wiki/foo', ''), false, '空导航项不匹配');
+  });
+
+  it('theme_version 与 package.json 版本一致', () => {
+    assert.equal(helpers.theme_version(), pkg.version);
+  });
+
+  it('alm_canonical 拼绝对地址并应用 root，未配置 url 时返回空串', () => {
+    const ctx = { config: state.siteConfig, path: 'index.html' };
+    assert.equal(
+      helpers.alm_canonical.call(ctx, { path: '2024/01/01/hello/index.html' }),
+      'https://example.com/2024/01/01/hello/'
+    );
+    assert.equal(
+      helpers.alm_canonical.call(ctx, { path: 'about/index.html' }),
+      'https://example.com/about/'
+    );
+    // page.path 缺失时回退 this.path（路由路径）
+    assert.equal(helpers.alm_canonical.call(ctx, undefined), 'https://example.com/');
+
+    const savedUrl = state.siteConfig.url;
+    state.siteConfig.url = '';
+    assert.equal(helpers.alm_canonical.call(ctx, { path: 'foo/index.html' }), '');
+    state.siteConfig.url = savedUrl;
+  });
+
+  it('alm_robots 归档类页面 noindex，可被配置关闭', () => {
+    state.themeConfig.seo = { noindex_archives: true };
+    assert.equal(helpers.alm_robots('archive'), 'noindex,follow');
+    assert.equal(helpers.alm_robots('category'), 'noindex,follow');
+    assert.equal(helpers.alm_robots('tag'), 'noindex,follow');
+    assert.equal(helpers.alm_robots('post'), '');
+    assert.equal(helpers.alm_robots('home'), '');
+
+    state.themeConfig.seo = { noindex_archives: false };
+    assert.equal(helpers.alm_robots('archive'), '');
+    state.themeConfig.seo = {};
+  });
+
+  it('alm_json_ld 输出转义后的 JSON 字符串', () => {
+    const ld = helpers.alm_json_ld({
+      type: 'post',
+      title: '标题</script>',
+      url: 'https://example.com/p/'
+    });
+    assert.ok(ld.indexOf('"@type":"BlogPosting"') !== -1);
+    assert.ok(ld.indexOf('\\u003c') !== -1, '< 必须转义为 \\u003c');
+    assert.ok(ld.indexOf('</script>') === -1, '不允许出现未转义的闭合标签');
+    assert.equal(helpers.alm_json_ld({ type: 'archive' }), '');
+  });
+
+  it('alm_export_config 输出含 copy/search/astronomy 的转义 JSON', () => {
+    const ctx = {
+      __: key => (key === 'copy_code' ? '复制代码' : key),
+      url_for: p => '/blog' + p,
+      config: state.siteConfig
+    };
+    const out = helpers.alm_export_config.call(ctx);
+    const parsed = JSON.parse(out);
+    assert.equal(parsed.copy.copy, '复制代码');
+    assert.equal(parsed.copy.copied, 'Copied!', '缺失键回落缺省值');
+    assert.equal(parsed.search.url, '/blog/search.json');
+    assert.equal(parsed.version, pkg.version);
+    assert.ok(out.indexOf('\\u003c') !== -1 || out.indexOf('<') === -1, '不允许出现未转义 <');
+  });
+
+  it('alm_export_config 无 i18n / url_for 上下文时全缺省值', () => {
+    const parsed = JSON.parse(helpers.alm_export_config.call({}));
+    assert.equal(parsed.copy.copy, 'Copy');
+    assert.equal(parsed.search.url, '/search.json');
   });
 });
 

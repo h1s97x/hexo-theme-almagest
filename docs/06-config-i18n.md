@@ -18,7 +18,7 @@ theme_config:
 > `scripts/config/index.js` 会在构建时同步 `version`：若站点**未显式**在 `theme_config` 里
 > 覆盖 `version`，则自动对齐 `package.json` 的版本号。
 
-### 顶层分组清单（16 组）
+### 顶层分组清单（18 组）
 
 #### ① 基础配置（扁平键）
 
@@ -134,7 +134,27 @@ theme_config:
 
 `head: ''`、`body_end: ''` —— 自定义 HTML 注入点
 
-#### ⑯ 高级（扁平键）
+#### ⑯ `seo:` — SEO 输出
+
+| 键                 | 默认值                  | 说明                                                                                     |
+| ------------------ | ----------------------- | ---------------------------------------------------------------------------------------- |
+| `og_image`         | `''`                    | Open Graph / Twitter 分享默认图（文章无 `image` 封面时使用）；可填站内相对路径或完整 URL |
+| `twitter_card`     | `'summary_large_image'` | Twitter 卡片类型；无分享图时强制降级为 `summary`                                         |
+| `noindex_archives` | `true`                  | 归档 / 分类 / 标签页输出 `robots: noindex,follow`                                        |
+| `json_ld.enable`   | `true`                  | JSON-LD 结构化数据（post→BlogPosting、home→WebSite、page→WebPage）                       |
+
+说明：
+
+- **canonical 与 `og:url` 需要站点 `_config.yml` 配置 `url`**；未配置时自动省略，不会输出 `undefined` 链接
+- canonical 会把 `foo/index.html` 归一化为 `foo/`（目录型 URL），与 pretty 链接一致
+- JSON-LD 输出前对 `<` `>` `&` 做 `\u` 转义，杜绝 `</script>` 提前闭合
+
+#### ⑰ `astronomy:`
+
+`events: []` —— 天文事件日历数据源（字段 `name` / `date` / `time` / `visibility`），
+供 `astronomy-calendar.ejs` 渲染与 `hasEvent()` 匹配，详见 [02 · 模板层](02-layout.md)。
+
+#### ⑱ 高级（扁平键）
 
 | 键           | 默认值    | 说明                                                            |
 | ------------ | --------- | --------------------------------------------------------------- |
@@ -150,12 +170,13 @@ theme_config:
 以下几组配置被 `scripts/lib/config.js` 的白名单承认（因此不会报"未知配置项"），
 但**主题 `_config.yml` 里没有它们**，也没有默认值——需要用户在站点 `theme_config:` 里自行定义：
 
-| 配置组                            | 用途                       | 消费位置                 |
-| --------------------------------- | -------------------------- | ------------------------ |
-| `astronomy.events`                | 天文日历的"即将到来事件"   | `astronomy-calendar.ejs` |
-| `wiki.projects` / `wiki.edit_url` | Wiki 侧栏项目树 / 编辑链接 | `wiki-nav.ejs`           |
-| `topics` / `topics_archive_url`   | 专题侧栏                   | `topic-nav.ejs`          |
-| `notebooks.categories`            | 笔记簿侧栏                 | `notebooks-nav.ejs`      |
+| 配置组                            | 用途                       | 消费位置            |
+| --------------------------------- | -------------------------- | ------------------- |
+| `wiki.projects` / `wiki.edit_url` | Wiki 侧栏项目树 / 编辑链接 | `wiki-nav.ejs`      |
+| `topics` / `topics_archive_url`   | 专题侧栏                   | `topic-nav.ejs`     |
+| `notebooks.categories`            | 笔记簿侧栏                 | `notebooks-nav.ejs` |
+
+> `astronomy.events` 已在主题 `_config.yml` 中提供（默认空数组），不再属于"落差项"。
 
 ## 第二部分：`languages/`（3 个文件）
 

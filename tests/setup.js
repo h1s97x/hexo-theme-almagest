@@ -62,6 +62,19 @@ global.hexo = {
     helper: {
       register(name, fn) {
         registry.helpers[name] = fn;
+      },
+      get(name) {
+        if (name !== 'url_for') {
+          return function () {
+            return '';
+          };
+        }
+        // 模拟 hexo-util url_for 的最小行为：拼接站点 root
+        // （ alm_canonical 依赖它来应用子目录部署的 root）
+        return function (p) {
+          const root = state.siteConfig.root || '/';
+          return (root.replace(/\/+$/, '') + String(p || '/')).replace(/\/{2,}/g, '/');
+        };
       }
     },
     generator: {

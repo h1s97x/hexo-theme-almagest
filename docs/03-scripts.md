@@ -86,15 +86,21 @@ scripts/
 
 模块级常量：`const DEFAULT_INDEX_LENGTH = 1500;`
 
-| 注册名        | 产出                                                                         | 备注                        |
-| ------------- | ---------------------------------------------------------------------------- | --------------------------- |
-| `archive`     | `{ path:'archives/index.html', layout:'archive', data:{ posts } }`           | 官方 generator 会覆盖同路径 |
-| `categories`  | `{ path:'categories/index.html', layout:'categories', data:{ categories } }` | 同上                        |
-| `tags`        | `{ path:'tags/index.html', layout:'tags', data:{ tags } }`                   | 同上                        |
-| `search`      | `{ path:'search.json', data: JSON.stringify(searchData) }`                   | **搜索索引**                |
-| `search-page` | `{ path:'search/index.html', layout:'search', data:{} }`                     | 搜索页壳                    |
+| 注册名        | 产出                                                                                          | 备注                        |
+| ------------- | --------------------------------------------------------------------------------------------- | --------------------------- |
+| `archive`     | `{ path:'archives/index.html', layout:'archive', data:{ posts, type:'archive' } }`            | 官方 generator 会覆盖同路径 |
+| `categories`  | `{ path:'categories/index.html', layout:'categories', data:{ categories, type:'category' } }` | 同上                        |
+| `tags`        | `{ path:'tags/index.html', layout:'tags', data:{ tags, type:'tag' } }`                        | 同上                        |
+| `search`      | `{ path:'search.json', data: JSON.stringify(searchData) }`                                    | **搜索索引**                |
+| `search-page` | `{ path:'search/index.html', layout:'search', data:{} }`                                      | 搜索页壳                    |
 
 generator 注册**无 priority 概念**。
+
+**与官方插件的取舍（C5 已定论）**：主题的 `archive` / `categories` / `tags` 与官方插件
+`hexo-generator-archive / category / tag` **产出相同路径，后注册者覆盖前者**。
+主题的选择是：**保留自有 generator**（保证零第三方依赖即可构建），
+`data.type` 字段同时服务于面包屑渲染。站点若已安装官方插件且想要其行为，
+在站点 `_config.yml` 中禁用主题对应配置即可，无需改主题代码。
 
 ### `search` generator 关键逻辑
 
@@ -123,23 +129,6 @@ generator 注册**无 priority 概念**。
 **依赖**：`../lib/text`。无外部包。
 
 ## 5. `scripts/helpers/index.js`
-
-**职责**：注册 5 个 EJS helper。**无 `module.exports`。**
-
-| helper             | 签名             | 返回      | 说明                                                        |
-| ------------------ | ---------------- | --------- | ----------------------------------------------------------- |
-| `get_excerpt`      | `(post, length)` | `string`  | `toExcerpt(post.excerpt \|\| post.content \|\| '', length)` |
-| `get_reading_time` | `(content)`      | `number`  | 空内容 0，非空至少 1                                        |
-| `is_featured`      | `(post)`         | `boolean` | `post.featured === true`（严格等于）                        |
-| `get_categories`   | `(post)`         | `any[]`   | `post.categories \|\| []`                                   |
-| `get_tags`         | `(post)`         | `any[]`   | `post.tags \|\| []`                                         |
-
-**注册**：`hexo.extend.helper.register('name', fn)`，无 priority。
-
-> ⚠️ **`is_featured` / `get_categories` / `get_tags` 在 `layout/` 中调用次数为 0**（已实测）。
-> 它们是**为使用者预留的模板 API**，主题自身不使用。见 [09 · 已知缺陷](09-known-issues.md)。
-
-**依赖**：`../lib/text`。
 
 ## 6. `scripts/tags/index.js`
 
@@ -283,18 +272,18 @@ Almagest: 检测到 N 处配置问题：
 
 ## 11. 完整注册钩子清单
 
-| 文件                  | 钩子类型           | 名称                                                                               | priority |
-| --------------------- | ------------------ | ---------------------------------------------------------------------------------- | -------- |
-| `config/index.js`     | `hexo.on`          | `ready`                                                                            | —        |
-| `events/index.js`     | `hexo.on`          | `ready` / `generateBefore` / `generateAfter`                                       | —        |
-| `filters/index.js`    | `extend.filter`    | `before_post_render`                                                               | 默认 10  |
-| `filters/index.js`    | `extend.filter`    | `after_render:html`                                                                | 默认 10  |
-| `filters/index.js`    | `extend.filter`    | `excerpt`                                                                          | 默认 10  |
-| `generators/index.js` | `extend.generator` | `archive` / `categories` / `tags` / `search` / `search-page`                       | —        |
-| `helpers/index.js`    | `extend.helper`    | `get_excerpt` / `get_reading_time` / `is_featured` / `get_categories` / `get_tags` | —        |
-| `tags/index.js`       | `extend.tag`       | `note` / `alert` / `button` / `asset_code`                                         | —        |
+| 文件                  | 钩子类型              | 名称                                                                                                                   | priority                                                     |
+| --------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `config/index.js`     | `hexo.on`             | `ready`                                                                                                                | —                                                            |
+| `events/index.js`     | `hexo.on`             | `ready` / `generateBefore` / `generateAfter`                                                                           | —                                                            |
+| `filters/index.js`    | `extend.filter`       | `before_post_render`                                                                                                   | 默认 10                                                      |
+| `filters/index.js`    | `extend.filter`       | `after_render:html`                                                                                                    | 默认 10                                                      |
+| `filters/index.js`    | `extend.filter`       | `excerpt`                                                                                                              | 默认 10                                                      |
+| `generators/index.js` | `generators/index.js` | `extend.generator`                                                                                                     | `archive` / `categories` / `tags` / `search` / `search-page` | —   |
+| `helpers/index.js`    | `extend.helper`       | `get_excerpt` / `get_reading_time` / `is_featured` / `get_categories` / `get_tags` / `is_nav_active` / `theme_version` | —                                                            |
+| `tags/index.js`       | `extend.tag`          | `note` / `alert` / `button` / `asset_code`                                                                             | —                                                            |
 
-**合计 16 个注册点。**
+**合计 18 个注册点。**
 
 ---
 

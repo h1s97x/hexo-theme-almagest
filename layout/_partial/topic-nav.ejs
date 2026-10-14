@@ -10,8 +10,8 @@ const config = theme;
     <div class="topic-list">
       <% config.topics.forEach(topic => { %>
         <div class="topic-item">
-          <a href="<%= topic.path %>" 
-             class="topic-item-link <%= topic.path === config.url + topic.path ? 'active' : '' %>">
+          <a href="<%= topic.path %>"
+             class="topic-item-link <%= is_nav_active(page.path, topic.path) ? 'active' : '' %>">
             <span class="topic-item-name"><%= topic.name %></span>
             <% if (topic.count) { %>
               <span class="topic-item-count"><%= topic.count %></span>
@@ -22,8 +22,8 @@ const config = theme;
             <ul class="topic-subtopics">
               <% topic.subtopics.forEach(subtopic => { %>
                 <li>
-                  <a href="<%= subtopic.path %>" 
-                     class="<%= subtopic.path === config.url + subtopic.path ? 'active' : '' %>">
+                  <a href="<%= subtopic.path %>"
+                     class="<%= is_nav_active(page.path, subtopic.path) ? 'active' : '' %>">
                     <%= subtopic.name %>
                   </a>
                 </li>

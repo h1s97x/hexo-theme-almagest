@@ -230,6 +230,55 @@
   }
 
   /**
+   * Back to top button
+   *
+   * 滚动超过阈值才加 `.show` 类显示按钮（CSS 里默认 `display: none`）；
+   * 点击回到顶部，遵循系统「减少动态效果」偏好时直接跳转。
+   * 滚动监听用 rAF 节流，避免每像素都操作 DOM。
+   */
+  function setupBackToTop() {
+    const btn = document.getElementById('back-to-top');
+    if (!btn) {
+      return;
+    }
+
+    var SHOW_THRESHOLD = 300;
+    var ticking = false;
+
+    function updateVisibility() {
+      ticking = false;
+      var show = window.scrollY > SHOW_THRESHOLD;
+      btn.classList.toggle('show', show);
+      btn.setAttribute('aria-hidden', show ? 'false' : 'true');
+    }
+
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(updateVisibility);
+        }
+      },
+      { passive: true }
+    );
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var reduceMotion =
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        window.scrollTo(0, 0);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    // 初始状态：刷新后若已停在页面中部，按钮应直接出现
+    updateVisibility();
+  }
+
+  /**
    * Initialize theme interactions
    */
   function initTheme() {
@@ -240,6 +289,7 @@
     setupThemeToggle();
     setupMobileMenu();
     setupSearchButton();
+    setupBackToTop();
 
     // Listen for system preference changes
     listenToSystemPreference();

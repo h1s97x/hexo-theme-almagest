@@ -49,3 +49,6 @@ source/css/main.css
 source/css/main.css.map
 
 hexo-theme-stellar/
+
+# 参考学习的第三方主题仓库（来自 pengtech.net 主题推荐文章）
+reference-themes/

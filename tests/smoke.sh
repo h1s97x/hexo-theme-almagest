@@ -6,8 +6,8 @@
 # 这是唯一能验证「主题整体还能构建」的检查——单元测试只覆盖函数级行为。
 #
 # 用法：
-#   bash tests/smoke.sh                     # 默认 Hexo 7
-#   HEXO_SPEC=hexo@^8 bash tests/smoke.sh   # 指定 Hexo 主版本（CI 跑 7/8 兼容矩阵）
+#   bash tests/smoke.sh                     # 默认 Hexo 8（engines 声明版本）
+#   HEXO_SPEC=hexo@^7 bash tests/smoke.sh   # 指定 Hexo 主版本（CI 观测矩阵 7/8）
 #
 set -euo pipefail
 
@@ -15,7 +15,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
-HEXO_SPEC="${HEXO_SPEC:-hexo@^7}"
+HEXO_SPEC="${HEXO_SPEC:-hexo@^8}"
 
 echo "==> 初始化临时站点: $WORK  (Hexo: $HEXO_SPEC)"
 cd "$WORK"
@@ -38,6 +38,11 @@ echo "==> 链接主题"
 mkdir -p themes/almagest
 cp -r "$ROOT"/. themes/almagest/
 rm -rf themes/almagest/node_modules themes/almagest/.git
+# reference-themes/ 是学习参考用的第三方主题克隆（已 gitignore），
+# 其中嵌套的 layout/（如 sakura 的 themes/Sakura/layout/）会被 Hexo 的
+# 视图处理器按同名视图注册，覆盖主题自身的 post/categories/tags 等模板，
+# 导致构建失败。复制成主题时必须剔除。
+rm -rf themes/almagest/reference-themes
 
 echo "==> 写入站点配置"
 cat > _config.yml <<'YAML'

@@ -14,6 +14,9 @@ const text = require('../../scripts/lib/text');
 const html = require('../../scripts/lib/html');
 const asset = require('../../scripts/lib/asset');
 const config = require('../../scripts/lib/config');
+const seo = require('../../scripts/lib/seo');
+const ce = require('../../scripts/lib/config-export');
+const path = require('../../scripts/lib/path');
 
 // ────────────────────────────────────────────────────────────
 // text：HTML → 纯文本、摘要、阅读时长
@@ -264,5 +267,139 @@ describe('lib/config', () => {
     assert.equal(config.hasSiteOverride({ theme_config: { version: '9.9.9' } }, 'version'), true);
     assert.equal(config.hasSiteOverride({ theme_config: { version: '9.9.9' } }, 'title'), false);
     assert.equal(config.hasSiteOverride({ theme_config: undefined }, 'version'), false);
+  });
+});
+
+// ────────────────────────────────────────────────────────────
+// path：导航 active 态判断（A1 修复）
+// ────────────────────────────────────────────────────────────
+
+describe('lib/path', () => {
+  it('normalizePath 归一化协议主机 / 查询串 / 尾斜杠 / .html / index.html', () => {
+    assert.equal(path.normalizePath('/wiki/foo/'), 'wiki/foo');
+    assert.equal(path.normalizePath('wiki/foo.html'), 'wiki/foo');
+    assert.equal(path.normalizePath('wiki/foo/index.html'), 'wiki/foo');
+    assert.equal(path.normalizePath('wiki/foo/index'), 'wiki/foo');
+    assert.equal(path.normalizePath('https://example.com/wiki/foo/'), 'wiki/foo');
+    assert.equal(path.normalizePath('https://example.com/wiki/foo?a=1#top'), 'wiki/foo');
+    assert.equal(path.normalizePath('/Wiki/Foo/'), 'wiki/foo', '统一小写');
+  });
+
+  it('normalizePath 对空值 / 非字符串安全', () => {
+    assert.equal(path.normalizePath(''), '');
+    assert.equal(path.normalizePath(null), '');
+    assert.equal(path.normalizePath(undefined), '');
+    assert.equal(path.normalizePath(42), '');
+  });
+
+  it('isNavActive 当前页与导航项一致时为 true', () => {
+    assert.equal(path.isNavActive('wiki/foo/index.html', '/wiki/foo/'), true);
+    assert.equal(path.isNavActive('wiki/foo.html', 'wiki/foo'), true);
+  });
+
+  it('isNavActive 不一致 / 空值为 false', () => {
+    assert.equal(path.isNavActive('wiki/foo/index.html', '/wiki/bar/'), false);
+    assert.equal(path.isNavActive('', '/wiki/foo/'), false);
+    assert.equal(path.isNavActive('wiki/foo', ''), false);
+  });
+});
+
+// ────────────────────────────────────────────────────────────
+// seo：canonical / robots / JSON-LD（Phase 1）
+// ────────────────────────────────────────────────────────────
+
+describe('lib/seo', () => {
+  it('normalizePagePath 归一化首页 / index.html / 目录型 URL', () => {
+    assert.equal(seo.normalizePagePath(''), '/');
+    assert.equal(seo.normalizePagePath(undefined), '/');
+    assert.equal(seo.normalizePagePath('index.html'), '/');
+    assert.equal(seo.normalizePagePath('/'), '/');
+    assert.equal(seo.normalizePagePath('2024/01/01/hello/index.html'), '/2024/01/01/hello/');
+    assert.equal(seo.normalizePagePath('about/index.html'), '/about/');
+    assert.equal(seo.normalizePagePath('about.html'), '/about.html', '文件型 URL 保持原样');
+  });
+
+  it('robotsFor 仅归档类页面 noindex，且可整体关闭', () => {
+    assert.equal(seo.robotsFor('archive'), 'noindex,follow');
+    assert.equal(seo.robotsFor('category'), 'noindex,follow');
+    assert.equal(seo.robotsFor('tag'), 'noindex,follow');
+    assert.equal(seo.robotsFor('post'), '');
+    assert.equal(seo.robotsFor('page'), '');
+    assert.equal(seo.robotsFor('home'), '');
+    assert.equal(seo.robotsFor('archive', { noindexArchives: false }), '');
+  });
+
+  it('buildJsonLd 按页面类型产出对应 schema', () => {
+    const post = seo.buildJsonLd({
+      type: 'post',
+      title: '标题',
+      description: '描述',
+      url: 'https://example.com/p/',
+      author: '作者',
+      siteName: '站点',
+      datePublished: '2024-01-01T00:00:00.000Z',
+      keywords: 'a, b'
+    });
+    assert.equal(post['@type'], 'BlogPosting');
+    assert.equal(post.headline, '标题');
+    assert.equal(post.author.name, '作者');
+    assert.equal(post.publisher.name, '站点');
+    assert.equal(post.datePublished, '2024-01-01T00:00:00.000Z');
+
+    assert.equal(
+      seo.buildJsonLd({ type: 'home', siteName: '站点', url: 'https://example.com/' })['@type'],
+      'WebSite'
+    );
+    assert.equal(seo.buildJsonLd({ type: 'page', title: '关于' })['@type'], 'WebPage');
+    assert.equal(seo.buildJsonLd({ type: 'archive' }), null, '其他页面类型不输出');
+  });
+
+  it('stringifyJsonLd 转义 < > &，空数据返回空串', () => {
+    const out = seo.stringifyJsonLd({ '@type': 'WebSite', name: '</script><a>&' });
+    assert.ok(out.indexOf('\\u003c') !== -1);
+    assert.ok(out.indexOf('\\u003e') !== -1);
+    assert.ok(out.indexOf('\\u0026') !== -1);
+    assert.ok(out.indexOf('</script>') === -1);
+    assert.equal(seo.stringifyJsonLd(null), '');
+  });
+});
+
+// ────────────────────────────────────────────────────────────
+// config-export：前端统一配置（Phase 2）
+// ────────────────────────────────────────────────────────────
+
+describe('lib/config-export', () => {
+  it('resolveI18n 找不到键时回落缺省值（Hexo __ 会原样返回键名）', () => {
+    const t = key => (key === 'copy_code' ? '复制' : key);
+    assert.equal(ce.resolveI18n(t, 'copy_code', 'Copy'), '复制');
+    assert.equal(ce.resolveI18n(t, 'missing_key', 'Copy'), 'Copy');
+    assert.equal(ce.resolveI18n(null, 'copy_code', 'Copy'), 'Copy', '非函数整体回落');
+  });
+
+  it('buildFrontendConfig 组装 copy / search / astronomy 三段', () => {
+    const cfg = ce.buildFrontendConfig({
+      version: '1.2.0',
+      t: key => ({ copy_code: '复制', search_empty: '请输入' })[key] || key,
+      searchUrl: '/blog/search.json'
+    });
+    assert.equal(cfg.version, '1.2.0');
+    assert.equal(cfg.copy.copy, '复制');
+    assert.equal(cfg.copy.copied, 'Copied!', '缺失键回落英文缺省');
+    assert.equal(cfg.search.url, '/blog/search.json');
+    assert.equal(cfg.search.empty, '请输入');
+    assert.equal(cfg.search.noResults, 'No results found');
+    assert.equal(cfg.astronomy.noEvents, 'No events for this day');
+  });
+
+  it('buildFrontendConfig 不传参时全缺省值', () => {
+    const cfg = ce.buildFrontendConfig();
+    assert.equal(cfg.version, '');
+    assert.equal(cfg.search.url, '/search.json');
+  });
+
+  it('stringifyConfig 转义 < > &', () => {
+    const out = ce.stringifyConfig({ a: '</script>' });
+    assert.ok(out.indexOf('\\u003c') !== -1);
+    assert.ok(out.indexOf('</script>') === -1);
   });
 });

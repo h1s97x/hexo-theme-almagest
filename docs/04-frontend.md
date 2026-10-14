@@ -54,7 +54,7 @@
 
 ## 2. `search.js` — 本地检索（含 CJK bigram）
 
-**形态**：IIFE，导出 `window.__almagestSearch`（`setEmptyText` / `setNoResultsText`），自动初始化（**只监听 `DOMContentLoaded`，无 readyState 兜底**）。
+**形态**：IIFE，导出 `window.__almagestSearch`（`setEmptyText` / `setNoResultsText`，运行时覆盖 `__almagestConfig.search` 文案），自动初始化（`readyState` 双重保险）。
 
 ### 全部常量
 
@@ -108,18 +108,18 @@ function splitWords(lowerText) {
 
 ### 其余函数
 
-| 函数                                        | 说明                                                                                                                                                                      |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `indexWords(lowerText, docIndex)`           | 对每个词写入倒排表 `searchIndex[word] = [docIndex, ...]`（`indexOf` 去重）                                                                                                |
-| `buildSearchIndex()`                        | 归一化 `searchData` 为 `{title,url,date,text}`；`text` 缺失时**回退读旧字段 `content`**；预计算 `doc._title` / `doc._text` 小写副本；对两者分别 `indexWords`              |
-| `initSearch()`                              | 取 `#search-form` / `#search-input` / `#search-results`，任一缺失即 return；读 URL 的 `?q=` 并预填；绑 `submit`（立即执行，清防抖）与 `input`（150ms 防抖）               |
-| `loadSearchData(done)`                      | `dataReady` 为真则直接回调（**全站只加载一次**）；URL 取 `window.__almagestSearchUrl \|\| '/search.json'`；`fetch` 不存在 → 空数据集降级；失败 `console.error` 后同样降级 |
-| `performSearch(query, container)`           | 见下                                                                                                                                                                      |
-| `showMessage(container, text)`              | `innerHTML = '<div class="no-results"><p>' + text + '</p></div>'`（**text 未转义**）                                                                                      |
-| `displayResults(results, container, query)` | 拼 `.search-results-list` → `.search-result-item`（标题 + 摘要 + URL）                                                                                                    |
-| `getExcerpt(content, query, length)`        | 命中位置**前移 50 字符**为起点，两端补 `...`                                                                                                                              |
-| `highlightQuery(text, query)`               | `query.split(/\s+/).join('\|')` 作正则，`replace(..., '<mark>$1</mark>')`。**未做正则元字符转义**                                                                         |
-| `escapeHtml(text)`                          | 映射 `& < > " '`                                                                                                                                                          |
+| 函数                                        | 说明                                                                                                                                                                       |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `indexWords(lowerText, docIndex)`           | 对每个词写入倒排表 `searchIndex[word] = [docIndex, ...]`（`indexOf` 去重）                                                                                                 |
+| `buildSearchIndex()`                        | 归一化 `searchData` 为 `{title,url,date,text}`；`text` 缺失时**回退读旧字段 `content`**；预计算 `doc._title` / `doc._text` 小写副本；对两者分别 `indexWords`               |
+| `initSearch()`                              | 取 `#search-form` / `#search-input` / `#search-results`，任一缺失即 return；读 URL 的 `?q=` 并预填；绑 `submit`（立即执行，清防抖）与 `input`（150ms 防抖）                |
+| `loadSearchData(done)`                      | `dataReady` 为真则直接回调（**全站只加载一次**）；URL 取 `__almagestConfig.search.url \|\| '/search.json'`；`fetch` 不存在 → 空数据集降级；失败 `console.error` 后同样降级 |
+| `performSearch(query, container)`           | 见下                                                                                                                                                                       |
+| `showMessage(container, text)`              | `innerHTML = '<div class="no-results"><p>' + text + '</p></div>'`（text 经 `escapeHtml` 转义）                                                                             |
+| `displayResults(results, container, query)` | 拼 `.search-results-list` → `.search-result-item`（标题 + 摘要 + URL）                                                                                                     |
+| `getExcerpt(content, query, length)`        | 命中位置**前移 50 字符**为起点，两端补 `...`                                                                                                                               |
+| `highlightQuery(text, query)`               | `query.split(/\s+/).join('\|')` 作正则，`replace(..., '<mark>$1</mark>')`。**未做正则元字符转义**                                                                          |
+| `escapeHtml(text)`                          | 映射 `& < > " '`                                                                                                                                                           |
 
 **`performSearch` 的检索与打分**：
 
@@ -134,7 +134,7 @@ function splitWords(lowerText) {
 7. 写入 resultCache 后 displayResults
 ```
 
-**依赖的全局变量**：`window.__almagestSearchUrl`（缺省 `/search.json`）、`window.__almagestSearchEmpty`、`window.__almagestSearchNoResults`（后两者由 `layout/search.ejs` 注入，**当前都赋成 `__('search_no_results')`，即"空输入"与"无结果"用了同一文案**）
+**依赖的全局变量**：`window.__almagestConfig.search`（`url` / `empty` / `noResults`，由 `scripts.ejs` 统一注入；空输入与无结果是两个独立文案）
 
 **DOM 选择器**：`#search-form`、`#search-input`、`#search-results`；产出 `.no-results`、`.search-results-list`、`.search-result-item`、`.result-title`、`.result-excerpt`、`.result-link`、`<mark>`
 
@@ -162,9 +162,9 @@ function splitWords(lowerText) {
 | `initCodeCopy()` | `querySelectorAll('pre code')`；取其 `parentElement`（即 `pre`）；`pre.querySelector('.code-copy-btn')` 已存在则跳过（**幂等**）；创建按钮、绑 click、`pre.style.position='relative'`、append |
 | `copyText(text)` | 优先 `navigator.clipboard.writeText`；否则 `execCommand('copy')` 兜底（建隐藏 `textarea` → `select()` → `execCommand` → `removeChild`）。返回 `Promise`                                       |
 
-**反馈**：成功 → 按钮文字改 `window.__almagestCopiedText` + 加 `.copied` 类，`setTimeout(2000)` 复位；失败 → `console.error` + 文字改 `__almagestCopyFailedText`。
+**反馈**：成功 → 按钮文字改 `__almagestConfig.copy.copied` + 加 `.copied` 类，`setTimeout(2000)` 复位；失败 → `console.error` + 文字改 `__almagestConfig.copy.failed`。
 
-**依赖的全局变量**：`window.__almagestCopyText`（缺省 `'Copy'`）、`__almagestCopiedText`（`'Copied!'`）、`__almagestCopyFailedText`（`'Failed'`）——均由 `_partial/scripts.ejs` 注入。
+**依赖的全局变量**：`window.__almagestConfig.copy`（`copy` / `copied` / `failed`）——由 `_partial/scripts.ejs` 统一注入。
 
 **DOM 选择器**：`pre code`、`pre`、`.code-copy-btn`
 
@@ -259,10 +259,9 @@ if (alpha > 1) alpha = 1; // 上限钳制
 | `previousMonth()`        | `month -= 1`，`< 0` → `month = 11; year -= 1`；重绘                                                                                                                                                                                                                                               |
 | `nextMonth()`            | `month += 1`，`> 11` → `month = 0; year += 1`；重绘                                                                                                                                                                                                                                               |
 | `hasEvent(y, m, d)`      | ⚠️ **恒 `return false`**（事件数据未接入，源码注释已注明）                                                                                                                                                                                                                                        |
-| `showDayEvents(y, m, d)` | 清空 `.calendar-events`，插入 `<p>` 文本 `window.__almagestNoEventsText \|\| 'No events for this day'`                                                                                                                                                                                            |
+| `showDayEvents(y, m, d)` | 清空 `.calendar-events`，展示当天事件列表；无事件时插入 `<p>` 文本 `__almagestConfig.astronomy.noEvents`                                                                                                                                                                                          |
 
-> ⚠️ `window.__almagestNoEventsText` **全项目没有任何模板注入它**（已全库检索确认），
-> 因此该文案恒为英文兜底值。
+> 「无事件」文案已随 Phase 2 迁入 `__almagestConfig.astronomy.noEvents`（三语言齐全）。
 
 ### 其余方法
 
@@ -283,15 +282,27 @@ if (alpha > 1) alpha = 1; // 上限钳制
 
 ## 6. 全局变量契约汇总
 
-| 全局变量                           | 注入方                 | 消费方         | 缺失时行为                 |
-| ---------------------------------- | ---------------------- | -------------- | -------------------------- |
-| `window.__almagestCopyText`        | `_partial/scripts.ejs` | `code-copy.js` | `'Copy'`                   |
-| `window.__almagestCopiedText`      | 同上                   | 同上           | `'Copied!'`                |
-| `window.__almagestCopyFailedText`  | 同上                   | 同上           | `'Failed'`                 |
-| `window.__almagestSearchUrl`       | `layout/search.ejs`    | `search.js`    | `'/search.json'`           |
-| `window.__almagestSearchEmpty`     | `layout/search.ejs`    | 同上           | `'Enter search terms'`     |
-| `window.__almagestSearchNoResults` | `layout/search.ejs`    | 同上           | 拼串兜底                   |
-| `window.__almagestNoEventsText`    | **⚠️ 无人注入**        | `astronomy.js` | `'No events for this day'` |
+| 全局变量                           | 注入方                   | 消费方         | 缺失时行为             |
+| ---------------------------------- | ------------------------ | -------------- | ---------------------- |
+| `window.__almagestConfig`          | `_partial/scripts.ejs`   | 全部前端脚本   | 各消费方回落内置缺省值 |
+| `window.__almagestAstronomyEvents` | `astronomy-calendar.ejs` | `astronomy.js` | 视为无事件             |
+
+**`window.__almagestConfig` 结构**（`alm_export_config` helper 生成，`<script type="application/json">` + `\u` 转义）：
+
+```json
+{
+  "version": "1.1.0",
+  "copy": { "copy": "…", "copied": "…", "failed": "…" },
+  "search": { "url": "/search.json", "empty": "…", "noResults": "…" },
+  "astronomy": { "noEvents": "…" }
+}
+```
+
+> **迁移说明（Phase 2）**：此前的 `__almagestCopyText` / `__almagestCopiedText` /
+> `__almagestCopyFailedText` / `__almagestSearchUrl` / `__almagestSearchEmpty` /
+> `__almagestSearchNoResults` / `__almagestNoEventsText` 七个零散全局变量已全部
+> 合并进 `__almagestConfig`，模板侧不再逐个注入。`window.__almagestSearch.setEmptyText` /
+> `setNoResultsText` 两个 setter 保留（运行时改的是内存中的配置副本）。
 
 ## 7. DOM 选择器契约
 

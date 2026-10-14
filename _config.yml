@@ -42,7 +42,10 @@ date_format: 'YYYY-MM-DD'
 
 style:
   # 主题色（十六进制颜色码）
-  primary_color: '#0066cc'
+  # 仅用于 <meta name="theme-color">（移动端浏览器 chrome 配色）。
+  # 页面内的强调色由 CSS 运行时变量决定（亮色 #4f46e5 / 暗色 #67e8f9），
+  # 此处与亮色主题保持一致即可，无需随页面变化。
+  primary_color: '#4f46e5'
 
   # 主题偏好: auto | light | dark
   # auto: 根据系统设置自动切换
@@ -269,6 +272,51 @@ image:
 
   # 图片占位符颜色（懒加载图片加载前/破图时的背景色）
   placeholder_color: '#f0f0f0'
+
+# ============================================================
+# 天文组件配置
+# ============================================================
+# 天文事件日历（astronomy-calendar.ejs）的数据源。
+# 该模板默认未被任何页面引用，属「组件库」成员——
+# 在自定义页面里 <%- partial('_partial/astronomy-calendar') %> 即可启用。
+#
+# events 中每条事件的字段：
+#   name       事件名称（必填）
+#   date       事件日期 'YYYY-MM-DD'（必填，日历据此点亮 .has-event）
+#   time       可选，显示用时刻，如 '14:30'
+#   visibility 可选，可见条件/地区说明
+astronomy:
+  events: []
+  # 示例（取消注释并按需修改）：
+  # events:
+  #   - name: '英仙座流星雨极大'
+  #     date: '2026-08-12'
+  #     time: '21:00'
+  #     visibility: '全国可见，建议远离光污染'
+  #   - name: '月全食'
+  #     date: '2026-03-03'
+  #     visibility: '东亚可见'
+
+# ============================================================
+# SEO 配置
+# ============================================================
+# 输出 canonical / robots / Open Graph / Twitter Card / JSON-LD 结构化数据。
+# 站点 _config.yml 配置 url 后才会输出 canonical 与 og:url（未配置时自动省略）。
+
+seo:
+  # Open Graph 分享卡片默认图（文章无 image 封面时使用）。
+  # 可填站内相对路径（如 /images/og.png）或完整 URL
+  og_image: ''
+
+  # Twitter 卡片类型：summary | summary_large_image（有分享图时生效）
+  twitter_card: 'summary_large_image'
+
+  # 归档 / 分类 / 标签页输出 robots noindex,follow（薄内容页，避免分散权重）
+  noindex_archives: true
+
+  # JSON-LD 结构化数据（post→BlogPosting，home→WebSite，page→WebPage）
+  json_ld:
+    enable: true
 
 # ============================================================
 # 自定义注入
