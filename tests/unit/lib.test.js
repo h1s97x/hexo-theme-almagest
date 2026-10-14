@@ -18,6 +18,8 @@ const seo = require('../../scripts/lib/seo');
 const ce = require('../../scripts/lib/config-export');
 const pu = require('../../scripts/lib/pretty_urls');
 const budget = require('../../scripts/lib/budget');
+const ov = require('../../scripts/lib/override');
+const dep = require('../../scripts/lib/deprecations');
 const path = require('../../scripts/lib/path');
 
 // ────────────────────────────────────────────────────────────
@@ -491,6 +493,90 @@ describe('lib/budget', () => {
         'KB + modern.css ' +
         Math.round(modernCss.length / 1024) +
         'KB）'
+    );
+  });
+});
+
+// ────────────────────────────────────────────────────────────
+// override 与 deprecations（Phase 5）
+// ────────────────────────────────────────────────────────────
+
+describe('lib/override', () => {
+  it('extractDataOverride 只认 _data/almagest.yml（对象）', () => {
+    assert.deepEqual(ov.extractDataOverride({ almagest: { style: { primary_color: '#000' } } }), {
+      style: { primary_color: '#000' }
+    });
+    assert.deepEqual(ov.extractDataOverride({}), {});
+    assert.deepEqual(ov.extractDataOverride({ almagest: 'not an object' }), {});
+    assert.deepEqual(ov.extractDataOverride(null), {});
+    assert.equal(ov.DATA_FILE_NAME, 'almagest');
+  });
+
+  it('applyDataOverride 深合并且不改原配置对象', () => {
+    const themeConfig = {
+      style: { primary_color: '#4f46e5', code_theme: 'github' },
+      seo: { og_image: '' }
+    };
+    const result = ov.applyDataOverride(themeConfig, {
+      almagest: { style: { primary_color: '#0ea5e9' }, seo: { og_image: '/og.png' } }
+    });
+
+    assert.equal(result.changed, true);
+    assert.equal(result.merged.style.primary_color, '#0ea5e9', '覆盖生效');
+    assert.equal(result.merged.style.code_theme, 'github', '未覆盖的键保留');
+    assert.equal(result.merged.seo.og_image, '/og.png');
+    assert.equal(themeConfig.style.primary_color, '#4f46e5', '原对象不被就地修改');
+  });
+
+  it('applyDataOverride 无覆盖时原样返回', () => {
+    const themeConfig = { style: {} };
+    const result = ov.applyDataOverride(themeConfig, {});
+    assert.equal(result.changed, false);
+    assert.equal(result.merged, themeConfig);
+  });
+});
+
+describe('lib/deprecations', () => {
+  it('getByPath 按点路径读取，中间缺失返回 undefined', () => {
+    const cfg = { a: { b: { c: 1 } } };
+    assert.equal(dep.getByPath(cfg, 'a.b.c'), 1);
+    assert.equal(dep.getByPath(cfg, 'a.x.c'), undefined);
+    assert.equal(dep.getByPath(cfg, 'a.b.c.d'), undefined);
+    assert.equal(dep.getByPath(null, 'a'), undefined);
+  });
+
+  it('findDeprecations 当前无废弃键（框架就位，规则随 2.0.0 补充）', () => {
+    assert.deepEqual(dep.findDeprecations({ style: { primary_color: '#000' } }), []);
+    assert.deepEqual(dep.RULES, []);
+  });
+
+  it('formatDeprecationWarnings 生成含键名与替代方案的文案', () => {
+    const msgs = dep.formatDeprecationWarnings([
+      { key: 'old.key', removedIn: '2.0.0', instead: 'new.key' }
+    ]);
+    assert.equal(msgs.length, 1);
+    assert.ok(msgs[0].indexOf('old.key') !== -1);
+    assert.ok(msgs[0].indexOf('2.0.0') !== -1);
+    assert.ok(msgs[0].indexOf('new.key') !== -1);
+  });
+});
+
+describe('lib/config：白名单覆盖 _config.yml 全部顶层键（回归保护）', () => {
+  it('主题 _config.yml 的每个顶层键都在 KNOWN_TOP_LEVEL_KEYS 中', () => {
+    const fs = require('fs');
+    const path = require('path');
+    const yaml = require('js-yaml');
+    const themeConfig = yaml.load(
+      fs.readFileSync(path.join(__dirname, '..', '..', '_config.yml'), 'utf8')
+    );
+
+    const missing = Object.keys(themeConfig).filter(
+      key => config.KNOWN_TOP_LEVEL_KEYS.indexOf(key) === -1
+    );
+    assert.deepEqual(
+      missing,
+      [],
+      '以下配置节未加入白名单，会被 validate 误报「未知配置项」：' + missing.join(', ')
     );
   });
 });

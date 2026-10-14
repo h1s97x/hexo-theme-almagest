@@ -18,7 +18,7 @@ theme_config:
 > `scripts/config/index.js` 会在构建时同步 `version`：若站点**未显式**在 `theme_config` 里
 > 覆盖 `version`，则自动对齐 `package.json` 的版本号。
 
-### 顶层分组清单（18 组）
+### 顶层分组清单（19 组）
 
 #### ① 基础配置（扁平键）
 
@@ -130,11 +130,39 @@ theme_config:
 | `lazy_load`         | `true`      | 最终 HTML 会添加 `loading="lazy" + data-src`，**始终保留 `src`** |
 | `placeholder_color` | `'#f0f0f0'` | 懒加载占位 / 破图背景色                                          |
 
-#### ⑮ `inject:`
+#### ⑮ `inject:` — 自定义 HTML 注入点
 
-`head: ''`、`body_end: ''` —— 自定义 HTML 注入点
+| 键            | 注入位置                  | 消费模板                |
+| ------------- | ------------------------- | ----------------------- |
+| `head`        | `<head>` 内               | `_partial/head.ejs`     |
+| `body_end`    | `</body>` 前              | `_partial/scripts.ejs`  |
+| `post_top`    | 文章 / 独立页面正文开始前 | `post.ejs` / `page.ejs` |
+| `post_bottom` | 文章 / 独立页面正文结束后 | `post.ejs` / `page.ejs` |
 
-#### ⑯ `seo:` — SEO 输出
+模板用 `<%- alm_inject('post_top') %>` 消费（helper 见 `scripts/helpers/index.js`），
+无内容时输出空串。内容是站点所有者提供的原始 HTML，不转义。
+
+#### ⑯ 站点级覆盖：`source/_data/almagest.yml`
+
+除站点 `_config.yml` 的 `theme_config` 外，还支持把主题配置写到站点
+`source/_data/almagest.yml`，**优先级最高且主题升级不丢配置**：
+
+```
+source/_data/almagest.yml > 站点 _config.yml 的 theme_config > 主题 _config.yml
+```
+
+```yaml
+# source/_data/almagest.yml
+style:
+  primary_color: '#0ea5e9'
+seo:
+  og_image: '/images/og.png'
+```
+
+在 `generateBefore` 阶段合并（`scripts/lib/override.js`）。注意数组型配置
+（如 `astronomy.events`）是「按下标合并 + 去重追加」，不是整体替换。
+
+#### ⑰ `seo:` — SEO 输出
 
 | 键                 | 默认值                  | 说明                                                                                     |
 | ------------------ | ----------------------- | ---------------------------------------------------------------------------------------- |
@@ -149,12 +177,12 @@ theme_config:
 - canonical 会把 `foo/index.html` 归一化为 `foo/`（目录型 URL），与 pretty 链接一致
 - JSON-LD 输出前对 `<` `>` `&` 做 `\u` 转义，杜绝 `</script>` 提前闭合
 
-#### ⑰ `astronomy:`
+#### ⑱ `astronomy:`
 
 `events: []` —— 天文事件日历数据源（字段 `name` / `date` / `time` / `visibility`），
 供 `astronomy-calendar.ejs` 渲染与 `hasEvent()` 匹配，详见 [02 · 模板层](02-layout.md)。
 
-#### ⑱ 高级（扁平键）
+#### ⑲ 高级（扁平键）
 
 | 键           | 默认值    | 说明                                                            |
 | ------------ | --------- | --------------------------------------------------------------- |

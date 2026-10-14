@@ -42,14 +42,18 @@ scripts/
 
 ## 2. `scripts/events/index.js`
 
-**职责**：仅打印控制台日志。**无任何 `module.exports`。**
+**职责**：生命周期日志 + 站点 `_data` 覆盖合并。合并逻辑在 `scripts/lib/override.js`（纯函数）。
 
-| 注册                        | 输出                            |
-| --------------------------- | ------------------------------- |
-| `hexo.on('ready')`          | `Almagest: Theme ready`         |
-| `hexo.on('generateBefore')` | `Almagest: Generating...`       |
-| `hexo.on('generateAfter')`  | `Almagest: Generation complete` |
+| 注册                        | 行为                                                                            |
+| --------------------------- | ------------------------------------------------------------------------------- |
+| `hexo.on('ready')`          | 打印 `Almagest: Theme ready`                                                    |
+| `hexo.on('generateBefore')` | 合并 `source/_data/almagest.yml` 到 `hexo.theme.config`，再打印 `Generating...` |
+| `hexo.on('generateAfter')`  | 打印 `Almagest: Generation complete`                                            |
 
+> 为什么挂在 `generateBefore`：Hexo 的 `theme_config` 合并在 `load` 阶段完成，
+> 而 generator 与模板都在 generate 阶段读配置，晚于本事件；且 `hexo.locals.get('data')`
+> 此时已就绪。合并用「读 → deepMerge → 写回 `hexo.theme.config`」。
+>
 > 这里也注册了一个 `ready` 监听，与 `config/index.js` 的并存，Hexo 会按注册顺序都调用。
 
 ## 3. `scripts/filters/index.js`
@@ -129,6 +133,35 @@ generator 注册**无 priority 概念**。
 **依赖**：`../lib/text`。无外部包。
 
 ## 5. `scripts/helpers/index.js`
+
+> 除下表外还有 `alm_inject(point)`（视图注入点，见 `inject` 配置节）、
+> `alm_canonical / alm_robots / alm_json_ld`（SEO，逻辑在 `lib/seo.js`）、
+> `alm_export_config`（前端统一配置，逻辑在 `lib/config-export.js`）。
+
+**职责**：注册 7 个 EJS helper。**无 `module.exports`。**
+
+| helper             | 签名                        | 返回      | 说明                                                                                    |
+| ------------------ | --------------------------- | --------- | --------------------------------------------------------------------------------------- |
+| `get_excerpt`      | `(post, length)`            | `string`  | `toExcerpt(post.excerpt \|\| post.content \|\| '', length)`                             |
+| `get_reading_time` | `(content)`                 | `number`  | 空内容 0，非空至少 1                                                                    |
+| `is_featured`      | `(post)`                    | `boolean` | `post.featured === true`（严格等于）                                                    |
+| `get_categories`   | `(post)`                    | `any[]`   | `post.categories \|\| []`                                                               |
+| `get_tags`         | `(post)`                    | `any[]`   | `post.tags \|\| []`                                                                     |
+| `is_nav_active`    | `(currentPath, targetPath)` | `boolean` | 导航当前项高亮；两侧路径归一化后比较（容忍 URL / 尾斜杠 / `.html` / `index.html` 差异） |
+| `theme_version`    | `()`                        | `string`  | 读 `package.json` 的 version，供资源 `?v=` 兜底                                         |
+
+**注册**：`hexo.extend.helper.register('name', fn)`，无 priority。
+
+> **`is_featured` / `get_categories` / `get_tags` 是预留给使用者的模板 API**——主题自身的
+> `layout/` 不调用它们，使用者可以在自己的自定义页面里调用，例如：
+>
+> ```ejs
+> <% get_tags(page).forEach(tag => { %><%= tag.name %><% }) %>
+> ```
+>
+> 这不是缺陷，是有意暴露的扩展点。
+
+**依赖**：`../lib/text`、`../lib/path`、`../../package.json`。
 
 ## 6. `scripts/tags/index.js`
 
@@ -272,18 +305,30 @@ Almagest: 检测到 N 处配置问题：
 
 ## 11. 完整注册钩子清单
 
-| 文件                  | 钩子类型              | 名称                                                                                                                   | priority                                                     |
-| --------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `config/index.js`     | `hexo.on`             | `ready`                                                                                                                | —                                                            |
-| `events/index.js`     | `hexo.on`             | `ready` / `generateBefore` / `generateAfter`                                                                           | —                                                            |
-| `filters/index.js`    | `extend.filter`       | `before_post_render`                                                                                                   | 默认 10                                                      |
-| `filters/index.js`    | `extend.filter`       | `after_render:html`                                                                                                    | 默认 10                                                      |
-| `filters/index.js`    | `extend.filter`       | `excerpt`                                                                                                              | 默认 10                                                      |
-| `generators/index.js` | `generators/index.js` | `extend.generator`                                                                                                     | `archive` / `categories` / `tags` / `search` / `search-page` | —   |
-| `helpers/index.js`    | `extend.helper`       | `get_excerpt` / `get_reading_time` / `is_featured` / `get_categories` / `get_tags` / `is_nav_active` / `theme_version` | —                                                            |
-| `tags/index.js`       | `extend.tag`          | `note` / `alert` / `button` / `asset_code`                                                                             | —                                                            |
+| 文件                  | 钩子类型           | 名称                                                                                                                                                                                                         | priority |
+| --------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `config/index.js`     | `hexo.on`          | `ready`                                                                                                                                                                                                      | —        |
+| `events/index.js`     | `hexo.on`          | `ready` / `generateBefore` / `generateAfter`                                                                                                                                                                 | —        |
+| `filters/index.js`    | `extend.filter`    | `before_post_render`                                                                                                                                                                                         | 默认 10  |
+| `filters/index.js`    | `extend.filter`    | `after_render:html`                                                                                                                                                                                          | 默认 10  |
+| `filters/index.js`    | `extend.filter`    | `excerpt`                                                                                                                                                                                                    | 默认 10  |
+| `generators/index.js` | `extend.generator` | `archive` / `categories` / `page` / `search` / `search-page`                                                                                                                                                 | —        |
+| `helpers/index.js`    | `extend.helper`    | `get_excerpt` / `get_reading_time` / `is_featured` / `get_categories` / `get_tags` / `is_nav_active` / `theme_version` / `alm_canonical` / `alm_robots` / `alm_json_ld` / `alm_export_config` / `alm_inject` | —        |
+| `tags/index.js`       | `extend.tag`       | `note` / `alert` / `button` / `asset_code`                                                                                                                                                                   | —        |
 
-**合计 18 个注册点。**
+**合计 22 个注册点。**
+
+## 12. lib 纯函数层新增模块（Phase 1–5）
+
+| 模块                   | 职责                                                   |
+| ---------------------- | ------------------------------------------------------ |
+| `lib/seo.js`           | canonical 归一化 / robots 判定 / JSON-LD 构造与转义    |
+| `lib/config-export.js` | 前端统一配置（`window.__almagestConfig`）组装与转义    |
+| `lib/path.js`          | 路径归一化与导航 active 判断（A1 修复）                |
+| `lib/pretty_urls.js`   | `foo.html` → `foo/index.html` 路由改写（`url.pretty`） |
+| `lib/budget.js`        | 性能预算（JS 100KB / CSS 80KB / search.json 300KB）    |
+| `lib/override.js`      | `source/_data/almagest.yml` 覆盖合并                   |
+| `lib/deprecations.js`  | 废弃配置规则式检测与告警文案生成                       |
 
 ---
 

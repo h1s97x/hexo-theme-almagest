@@ -15,6 +15,7 @@
 'use strict';
 
 const { validate, hasSiteOverride } = require('../lib/config');
+const { findDeprecations, formatDeprecationWarnings } = require('../lib/deprecations');
 
 /**
  * 主题 package.json 版本号（用于自动同步 version）
@@ -55,15 +56,21 @@ hexo.on('ready', function () {
   }
 
   const problems = validate(themeConfig);
-  if (problems.length === 0) {
-    return;
+  if (problems.length > 0) {
+    hexo.log.warn('Almagest: 检测到 ' + problems.length + ' 处配置问题：');
+    problems.forEach(function (msg) {
+      hexo.log.warn('  - ' + msg);
+    });
+    hexo.log.warn('  参考主题 _config.yml 中的注释说明进行修正。');
   }
 
-  hexo.log.warn('Almagest: 检测到 ' + problems.length + ' 处配置问题：');
-  problems.forEach(function (msg) {
-    hexo.log.warn('  - ' + msg);
-  });
-  hexo.log.warn('  参考主题 _config.yml 中的注释说明进行修正。');
+  // 废弃配置告警：键已改名/移除时给出明确迁移指引，避免静默失效
+  const deprecated = findDeprecations(themeConfig);
+  if (deprecated.length > 0) {
+    formatDeprecationWarnings(deprecated).forEach(function (msg) {
+      hexo.log.warn('Almagest: ' + msg);
+    });
+  }
 });
 
 module.exports = { syncVersion, validate, getPath: require('../lib/config').getPath };

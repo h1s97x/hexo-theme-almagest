@@ -37,10 +37,10 @@ tests/
 
 Node 内置 `node:test`，无测试框架依赖。
 
-| 文件              | 覆盖对象                                                    | 为什么可以这样测                               |
-| ----------------- | ----------------------------------------------------------- | ---------------------------------------------- |
-| `lib.test.js`     | `scripts/lib/{text,html,asset,config}.js`                   | 这层不依赖 `hexo`、无副作用，可直接 `require`  |
-| `scripts.test.js` | `scripts/{config,filters,generators,helpers,tags}/index.js` | 装了 `setup.js` 的 mock 后，调用注册进去的回调 |
+| 文件              | 覆盖对象                                                                                                  | 为什么可以这样测                               |
+| ----------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `lib.test.js`     | `scripts/lib/{text,html,asset,config,path,seo,config-export,pretty_urls,budget,override,deprecations}.js` | 这层不依赖 `hexo`、无副作用，可直接 `require`  |
+| `scripts.test.js` | `scripts/{config,filters,generators,helpers,tags}/index.js`                                               | 装了 `setup.js` 的 mock 后，调用注册进去的回调 |
 
 > 注册层脚本是**直接执行的**（靠全局 `hexo` 注册钩子），每个文件末尾的 `module.exports`
 > 只为测试服务、Hexo 加载时忽略。测试流程固定为：**装 mock → require 脚本 → 调回调**。

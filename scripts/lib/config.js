@@ -33,6 +33,8 @@ const KNOWN_TOP_LEVEL_KEYS = [
   'page',
   'image',
   'search',
+  'seo',
+  'url',
   'astronomy',
   'wiki',
   'topic',

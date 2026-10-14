@@ -44,6 +44,9 @@ const config = theme;
   </div>
 <% } %>
 
+<!-- 注入点：页面正文前（inject.post_top，与文章页共用同一注入点） -->
+<%- alm_inject('post_top') %>
+
 <!-- Page Content -->
 <div class="page-content">
   <%- page.content %>
@@ -57,6 +60,9 @@ const config = theme;
     </div>
   <% } %>
 </div>
+
+<!-- 注入点：页面正文后（inject.post_bottom） -->
+<%- alm_inject('post_bottom') %>
 
 <!-- Comments -->
 <% if (config.features?.comments && page.comments !== false) { %>

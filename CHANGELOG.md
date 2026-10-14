@@ -7,6 +7,142 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+**站点级配置覆盖与注入点框架（Phase 5）**
+
+- **`source/_data/almagest.yml` 覆盖管线**（参考 Fluid `merge-configs.js` / Redefine `data-handle.js`）：站点 `_data` 下的主题配置覆盖层，优先级 `source/_data/almagest.yml > 站点 theme_config > 主题 _config.yml`，主题升级不丢配置；`generateBefore` 时合并（`scripts/lib/override.js` 纯函数 + `events/index.js` 注册层）
+  - 注意：hexo-util 的 `deepMerge` 只收两个参数且数组是「下标合并 + 去重追加」而非整体替换，已在注释与文档注明
+- **注入点从 2 个扩到 4 个**：`inject.post_top` / `inject.post_bottom`（文章与独立页面正文首尾，post.ejs / page.ejs 接入），helper `alm_inject(point)` 消费
+- **deprecation 告警框架**（`scripts/lib/deprecations.js`）：规则式废弃配置检测，`ready` 时打印迁移指引；当前无历史废弃键，框架就位待 2.0.0 补充规则
+
+### Fixed
+
+**`seo.ejs` 读取了错误的 config 对象（Phase 1 遗留缺陷）**
+
+- 该 partial 漏写 `const config = theme;`，导致 `seo.og_image` / `seo.twitter_card` / `seo.json_ld.enable` 全部读到**站点配置**（不存在这些键）而被静默忽略——即 Phase 1 的 SEO 配置节此前完全不生效。现已修复并产品级验证（og:image 正确输出）
+- 修复后 `og:title` 等与 `<title>` 一致地使用主题配置标题
+- 同类审计：`sidebar.ejs` 补上 `const config = theme;`，全模板统一
+- **新增回归测试**：白名单必须覆盖主题 `_config.yml` 全部顶层键（`seo` / `url` 两节曾漏登记，被 `validate` 误报「未知配置项」；该测试可防此类问题复发）
+
+**渐进式 CSS 增强层 `modern.css`（Phase 4）**
+
+- 新增 `source/css/modern.css`（独立静态层，不经 Stylus——`color-mix(in srgb, …)` 等现代语法 Stylus 解析器无法处理），由 `head.ejs` 以独立 `<link>` 引入，同样走 `cdn_prefix + ?v=`
+- 五条增强全部带 `@supports` / `@container` 守卫，旧浏览器整段跳过、基础样式兜底：
+  1. `color-mix()`：`.btn-primary` / `.code-copy-btn` hover 色由主题色派生（顺带补上 `<a class="btn-primary">` 此前没有 hover 背景变化的空缺）
+  2. `:has()`：搜索框聚焦时整个外壳高亮
+  3. 容器查询：天文日历在窄容器（侧栏/弹层）自动紧凑
+  4. `text-wrap: balance`：标题断行更均衡
+  5. 视图过渡：明暗切换交叉淡入淡出（`theme.js` 的 `setThemeAttribute()` 调 `startViewTransition`，不支持或「减少动态效果」时直接切换）
+- 新增 `--color-hover-tint` 运行期变量（亮色向黑混/暗色向白混），作用域分发与 `_theme-*.styl` 一致
+- `.stylelintrc.json` 为 `.css` 增加 override（`customSyntax: postcss`）；`style:lint` 覆盖 modern.css
+- **性能预算校准**：`scripts/lib/budget.js` 的 CSS 预算按实测从 50KB 调整为 80KB（main.css 压缩后 52.4KB + modern.css 3.9KB ≈ 56KB，留 30% 余量）；新增**真实编译**的 CSS 总量回归测试（stylus 进程内编译 + 断言）
+- 实测传输体积：gzip 后 JS ~10KB + CSS ~11KB（对照 Redefine 每页 440KB+220KB 未压缩）
+
+**URL 规范化 `url.pretty` 与性能预算（Phase 3）**
+
+- 新增 `scripts/lib/pretty_urls.js`（`prettyRoutePath` 纯函数）+ page generator 覆盖：`url.pretty: true` 时把 `source/` 下手写的 `foo.html` 改写为 `foo/index.html`，站点根 `index.html` / `index/` 不动，已 pretty 的幂等；只改写路由不改写 `page.path`（文档模型 path 是只读 getter）
+- page generator 覆盖**逐行复刻 Hexo 核心行为**（layout 缺失/false 输出原始内容、`['page','post','index']` 回退链、`__page` 标记），pretty 关闭时与核心完全一致；因站点 `theme_config` 合并发生在 load 之后，采用「无条件注册 + 运行时判断」
+- 新增 `scripts/lib/budget.js`：search.json 体积超 300KB 时 `hexo generate` 告警（不阻断构建），建议调小 `search.index_length`
+- 新增回归保护测试：主题自带前端脚本总量断言 ≤ 100KB/页预算（对照 Redefine 每页 440KB 的反例）
+- `_config.yml` 新增 `url:` 配置节（`pretty` 默认 `false`，附 `pretty_urls` 站点配置说明）
+- 新增 12 个单测（pretty 开/关两态、预算判定、JS 体积回归）
+
+**前端统一配置 `window.__almagestConfig`（Phase 2）**
+
+- 新增 `scripts/lib/config-export.js` 纯函数层 + `alm_export_config` helper：在 `scripts.ejs` 输出单个 `<script id="almagest-config" type="application/json">`，含主题版本 + i18n 文案 + 检索地址
+- **合并此前的 7 个零散全局变量**（`__almagestCopyText` / `__almagestCopiedText` / `__almagestCopyFailedText` / `__almagestSearchUrl` / `__almagestSearchEmpty` / `__almagestSearchNoResults` / `__almagestNoEventsText`）：模板不再逐个注入，`code-copy.js` / `search.js` / `astronomy.js` 统一从配置读取，缺失键回落内置缺省值
+- `search.ejs` 与 `astronomy-calendar.ejs` 的重复注入移除（`astronomy.events` 页面数据仍留在日历 partial 内）
+- 配置经 `\u003c` 转义，杜绝 `</script>` 提前闭合；新增 7 个单测（含无 i18n 上下文时的全缺省降级）
+- 参考实现：Redefine `scripts/config-export.js`、Next `next-config.js`
+
+**SEO 三件套：canonical / Open Graph / JSON-LD（Phase 1）**
+
+- 新增 `scripts/lib/seo.js` 纯函数层：`normalizePagePath`（`foo/index.html` → `foo/`）、`robotsFor`、`buildJsonLd`（post→BlogPosting / home→WebSite / page→WebPage）、`stringifyJsonLd`（`<` `>` `&` → `\u` 转义）
+- 新增 3 个 helper：`alm_canonical`（站点配置 `url` 时才输出，未配置自动省略；经 `url_for` 应用 `root`，支持子目录部署）、`alm_robots`（归档/分类/标签默认 `noindex,follow`，可配）、`alm_json_ld`
+- 新增 `layout/_partial/seo.ejs`：canonical + robots + Open Graph + Twitter Card + JSON-LD；页面类型判定优先 `page.type`、回退 Hexo 内置 `is_*`（archive/category/tag 排在 home 前，规避 `__index` 误判）
+- `_config.yml` 新增 `seo:` 配置节（`og_image` / `twitter_card` / `noindex_archives` / `json_ld.enable`）
+- **差异化**：调研的 22 个参考主题（next / fluid / icarus 等）均只输出 OG，无一实现 JSON-LD
+- 新增 12 个单测（纯函数 6 + helper 行为 6，含 canonical 兜底、robots 开关、LD 转义）
+
+**导航当前项高亮 helper `is_nav_active`（新增 `scripts/lib/path.js`）**
+
+- 新增纯函数模块 `scripts/lib/path.js`：`normalizePath()` 把路径/URL 归一化为「小写、无协议主机、无首尾斜杠、无 `.html` / `index.html` 后缀」的可比形式；`isNavActive()` 据此判断导航当前项
+- 注册 helper `is_nav_active(page.path, item.path)`；wiki / topic / notebooks 三个导航 partial 改用它
+- 容忍使用者把完整 URL 当导航路径、尾斜杠、`.html` 后缀等写法差异
+
+**`theme_version` helper：资源版本号以 `package.json` 为唯一事实来源**
+
+- `head.ejs` / `scripts.ejs` 的 `?v=` 兜底从硬编码 `'1.0.0'` 改为 `theme_version()`，修复版本不一致导致的缓存刷新失效
+
+**天文事件日历数据接入**
+
+- `_config.yml` 新增 `astronomy.events` 配置节（字段 `name` / `date` / `time` / `visibility`，含示例）
+- `astronomy-calendar.ejs` 将事件序列化为 `window.__almagestAstronomyEvents` 注入前端；`astronomy.js` 按 `(年, 月, 日)` 匹配点亮 `.has-event`，点击日期展示当天事件列表
+- 三语言新增 `astronomy.no_events` 文案，「这一天没有天文事件」提示不再落英文兜底
+
+**搜索「空输入」与「无结果」文案分离**
+
+- 三语言新增 `search_empty` 键；`search.ejs` 分别注入 `__almagestSearchEmpty` 与 `__almagestSearchNoResults`
+
+### Fixed
+
+**A1：`config` 遮蔽导致导航 active 态永不生效、拼接出 `undefined` 链接**
+
+- 三个导航 partial 不再用 `config.url + item.path` 比较（`config` 被遮蔽为主题配置，`config.url` 恒 `undefined`），改走 `is_nav_active()` 路径归一化比较
+- 「新建笔记」按钮 `config.root + 'notebooks/new'`（渲染出 `undefinednotebooks/new`）改 `url_for('/notebooks/new')`
+
+**A2：返回顶部按钮永不出现**
+
+- `theme.js` 新增 `setupBackToTop()`：滚动超过 300px 切换 `.show` 类（rAF 节流 + passive 监听），点击平滑回顶并遵循 `prefers-reduced-motion`，刷新后停在页面中部时按钮直接出现
+
+**B3：`breadcrumb.ejs` 可能永不渲染**
+
+- archive / categories / tags 三个 generator 的 `data` 补 `type` 字段
+- `breadcrumb.ejs` 页面类型判定改 `page.type || page.layout` 兜底；category / tag 分支在拿不到具体名称时只渲染到列表页，不再输出 `undefined`
+
+**C1：亮色主题两套强调色并存**
+
+- 亮色 `--color-accent` 由青色 `#0891b2` 统一为靛蓝 `#4f46e5`，与链接/按钮/标签色一致
+- `.btn-primary` / `.back-to-top` / `.code-copy-btn:hover` 由编译期 `$primary-color`（浅青，亮色下白字对比度不足）改运行时 `var(--color-button-primary-bg)` / `var(--color-button-primary-text)`；`.hljs-link` 改 `var(--color-link)`
+- `_config.yml` 的 `style.primary_color`（仅用于 `<meta name="theme-color">`）对齐为 `#4f46e5`；`_variables.styl` 补充「编译期只用于装饰、主题感知表面走运行时变量」的双轨制规则注释
+
+**C6 / C7 / C8：搜索脚本健壮性**
+
+- C6：初始化补 `readyState` 双重保险，与其他 4 个前端脚本一致
+- C7：新增 `escapeRegExp()`，高亮前对每个查询词转义正则元字符（输入 `.` `*` `(` 不再产生意外匹配）
+- C8：高亮先转义文本自身；结果 `url` 与提示文案统一走 `escapeHtml()`
+
+**C4：`index.ejs` 死变量 `per_page`**（每页条数由站点 `index_generator` 决定，主题侧读取无意义）
+
+**C10：`read_time` 占位模板未被使用**
+
+- 模板改用 `__('read_time').replace('{{count}}', get_reading_time(...))` 标准插值，删除多余的 `read_time_unit` 键
+
+### Changed
+
+**兼容性声明收紧（engines）**
+
+- `package.json` engines：`node >= 18` → **`>= 20.0.0`**，`hexo >= 6` → **`>= 8.0.0`**
+- CI 冒烟矩阵默认版本切到 Hexo 8（`^7` 保留为观测项）；README 补完整兼容性矩阵（Hexo / Node / 浏览器底线）
+- 背景：Hexo 最新已 8.1.2，volantis 已声明 `^8.1.1`、next 钉 `8.1.2`；本次两个版本均实测通过
+
+**冒烟测试剔除 `reference-themes/`**
+
+- 复制主题时删除 `reference-themes/`：其中嵌套的第三方主题 `layout/`（如 sakura 的 `themes/Sakura/layout/`）会被 Hexo 视图处理器按同名视图注册，覆盖主题自身的 `post` / `categories` / `tags` 模板导致构建失败
+
+**ESLint 排除 `reference-themes/`**
+
+- 参考仓库自带 eslint 配置、依赖未在本项目安装，整体加入 flat config 的 `ignores`
+
+### Docs
+
+- `docs/02-layout.md`：更新 config 遮蔽陷阱（已修复及教训）、天文组件章节（事件数据已接入 + include 方式）、面包屑章节（已修复）
+- `docs/03-scripts.md`：helper 清单补 `is_nav_active` / `theme_version`（合计 18 个注册点）、注明 3 个 helper 为使用者预留 API、generator 与官方插件取舍定论
+- `docs/DEVELOPMENT.md`：删除文件树中不存在的两个 widget 文件（C2）
+- `docs/09-known-issues.md`：16 项缺陷全部标注状态与修复记录
+- `docs/10-upgrade-plan.md`：新增 v1.1.0 → v2.0.0 分阶段升级方案
+
 ### Changed
 
 **测试目录重构为 `tests/`，注册层共用一份 mock（重构）**

@@ -134,3 +134,28 @@ hexo.extend.helper.register('alm_export_config', function () {
   });
   return stringifyConfig(config);
 });
+
+/**
+ * 视图注入点框架（参考 Next / Fluid 的 theme_inject）。
+ *
+ * 使用方无需改主题文件即可在指定位置注入自定义 HTML：
+ *
+ *   inject:
+ *     head: '<script>…</script>'        # <head> 内（既有）
+ *     body_end: '…'                     # </body> 前（既有）
+ *     post_top: '…'                     # 文章正文开始前（新增）
+ *     post_bottom: '…'                  # 文章正文结束后（新增）
+ *
+ * 模板里用 `<%- alm_inject('post_top') %>` 消费；无内容时返回空串。
+ *
+ * @param {string} point 注入点名称
+ * @returns {string} 原始 HTML（未转义，由站点所有者自负内容）
+ */
+hexo.extend.helper.register('alm_inject', function (point) {
+  if (!point || typeof point !== 'string') {
+    return '';
+  }
+  const inject = (hexo.theme && hexo.theme.config && hexo.theme.config.inject) || {};
+  const content = inject[point];
+  return typeof content === 'string' ? content : '';
+});

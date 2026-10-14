@@ -44,6 +44,7 @@ describe('注册点契约', () => {
     assert.deepEqual(Object.keys(registry.helpers).sort(), [
       'alm_canonical',
       'alm_export_config',
+      'alm_inject',
       'alm_json_ld',
       'alm_robots',
       'get_categories',
@@ -418,6 +419,18 @@ describe('scripts/helpers', () => {
     const parsed = JSON.parse(helpers.alm_export_config.call({}));
     assert.equal(parsed.copy.copy, 'Copy');
     assert.equal(parsed.search.url, '/search.json');
+  });
+
+  it('alm_inject 输出注入点原始 HTML，缺失/非字符串返回空串', () => {
+    state.themeConfig = { inject: { head: '<meta>', post_top: '<p>top</p>' } };
+    assert.equal(helpers.alm_inject('post_top'), '<p>top</p>');
+    assert.equal(helpers.alm_inject('post_bottom'), '');
+    assert.equal(helpers.alm_inject('head'), '<meta>');
+    assert.equal(helpers.alm_inject(''), '');
+    assert.equal(helpers.alm_inject(undefined), '');
+    state.themeConfig = { inject: { post_top: 123 } };
+    assert.equal(helpers.alm_inject('post_top'), '', '非字符串不输出');
+    state.themeConfig = {};
   });
 });
 

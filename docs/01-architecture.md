@@ -33,7 +33,7 @@ Almagest 本身**不可运行**。Hexo 的目录约定是：
 │ ② 构建扩展层  scripts/**/*.js (10 文件)                          │
 │    职责：向 Hexo 注册 filter / generator / helper / tag          │
 │          —— 决定"有哪些页面、内容长什么样"                       │
-│    子层：注册层（6 个 index.js） → lib 纯函数层（4 个文件）        │
+│    子层：注册层（6 个 index.js） → lib 纯函数层（11 个文件）        │
 ├─────────────────────────────────────────────────────────────────┤
 │ ③ 样式层  source/css/*.styl (13 文件)                            │
 │    职责：编译成单个 main.css                                     │
@@ -106,7 +106,7 @@ hexo-theme-almagest/
 │   └── _partial/            18 个片段（14 个被引用，4 个孤儿）
 ├── scripts/                 Hexo 构建扩展层
 │   ├── config/ events/ filters/ generators/ helpers/ tags/   注册层（6）
-│   └── lib/                纯函数层（4）
+│   └── lib/                纯函数层（11）
 ├── source/
 │   ├── css/                样式层（13 个 .styl → main.css）
 │   └── js/                 前端运行层（5 个 .js）
