@@ -340,6 +340,19 @@ debug: false
 # 启用后 main.css 与 theme.js 等静态资源都会走该前缀 + 版本号，便于 CDN 缓存刷新
 cdn_prefix: ''
 
+# URL 规范化
+url:
+  # 把 source/ 下手写的 foo.html 页面路由改写为 foo/index.html（目录型 URL）。
+  # 文章路径由站点 permalink 决定（Hexo 默认 :year/:month/:day/:title/ 本就是目录型），
+  # 不受此开关影响。
+  # 建议同时把站点 _config.yml 的 pretty_urls.trailing_index / trailing_html
+  # 设为 false，让 url_for 产出的链接与路由一致：
+  #
+  #   pretty_urls:
+  #     trailing_index: false
+  #     trailing_html: false
+  pretty: false
+
 # 资源版本号 (用于缓存清除)
 # 升级主题后请同步修改此值，否则 CDN / 浏览器仍会命中旧的 main.css 与 JS 缓存
 version: '1.1.0'

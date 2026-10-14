@@ -16,6 +16,8 @@ const asset = require('../../scripts/lib/asset');
 const config = require('../../scripts/lib/config');
 const seo = require('../../scripts/lib/seo');
 const ce = require('../../scripts/lib/config-export');
+const pu = require('../../scripts/lib/pretty_urls');
+const budget = require('../../scripts/lib/budget');
 const path = require('../../scripts/lib/path');
 
 // ────────────────────────────────────────────────────────────
@@ -401,5 +403,94 @@ describe('lib/config-export', () => {
     const out = ce.stringifyConfig({ a: '</script>' });
     assert.ok(out.indexOf('\\u003c') !== -1);
     assert.ok(out.indexOf('</script>') === -1);
+  });
+});
+
+// ────────────────────────────────────────────────────────────
+// pretty_urls 与 budget（Phase 3）
+// ────────────────────────────────────────────────────────────
+
+describe('lib/pretty_urls', () => {
+  it('prettyRoutePath 把 foo.html 改写为 foo/index.html', () => {
+    assert.equal(pu.prettyRoutePath('foo.html'), 'foo/index.html');
+    assert.equal(pu.prettyRoutePath('2024/01/a/b.html'), '2024/01/a/b/index.html');
+  });
+
+  it('prettyRoutePath 对根 index / 已是目录型 / 非 html 幂等', () => {
+    assert.equal(pu.prettyRoutePath('index.html'), 'index.html', '站点根 index 不动');
+    assert.equal(pu.prettyRoutePath('foo/index.html'), 'foo/index.html');
+    assert.equal(pu.prettyRoutePath('foo/'), 'foo/');
+    assert.equal(pu.prettyRoutePath(''), '');
+    assert.equal(pu.prettyRoutePath(null), null);
+  });
+});
+
+describe('lib/budget', () => {
+  it('sumSizes / findViolations 按字节累计与筛选', () => {
+    const files = [
+      { name: 'a.js', size: 10 },
+      { name: 'b.js', size: 200 },
+      { name: 'c.js', size: 5 }
+    ];
+    assert.equal(budget.sumSizes(files), 215);
+    assert.deepEqual(
+      budget.findViolations(files, 100).map(f => f.name),
+      ['b.js']
+    );
+    assert.deepEqual(budget.findViolations(files, 1000), []);
+    assert.equal(budget.sumSizes(null), 0);
+  });
+
+  it('checkSearchIndexSize 按 300KB 预算判定', () => {
+    assert.equal(budget.checkSearchIndexSize(1024).ok, true);
+    assert.equal(budget.checkSearchIndexSize(400 * 1024).ok, false);
+    assert.equal(budget.checkSearchIndexSize(400 * 1024).limit, 300 * 1024);
+    assert.equal(budget.checkSearchIndexSize(10, 5).ok, false, '自定义 limit 生效');
+  });
+
+  it('主题自带前端脚本总量不超过每页 100KB 预算（回归保护）', () => {
+    const fs = require('fs');
+    const path = require('path');
+    const jsDir = path.join(__dirname, '..', '..', 'source', 'js');
+    const files = fs
+      .readdirSync(jsDir)
+      .filter(f => f.endsWith('.js'))
+      .map(f => ({ name: f, size: fs.statSync(path.join(jsDir, f)).size }));
+    const total = budget.sumSizes(files);
+    assert.ok(
+      total <= budget.DEFAULT_LIMITS.perPageJs,
+      '前端脚本总量 ' +
+        Math.round(total / 1024) +
+        'KB 超出 100KB 预算：' +
+        files.map(f => f.name + '=' + Math.round(f.size / 1024) + 'KB').join(', ')
+    );
+  });
+
+  it('编译产物 CSS 总量不超过每页 80KB 预算（回归保护）', () => {
+    const fs = require('fs');
+    const path = require('path');
+    const stylus = require('stylus');
+    const cssDir = path.join(__dirname, '..', '..', 'source', 'css');
+
+    // 真实编译 main.styl（compress 模式，与站点 stylus.compress 一致）
+    const mainCss = stylus(fs.readFileSync(path.join(cssDir, 'main.styl'), 'utf8'), {
+      filename: path.join(cssDir, 'main.styl')
+    })
+      .set('compress', true)
+      .render();
+
+    const modernCss = fs.readFileSync(path.join(cssDir, 'modern.css'));
+    const total = Buffer.byteLength(mainCss) + modernCss.length;
+
+    assert.ok(
+      total <= budget.DEFAULT_LIMITS.perPageCss,
+      'CSS 总量 ' +
+        Math.round(total / 1024) +
+        'KB 超出 80KB 预算（main.css ' +
+        Math.round(Buffer.byteLength(mainCss) / 1024) +
+        'KB + modern.css ' +
+        Math.round(modernCss.length / 1024) +
+        'KB）'
+    );
   });
 });

@@ -37,11 +37,30 @@
   }
 
   /**
+   * 把主题属性写到 <html>。
+   * 支持 View Transitions 的浏览器做一次交叉淡入淡出（见 _modern.styl），
+   * 否则直接切换；尊重系统「减少动态效果」偏好。
+   */
+  function setThemeAttribute(theme) {
+    var reduceMotion =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (typeof document.startViewTransition === 'function' && !reduceMotion) {
+      document.startViewTransition(function () {
+        document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
+      });
+      return;
+    }
+
+    document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
+  }
+
+  /**
    * Apply theme to the document
    */
   function applyTheme(theme) {
     if (theme === DARK_THEME || theme === LIGHT_THEME) {
-      document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
+      setThemeAttribute(theme);
       updateThemeButtonState(theme);
     }
   }

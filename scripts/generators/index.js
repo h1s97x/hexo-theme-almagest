@@ -11,6 +11,8 @@
 'use strict';
 
 const { toIndexText } = require('../lib/text');
+const { prettyRoutePath } = require('../lib/pretty_urls');
+const { checkSearchIndexSize } = require('../lib/budget');
 
 // 单篇文章进入搜索索引的正文长度上限（字符数，缺省值）
 // 旧实现直接把 post.content（含 HTML 标签、代码块、图片）整篇塞进 search.json，
@@ -81,12 +83,73 @@ hexo.extend.generator.register('search', function (locals) {
     }
   });
 
+  const json = JSON.stringify(searchData);
+
+  // 搜索索引体积预算：超限只告警不阻断（构建可用性优先于预算）。
+  // 体积 ≈ 文章数 × index_length，文章多的站点可调小 search.index_length。
+  const budget = checkSearchIndexSize(Buffer.byteLength(json, 'utf8'));
+  if (!budget.ok) {
+    hexo.log.warn(
+      'Almagest: search.json 体积 ' +
+        Math.round(budget.size / 1024) +
+        'KB 超出预算 ' +
+        Math.round(budget.limit / 1024) +
+        'KB，建议调小 search.index_length'
+    );
+  }
+
   return {
     path: 'search.json',
-    data: JSON.stringify(searchData)
+    data: json
   };
 });
 
+// Page generator 覆盖（url.pretty 开启时改写 .html 路由）
+//
+// 逻辑与 Hexo 核心 page generator 逐行对应（layout 缺失/false 时输出原始内容、
+// 有 layout 时走 ['page','post','index'] 回退链并打 __page 标记），
+// 唯一差别是 pretty 开启时的路由改写：
+// - 'index.html' / 'index/'  → 'index.html'（站点根；关闭 trailing 选项后 Hexo 会给 'index/'，
+//   不处理会输出成 index/index.html）
+// - 'foo.html'               → 'foo/index.html'（手写在 source/ 下的 .html 页面）
+//
+// 只改写路由返回值，不改写 page.path（文档模型的 path 是只读 getter，赋值会抛错）。
+// 建议同时把站点 pretty_urls.trailing_index / trailing_html 设为 false，
+// 让 url_for 产出的链接与路由一致（见 _config.yml url.pretty 注释）。
+//
+// ⚠️ 为什么「无条件注册 + 运行时判断」：站点 theme_config 的合并发生在
+// hexo load 阶段之后（Hexo 的 mergeCtxThemeConfig），脚本加载时读不到站点侧覆盖，
+// 因此不能在注册时用配置决定是否注册。pretty 关闭时行为与核心完全一致。
+hexo.extend.generator.register('page', function (locals) {
+  const themeConfig = hexo.theme.config || {};
+  const pretty = !!(themeConfig.url && themeConfig.url.pretty === true);
+
+  return locals.pages.map(function (page) {
+    let path = page.path;
+
+    if (pretty) {
+      if (path === 'index.html' || path === 'index/') {
+        path = 'index.html';
+      } else {
+        path = prettyRoutePath(path);
+      }
+    }
+
+    const layout = page.layout;
+    if (!layout || layout === 'false' || layout === 'off') {
+      return { path: path, data: page.content };
+    }
+
+    const layouts = ['page', 'post', 'index'];
+    if (layout !== 'page') {
+      layouts.unshift(layout);
+    }
+    page.__page = true;
+    return { path: path, layout: layouts, data: page };
+  });
+});
+
+// Search page generator（生成 /search/ 页面，受 theme.features.search 配置控制）
 hexo.extend.generator.register('search-page', function () {
   const themeConfig = hexo.theme.config || {};
   if (themeConfig.features && themeConfig.features.search === false) {

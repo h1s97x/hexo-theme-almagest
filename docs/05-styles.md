@@ -1,24 +1,25 @@
 # 05 · 样式体系（`source/css/`）
 
-13 个 Stylus 文件 → 编译成**单个 `main.css`**。
+13 个 Stylus 文件 → 编译成**单个 `main.css`**；另有 1 个独立静态层 `modern.css`（渐进式增强，见第 8 节）。
 
 ## 1. 文件清单与职责
 
-| 文件                       | 行数 | 职责                                                                                 |
-| -------------------------- | ---- | ------------------------------------------------------------------------------------ |
-| `main.styl`                | 32   | **唯一入口**，按序 `@import` 其余 12 个                                              |
-| `_variables.styl`          | 265  | 全部**编译期**设计 token + 只读别名                                                  |
-| `_mixins.styl`             | 34   | 5 个 mixin                                                                           |
-| `_base.styl`               | 430  | reset / 排版 / 表单 / 表格 / 工具类 / 星云分层                                       |
-| `_layout.styl`             | 647  | header / 内容容器 / 侧栏 / 页脚 / 返回顶部 / 栅格 / 间距工具                         |
-| `_components.styl`         | 530  | 按钮 / 标签与标签云 / 提示 / 分页 / 搜索 / widget / 文章与归档 / 面包屑 / 懒加载图片 |
-| `_responsive.styl`         | 690  | 移动优先三断点（< 768 / ≥ 768 / ≥ 992）+ ≥ 1200 / ≥ 1400 + 打印                      |
-| `_theme-light.styl`        | 265  | 亮色**运行期**变量块 ×2 + 亮色组件覆盖                                               |
-| `_theme-dark.styl`         | 264  | 暗色**运行期**变量块 ×2 + 暗色组件覆盖                                               |
-| `_code-highlight.styl`     | 175  | `pre` / `code` / 行号 / `.code-copy-btn`（**权威定义**）/ hljs token 配色            |
-| `_astronomy.styl`          | 360  | 星空层 / 天文卡片 / 星图导航 / 天文日历 / 观测指南 + `twinkle` 关键帧                |
-| `_astronomy-calendar.styl` | 33   | 日历独有补充选择器                                                                   |
-| `_observation-guide.styl`  | 38   | 观测指南独有补充选择器                                                               |
+| 文件                       | 行数 | 职责                                                                                  |
+| -------------------------- | ---- | ------------------------------------------------------------------------------------- |
+| `main.styl`                | 32   | **唯一入口**，按序 `@import` 其余 12 个                                               |
+| `_variables.styl`          | 265  | 全部**编译期**设计 token + 只读别名                                                   |
+| `_mixins.styl`             | 34   | 5 个 mixin                                                                            |
+| `_base.styl`               | 430  | reset / 排版 / 表单 / 表格 / 工具类 / 星云分层                                        |
+| `_layout.styl`             | 647  | header / 内容容器 / 侧栏 / 页脚 / 返回顶部 / 栅格 / 间距工具                          |
+| `_components.styl`         | 530  | 按钮 / 标签与标签云 / 提示 / 分页 / 搜索 / widget / 文章与归档 / 面包屑 / 懒加载图片  |
+| `_responsive.styl`         | 690  | 移动优先三断点（< 768 / ≥ 768 / ≥ 992）+ ≥ 1200 / ≥ 1400 + 打印                       |
+| `_theme-light.styl`        | 265  | 亮色**运行期**变量块 ×2 + 亮色组件覆盖                                                |
+| `_theme-dark.styl`         | 264  | 暗色**运行期**变量块 ×2 + 暗色组件覆盖                                                |
+| `_code-highlight.styl`     | 175  | `pre` / `code` / 行号 / `.code-copy-btn`（**权威定义**）/ hljs token 配色             |
+| `_astronomy.styl`          | 360  | 星空层 / 天文卡片 / 星图导航 / 天文日历 / 观测指南 + `twinkle` 关键帧                 |
+| `_astronomy-calendar.styl` | 33   | 日历独有补充选择器                                                                    |
+| `_observation-guide.styl`  | 38   | 观测指南独有补充选择器                                                                |
+| `modern.css`               | ~160 | **独立静态层**（不经 Stylus）：color-mix / `:has()` / 容器查询 / text-wrap / 视图过渡 |
 
 ## 2. `main.styl` 的 import 顺序（决定层叠）
 
@@ -230,6 +231,41 @@
 - **渐变**：`$grad-primary` / `$grad-primary-soft` / `$grad-text` / `$grad-surface`
 - **星云**：`$nebula-a` / `$nebula-b`
 - **代码色**：`$code-bg / text / keyword / string / comment / number / function / attr`
+
+## 8. 渐进式增强层 `modern.css`（Phase 4）
+
+**为什么独立成 `.css` 而不进 Stylus**：`color-mix(in srgb, …)` 这类现代 CSS 语法
+Stylus 解析器无法处理（`illegal unary "in"`），`@import (css)` 字面导入也不支持。
+因此增强层是 `source/css/modern.css`，Hexo 原样拷贝，由 `head.ejs` 以独立
+`<link>` 引入（与 `main.css` 一样走 `cdn_prefix + ?v=` 版本号）。
+
+**五条增强，全部带 `@supports` / `@container` 守卫，旧浏览器整段跳过**：
+
+| 增强                        | 作用                                                       | 浏览器要求                           |
+| --------------------------- | ---------------------------------------------------------- | ------------------------------------ |
+| `color-mix()` hover 派生    | `.btn-primary` / `.code-copy-btn` hover 色由主题色混色得出 | Chrome 111+ / Safari 16.2+ / FF 113+ |
+| `:has()` 搜索框聚焦外壳高亮 | `.search-box-wrapper:has(input:focus)` 整体辉光            | Chrome 105+ / Safari 15.4+ / FF 121+ |
+| 容器查询（天文日历）        | `.astronomy-calendar` 设 `container-type`，窄容器自动紧凑  | Chrome 105+ / Safari 16+ / FF 110+   |
+| `text-wrap: balance`        | 标题断行更均衡                                             | Chrome 114+ / Safari 17.5+ / FF 121+ |
+| 视图过渡（明暗切换）        | `theme.js` 调 `startViewTransition`，交叉淡入淡出          | Chrome 111+ / Safari 18+ / FF 129+   |
+
+**配套机制**：
+
+- `--color-hover-tint`（亮 `#000` / 暗 `#fff`）定义在 `modern.css` 顶部，
+  作用域分发方式与 `_theme-*.styl` 一致（`:root` / `[data-theme='dark']` / 系统偏好镜像）
+- `theme.js` 的 `setThemeAttribute()` 在不支持 `startViewTransition` 或用户开启
+  「减少动态效果」时直接切属性，无动画降级
+- stylelint 对该文件用 override 切回默认 CSS 语法（`customSyntax: postcss`），
+  因为 postcss-styl 解析不了 `in srgb` 关键字参数
+
+**性能预算（`scripts/lib/budget.js` + 回归测试）**：
+
+| 指标            | 预算    | 实测（2026-10-14）                               |
+| --------------- | ------- | ------------------------------------------------ |
+| 每页 JS         | ≤ 100KB | ~35KB（5 个原生脚本）                            |
+| 每页 CSS        | ≤ 80KB  | main.css 压缩后 52.4KB + modern.css 3.9KB ≈ 56KB |
+| `search.json`   | ≤ 300KB | 超限时 `hexo generate` 告警                      |
+| gzip 后实际传输 | —       | JS ~10KB + CSS ~11KB                             |
 
 ---
 

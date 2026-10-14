@@ -44,6 +44,10 @@ const asset = function(path) {
 
 <!-- Stylesheets -->
 <link rel="stylesheet" href="<%= asset('/css/main.css') %>">
+<!-- 渐进式增强层（color-mix / :has() / 容器查询 / 视图过渡，均带 @supports 守卫，
+     旧浏览器整段跳过；独立文件便于单独缓存，详见 source/css/modern.css 头注） -->
+<link rel="stylesheet" href="<%= asset('/css/modern.css') %>">
+
 <!-- 图片占位色（_config.yml image.placeholder_color，供懒加载 img[data-src] / img.error 使用） -->
 <style>
   :root { --color-image-placeholder: <%= config.image?.placeholder_color || '#f0f0f0' %>; }

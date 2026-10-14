@@ -1,0 +1,120 @@
+/*
+ * Hexo Theme Almagest — 渐进式 CSS 增强（Phase 4）
+ * ================================================================
+ *
+ * 本文件是**独立的静态样式层**，不经 Stylus 编译（color-mix(in srgb, …) 等
+ * 现代 CSS 语法 Stylus 解析器无法处理），由 Hexo 原样拷贝，head.ejs 以
+ * 独立 <link> 引入（与 main.css 一样走 cdn_prefix + ?v= 版本号）。
+ *
+ * 设计原则（对应升级方案 Phase 4「渐进增强」）：
+ *   1. 每条增强都在 @supports / @container 内，旧浏览器整段跳过，
+ *      基础样式（main.css）自动兜底；
+ *   2. 依赖的浏览器版本：color-mix 需 Chrome 111+/Safari 16.2+/Firefox 113+；
+ *      :has() 需 Chrome 105+/Safari 15.4+/Firefox 121+；
+ *      容器查询需 Chrome 105+/Safari 16+/Firefox 110+；
+ *      text-wrap: balance 需 Chrome 114+/Safari 17.5+/Firefox 121+；
+ *      视图过渡需 Chrome 111+/Safari 18+/Firefox 129+（theme.js 侧同步降级）；
+ *   3. 兼容底线（Chrome/Edge 100+、Firefox 100+、Safari 15.4+）不受影响。
+ */
+
+/* ── 0. hover 混色方向 ──
+   亮色 hover 向黑混（变深），暗色向白混（变亮）。
+   三处作用域与 _theme-*.styl 的变量分发方式一致：
+   :root（亮色基座）/ [data-theme='dark'] / 系统偏好镜像。 */
+:root {
+  --color-hover-tint: #000000;
+}
+
+[data-theme='dark'] {
+  --color-hover-tint: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-hover-tint: #ffffff;
+  }
+}
+
+/* ── 1. color-mix()：hover 态由主题色派生 ──
+   用户改主色后 hover 自动跟随；同时补上 .btn-primary（多用于 <a> 元素）
+   此前没有 hover 背景变化的空缺——主题的 button:hover 规则匹配不到 <a>。 */
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+  .btn-primary:hover {
+    background-color: color-mix(in srgb, var(--color-button-primary-bg) 85%, var(--color-hover-tint, #000000));
+  }
+
+  .code-copy-btn:hover {
+    background-color: color-mix(in srgb, var(--color-button-primary-bg) 85%, var(--color-hover-tint, #000000));
+  }
+}
+
+/* ── 2. :has()：搜索框聚焦时整个外壳高亮 ──
+   比只给 input 画焦点框更符合现代表单交互；
+   不支持 :has() 时仅 input 自身焦点态（基础样式兜底）。 */
+@supports selector(:has(*)) {
+  .search-box-wrapper:has(input:focus) {
+    border-color: var(--color-link);
+    box-shadow: var(--glow-soft);
+  }
+}
+
+/* ── 3. 容器查询：天文日历在窄容器（侧栏 / 弹层）自动紧凑 ──
+   日历是组件库成员，会被 include 进宽度不一的容器，
+   容器查询比视口断点更贴合「组件自适应所在容器」的语义。 */
+.astronomy-calendar {
+  container-type: inline-size;
+}
+
+@container (max-width: 320px) {
+  .calendar-grid {
+    gap: 4px;
+  }
+
+  .calendar-day {
+    font-size: 12px;
+  }
+
+  .calendar-day-header {
+    padding: 2px;
+    font-size: 11px;
+  }
+}
+
+/* ── 4. text-wrap: balance：标题断行更均衡 ──
+   纯排版增强，不支持的浏览器保持默认断行。 */
+@supports (text-wrap: balance) {
+  h1,
+  h2,
+  h3,
+  .article-title,
+  .page-title,
+  .result-title {
+    text-wrap: balance;
+  }
+}
+
+/* ── 5. 视图过渡：明暗切换交叉淡入淡出 ──
+   由 theme.js 调用 document.startViewTransition 触发；
+   不支持的浏览器自动降级为直接切换（无动画）；
+   尊重系统「减少动态效果」偏好。 */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: alm-theme-fade-out 200ms ease-in-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: alm-theme-fade-in 200ms ease-in-out;
+  }
+}
+
+@keyframes alm-theme-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes alm-theme-fade-in {
+  from {
+    opacity: 0;
+  }
+}

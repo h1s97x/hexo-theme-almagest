@@ -8,10 +8,7 @@
     "property-no-vendor-prefix": [
       true,
       {
-        "ignoreProperties": [
-          "-webkit-backdrop-filter",
-          "-webkit-background-clip"
-        ]
+        "ignoreProperties": ["-webkit-backdrop-filter", "-webkit-background-clip"]
       }
     ],
     "value-no-vendor-prefix": true,
@@ -30,5 +27,12 @@
     "media-query-no-invalid": null,
     "media-feature-range-notation": null,
     "nesting-selector-no-missing-scoping-root": null
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.css", "source/css/*.css"],
+      "customSyntax": "postcss",
+      "comment": "modern.css 是字面现代 CSS（color-mix(in srgb, …) 等），postcss-styl 解析不了，改用默认 CSS 语法"
+    }
+  ]
 }

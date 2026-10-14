@@ -36,6 +36,7 @@ describe('注册点契约', () => {
     assert.deepEqual(Object.keys(registry.generators).sort(), [
       'archive',
       'categories',
+      'page',
       'search',
       'search-page',
       'tags'
@@ -190,6 +191,46 @@ describe('scripts/generators', () => {
     assert.equal(tags.path, 'tags/index.html');
     assert.equal(tags.layout, 'tags');
     assert.deepEqual(tags.data.tags, ['t1']);
+  });
+
+  it('page generator：pretty 关闭时与核心行为一致', () => {
+    state.themeConfig = { url: { pretty: false } };
+    const routes = generate.page({
+      pages: [
+        { path: 'about/index.html', layout: 'page', content: '<p>a</p>' },
+        { path: 'robots.txt', content: 'User-agent: *' },
+        { path: 'raw.html', content: '<html/>' }
+      ]
+    });
+    assert.deepEqual(
+      routes.map(r => r.path),
+      ['about/index.html', 'robots.txt', 'raw.html'],
+      'pretty 关闭时路径不动'
+    );
+    assert.equal(routes[0].data.content, '<p>a</p>', '有 layout 时 data 为文档对象');
+    assert.equal(routes[1].data, 'User-agent: *', '无 layout 时 data 为原始内容');
+    assert.equal(routes[2].data, '<html/>');
+  });
+
+  it('page generator：pretty 开启时改写 foo.html 为 foo/index.html', () => {
+    state.themeConfig = { url: { pretty: true } };
+    const routes = generate.page({
+      pages: [
+        { path: 'raw.html', content: '<html/>' },
+        { path: 'index.html', content: 'home' },
+        { path: 'deep/page.html', layout: 'page', content: 'x' },
+        { path: 'about/index.html', layout: 'page', content: 'y' }
+      ]
+    });
+    assert.deepEqual(
+      routes.map(r => r.path),
+      ['raw/index.html', 'index.html', 'deep/page/index.html', 'about/index.html']
+    );
+    // 站点根 index 不能被改写（否则输出 index/index.html）
+    assert.equal(routes[1].path, 'index.html');
+    // 已 pretty 的幂等
+    assert.equal(routes[3].path, 'about/index.html');
+    state.themeConfig = {};
   });
 
   it('search 生成 search.json，且跳过未发布文章', () => {

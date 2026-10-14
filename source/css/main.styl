@@ -29,4 +29,8 @@
 // Import astronomy styles
 @import '_astronomy'
 @import '_astronomy-calendar'
-@import '_observation-guide'
+@import '_observation-guide';
+
+// 注意：渐进式 CSS 增强（color-mix / :has() / 容器查询 / 视图过渡）
+// 在独立的 source/css/modern.css 中，不经 Stylus 编译，
+// 由 layout/_partial/head.ejs 以独立 <link> 引入。
